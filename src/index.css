@@ -13,7 +13,10 @@ body {
     --white: #fff;
     --black: #000;
 
+    --disabledGrey: rgb(184, 184, 184);
+
     --thickBorder: 2px;
+    --thinBorder: 1px;
 
     --fontSizeL: 1.5rem;
 

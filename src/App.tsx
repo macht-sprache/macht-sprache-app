@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from './HomePage';
 import Nav from './Nav';
 import TermPage from './TermPage';
+import ElementTestPage from './ElementTestPage';
 
 function App() {
     return (
@@ -14,6 +15,9 @@ function App() {
                     </Route>
                     <Route path="/term/:termId" exact>
                         <TermPage />
+                    </Route>
+                    <Route path="/elementTest" exact>
+                        <ElementTestPage />
                     </Route>
                 </Switch>
             </Layout>

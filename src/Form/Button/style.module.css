@@ -1,0 +1,29 @@
+.button {
+    font-size: inherit;
+    font-family: var(--monospace-font);
+    border: var(--thinBorder) var(--black) solid;
+    background: transparent;
+    padding: .5rem;
+}
+
+.button:not([disabled]):hover, .button:focus {
+    color: var(--white);
+    cursor: pointer;
+    background: var(--black);
+}
+
+.buttonPrimary {
+    composes: button;
+    border-color: var(--orange);
+    border-width: var(--thickBorder);
+}
+
+.buttonPrimary:not([disabled]):hover, .button:focus {
+    background-color: var(--orange);
+    font-weight: bold;
+}
+
+.button[disabled] {
+    color: var(--disabledGrey);
+    border-color: var(--disabledGrey);
+}
