@@ -1,6 +1,6 @@
 .logo {
     font-family: var(--monospace-font);
-    font-size: var(--fontSizeL);
+    font-weight: bold;
     padding: 0 0 1rem;
     display: block;
     text-decoration: none;
