@@ -4,9 +4,10 @@ type Props = {
     title: string;
     children: React.ReactNode;
     sidebar?: React.ReactNode;
+    topRightMenu?: React.ReactNode;
 };
 
-function Layout({ title, children, sidebar }: Props) {
+function Layout({ title, children, sidebar, topRightMenu }: Props) {
     return (
         <div className={s.container}>
             <div className={s.sidebar}>
@@ -17,6 +18,7 @@ function Layout({ title, children, sidebar }: Props) {
                     </div>
                 </div>
             </div>
+            <div className={s.topRightMenu}>{topRightMenu}</div>
             <main className={s.main}>
                 <h1>{title}</h1>
                 {children}

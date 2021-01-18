@@ -7,7 +7,7 @@ import TermPage from './TermPage';
 function App() {
     return (
         <Router>
-            <Layout title="Home" sidebar={<Nav />}>
+            <Layout title="Home" sidebar={<Nav />} topRightMenu={<a href="/">Login</a>}>
                 <Switch>
                     <Route path="/" exact>
                         <HomePage />

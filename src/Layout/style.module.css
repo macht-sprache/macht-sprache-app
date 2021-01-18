@@ -37,6 +37,13 @@
     padding: 1rem;
 }
 
+.topRightMenu {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    font-family: var(--monospace-font);
+}
+
 .logo {
     font-family: var(--monospace-font);
 }
