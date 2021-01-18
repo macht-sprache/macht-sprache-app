@@ -31,3 +31,5 @@ a {
 *, *:before, *:after {
     box-sizing: border-box;
 }
+
+.firebase-emulator-warning { display: none; }
