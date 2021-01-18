@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useTerms } from '../dataHooks';
 import s from './style.module.css';
 
@@ -26,7 +26,9 @@ function Terms() {
         <ul className={s.terms}>
             {terms.map(term => (
                 <li key={term.id} className={s.term}>
-                    <Link to={`/term/${term.id}`}>{term.value}</Link>
+                    <NavLink to={`/term/${term.id}`} className={s.termLink} activeClassName={s.termLinkActive}>
+                        {term.value}
+                    </NavLink>
                 </li>
             ))}
         </ul>
