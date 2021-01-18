@@ -32,4 +32,6 @@ a {
     box-sizing: border-box;
 }
 
-.firebase-emulator-warning { display: none; }
+.firebase-emulator-warning {
+    display: none;
+}
