@@ -1,7 +1,24 @@
 import Layout from './Layout';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import HomePage from './HomePage';
+import Nav from './Nav';
+import TermPage from './TermPage';
 
 function App() {
-    return <Layout title="Home">main content</Layout>;
+    return (
+        <Router>
+            <Layout title="Home" sidebar={<Nav />}>
+                <Switch>
+                    <Route path="/" exact>
+                        <HomePage />
+                    </Route>
+                    <Route path="/term/:termId" exact>
+                        <TermPage />
+                    </Route>
+                </Switch>
+            </Layout>
+        </Router>
+    );
 }
 
 export default App;
