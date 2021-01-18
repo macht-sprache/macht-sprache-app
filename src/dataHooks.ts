@@ -1,11 +1,24 @@
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { db } from './firebase';
-import { Term } from './types/Term';
+import { Term, Translation, TranslationExample } from './types';
+
+const defaultOptions = { idField: 'id' };
 
 export function useTerms() {
-    return useCollectionData<Term>(db.collection('terms'), { idField: 'id' });
+    return useCollectionData<Term>(db.collection('terms'), defaultOptions);
 }
 
 export function useTerm(id: string) {
-    return useDocumentData<Term>(db.doc(`/terms/${id}`), { idField: 'id' });
+    return useDocumentData<Term>(db.doc(`/terms/${id}`), defaultOptions);
+}
+
+export function useTranslations(termId: string) {
+    return useDocumentData<Translation>(db.collection(`/terms/${termId}/translations`), defaultOptions);
+}
+
+export function useTranslationExamples(termId: string, translationId: string) {
+    return useDocumentData<TranslationExample>(
+        db.collection(`/terms/${termId}/translations/${translationId}/translationExamples`),
+        defaultOptions
+    );
 }
