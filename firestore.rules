@@ -8,5 +8,9 @@ service cloud.firestore {
     match /terms/{term} {
       allow read: if true;
     }
+
+    match /terms/{term}/translations/{translation} {
+      allow read: if true;
+    }
   }
 }

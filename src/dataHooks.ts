@@ -13,11 +13,11 @@ export function useTerm(id: string) {
 }
 
 export function useTranslations(termId: string) {
-    return useDocumentData<Translation>(db.collection(`/terms/${termId}/translations`), defaultOptions);
+    return useCollectionData<Translation>(db.collection(`/terms/${termId}/translations`), defaultOptions);
 }
 
 export function useTranslationExamples(termId: string, translationId: string) {
-    return useDocumentData<TranslationExample>(
+    return useCollectionData<TranslationExample>(
         db.collection(`/terms/${termId}/translations/${translationId}/translationExamples`),
         defaultOptions
     );
