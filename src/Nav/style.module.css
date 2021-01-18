@@ -4,6 +4,7 @@
     padding: 0 0 1rem;
     display: block;
     text-decoration: none;
+    width: calc(var(--sidebarWidth) - 2rem);
 }
 
 .header {

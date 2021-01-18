@@ -1,6 +1,4 @@
 .container {
-    --sidebarWidth: 15rem;
-
     display: grid;
     height: 100%;
     grid-template-columns: 1fr var(--sidebarWidth) minmax(auto, 50rem) 1fr;

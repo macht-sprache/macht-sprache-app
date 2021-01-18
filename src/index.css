@@ -16,6 +16,8 @@ body {
     --thickBorder: 2px;
 
     --fontSizeL: 1.5rem;
+
+    --sidebarWidth: 15rem;
 }
 
 html, body, #root {
