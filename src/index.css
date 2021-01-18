@@ -24,6 +24,10 @@ h1, h2, h3, h4 {
     font-family: var(--monospace-font);
 }
 
+a {
+    color: inherit;
+}
+
 *, *:before, *:after {
     box-sizing: border-box;
 }
