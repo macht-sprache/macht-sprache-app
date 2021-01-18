@@ -20,7 +20,7 @@ if (process.env.REACT_APP_AUTH_EMULATOR_PORT) {
 }
 
 if (process.env.REACT_APP_FIRESTORE_EMULATOR_PORT) {
-    db.useEmulator(window.location.host, parseInt(process.env.REACT_APP_FIRESTORE_EMULATOR_PORT));
+    db.useEmulator(window.location.hostname, parseInt(process.env.REACT_APP_FIRESTORE_EMULATOR_PORT));
 }
 
 export { auth, db };
