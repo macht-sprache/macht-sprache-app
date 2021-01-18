@@ -1,0 +1,25 @@
+.logo {
+    font-family: var(--monospace-font);
+    font-size: var(--fontSizeL);
+    padding: 0 0 1rem;
+    display: block;
+    text-decoration: none;
+}
+
+.header {
+    position: fixed;
+    background: white;
+    padding-top: 1rem;
+    top: 0;
+}
+
+.terms {
+    margin-top: 3rem;
+    font-family: var(--monospace-font);
+    list-style: none;
+    padding: 0;
+}
+
+.term + .term {
+    margin-top: .5rem;
+}

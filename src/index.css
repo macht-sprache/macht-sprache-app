@@ -14,6 +14,8 @@ body {
     --black: #000;
 
     --thickBorder: 2px;
+
+    --fontSizeL: 1.5rem;
 }
 
 html, body, #root {

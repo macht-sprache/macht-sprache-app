@@ -12,10 +12,7 @@ function Layout({ title, children, sidebar, topRightMenu }: Props) {
         <div className={s.container}>
             <div className={s.sidebar}>
                 <div className={s.sidebarInner}>
-                    <div className={s.sidebarInnerInner}>
-                        <div className={s.logo}>macht.sprache.</div>
-                        {sidebar}
-                    </div>
+                    <div className={s.sidebarInnerInner}>{sidebar}</div>
                 </div>
             </div>
             <div className={s.topRightMenu}>{topRightMenu}</div>
