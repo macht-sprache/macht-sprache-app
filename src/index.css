@@ -12,9 +12,13 @@ body {
 
     --white: #fff;
     --black: #000;
+
+    --thickBorder: 2px;
 }
 
-
+html, body, #root {
+    height: 100%;
+}
 
 h1, h2, h3, h4 {
     font-family: var(--monospace-font);

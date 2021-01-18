@@ -1,5 +1,7 @@
+import Layout from './Layout';
+
 function App() {
-    return null;
+    return <Layout title="Home">main content</Layout>;
 }
 
 export default App;
