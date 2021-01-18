@@ -1,3 +1,5 @@
+import Header from '../Header';
+
 export default function Home() {
-    return <>Home</>;
+    return <Header>Home</Header>;
 }

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useTerm } from '../dataHooks';
+import Header from '../Header';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
@@ -9,5 +10,9 @@ export default function TermPage() {
         return null;
     }
 
-    return <>{term.value}</>;
+    return (
+        <>
+            <Header>{term.value}</Header>
+        </>
+    );
 }
