@@ -18,7 +18,7 @@
     border-width: var(--thickBorder);
 }
 
-.buttonPrimary:not([disabled]):hover, .button:focus {
+.buttonPrimary:not([disabled]):hover, .buttonPrimary:focus {
     background-color: var(--orange);
     font-weight: bold;
 }
