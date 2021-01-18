@@ -1,3 +1,4 @@
+import type firebase from 'firebase';
 export interface Term {
     id: string;
     relatedTermIds: string[];
@@ -44,4 +45,9 @@ interface BookSnippet extends BaseSnippet {
 interface LinkSnippet extends BaseSnippet {
     type: 'LINK';
     link: string;
+}
+
+export interface Comment {
+    creatorId: string;
+    ref: firebase.firestore.DocumentReference<Term | Translation | TranslationExample>;
 }
