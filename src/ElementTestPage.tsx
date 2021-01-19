@@ -1,4 +1,6 @@
 import Button from './Form/Button';
+import Input from './Form/Input';
+import InputContainer from './Form/InputContainer';
 import Header from './Header';
 
 export default function ElementTestPage() {
@@ -11,6 +13,13 @@ export default function ElementTestPage() {
             <Button primary={true}>button</Button>
             <h2>Button Disabled</h2>
             <Button disabled>button</Button>
+
+            <h2>Form</h2>
+            <InputContainer>
+                <Input label="Name" span={2} />
+                <Input label="Email" span={2} />
+                <Input label="Another field" />
+            </InputContainer>
         </>
     );
 }

@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: .5rem;
+    background: white;
+    font-family: var(--monospace-font);
+    cursor: text;
+}
+
+.container:hover, .container:focus-within {
+    box-shadow: 0 0 0 var(--thickBorder) var(--orange);
+}
+
+.input {
+    width: 100%;
+    margin-top: .3rem;
+    font-family: inherit;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    font-size: inherit;
+}
+
+.input:focus {
+    outline: none;
+}
+
+.label {
+    transition: all .2s;
+    transform: translateY(.8rem);
+}
+
+.input:not(:placeholder-shown) + .label, .input:focus + .label {
+    transform: translateY(0);
+}
