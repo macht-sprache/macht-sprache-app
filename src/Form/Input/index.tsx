@@ -23,7 +23,7 @@ interface SelectProps
     span?: number;
 }
 
-export function Select({ label, span, children, value, ...props }: SelectProps) {
+export function Select({ label, span = 4, children, value, ...props }: SelectProps) {
     const empty = !value;
     const selectProps = { value, ...props };
 
@@ -33,6 +33,24 @@ export function Select({ label, span, children, value, ...props }: SelectProps) 
             <select className={s.select} {...selectProps}>
                 {children}
             </select>
+        </label>
+    );
+}
+
+interface TextareProps
+    extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
+    label: React.ReactNode;
+    span?: number;
+}
+
+export function Textarea({ label, span = 4, value, ...props }: TextareProps) {
+    const empty = !value;
+    const testareaProps = { value, ...props };
+
+    return (
+        <label className={s.textareaContainer} style={{ gridColumn: `span ${span}` }}>
+            <div className={empty ? s.textareaLabelEmpty : s.textareaLabel}>{label}</div>
+            <textarea className={s.textarea} {...testareaProps} />
         </label>
     );
 }

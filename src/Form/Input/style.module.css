@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     display: flex;
     flex-direction: column-reverse;
     padding: .5rem;
@@ -82,6 +83,40 @@
 
 .selectContainer {
     composes: container;
-    position: relative;
     justify-content: flex-end;
+}
+
+.textarea {
+    background: transparent;
+    font-size: 1.2rem; /* for some reason inherit doesn't work */
+    font-weight: bold;
+    border: none;
+    margin: 0 -.5rem -.5rem;
+    padding: .5rem;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.textarea:focus {
+    outline: none;
+}
+
+.textareaLabel {
+    margin-top: .2rem;
+    transition: all .2s;
+}
+
+.textareaLabelEmpty {
+    composes: textareaLabel;
+}
+
+.textareaContainer:not(:focus-within) .textareaLabelEmpty {
+    transform: translateY(1rem);
+}
+
+.textareaContainer {
+    composes: container;
+    flex-direction: column;
+    height: auto;
+
 }

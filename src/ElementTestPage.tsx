@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import Button from './Form/Button';
-import { Input, Select } from './Form/Input';
+import { Input, Select, Textarea } from './Form/Input';
 import InputContainer from './Form/InputContainer';
 import Header from './Header';
 
 export default function ElementTestPage() {
     const [selectValue, setSelectValue] = useState('');
+    const [textAreaValue, setTextAreaValue] = useState('');
 
     return (
         <>
@@ -20,9 +21,6 @@ export default function ElementTestPage() {
             <h2>Form</h2>
             <InputContainer>
                 <Input label="Name" span={2} />
-                <Input label="Email" span={2} />
-                <Input label="Another field" />
-
                 <Select
                     label="Media Type"
                     span={2}
@@ -36,6 +34,14 @@ export default function ElementTestPage() {
                     <option value="2">newspaper</option>
                     <option value="3">movie</option>
                 </Select>
+                <Input label="Another field, full width" />
+                <Textarea
+                    label="Comment"
+                    value={textAreaValue}
+                    onChange={value => {
+                        setTextAreaValue(value.target.value);
+                    }}
+                />
             </InputContainer>
         </>
     );
