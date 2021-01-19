@@ -6,13 +6,19 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
     span?: number;
 }
 
-export function Input({ label, span, ...props }: InputProps) {
+export function Input({ label, span = 4, ...props }: InputProps) {
     const [domId] = useState('input_' + Math.random());
 
     return (
-        <Wrapper label={label} span={span} domId={domId}>
+        <label className={s.container} style={{ gridColumn: `span ${span}` }}>
+            <div className={s.ariaLabel} id={domId}>
+                {label}
+            </div>
             <input className={s.input} placeholder=" " {...props} aria-labelledby={domId} />
-        </Wrapper>
+            <div className={s.label} aria-hidden="true">
+                {label}
+            </div>
+        </label>
     );
 }
 
@@ -37,13 +43,13 @@ export function Select({ label, span = 4, children, value, ...props }: SelectPro
     );
 }
 
-interface TextareProps
+interface TextareaProps
     extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
     label: React.ReactNode;
     span?: number;
 }
 
-export function Textarea({ label, span = 4, value, ...props }: TextareProps) {
+export function Textarea({ label, span = 4, value, ...props }: TextareaProps) {
     const empty = !value;
     const testareaProps = { value, ...props };
 
@@ -54,27 +60,3 @@ export function Textarea({ label, span = 4, value, ...props }: TextareProps) {
         </label>
     );
 }
-
-const Wrapper = ({
-    children,
-    label,
-    span = 4,
-    domId,
-}: {
-    children: React.ReactNode;
-    label: React.ReactNode;
-    span?: number;
-    domId?: string;
-}) => {
-    return (
-        <label className={s.container} style={{ gridColumn: `span ${span}` }}>
-            <div className={s.ariaLabel} id={domId}>
-                {label}
-            </div>
-            {children}
-            <div className={s.label} aria-hidden="true">
-                {label}
-            </div>
-        </label>
-    );
-};
