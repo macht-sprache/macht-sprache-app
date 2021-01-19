@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import s from './style.module.css';
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -6,18 +5,14 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
     span?: number;
 }
 
-export function Input({ label, span = 4, ...props }: InputProps) {
-    const [domId] = useState('input_' + Math.random());
+export function Input({ label, value, span = 4, ...props }: InputProps) {
+    const empty = !value;
+    const inputProps = { value, ...props };
 
     return (
         <label className={s.container} style={{ gridColumn: `span ${span}` }}>
-            <div className={s.ariaLabel} id={domId}>
-                {label}
-            </div>
-            <input className={s.input} placeholder=" " {...props} aria-labelledby={domId} />
-            <div className={s.label} aria-hidden="true">
-                {label}
-            </div>
+            <div className={empty ? s.labelEmpty : s.label}>{label}</div>
+            <input className={s.input} {...inputProps} />
         </label>
     );
 }

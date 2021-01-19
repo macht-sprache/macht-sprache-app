@@ -1,7 +1,7 @@
 .container {
     position: relative;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     padding: .5rem;
     background: white;
     font-family: var(--monospace-font);
@@ -27,14 +27,15 @@
     outline: none;
 }
 
-.label {
+.label, .labelEmpty {
     transition: all .2s;
-    transform: translateY(.7rem);
     pointer-events: none;
+    transform: translateY(0);
+    margin-top: .3rem;
 }
 
-.input:not(:placeholder-shown) + .label, .input:focus + .label {
-    transform: translateY(0);
+.container:not(:focus-within) .labelEmpty {
+    transform: translateY(.7rem);
 }
 
 .ariaLabel {
@@ -67,14 +68,14 @@
 .selectLabel {
     position: relative;
     z-index: 1;
-    margin: 0;
+    margin-top: .3rem;
     pointer-events: none;
     transition: all .2s;
 }
 
 .selectLabelEmpty {
     composes: selectLabel;
-    transform: translateY(1rem);
+    transform: translateY(0.7rem);
 }
 
 .select:focus {
@@ -83,7 +84,7 @@
 
 .selectContainer {
     composes: container;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
 .textarea {
@@ -102,7 +103,6 @@
 }
 
 .textareaLabel {
-    margin-top: .2rem;
     transition: all .2s;
 }
 
@@ -116,6 +116,5 @@
 
 .textareaContainer {
     composes: container;
-    flex-direction: column;
     height: auto;
 }

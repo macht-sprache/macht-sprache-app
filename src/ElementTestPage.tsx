@@ -5,6 +5,8 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 
 export default function ElementTestPage() {
+    const [name, setName] = useState('');
+    const [another, setAnother] = useState('');
     const [selectValue, setSelectValue] = useState('');
     const [textAreaValue, setTextAreaValue] = useState('');
 
@@ -20,7 +22,14 @@ export default function ElementTestPage() {
 
             <h2>Form</h2>
             <InputContainer>
-                <Input label="Name" span={2} />
+                <Input
+                    label="Name"
+                    span={2}
+                    value={name}
+                    onChange={value => {
+                        setName(value.target.value);
+                    }}
+                />
                 <Select
                     label="Media Type"
                     span={2}
@@ -34,7 +43,13 @@ export default function ElementTestPage() {
                     <option value="2">newspaper</option>
                     <option value="3">movie</option>
                 </Select>
-                <Input label="Another field, full width" />
+                <Input
+                    label="Another field, full width"
+                    value={another}
+                    onChange={value => {
+                        setAnother(value.target.value);
+                    }}
+                />
                 <Textarea
                     label="Comment"
                     value={textAreaValue}
