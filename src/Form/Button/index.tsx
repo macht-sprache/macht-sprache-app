@@ -12,3 +12,11 @@ export default function Button({ children, primary = false, ...props }: Props) {
         </button>
     );
 }
+
+type ButtonContainerProps = {
+    children: React.ReactNode;
+};
+
+export function ButtonContainer({ children }: ButtonContainerProps) {
+    return <div className={s.buttonContainer}>{children}</div>;
+}

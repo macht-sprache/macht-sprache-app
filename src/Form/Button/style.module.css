@@ -31,3 +31,13 @@
     color: var(--disabledGrey);
     border-color: var(--disabledGrey);
 }
+
+.buttonContainer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttonContainer button {
+    margin-left: .5rem; /* waiting for gap in flexbox in Safari to happen 😬 */
+}
