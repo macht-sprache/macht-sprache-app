@@ -22,6 +22,18 @@
     cursor: pointer;
 }
 
+.labelStriped {
+    composes: label;
+}
+
+.labelDe {
+    composes: label;
+}
+
+.labelEn {
+    composes: label;
+}
+
 .radioWrapper + .radioWrapper .label {
     border-left: 0;
 }
@@ -29,4 +41,17 @@
 .radio:checked + .label {
     font-weight: bold;
     background: var(--green);
+}
+
+.radio:checked + .labelDe {
+    background: var(--color-de);
+}
+
+.radio:checked + .labelEn {
+    background: var(--color-en);
+}
+
+.radio:checked + .labelStriped {
+    --sw: 6px;
+    background-image: repeating-linear-gradient(-45deg, var(--color-de), var(--color-de) var(--sw), var(--color-en) var(--sw), var(--color-en) calc(var(--sw) * 2));
 }

@@ -1,3 +1,4 @@
+import { stringify } from 'querystring';
 import s from './style.module.css';
 
 type ContainerProps = {
@@ -11,15 +12,24 @@ export function HorizontalRadioContainer({ children }: ContainerProps) {
 interface RadioProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: React.ReactNode;
     value: string;
+    background?: string;
 }
 
-export function HorizontalRadio({ label, ...props }: RadioProps) {
+export function HorizontalRadio({ label, background, ...props }: RadioProps) {
     const domId = 'id_' + props.value;
+
+    const backgroundClassNames: { [key: string]: string } = {
+        striped: s.labelStriped,
+        de: s.labelDe,
+        en: s.labelEn,
+    };
+
+    console.log(background);
 
     return (
         <div className={s.radioWrapper}>
             <input type="radio" {...props} id={domId} className={s.radio} />
-            <label htmlFor={domId} className={s.label}>
+            <label htmlFor={domId} className={background ? backgroundClassNames[background] : s.label}>
                 {label}
             </label>
         </div>
