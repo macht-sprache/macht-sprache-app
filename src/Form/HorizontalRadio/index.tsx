@@ -24,8 +24,6 @@ export function HorizontalRadio({ label, background, ...props }: RadioProps) {
         en: s.labelEn,
     };
 
-    console.log(background);
-
     return (
         <div className={s.radioWrapper}>
             <input type="radio" {...props} id={domId} className={s.radio} />
