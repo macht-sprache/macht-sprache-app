@@ -1,0 +1,32 @@
+.radio {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+.container {
+    display: inline-flex;
+}
+
+.container:focus-within {
+    box-shadow: 0 0 0 var(--thinBorder) var(--orange);
+}
+
+.label {
+    display: block;
+    padding: .2rem .5rem;
+    border: var(--thinBorder) solid var(--blue);
+    font-family: var(--monospace-font);
+    cursor: pointer;
+}
+
+.radioWrapper + .radioWrapper .label {
+    border-left: 0;
+}
+
+.radio:checked + .label {
+    font-weight: bold;
+    background: var(--green);
+}

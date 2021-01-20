@@ -29,13 +29,12 @@ function Terms() {
         },
         {
             value: 'de',
-            label: 'de',
-
+            label: 'DE',
             longLabel: 'show german terms only',
         },
         {
             value: 'en',
-            label: 'en',
+            label: 'EN',
             longLabel: 'show english terms only',
         },
     ];
