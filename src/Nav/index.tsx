@@ -25,14 +25,18 @@ function Terms() {
         {
             value: '',
             label: 'all',
+            longLabel: 'show all terms',
         },
         {
             value: 'de',
             label: 'de',
+
+            longLabel: 'show german terms only',
         },
         {
             value: 'en',
             label: 'en',
+            longLabel: 'show english terms only',
         },
     ];
 
@@ -43,13 +47,14 @@ function Terms() {
     return (
         <div className={s.nav}>
             <HorizontalRadioContainer>
-                {langFilters.map(({ value, label }) => (
+                {langFilters.map(({ value, label, longLabel }) => (
                     <HorizontalRadio
                         key={value}
                         value={value}
                         label={label}
                         name="language_nav_main"
                         checked={value === langFilter}
+                        aria-label={longLabel}
                         onChange={() => {
                             setLangFilter(value);
                         }}
