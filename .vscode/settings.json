@@ -2,5 +2,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "css.lint.validProperties": [
+        "composes"
+    ],
+    "css.lint.unknownAtRules": "ignore",
 }
