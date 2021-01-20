@@ -14,8 +14,11 @@
     top: 0;
 }
 
-.terms {
+.nav {
     margin-top: 3rem;
+}
+
+.terms {
     font-family: var(--monospace-font);
     list-style: none;
     padding: 0;
