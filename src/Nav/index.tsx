@@ -26,7 +26,12 @@ function Terms() {
         <ul className={s.terms}>
             {terms.map(term => (
                 <li key={term.id} className={s.term}>
-                    <NavLink to={`/term/${term.id}`} className={s.termLink} activeClassName={s.termLinkActive}>
+                    <NavLink
+                        to={`/term/${term.id}`}
+                        className={s.termLink}
+                        activeClassName={s.termLinkActive}
+                        lang={term.lang}
+                    >
                         {term.value}
                     </NavLink>
                 </li>

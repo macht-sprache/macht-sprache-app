@@ -21,6 +21,9 @@ body {
     --fontSizeL: 1.5rem;
 
     --sidebarWidth: 15rem;
+
+    --color-de: var(--pink);
+    --color-en: var(--green);
 }
 
 html, body, #root {
