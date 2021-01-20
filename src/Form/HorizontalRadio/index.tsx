@@ -1,4 +1,3 @@
-import { stringify } from 'querystring';
 import s from './style.module.css';
 
 type ContainerProps = {
