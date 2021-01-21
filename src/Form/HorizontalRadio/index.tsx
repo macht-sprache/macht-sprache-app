@@ -4,6 +4,12 @@ type ContainerProps = {
     children: React.ReactNode;
 };
 
+const backgroundClassNames = {
+    striped: s.labelStriped,
+    de: s.labelDe,
+    en: s.labelEn,
+};
+
 export function HorizontalRadioContainer({ children }: ContainerProps) {
     return <div className={s.container}>{children}</div>;
 }
@@ -11,17 +17,11 @@ export function HorizontalRadioContainer({ children }: ContainerProps) {
 interface RadioProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: React.ReactNode;
     value: string;
-    background?: string;
+    background?: 'striped' | 'de' | 'en';
 }
 
 export function HorizontalRadio({ label, background, ...props }: RadioProps) {
     const domId = 'id_' + props.value;
-
-    const backgroundClassNames: { [key: string]: string } = {
-        striped: s.labelStriped,
-        de: s.labelDe,
-        en: s.labelEn,
-    };
 
     return (
         <div className={s.radioWrapper}>
