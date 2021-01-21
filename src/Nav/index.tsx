@@ -26,19 +26,19 @@ function Terms() {
             value: '',
             label: 'all',
             longLabel: 'show all terms',
-            background: 'striped',
+            background: 'striped' as const,
         },
         {
             value: 'de',
             label: 'DE',
             longLabel: 'show german terms only',
-            background: 'de',
+            background: 'de' as const,
         },
         {
             value: 'en',
             label: 'EN',
             longLabel: 'show english terms only',
-            background: 'en',
+            background: 'en' as const,
         },
     ];
 
