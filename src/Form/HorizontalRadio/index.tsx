@@ -5,6 +5,7 @@ type ContainerProps = {
 };
 
 const backgroundClassNames = {
+    default: s.label,
     striped: s.labelStriped,
     de: s.labelDe,
     en: s.labelEn,
@@ -17,16 +18,16 @@ export function HorizontalRadioContainer({ children }: ContainerProps) {
 interface RadioProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: React.ReactNode;
     value: string;
-    background?: 'striped' | 'de' | 'en';
+    background?: 'striped' | 'de' | 'en' | 'default';
 }
 
-export function HorizontalRadio({ label, background, ...props }: RadioProps) {
+export function HorizontalRadio({ label, background = 'default', ...props }: RadioProps) {
     const domId = 'id_' + props.value;
 
     return (
         <div className={s.radioWrapper}>
             <input type="radio" {...props} id={domId} className={s.radio} />
-            <label htmlFor={domId} className={background ? backgroundClassNames[background] : s.label}>
+            <label htmlFor={domId} className={backgroundClassNames[background]}>
                 {label}
             </label>
         </div>
