@@ -17,24 +17,26 @@ export default function RegisterPage() {
                     <Input
                         label="User Name"
                         value={userName}
-                        onChange={value => {
-                            setUserName(value.target.value);
+                        onChange={event => {
+                            setUserName(event.target.value);
                         }}
                     />
                     <Input
                         label="Mail Address"
                         value={mail}
                         type="email"
-                        onChange={value => {
-                            setMail(value.target.value);
+                        autoComplete="email"
+                        onChange={event => {
+                            setMail(event.target.value);
                         }}
                     />
                     <Input
                         label="Password"
                         value={password}
+                        autoComplete="new-password"
                         type="password"
-                        onChange={value => {
-                            setSetPassword(value.target.value);
+                        onChange={event => {
+                            setSetPassword(event.target.value);
                         }}
                     />
                 </InputContainer>
