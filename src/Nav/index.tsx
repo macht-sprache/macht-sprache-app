@@ -3,13 +3,14 @@ import { Link, NavLink } from 'react-router-dom';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import s from './style.module.css';
+import Logo from './logo.svg';
 
 export default function Nav() {
     return (
         <>
             <div className={s.header}>
                 <Link className={s.logo} to="/">
-                    macht.sprache.
+                    <img src={Logo} alt="Logo of macht.sprache." />
                 </Link>
             </div>
             <Terms />

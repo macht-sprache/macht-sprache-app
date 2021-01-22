@@ -5,6 +5,7 @@
     display: block;
     text-decoration: none;
     width: calc(var(--sidebarWidth) - 2rem);
+    margin-left: -1.5rem;
 }
 
 .header {
@@ -15,7 +16,7 @@
 }
 
 .nav {
-    margin-top: 3rem;
+    margin-top: 15rem;
 }
 
 .terms {
