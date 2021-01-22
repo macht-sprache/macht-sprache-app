@@ -1,23 +1,17 @@
-import Layout from './Layout';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import HomePage from './HomePage';
-import Nav from './Nav';
-import TermPage from './TermPage';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ElementTestPage from './ElementTestPage';
-import RegisterPage from './RegisterPage';
+import HomePage from './HomePage';
+import Layout from './Layout';
 import LoginPage from './LoginPage';
+import Nav from './Nav';
+import RegisterPage from './RegisterPage';
+import TermPage from './TermPage';
+import { TopMenu } from './TopMenu';
 
 function App() {
     return (
         <Router>
-            <Layout
-                sidebar={<Nav />}
-                topRightMenu={
-                    <>
-                        <Link to="/signup">Sign up</Link> <Link to="/login">Login</Link>
-                    </>
-                }
-            >
+            <Layout sidebar={<Nav />} topRightMenu={<TopMenu />}>
                 <Switch>
                     <Route path="/" exact>
                         <HomePage />
