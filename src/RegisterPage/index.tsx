@@ -1,33 +1,54 @@
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Redirect } from 'react-router-dom';
+import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 
 export default function RegisterPage() {
-    const [userName, setUserName] = useState('');
-    const [mail, setMail] = useState('');
+    const [displayName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
+    const [loadingRegistration, setLoadingRegistration] = useState(false);
+
+    const [user, loadingAuthState] = useAuthState(auth);
+
+    const disabled = loadingRegistration || loadingAuthState || !displayName || !email || !password;
+
+    if (user) {
+        return <Redirect to="/" />;
+    }
+
+    const onSubmit: FormEventHandler = event => {
+        event.preventDefault();
+        setLoadingRegistration(true);
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(({ user }) => user?.updateProfile({ displayName }))
+            .catch(error => console.error(error))
+            .finally(() => setLoadingRegistration(false));
+    };
 
     return (
         <>
             <Header>Sign Up</Header>
-            <div style={{ maxWidth: '500px' }}>
+            <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
                         label="User Name"
-                        value={userName}
+                        value={displayName}
                         onChange={event => {
                             setUserName(event.target.value);
                         }}
                     />
                     <Input
                         label="Mail Address"
-                        value={mail}
+                        value={email}
                         type="email"
                         autoComplete="email"
                         onChange={event => {
-                            setMail(event.target.value);
+                            setEmail(event.target.value);
                         }}
                     />
                     <Input
@@ -41,10 +62,12 @@ export default function RegisterPage() {
                     />
                 </InputContainer>
                 <ButtonContainer>
-                    <Button>Cancel</Button>
-                    <Button primary={true}>Sign Up</Button>
+                    <Button type="button">Cancel</Button>
+                    <Button primary disabled={disabled} type="submit">
+                        Sign Up
+                    </Button>
                 </ButtonContainer>
-            </div>
+            </form>
         </>
     );
 }
