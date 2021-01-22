@@ -38,6 +38,7 @@ export default function RegisterPage() {
                     <Input
                         label="User Name"
                         value={displayName}
+                        autoComplete="nickname"
                         onChange={event => {
                             setUserName(event.target.value);
                         }}
@@ -46,7 +47,7 @@ export default function RegisterPage() {
                         label="Mail Address"
                         value={email}
                         type="email"
-                        autoComplete="email"
+                        autoComplete="username"
                         onChange={event => {
                             setEmail(event.target.value);
                         }}
