@@ -1,8 +1,13 @@
 import type firebase from 'firebase';
+
+type DocReference<T> = firebase.firestore.DocumentReference<T>;
+type Timestamp = firebase.firestore.Timestamp;
+
 export interface Term {
     id: string;
-    relatedTermIds: string[];
+    relatedTerms: DocReference<Term>[];
     creatorId: string;
+    createdAt: Timestamp;
 
     value: string;
     variants: string[];
@@ -11,8 +16,9 @@ export interface Term {
 
 export interface Translation {
     id: string;
-    termId: string;
+    term: DocReference<Term>;
     creatorId: string;
+    createdAt: Timestamp;
 
     value: string;
     variants: string[];
@@ -21,13 +27,13 @@ export interface Translation {
 
 export interface TranslationExample {
     id: string;
-    translationId: string;
+    translations: DocReference<Translation>[];
     creatorId: string;
+    createdAt: Timestamp;
 
-    author: string;
-    translator: string;
-    original: Snippet;
-    translation: Snippet;
+    authors: string[];
+    originalSnippet: Snippet;
+    translated: Snippet;
 }
 
 type Snippet = BookSnippet | LinkSnippet;
@@ -49,5 +55,8 @@ interface LinkSnippet extends BaseSnippet {
 
 export interface Comment {
     creatorId: string;
-    ref: firebase.firestore.DocumentReference<Term | Translation | TranslationExample>;
+    ref: DocReference<Term | Translation | TranslationExample>;
+    createdId: Timestamp;
+
+    comment: string;
 }

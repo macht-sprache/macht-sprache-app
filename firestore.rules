@@ -9,7 +9,15 @@ service cloud.firestore {
       allow read: if true;
     }
 
-    match /terms/{term}/translations/{translation} {
+    match /translations/{translation} {
+      allow read: if true;
+    }
+
+    match /translationExamples/{translationExample} {
+      allow read: if true;
+    }
+
+    match /comments/{comment} {
       allow read: if true;
     }
   }

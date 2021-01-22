@@ -4,21 +4,35 @@ import { Term, Translation, TranslationExample } from './types';
 
 const defaultOptions = { idField: 'id' };
 
+export const collections = {
+    terms: db.collection('terms'),
+    translations: db.collection('translations'),
+    translationExamples: db.collection('translationExamples'),
+    comments: db.collection('comments'),
+};
+
 export function useTerms() {
-    return useCollectionData<Term>(db.collection('terms'), defaultOptions);
+    return useCollectionData<Term>(collections.terms, defaultOptions);
 }
 
 export function useTerm(id: string) {
-    return useDocumentData<Term>(db.doc(`/terms/${id}`), defaultOptions);
+    return useDocumentData<Term>(collections.terms.doc(id), defaultOptions);
 }
 
 export function useTranslations(termId: string) {
-    return useCollectionData<Translation>(db.collection(`/terms/${termId}/translations`), defaultOptions);
+    return useCollectionData<Translation>(
+        collections.translations.where('term', '==', collections.terms.doc(termId)),
+        defaultOptions
+    );
 }
 
-export function useTranslationExamples(termId: string, translationId: string) {
+export function useTranslationExamples(translationId: string) {
     return useCollectionData<TranslationExample>(
-        db.collection(`/terms/${termId}/translations/${translationId}/translationExamples`),
+        collections.translationExamples.where(
+            'translations',
+            'array-contains',
+            collections.translations.doc(translationId)
+        ),
         defaultOptions
     );
 }
