@@ -23,7 +23,6 @@
 
 .main {
     grid-column: 3;
-    border-left: solid var(--black) var(--thickBorder);
 }
 
 .main, .sidebarInnerInner {
