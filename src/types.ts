@@ -3,7 +3,11 @@ import type firebase from 'firebase';
 type DocReference<T> = firebase.firestore.DocumentReference<T>;
 type Timestamp = firebase.firestore.Timestamp;
 
-export interface Term {
+interface Commentable {
+    commentCount: number;
+}
+
+export interface Term extends Commentable {
     id: string;
     relatedTerms: DocReference<Term>[];
     creatorId: string;
@@ -14,7 +18,7 @@ export interface Term {
     lang: string;
 }
 
-export interface Translation {
+export interface Translation extends Commentable {
     id: string;
     term: DocReference<Term>;
     creatorId: string;
@@ -25,7 +29,7 @@ export interface Translation {
     lang: string;
 }
 
-export interface TranslationExample {
+export interface TranslationExample extends Commentable {
     id: string;
     translations: DocReference<Translation>[];
     creatorId: string;
