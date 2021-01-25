@@ -24,6 +24,45 @@ body {
 
     --color-lang-a: var(--green);
     --color-lang-b: var(--pink);
+
+    --background-deko-size: 50vw;
+    --background-deko-stripe-width: calc(var(--background-deko-size) / 9);
+}
+
+body:before,
+body:after {
+    position: absolute;
+    content: '';
+    height: var(--background-deko-size);
+    width: var(--background-deko-size);
+    z-index: -1;
+}
+
+body:before {
+    top: 5rem;
+    transform: rotate(45deg);
+    transform-origin: top left;
+    background-image: repeating-linear-gradient(
+        to left,
+        var(--color-lang-b),
+        var(--color-lang-b) var(--background-deko-stripe-width),
+        transparent var(--background-deko-stripe-width),
+        transparent calc(var(--background-deko-stripe-width) * 2)
+    );
+}
+
+body:after {
+    bottom: -20vw;
+    right: 0;
+    transform: translateX(40%) rotate(-45deg);
+    transform-origin: center;
+    background-image: repeating-linear-gradient(
+        to left,
+        var(--color-lang-a),
+        var(--color-lang-a) var(--background-deko-stripe-width),
+        transparent var(--background-deko-stripe-width),
+        transparent calc(var(--background-deko-stripe-width) * 2)
+    );
 }
 
 html,
