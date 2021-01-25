@@ -4,5 +4,17 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "css.lint.validProperties": ["composes"],
-    "css.lint.unknownAtRules": "ignore"
+    "css.lint.unknownAtRules": "ignore",
+    "[css]": {
+        "editor.formatOnSave": true,
+    },
+    "[javascript]": {
+        "editor.formatOnSave": true,
+    },
+    "[typescript]": {
+        "editor.formatOnSave": true,
+    },
+    "[typescriptreact]": {
+        "editor.formatOnSave": true,
+    },
 }
