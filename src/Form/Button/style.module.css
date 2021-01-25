@@ -1,6 +1,6 @@
 .button {
     font-size: inherit;
-    font-family: var(--monospace-font);
+    font-family: var(--monospaceFont);
     border: var(--thinBorder) var(--black) solid;
     background: transparent;
     padding: 0.5rem;

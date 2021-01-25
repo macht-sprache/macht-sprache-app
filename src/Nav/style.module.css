@@ -1,5 +1,5 @@
 .logo {
-    font-family: var(--monospace-font);
+    font-family: var(--monospaceFont);
     font-weight: bold;
     padding: 0 0 1rem;
     display: block;
@@ -20,7 +20,7 @@
 }
 
 .terms {
-    font-family: var(--monospace-font);
+    font-family: var(--monospaceFont);
     list-style: none;
     padding: 0;
 }

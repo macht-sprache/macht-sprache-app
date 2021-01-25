@@ -4,7 +4,7 @@
     flex-direction: column;
     padding: 0.5rem;
     background: white;
-    font-family: var(--monospace-font);
+    font-family: var(--monospaceFont);
     cursor: text;
     height: 4rem;
 }
@@ -54,7 +54,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    font-family: var(--monospace-font);
+    font-family: var(--monospaceFont);
     font-size: inherit;
     font-weight: bold;
     border: none;
