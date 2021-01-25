@@ -36,3 +36,52 @@
     right: 1rem;
     font-family: var(--monospace-font);
 }
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+
+    --backgroundDekoSize: 50vw;
+    --backgroundDekoStripeWidth: calc(var(--backgroundDekoSize) / 9);
+}
+
+.background:before,
+.background:after {
+    position: absolute;
+    content: '';
+    height: var(--backgroundDekoSize);
+    width: var(--backgroundDekoSize);
+    z-index: -1;
+}
+
+.background:before {
+    top: 5rem;
+    transform: rotate(45deg);
+    transform-origin: top left;
+    background-image: repeating-linear-gradient(
+        to left,
+        var(--colorLangB),
+        var(--colorLangB) var(--backgroundDekoStripeWidth),
+        transparent var(--backgroundDekoStripeWidth),
+        transparent calc(var(--backgroundDekoStripeWidth) * 2)
+    );
+}
+
+.background:after {
+    bottom: -20vw;
+    right: 0;
+    transform: translateX(40%) rotate(-45deg);
+    transform-origin: center;
+    background-image: repeating-linear-gradient(
+        to left,
+        var(--colorLangA),
+        var(--colorLangA) var(--backgroundDekoStripeWidth),
+        transparent var(--backgroundDekoStripeWidth),
+        transparent calc(var(--backgroundDekoStripeWidth) * 2)
+    );
+}

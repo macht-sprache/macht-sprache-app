@@ -16,6 +16,7 @@ function Layout({ children, sidebar, topRightMenu }: Props) {
             </div>
             <div className={s.topRightMenu}>{topRightMenu}</div>
             <main className={s.main}>{children}</main>
+            <div className={s.background} />
         </div>
     );
 }
