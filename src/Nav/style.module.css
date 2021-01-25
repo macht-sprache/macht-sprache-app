@@ -26,10 +26,15 @@
 }
 
 .termLink {
+    position: relative;
     display: inline-block;
     text-decoration: none;
     padding: .2rem 0;
     background-color: var(--background-color);
+    padding: .5rem;
+    font-style: italic;
+    border: var(--thickBorder) solid var(--white);
+    margin-bottom: calc(var(--thickBorder) * -1)
 }
 
 .termLink[lang="de"] {
@@ -44,6 +49,13 @@
     font-weight: bold;
 }
 
-.termLinkActive, .termLink:hover {
-    box-shadow: inset 0 calc(var(--thickBorder) * -1) 0 var(--background-color), inset 0 calc(var(--thickBorder) * -2) 0 var(--black);
+.termLinkActive:before, .termLink:hover:before {
+    content: '';
+    position: absolute;
+    bottom: .4rem;
+    left: .3rem;
+    right: .3rem;
+    background: var(--black);
+    height: var(--thickBorder);
+    /* box-shadow: inset 0 calc(var(--thickBorder) * -1) 0 var(--background-color), inset 0 calc(var(--thickBorder) * -2) 0 var(--black); */
 }
