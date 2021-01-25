@@ -22,8 +22,8 @@ body {
 
     --sidebarWidth: 15rem;
 
-    --color-de: var(--pink);
-    --color-en: var(--green);
+    --color-lang-a: var(--green);
+    --color-lang-b: var(--pink);
 }
 
 html,

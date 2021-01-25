@@ -7,8 +7,11 @@ import Nav from './Nav';
 import RegisterPage from './RegisterPage';
 import TermPage from './TermPage';
 import { TopMenu } from './TopMenu';
+import { useLangCssVars } from './useLangCssVars';
 
 function App() {
+    useLangCssVars();
+
     return (
         <Router>
             <Layout sidebar={<Nav />} topRightMenu={<TopMenu />}>

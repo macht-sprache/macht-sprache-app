@@ -4,6 +4,8 @@ import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import s from './style.module.css';
 import Logo from './logo.svg';
+import { Lang } from '../types';
+import { langA, langB } from '../languages';
 
 export default function Nav() {
     return (
@@ -18,30 +20,26 @@ export default function Nav() {
     );
 }
 
+const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
+    {
+        label: 'all',
+        longLabel: 'show all terms',
+    },
+    {
+        value: langB,
+        label: langB.toUpperCase(),
+        longLabel: 'show german terms only',
+    },
+    {
+        value: langA,
+        label: langA.toUpperCase(),
+        longLabel: 'show english terms only',
+    },
+];
+
 function Terms() {
     const [terms] = useTerms();
-    const [langFilter, setLangFilter] = useState('');
-
-    const langFilters = [
-        {
-            value: '',
-            label: 'all',
-            longLabel: 'show all terms',
-            background: 'striped' as const,
-        },
-        {
-            value: 'de',
-            label: 'DE',
-            longLabel: 'show german terms only',
-            background: 'de' as const,
-        },
-        {
-            value: 'en',
-            label: 'EN',
-            longLabel: 'show english terms only',
-            background: 'en' as const,
-        },
-    ];
+    const [langFilter, setLangFilter] = useState<Lang>();
 
     if (!terms) {
         return null;
@@ -50,10 +48,10 @@ function Terms() {
     return (
         <div className={s.nav}>
             <HorizontalRadioContainer>
-                {langFilters.map(({ value, label, longLabel, background }) => (
+                {langFilters.map(({ value, label, longLabel }) => (
                     <HorizontalRadio
                         key={value}
-                        value={value}
+                        value={value ?? ''}
                         label={label}
                         name="language_nav_main"
                         checked={value === langFilter}
@@ -61,13 +59,13 @@ function Terms() {
                         onChange={() => {
                             setLangFilter(value);
                         }}
-                        background={background}
+                        background={value || 'striped'}
                     />
                 ))}
             </HorizontalRadioContainer>
             <ul className={s.terms}>
                 {terms.map(term => {
-                    if (langFilter !== '' && langFilter !== term.lang) {
+                    if (langFilter && langFilter !== term.lang) {
                         return null;
                     }
 

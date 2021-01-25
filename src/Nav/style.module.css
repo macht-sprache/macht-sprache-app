@@ -30,19 +30,11 @@
     display: inline-block;
     text-decoration: none;
     padding: 0.2rem 0;
-    background-color: var(--background-color);
+    background-color: var(--lang-color);
     padding: 0.5rem;
     font-style: italic;
     border: var(--thickBorder) solid var(--white);
     margin-bottom: calc(var(--thickBorder) * -1);
-}
-
-.termLink[lang='de'] {
-    --background-color: var(--color-de);
-}
-
-.termLink[lang='en'] {
-    --background-color: var(--color-en);
 }
 
 .termLinkActive {

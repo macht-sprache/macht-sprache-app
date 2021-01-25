@@ -1,4 +1,9 @@
 import type firebase from 'firebase';
+import { langA, langB } from './languages';
+
+export type LangA = typeof langA;
+export type LangB = typeof langB;
+export type Lang = LangA | LangB;
 
 type DocReference<T> = firebase.firestore.DocumentReference<T>;
 type Timestamp = firebase.firestore.Timestamp;
@@ -15,7 +20,7 @@ export interface Term extends Commentable {
 
     value: string;
     variants: string[];
-    lang: string;
+    lang: Lang;
 }
 
 export interface Translation extends Commentable {
@@ -26,7 +31,7 @@ export interface Translation extends Commentable {
 
     value: string;
     variants: string[];
-    lang: string;
+    lang: Lang;
 }
 
 export interface TranslationExample extends Commentable {

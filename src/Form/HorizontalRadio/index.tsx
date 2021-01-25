@@ -1,3 +1,5 @@
+import { langA, langB } from '../../languages';
+import { Lang } from '../../types';
 import s from './style.module.css';
 
 type ContainerProps = {
@@ -7,8 +9,8 @@ type ContainerProps = {
 const backgroundClassNames = {
     default: s.label,
     striped: s.labelStriped,
-    de: s.labelDe,
-    en: s.labelEn,
+    [langA]: s.labelLangA,
+    [langB]: s.labelLangB,
 };
 
 export function HorizontalRadioContainer({ children }: ContainerProps) {
@@ -18,7 +20,7 @@ export function HorizontalRadioContainer({ children }: ContainerProps) {
 interface RadioProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: React.ReactNode;
     value: string;
-    background?: 'striped' | 'de' | 'en' | 'default';
+    background?: 'striped' | Lang | 'default';
 }
 
 export function HorizontalRadio({ label, background = 'default', ...props }: RadioProps) {

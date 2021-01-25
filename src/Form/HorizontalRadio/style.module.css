@@ -26,11 +26,8 @@
     composes: label;
 }
 
-.labelDe {
-    composes: label;
-}
-
-.labelEn {
+.labelLangA,
+.labelLangB {
     composes: label;
 }
 
@@ -43,21 +40,21 @@
     background: var(--green);
 }
 
-.radio:checked + .labelDe {
-    background: var(--color-de);
+.radio:checked + .labelLangA {
+    background: var(--color-lang-a);
 }
 
-.radio:checked + .labelEn {
-    background: var(--color-en);
+.radio:checked + .labelLangB {
+    background: var(--color-lang-b);
 }
 
 .radio:checked + .labelStriped {
     --sw: 6px;
     background-image: repeating-linear-gradient(
         -45deg,
-        var(--color-de),
-        var(--color-de) var(--sw),
-        var(--color-en) var(--sw),
-        var(--color-en) calc(var(--sw) * 2)
+        var(--color-lang-b),
+        var(--color-lang-b) var(--sw),
+        var(--color-lang-a) var(--sw),
+        var(--color-lang-a) calc(var(--sw) * 2)
     );
 }
