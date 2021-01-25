@@ -3,10 +3,11 @@
     font-family: var(--monospace-font);
     border: var(--thinBorder) var(--black) solid;
     background: transparent;
-    padding: .5rem;
+    padding: 0.5rem;
 }
 
-.button:not([disabled]):hover, .button:focus {
+.button:not([disabled]):hover,
+.button:focus {
     color: var(--white);
     cursor: pointer;
     background: var(--black);
@@ -22,7 +23,8 @@
     border-width: var(--thickBorder);
 }
 
-.buttonPrimary:not([disabled]):hover, .buttonPrimary:focus {
+.buttonPrimary:not([disabled]):hover,
+.buttonPrimary:focus {
     background-color: var(--orange);
     font-weight: bold;
 }
@@ -39,5 +41,5 @@
 }
 
 .buttonContainer button {
-    margin-left: .5rem; /* waiting for gap in flexbox in Safari to happen 😬 */
+    margin-left: 0.5rem; /* waiting for gap in flexbox in Safari to happen 😬 */
 }

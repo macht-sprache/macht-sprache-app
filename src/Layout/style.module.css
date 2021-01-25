@@ -25,7 +25,8 @@
     grid-column: 3;
 }
 
-.main, .sidebarInnerInner {
+.main,
+.sidebarInnerInner {
     padding: 1rem;
 }
 

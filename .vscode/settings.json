@@ -3,8 +3,6 @@
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "css.lint.validProperties": [
-        "composes"
-    ],
-    "css.lint.unknownAtRules": "ignore",
+    "css.lint.validProperties": ["composes"],
+    "css.lint.unknownAtRules": "ignore"
 }
