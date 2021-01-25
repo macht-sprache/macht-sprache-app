@@ -1,6 +1,11 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isCreator() {
+      return request.auth.uid == request.data.creatorId;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
@@ -17,8 +22,17 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    function isValidComment() {
+      let data = request.resource.data;
+      return data.creatorId is string &&
+        data.ref is path &&
+        data.createdAt is timestamp &&
+        data.comment is string;
+    }
+
     match /comments/{comment} {
       allow read: if true;
+      allow create: if isCreator() && isValidComment();
     }
   }
 }

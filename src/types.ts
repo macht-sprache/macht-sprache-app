@@ -60,7 +60,7 @@ interface LinkSnippet extends BaseSnippet {
 export interface Comment {
     creatorId: string;
     ref: DocReference<Term | Translation | TranslationExample>;
-    createdId: Timestamp;
+    createdAt: Timestamp;
 
     comment: string;
 }
