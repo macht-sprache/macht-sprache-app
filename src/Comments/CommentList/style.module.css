@@ -1,0 +1,39 @@
+.container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.comment {
+}
+
+.comment + .comment {
+    margin-top: 1rem;
+}
+
+.body {
+    border: var(--thickBorder) solid var(--black);
+    padding: 0.5rem;
+    background: var(--backgroundColor);
+}
+
+.footer {
+    margin-top: 0.5rem;
+    font-family: var(--monospaceFont);
+    display: flex;
+}
+
+.date {
+    flex: 0 0 auto;
+}
+
+.date:before {
+    content: '|';
+    margin: 0 0.5rem;
+}
+
+.creator {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
