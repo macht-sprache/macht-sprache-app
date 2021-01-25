@@ -3,10 +3,10 @@ import { langA, langB } from './languages';
 
 const style = `
 [lang=${langA}] {
-    --lang-color: var(--color-lang-a);
+    --lang-color: var(--colorLangA);
 }
 [lang=${langB}] {
-    --lang-color: var(--color-lang-b);
+    --lang-color: var(--colorLangB);
 }
 `;
 

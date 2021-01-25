@@ -22,19 +22,19 @@ body {
 
     --sidebarWidth: 15rem;
 
-    --color-lang-a: var(--green);
-    --color-lang-b: var(--pink);
+    --colorLangA: var(--green);
+    --colorLangB: var(--pink);
 
-    --background-deko-size: 50vw;
-    --background-deko-stripe-width: calc(var(--background-deko-size) / 9);
+    --backgroundDekoSize: 50vw;
+    --backgroundDekoStripeWidth: calc(var(--backgroundDekoSize) / 9);
 }
 
 body:before,
 body:after {
     position: absolute;
     content: '';
-    height: var(--background-deko-size);
-    width: var(--background-deko-size);
+    height: var(--backgroundDekoSize);
+    width: var(--backgroundDekoSize);
     z-index: -1;
 }
 
@@ -44,10 +44,10 @@ body:before {
     transform-origin: top left;
     background-image: repeating-linear-gradient(
         to left,
-        var(--color-lang-b),
-        var(--color-lang-b) var(--background-deko-stripe-width),
-        transparent var(--background-deko-stripe-width),
-        transparent calc(var(--background-deko-stripe-width) * 2)
+        var(--colorLangB),
+        var(--colorLangB) var(--backgroundDekoStripeWidth),
+        transparent var(--backgroundDekoStripeWidth),
+        transparent calc(var(--backgroundDekoStripeWidth) * 2)
     );
 }
 
@@ -58,10 +58,10 @@ body:after {
     transform-origin: center;
     background-image: repeating-linear-gradient(
         to left,
-        var(--color-lang-a),
-        var(--color-lang-a) var(--background-deko-stripe-width),
-        transparent var(--background-deko-stripe-width),
-        transparent calc(var(--background-deko-stripe-width) * 2)
+        var(--colorLangA),
+        var(--colorLangA) var(--backgroundDekoStripeWidth),
+        transparent var(--backgroundDekoStripeWidth),
+        transparent calc(var(--backgroundDekoStripeWidth) * 2)
     );
 }
 
