@@ -1,18 +1,20 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
-import s from './style.module.css';
-import Logo from './logo.svg';
-import { Lang } from '../types';
 import { langA, langB } from '../languages';
+import { Lang } from '../types';
+import Logo from './logo.svg';
+import s from './style.module.css';
 
 export default function Nav() {
+    const { t } = useTranslation();
     return (
         <>
             <div className={s.header}>
                 <Link className={s.logo} to="/">
-                    <img src={Logo} alt="Logo of macht.sprache." />
+                    <img src={Logo} alt={t('nav.logoAlt')} />
                 </Link>
             </div>
             <Terms />
@@ -20,24 +22,8 @@ export default function Nav() {
     );
 }
 
-const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
-    {
-        label: 'all',
-        longLabel: 'show all terms',
-    },
-    {
-        value: langB,
-        label: langB.toUpperCase(),
-        longLabel: 'show german terms only',
-    },
-    {
-        value: langA,
-        label: langA.toUpperCase(),
-        longLabel: 'show english terms only',
-    },
-];
-
 function Terms() {
+    const { t } = useTranslation();
     const [terms] = useTerms();
     const [langFilter, setLangFilter] = useState<Lang>();
 
@@ -45,12 +31,29 @@ function Terms() {
         return null;
     }
 
+    const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
+        {
+            label: t('nav.filter.all.label'),
+            longLabel: t('nav.filter.all.longLabel'),
+        },
+        {
+            value: langB,
+            label: langB.toUpperCase(),
+            longLabel: t(`nav.filter.${langB}.longLabel` as const),
+        },
+        {
+            value: langA,
+            label: langA.toUpperCase(),
+            longLabel: t(`nav.filter.${langA}.longLabel` as const),
+        },
+    ];
+
     return (
         <div className={s.nav}>
             <HorizontalRadioContainer>
                 {langFilters.map(({ value, label, longLabel }) => (
                     <HorizontalRadio
-                        key={value}
+                        key={value ?? ''}
                         value={value ?? ''}
                         label={label}
                         name="language_nav_main"

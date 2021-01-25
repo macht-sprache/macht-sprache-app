@@ -1,0 +1,17 @@
+{
+    "nav": {
+        "logoAlt": "Logo of macht.sprache.",
+        "filter": {
+            "all": {
+                "label": "all",
+                "longLabel": "show all terms"
+            },
+            "en": {
+                "longLabel": "show english terms only"
+            },
+            "de": {
+                "longLabel": "show german terms only"
+            }
+        }
+    }
+}
