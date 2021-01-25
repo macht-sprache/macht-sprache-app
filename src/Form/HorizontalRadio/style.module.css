@@ -8,16 +8,16 @@
 
 .container {
     display: inline-flex;
+    border: var(--thickBorder) solid var(--pink);
 }
 
 .container:focus-within {
-    box-shadow: 0 0 0 var(--thinBorder) var(--orange);
+    border: var(--thickBorder) solid var(--orange);
 }
 
 .label {
     display: block;
     padding: .2rem .5rem;
-    border: var(--thinBorder) solid var(--blue);
     font-family: var(--monospace-font);
     cursor: pointer;
 }
@@ -35,7 +35,7 @@
 }
 
 .radioWrapper + .radioWrapper .label {
-    border-left: 0;
+    border-left: var(--thickBorder) solid var(--pink);
 }
 
 .radio:checked + .label {
