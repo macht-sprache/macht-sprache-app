@@ -14,6 +14,7 @@ body {
     --black: #000;
 
     --disabledGrey: rgb(184, 184, 184);
+    --backgroundColor: var(--white);
 
     --thickBorder: 2px;
     --thinBorder: 1px;
