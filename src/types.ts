@@ -63,9 +63,16 @@ interface LinkSnippet extends BaseSnippet {
 }
 
 export interface Comment {
+    id: string;
     creatorId: string;
     ref: DocReference<Term | Translation | TranslationExample>;
     createdAt: Timestamp;
 
     comment: string;
+}
+
+export interface User {
+    id: string;
+    lang: Lang;
+    displayName: string;
 }

@@ -1,9 +1,20 @@
 import type firebase from 'firebase';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { db } from './firebase';
-import { Comment, Term, Translation, TranslationExample } from './types';
+import { Comment, Term, Translation, TranslationExample, User } from './types';
 
 const defaultOptions = { idField: 'id' };
+
+const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
+    toFirestore: (user: User) => {
+        const { id, ...data } = user;
+        return data;
+    },
+    fromFirestore: (snapshot, options): User => {
+        const { displayName, lang } = snapshot.data(options);
+        return { id: snapshot.id, displayName, lang };
+    },
+};
 
 const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
     toFirestore: (term: Term) => {
@@ -28,6 +39,7 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
 };
 
 export const collections = {
+    users: db.collection('users').withConverter(UserConverter),
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
     translationExamples: db.collection('translationExamples'),

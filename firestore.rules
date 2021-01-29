@@ -6,8 +6,29 @@ service cloud.firestore {
       return request.auth.uid == request.data.creatorId;
     }
 
+    function isValidatedUser() {
+      return request.auth != null && request.auth.token.email_verified;
+    }
+
     match /{document=**} {
       allow read, write: if false;
+    }
+
+    function isUser(user) {
+      return request.auth.uid == user;
+    }
+
+    function isValidUser() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['displayName', 'lang']) &&
+        data.displayName is string &&
+        data.lang is string;
+    }
+
+    match /users/{user} {
+      allow read: if isUser(user);
+      allow create: if isValidatedUser() && isUser(user) && isValidUser();
+      allow update: if isValidatedUser() && isUser(user) && isValidUser();
     }
 
     match /terms/{term} {
@@ -24,7 +45,8 @@ service cloud.firestore {
 
     function isValidComment() {
       let data = request.resource.data;
-      return data.creatorId is string &&
+      return data.keys().hasOnly(['creatorId', 'ref', 'createdAt', 'comment']) &&
+        data.creatorId is string &&
         data.ref is path &&
         data.createdAt is timestamp &&
         data.comment is string;
@@ -32,7 +54,7 @@ service cloud.firestore {
 
     match /comments/{comment} {
       allow read: if true;
-      allow create: if isCreator() && isValidComment();
+      allow create: if isValidatedUser() && isCreator() && isValidComment();
     }
   }
 }
