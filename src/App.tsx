@@ -1,16 +1,17 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { useEnsureUserEntity, UserProvider } from './authHooks';
 import ElementTestPage from './ElementTestPage';
 import HomePage from './HomePage';
+import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
 import LoginPage from './LoginPage';
 import Nav from './Nav';
 import RegisterPage from './RegisterPage';
+import RegisterPostPage from './RegisterPostPage';
+import * as routes from './routes';
 import TermPage from './TermPage';
 import { TopMenu } from './TopMenu';
 import { useLangCssVars } from './useLangCssVars';
-import { TranslationProvider } from './i18n/config';
-import { useEnsureUserEntity, UserProvider } from './authHooks';
-import * as routes from './routes';
 
 function App() {
     useLangCssVars();
@@ -27,6 +28,9 @@ function App() {
                             </Route>
                             <Route path={routes.REGISTER} exact>
                                 <RegisterPage />
+                            </Route>
+                            <Route path={routes.REGISTER_POST} exact>
+                                <RegisterPostPage />
                             </Route>
                             <Route path={routes.LOGIN} exact>
                                 <LoginPage />

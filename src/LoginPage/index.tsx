@@ -1,26 +1,39 @@
 import { FormEventHandler, useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import { useAuthState } from '../authHooks';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useUser } from '../authHooks';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
+import { HOME, REGISTER_POST } from '../routes';
 
 export default function LoginPage() {
+    const user = useUser();
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
-    const [user, loading] = useAuthState();
+    const [loggingIn, setLoggingIn] = useState(false);
 
     if (user) {
-        return <Redirect to="/" />;
+        return <Redirect to={HOME} />;
     }
 
-    const disabled = loading || !email || !password;
+    const disabled = loggingIn || !email || !password;
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
-        auth.signInWithEmailAndPassword(email, password).catch(error => console.error(error));
+        setLoggingIn(true);
+        auth.signInWithEmailAndPassword(email, password)
+            .then(auth => {
+                if (!auth.user?.emailVerified) {
+                    history.push(REGISTER_POST);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                setLoggingIn(false);
+            });
     };
 
     return (

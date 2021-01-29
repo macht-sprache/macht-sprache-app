@@ -1,33 +1,57 @@
 import { FormEventHandler, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { Redirect } from 'react-router-dom';
+import { useUser } from '../authHooks';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
+import { HOME, REGISTER_POST } from '../routes';
+
+type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE';
+
+const signUp = async (displayName: string, email: string, password: string) => {
+    const { user } = await auth.createUserWithEmailAndPassword(email, password);
+
+    if (!user) {
+        throw Error('Account creation failed');
+    }
+
+    await user.updateProfile({ displayName });
+
+    if (!user.emailVerified) {
+        await user.sendEmailVerification({
+            url: window.location.origin + REGISTER_POST + '?success',
+        });
+    }
+};
 
 export default function RegisterPage() {
+    const user = useUser();
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
-    const [loadingRegistration, setLoadingRegistration] = useState(false);
+    const [registrationState, setRegistrationState] = useState<RegistrationState>('INIT');
+    const loadingRegistration = registrationState === 'IN_PROGRESS';
+    const disabled = loadingRegistration || !displayName || !email || !password;
 
-    const [user, loadingAuthState] = useAuthState(auth);
+    if (user && !loadingRegistration) {
+        return <Redirect to={HOME} />;
+    }
 
-    const disabled = loadingRegistration || loadingAuthState || !displayName || !email || !password;
-
-    if (user) {
-        return <Redirect to="/" />;
+    if (registrationState === 'DONE') {
+        return <Redirect to={REGISTER_POST} />;
     }
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
-        setLoadingRegistration(true);
-        auth.createUserWithEmailAndPassword(email, password)
-            .then(({ user }) => user?.updateProfile({ displayName }))
-            .catch(error => console.error(error))
-            .finally(() => setLoadingRegistration(false));
+        setRegistrationState('IN_PROGRESS');
+        signUp(displayName, email, password)
+            .then(() => setRegistrationState('DONE'))
+            .catch(error => {
+                console.error(error);
+                setRegistrationState('INIT');
+            });
     };
 
     return (
