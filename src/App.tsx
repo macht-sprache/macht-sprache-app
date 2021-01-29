@@ -10,6 +10,7 @@ import { TopMenu } from './TopMenu';
 import { useLangCssVars } from './useLangCssVars';
 import { TranslationProvider } from './i18n/config';
 import { useEnsureUserEntity, UserProvider } from './authHooks';
+import * as routes from './routes';
 
 function App() {
     useLangCssVars();
@@ -21,16 +22,16 @@ function App() {
                 <Router>
                     <Layout sidebar={<Nav />} topRightMenu={<TopMenu />}>
                         <Switch>
-                            <Route path="/" exact>
+                            <Route path={routes.HOME} exact>
                                 <HomePage />
                             </Route>
-                            <Route path="/signup" exact>
+                            <Route path={routes.REGISTER} exact>
                                 <RegisterPage />
                             </Route>
-                            <Route path="/login" exact>
+                            <Route path={routes.LOGIN} exact>
                                 <LoginPage />
                             </Route>
-                            <Route path="/term/:termId" exact>
+                            <Route path={routes.TERM} exact>
                                 <TermPage />
                             </Route>
                             <Route path="/elementTest" exact>
