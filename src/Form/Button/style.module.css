@@ -8,7 +8,7 @@
 }
 
 .button:not([disabled]):hover,
-.button:focus {
+.button:focus-visible {
     color: var(--white);
     cursor: pointer;
     background: var(--black);
@@ -25,7 +25,7 @@
 }
 
 .buttonPrimary:not([disabled]):hover,
-.buttonPrimary:focus {
+.buttonPrimary:focus-visible {
     background-color: var(--orange);
     font-weight: bold;
 }
