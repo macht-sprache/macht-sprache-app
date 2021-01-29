@@ -5,6 +5,7 @@
 }
 
 .comment {
+    line-height: var(--lineHeightParagraph);
 }
 
 .comment + .comment {

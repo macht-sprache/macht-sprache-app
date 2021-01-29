@@ -25,6 +25,8 @@ body {
 
     --colorLangA: var(--green);
     --colorLangB: var(--pink);
+
+    --lineHeightParagraph: 1.6;
 }
 
 html,
