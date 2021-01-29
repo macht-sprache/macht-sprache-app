@@ -1,0 +1,29 @@
+.buttonWrapper {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttonWrapper:before {
+    content: '';
+    display: block;
+    height: 3rem;
+    width: 3rem;
+    margin-top: calc(-0.5rem - var(--thickBorder));
+    margin-right: 0.5rem;
+    background-image: linear-gradient(
+            to right,
+            transparent 0,
+            transparent calc(100% - var(--thickBorder)),
+            var(--black) calc(100% - var(--thickBorder)),
+            var(--black) calc(100%)
+        ),
+        linear-gradient(
+            45deg,
+            transparent 0,
+            transparent calc(50% - var(--thickBorder) / 2),
+            var(--black) calc(50% - var(--thickBorder) / 2),
+            var(--black) calc(50% + var(--thickBorder) / 2),
+            var(--backgroundColor) calc(50% + var(--thickBorder) / 2)
+        );
+}

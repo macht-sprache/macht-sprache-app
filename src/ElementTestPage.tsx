@@ -30,6 +30,21 @@ export default function ElementTestPage() {
         },
     ]);
 
+    const [newComment, setNewComment] = useState('');
+
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setComments([
+            ...comments,
+            {
+                creator: 'Timur',
+                date: new Date(),
+                comment: newComment,
+            },
+        ]);
+        setNewComment('');
+    };
+
     return (
         <>
             <Header>Element Test Page</Header>
@@ -81,7 +96,7 @@ export default function ElementTestPage() {
 
             <h2>Comments</h2>
 
-            <Comments comments={comments} />
+            <Comments comments={comments} onSubmit={onSubmit} newComment={newComment} setNewComment={setNewComment} />
         </>
     );
 }
