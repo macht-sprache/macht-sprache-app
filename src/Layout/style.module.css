@@ -35,6 +35,7 @@
     top: 1rem;
     right: 1rem;
     font-family: var(--monospaceFont);
+    z-index: 1;
 }
 
 .background {
