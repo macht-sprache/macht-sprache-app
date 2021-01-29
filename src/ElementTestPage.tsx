@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Comments } from './Comments';
+import { CommentCreate } from './Comments/CommentCreate';
+import { CommentList } from './Comments/CommentList';
+import { CommentWrapper } from './Comments/CommentWrapper';
 import Button from './Form/Button';
 import { Input, Select, Textarea } from './Form/Input';
 import InputContainer from './Form/InputContainer';
@@ -96,7 +98,10 @@ export default function ElementTestPage() {
 
             <h2>Comments</h2>
 
-            <Comments comments={comments} onSubmit={onSubmit} newComment={newComment} setNewComment={setNewComment} />
+            <CommentWrapper>
+                <CommentList comments={comments} />
+                <CommentCreate onSubmit={onSubmit} newComment={newComment} setNewComment={setNewComment} />
+            </CommentWrapper>
         </>
     );
 }
