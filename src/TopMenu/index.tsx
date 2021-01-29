@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthState } from '../authHooks';
 import { auth } from '../firebase';
+import LinkButton from '../LinkButton';
 
 export function TopMenu() {
     const [user] = useAuthState();
@@ -12,10 +13,7 @@ export function TopMenu() {
     if (user) {
         return (
             <>
-                {user.displayName || user.email}{' '}
-                <a href="#" onClick={logout}>
-                    Logout
-                </a>
+                {user.displayName || user.email} <LinkButton onClick={logout}>Logout</LinkButton>
             </>
         );
     } else {
