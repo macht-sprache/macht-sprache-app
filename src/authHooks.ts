@@ -1,9 +1,11 @@
 import type firebase from 'firebase';
-import { useEffect, useState, createContext, useContext } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useAuthState as _useAuthState } from 'react-firebase-hooks/auth';
 import { collections } from './dataHooks';
 import { auth } from './firebase';
+import { i18n } from './i18n/config';
 import { User } from './types';
+import { toLanguageOrDefault } from './useLang';
 
 const userContext = createContext<User | undefined>(undefined);
 
@@ -24,7 +26,7 @@ const ensureUserEntity = (authUser: firebase.User) =>
             collections.users.doc(authUser.uid).set({
                 id: authUser.uid,
                 displayName: authUser.displayName || authUser.email || '',
-                lang: 'en',
+                lang: toLanguageOrDefault(i18n.language),
             })
         );
 
