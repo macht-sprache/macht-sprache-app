@@ -50,7 +50,7 @@ service cloud.firestore {
       let data = request.resource.data;
       return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'comment']) &&
         data.ref is path &&
-        data.createdAt is timestamp &&
+        data.createdAt == request.time &&
         data.comment is string;
     }
 
