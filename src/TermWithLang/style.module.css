@@ -1,0 +1,4 @@
+.term {
+    background: var(--lang-color);
+    box-shadow: 0 0 0 0.2rem var(--lang-color);
+}
