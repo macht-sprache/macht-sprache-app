@@ -1,5 +1,14 @@
 {
     "common": {
+        "langLabels": {
+            "language": "Sprache",
+            "en": "Englisch",
+            "de": "Deutsch"
+        },
+        "entities": {
+            "term": "Begriff",
+            "comment": "Kommentar"
+        },
         "loading": "Lade..."
     },
     "nav": {
@@ -33,6 +42,7 @@
         }
     },
     "term": {
+        "add": "Begriff hinzufügen",
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />"
     },
     "translationList": {
