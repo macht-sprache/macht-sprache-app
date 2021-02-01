@@ -1,4 +1,5 @@
 import { FormEventHandler, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { auth } from '../firebase';
@@ -28,6 +29,7 @@ const signUp = async (displayName: string, email: string, password: string) => {
 
 export default function RegisterPage() {
     const user = useUser();
+    const { t } = useTranslation();
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
@@ -56,11 +58,11 @@ export default function RegisterPage() {
 
     return (
         <>
-            <Header>Sign Up</Header>
+            <Header>{t('auth.register')}</Header>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
-                        label="User Name"
+                        label={t('auth.displayName')}
                         value={displayName}
                         autoComplete="nickname"
                         onChange={event => {
@@ -68,7 +70,7 @@ export default function RegisterPage() {
                         }}
                     />
                     <Input
-                        label="Mail Address"
+                        label={t('auth.email')}
                         value={email}
                         type="email"
                         autoComplete="username"
@@ -77,7 +79,7 @@ export default function RegisterPage() {
                         }}
                     />
                     <Input
-                        label="Password"
+                        label={t('auth.password')}
                         value={password}
                         autoComplete="new-password"
                         type="password"
@@ -89,7 +91,7 @@ export default function RegisterPage() {
                 <ButtonContainer>
                     <Button type="button">Cancel</Button>
                     <Button primary disabled={disabled} type="submit">
-                        Sign Up
+                        {t('auth.register')}
                     </Button>
                 </ButtonContainer>
             </form>

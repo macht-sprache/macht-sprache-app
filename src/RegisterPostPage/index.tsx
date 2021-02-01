@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect, useLocation } from 'react-router-dom';
 import { useAuthState, useUser } from '../authHooks';
 import Button, { ButtonContainer } from '../Form/Button';
@@ -7,6 +8,7 @@ import { REGISTER_POST } from '../routes';
 
 export default function RegisterPostPage() {
     const user = useUser();
+    const { t } = useTranslation();
     const [authUser, authLoading] = useAuthState();
     const [resendState, setResendState] = useState<'INIT' | 'SENDING' | 'SENT'>('INIT');
     const location = useLocation();
@@ -37,11 +39,11 @@ export default function RegisterPostPage() {
 
     return (
         <>
-            <Header>Email Verification</Header>
-            <p>Please click the link we sent you to {authUser?.email}.</p>
+            <Header>{t('auth.emailVerification.headingVerification')}</Header>
+            <p>{t('auth.emailVerification.explanation', { email: authUser?.email })}</p>
             <ButtonContainer>
                 <Button onClick={resendVerification} primary disabled={resendState !== 'INIT'}>
-                    {resendState === 'SENT' ? 'Verification Email Sent' : 'Resend Verification Email'}
+                    {resendState === 'SENT' ? t('auth.emailVerification.resent') : t('auth.emailVerification.resend')}
                 </Button>
             </ButtonContainer>
         </>
@@ -49,9 +51,10 @@ export default function RegisterPostPage() {
 }
 
 function VerificationSuccess() {
+    const { t } = useTranslation();
     return (
         <>
-            <Header>Email Verified</Header>
+            <Header>{t('auth.emailVerification.headingVerified')}</Header>
         </>
     );
 }

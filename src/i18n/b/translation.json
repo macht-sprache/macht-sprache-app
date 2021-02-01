@@ -13,5 +13,20 @@
                 "longLabel": "Zeige nur deutsche Begriffe"
             }
         }
+    },
+    "auth": {
+        "displayName": "Benutzername",
+        "email": "Email Adresse",
+        "password": "Passwort",
+        "register": "Registrieren",
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "emailVerification": {
+            "headingVerification": "Email Verifizierung",
+            "headingVerified": "Email Verifiziert",
+            "explanation": "Bitte klicke auf den Link den wir an {{email}} geschickt haben.",
+            "resend": "Verifizierungsemail erneut senden",
+            "resent": "Verifizierungsemail gesendet"
+        }
     }
 }

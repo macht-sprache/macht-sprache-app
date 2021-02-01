@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { auth } from '../firebase';
@@ -8,6 +9,7 @@ import { useLang } from '../useLang';
 
 export function TopMenu() {
     const user = useUser();
+    const { t } = useTranslation();
     const logout = useCallback(() => {
         auth.signOut();
     }, []);
@@ -15,13 +17,14 @@ export function TopMenu() {
     if (user) {
         return (
             <>
-                <LanguageSwitcher /> {user.displayName} <LinkButton onClick={logout}>Logout</LinkButton>
+                <LanguageSwitcher /> {user.displayName} <LinkButton onClick={logout}>{t('auth.logout')}</LinkButton>
             </>
         );
     } else {
         return (
             <>
-                <LanguageSwitcher /> <Link to="/signup">Sign up</Link> <Link to="/login">Login</Link>
+                <LanguageSwitcher /> <Link to="/signup">{t('auth.register')}</Link>{' '}
+                <Link to="/login">{t('auth.login')}</Link>
             </>
         );
     }

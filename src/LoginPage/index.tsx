@@ -1,4 +1,5 @@
 import { FormEventHandler, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { auth } from '../firebase';
@@ -10,6 +11,7 @@ import { HOME, REGISTER_POST } from '../routes';
 
 export default function LoginPage() {
     const user = useUser();
+    const { t } = useTranslation();
     const history = useHistory();
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
@@ -38,11 +40,11 @@ export default function LoginPage() {
 
     return (
         <>
-            <Header>Login</Header>
+            <Header>{t('auth.login')}</Header>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
-                        label="Mail Address"
+                        label={t('auth.email')}
                         value={email}
                         autoComplete="email"
                         onChange={value => {
@@ -50,7 +52,7 @@ export default function LoginPage() {
                         }}
                     />
                     <Input
-                        label="Password"
+                        label={t('auth.password')}
                         value={password}
                         autoComplete="current-password"
                         type="password"
@@ -62,7 +64,7 @@ export default function LoginPage() {
                 <ButtonContainer>
                     <Button type="button">Cancel</Button>
                     <Button primary type="submit" disabled={disabled}>
-                        Login
+                        {t('auth.login')}
                     </Button>
                 </ButtonContainer>
             </form>

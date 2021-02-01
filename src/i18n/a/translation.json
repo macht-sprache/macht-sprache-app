@@ -13,5 +13,20 @@
                 "longLabel": "show german terms only"
             }
         }
+    },
+    "auth": {
+        "displayName": "User Name",
+        "email": "Email Address",
+        "password": "Password",
+        "register": "Sign Up",
+        "login": "Login",
+        "logout": "Logout",
+        "emailVerification": {
+            "headingVerification": "Email Verification",
+            "headingVerified": "Email Verified",
+            "explanation": "Please click the link we sent you to {{email}}.",
+            "resend": "Resend Verification Email",
+            "resent": "Verification Email Sent"
+        }
     }
 }
