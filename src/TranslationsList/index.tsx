@@ -9,7 +9,7 @@ export function TranslationsList({ term }: { term: Term }) {
     const { t } = useTranslation();
 
     if (translations === undefined) {
-        return <>{t('global.loading')}</>;
+        return <>{t('common.loading')}</>;
     }
 
     if (translations.length === 0) {

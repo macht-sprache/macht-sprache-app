@@ -8,9 +8,7 @@
         "entities": {
             "term": "Term",
             "comment": "Comment"
-        }
-    },
-    "global": {
+        },
         "loading": "Loading..."
     },
     "nav": {
