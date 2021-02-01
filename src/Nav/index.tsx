@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
@@ -75,6 +75,7 @@ function Terms() {
                     );
                 })}
             </ul>
+            <Link to="/term/add">{t('common.entities.term.add')}</Link>
         </div>
     );
 }
