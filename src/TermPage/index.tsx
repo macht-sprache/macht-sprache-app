@@ -29,6 +29,7 @@ export default function TermPage() {
                         }}
                     />
                 }
+                mainLang={term.lang}
             >
                 {term.value}
             </Header>
