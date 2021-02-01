@@ -23,7 +23,10 @@ export default function TermPage() {
                     <Trans
                         t={t}
                         i18nKey="term.addedOn"
-                        components={{ User: 'timur', FormatDate: <FormatDate date={term.createdAt.toDate()} /> }}
+                        components={{
+                            User: 'timur',
+                            FormatDate: <FormatDate date={term.createdAt && term.createdAt.toDate()} />,
+                        }}
                     />
                 }
             >
