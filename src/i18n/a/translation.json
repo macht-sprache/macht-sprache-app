@@ -1,4 +1,15 @@
 {
+    "common": {
+        "langLabels": {
+            "language": "Language",
+            "en": "English",
+            "de": "German"
+        },
+        "entities": {
+            "term": "Term",
+            "comment": "Comment"
+        }
+    },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
         "filter": {
@@ -30,6 +41,7 @@
         }
     },
     "term": {
+        "add": "Add Term",
         "addedOn": "Added by <User /> on <FormatDate />"
     }
 }

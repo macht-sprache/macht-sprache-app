@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AddTermPage from './AddTermPage';
 import { useEnsureUserEntity, UserProvider } from './authHooks';
 import ElementTestPage from './ElementTestPage';
 import HomePage from './HomePage';
@@ -34,6 +35,9 @@ function App() {
                             </Route>
                             <Route path={routes.LOGIN} exact>
                                 <LoginPage />
+                            </Route>
+                            <Route path={routes.TERM_ADD} exact>
+                                <AddTermPage />
                             </Route>
                             <Route path={routes.TERM} exact>
                                 <TermPage />
