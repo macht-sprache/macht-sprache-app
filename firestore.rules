@@ -3,7 +3,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isCreator() {
-      return request.auth.uid == request.data.creatorId;
+      let creator = request.resource.data.creator;
+      return creator.keys().hasOnly(['id', 'displayName']) &&
+        request.auth.uid == creator.id &&
+        creator.displayName == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.displayName;
     }
 
     function isValidatedUser() {
@@ -45,8 +48,7 @@ service cloud.firestore {
 
     function isValidComment() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creatorId', 'ref', 'createdAt', 'comment']) &&
-        data.creatorId is string &&
+      return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'comment']) &&
         data.ref is path &&
         data.createdAt is timestamp &&
         data.comment is string;

@@ -1,28 +1,42 @@
+import { useState } from 'react';
 import Button from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import s from './style.module.css';
 
 type CommentCreateProps = {
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-    newComment: string;
-    setNewComment: (comment: string) => void;
+    onCreate: (newComment: string) => Promise<unknown>;
 };
 
-export function CommentCreate({ onSubmit, newComment, setNewComment }: CommentCreateProps) {
+export function CommentCreate({ onCreate }: CommentCreateProps) {
+    const [submitting, setSubmitting] = useState(false);
+    const [comment, setComment] = useState('');
+
+    const onSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        setSubmitting(true);
+        onCreate(comment)
+            .then(() => setComment(''))
+            .catch(error => console.error(error))
+            .finally(() => setSubmitting(false));
+    };
+
     return (
         <form className={s.form} onSubmit={onSubmit}>
             <InputContainer>
                 <Textarea
-                    value={newComment}
+                    value={comment}
+                    disabled={submitting}
                     onChange={value => {
-                        setNewComment(value.target.value);
+                        setComment(value.target.value);
                     }}
                     label="Add your comment"
                 />
             </InputContainer>
             <div className={s.buttonWrapper}>
-                <Button type="submit">Comment</Button>
+                <Button type="submit" disabled={!comment || submitting}>
+                    Comment
+                </Button>
             </div>
         </form>
     );

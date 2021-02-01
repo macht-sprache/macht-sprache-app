@@ -64,15 +64,18 @@ interface LinkSnippet extends BaseSnippet {
 
 export interface Comment {
     id: string;
-    creatorId: string;
+    creator: UserMini;
     ref: DocReference<Term | Translation | TranslationExample>;
     createdAt: Timestamp;
 
     comment: string;
 }
 
-export interface User {
+interface UserMini {
     id: string;
-    lang: Lang;
     displayName: string;
+}
+
+export interface User extends UserMini {
+    lang: Lang;
 }
