@@ -15,7 +15,7 @@ interface Commentable {
 export interface Term extends Commentable {
     id: string;
     relatedTerms: DocReference<Term>[];
-    creatorId: string;
+    creator: UserMini;
     createdAt: Timestamp;
 
     value: string;

@@ -1,10 +1,13 @@
 import firebase from 'firebase/app';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { db } from './firebase';
-import { Comment, Term, Translation, TranslationExample, User } from './types';
+import { Comment, Lang, Term, Translation, TranslationExample, User } from './types';
 
 const defaultOptions = { idField: 'id' };
 const defaultSnapshotOptions: firebase.firestore.SnapshotOptions = { serverTimestamps: 'estimate' };
+
+const getCreatedAt = (entity: { id?: string; createdAt: firebase.firestore.Timestamp }) =>
+    entity.id ? entity.createdAt : firebase.firestore.FieldValue.serverTimestamp();
 
 const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
     toFirestore: (user: User) => {
@@ -20,13 +23,13 @@ const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
 const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
     toFirestore: (term: Term) => {
         const { id, ...data } = term;
-        return data;
+        return { ...data, createdAt: getCreatedAt(term) };
     },
     fromFirestore: (snapshot): Term => {
-        const { relatedTerms, creatorId, createdAt, value, variants, lang, commentCount } = snapshot.data(
+        const { relatedTerms, creator, createdAt, value, variants, lang, commentCount } = snapshot.data(
             defaultSnapshotOptions
         );
-        return { id: snapshot.id, relatedTerms, creatorId, createdAt, value, variants, lang, commentCount };
+        return { id: snapshot.id, relatedTerms, creator, createdAt, value, variants, lang, commentCount };
     },
 };
 
@@ -46,7 +49,7 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
 const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
     toFirestore: (comment: Comment) => {
         const { id, ...data } = comment;
-        return { ...data, createdAt: id ? data.createdAt : firebase.firestore.FieldValue.serverTimestamp() };
+        return { ...data, createdAt: getCreatedAt(comment) };
     },
     fromFirestore: (snapshot): Comment => {
         const { creator, ref, createdAt, comment } = snapshot.data(defaultSnapshotOptions);
@@ -68,6 +71,26 @@ export function useTerms() {
 
 export function useTerm(id: string) {
     return useDocumentData<Term>(collections.terms.doc(id));
+}
+
+export async function addTerm(user: User, value: string, lang: Lang, comment?: string) {
+    const termRef = collections.terms.doc();
+    await termRef.set({
+        id: '',
+        relatedTerms: [],
+        variants: [],
+        lang,
+        value,
+        commentCount: 0,
+        creator: { id: user.id, displayName: user.displayName },
+        createdAt: firebase.firestore.Timestamp.now(),
+    });
+
+    if (comment) {
+        await addComment(user, termRef, comment);
+    }
+
+    return termRef;
 }
 
 export function useTranslations(termId: string) {
@@ -92,7 +115,7 @@ export function useComments(ref: Comment['ref']) {
     return useCollectionData<Comment>(collections.comments.where('ref', '==', ref).orderBy('createdAt'));
 }
 
-export const addComment = (ref: Comment['ref'], comment: string, user: User) => {
+export const addComment = (user: User, ref: Comment['ref'], comment: string) => {
     return collections.comments.doc().set({
         id: '',
         ref,

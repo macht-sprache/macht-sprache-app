@@ -12,7 +12,7 @@ type Props = {
 export default function Comments({ entityRef: ref }: Props) {
     const user = useUser();
     const [comments] = useComments(ref);
-    const onCreate = async (comment: string) => user && addComment(ref, comment, user);
+    const onCreate = async (comment: string) => user && addComment(user, ref, comment);
 
     return (
         <CommentWrapper>

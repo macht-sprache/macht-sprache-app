@@ -34,8 +34,20 @@ service cloud.firestore {
       allow update: if isValidatedUser() && isUser(user) && isValidUser();
     }
 
+    function isValidTerm() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
+        data.createdAt == request.time &&
+        data.value is string &&
+        data.variants is list &&
+        data.lang is string &&
+        data.relatedTerms is list &&
+        data.commentCount == 0;
+    }
+
     match /terms/{term} {
       allow read: if true;
+      allow create: if isValidatedUser() && isCreator() && isValidTerm();
     }
 
     match /translations/{translation} {
