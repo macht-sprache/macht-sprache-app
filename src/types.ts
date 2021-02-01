@@ -26,7 +26,7 @@ export interface Term extends Commentable {
 export interface Translation extends Commentable {
     id: string;
     term: DocReference<Term>;
-    creatorId: string;
+    creator: UserMini;
     createdAt: Timestamp;
 
     value: string;

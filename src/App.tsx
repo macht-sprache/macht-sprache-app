@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AddTermPage from './AddTermPage';
+import AddTranslationPage from './AddTranslationPage';
 import { useEnsureUserEntity, UserProvider } from './authHooks';
 import ElementTestPage from './ElementTestPage';
 import HomePage from './HomePage';
@@ -41,6 +42,9 @@ function App() {
                             </Route>
                             <Route path={routes.TERM} exact>
                                 <TermPage />
+                            </Route>
+                            <Route path={routes.TRANSLATION_ADD} exact>
+                                <AddTranslationPage />
                             </Route>
                             <Route path="/elementTest" exact>
                                 <ElementTestPage />

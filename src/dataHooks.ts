@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
 import { db } from './firebase';
+import { langA, langB } from './languages';
 import { Comment, Lang, Term, Translation, TranslationExample, User } from './types';
 
 const defaultOptions = { idField: 'id' };
@@ -34,15 +35,13 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
 };
 
 const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translation> = {
-    toFirestore: (term: Translation) => {
-        const { id, ...data } = term;
-        return data;
+    toFirestore: (translation: Translation) => {
+        const { id, ...data } = translation;
+        return { ...data, createdAt: getCreatedAt(translation) };
     },
     fromFirestore: (snapshot): Translation => {
-        const { term, creatorId, createdAt, value, variants, lang, commentCount } = snapshot.data(
-            defaultSnapshotOptions
-        );
-        return { id: snapshot.id, term, creatorId, createdAt, value, variants, lang, commentCount };
+        const { term, creator, createdAt, value, variants, lang, commentCount } = snapshot.data(defaultSnapshotOptions);
+        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, commentCount };
     },
 };
 
@@ -98,6 +97,26 @@ export function useTranslations(termId: string) {
         collections.translations.where('term', '==', collections.terms.doc(termId)),
         defaultOptions
     );
+}
+
+export async function addTranslation(user: User, term: Term, value: string, comment?: string) {
+    const translationRef = collections.translations.doc();
+    await translationRef.set({
+        id: '',
+        variants: [],
+        term: collections.terms.doc(term.id),
+        lang: term.lang === langA ? langB : langA,
+        value,
+        commentCount: 0,
+        creator: { id: user.id, displayName: user.displayName },
+        createdAt: firebase.firestore.Timestamp.now(),
+    });
+
+    if (comment) {
+        await addComment(user, translationRef, comment);
+    }
+
+    return translationRef;
 }
 
 export function useTranslationExamples(translationId: string) {
