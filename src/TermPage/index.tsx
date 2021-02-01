@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useTerm, useTranslations } from '../dataHooks';
-import { formatDate } from '../formatDate';
+import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { Translation } from '../types';
 
@@ -15,7 +15,9 @@ export default function TermPage() {
 
     return (
         <>
-            <Header subLine={`Added by USERNAME on ${term.createdAt && formatDate({ date: term.createdAt.toDate() })}`}>
+            <Header
+                subLine={<>Added by USERNAME on {term.createdAt && <FormatDate date={term.createdAt.toDate()} />}</>}
+            >
                 {term.value}
             </Header>
             {translations && <TranslationsList termId={termId} translations={translations} />}

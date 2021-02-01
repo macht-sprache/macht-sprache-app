@@ -2,7 +2,7 @@ import s from './style.module.css';
 
 type Props = {
     children: React.ReactNode;
-    subLine?: string;
+    subLine?: React.ReactNode;
 };
 
 export default function Header({ children, subLine }: Props) {

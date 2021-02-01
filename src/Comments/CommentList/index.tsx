@@ -1,4 +1,4 @@
-import { formatDate } from '../../formatDate';
+import { FormatDate } from '../../FormatDate';
 import s from './style.module.css';
 
 type CommentListProps = {
@@ -18,7 +18,9 @@ export function CommentList({ comments }: CommentListProps) {
                         <div className={s.body}>{comment}</div>
                         <div className={s.footer}>
                             <span className={s.creator}>{creator}</span>
-                            <span className={s.date}>{formatDate({ date })}</span>
+                            <span className={s.date}>
+                                <FormatDate date={date} />
+                            </span>
                         </div>
                     </li>
                 );
