@@ -16,6 +16,7 @@
     border: var(--thickBorder) solid var(--black);
     padding: 0.5rem;
     background: var(--backgroundColor);
+    white-space: pre-wrap;
 }
 
 .footer {
