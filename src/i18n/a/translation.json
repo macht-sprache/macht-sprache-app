@@ -46,5 +46,8 @@
     "term": {
         "add": "Add Term",
         "addedOn": "Added by <User /> on <FormatDate />"
+    },
+    "translationList": {
+        "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet."
     }
 }

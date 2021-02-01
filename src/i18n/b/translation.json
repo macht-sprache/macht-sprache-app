@@ -34,5 +34,8 @@
     },
     "term": {
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />"
+    },
+    "translationList": {
+        "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>."
     }
 }

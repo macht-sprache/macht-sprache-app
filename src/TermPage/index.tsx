@@ -2,16 +2,15 @@ import s from './style.module.css';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
-import { collections, useTerm, useTranslations } from '../dataHooks';
+import { collections, useTerm } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
-import { Translation } from '../types';
+import { TranslationsList } from '../TranslationsList';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
     const { t } = useTranslation();
     const [term] = useTerm(termId);
-    const [translations] = useTranslations(termId);
 
     if (!term) {
         return null;
@@ -35,23 +34,9 @@ export default function TermPage() {
                 {term.value}
             </Header>
             <div className={s.main}>
-                {translations ? (
-                    <TranslationsList termId={termId} translations={translations} />
-                ) : (
-                    <div>{t('global.loading')}</div>
-                )}
+                <TranslationsList term={term} />
                 <Comments entityRef={collections.terms.doc(termId)} />
             </div>
         </>
-    );
-}
-
-function TranslationsList({ termId, translations }: { termId: string; translations: Translation[] }) {
-    return (
-        <ul>
-            {translations.map(translation => (
-                <li key={translation.id}>{translation.value}</li>
-            ))}
-        </ul>
     );
 }
