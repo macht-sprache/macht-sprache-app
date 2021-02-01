@@ -6,8 +6,19 @@
             "de": "Deutsch"
         },
         "entities": {
+<<<<<<< HEAD
             "term": "Begriff",
             "comment": "Kommentar"
+=======
+            "term": {
+                "value": "Begriff",
+                "add": "Begriff hinzufügen"
+            },
+            "comment": {
+                "value": "Kommentar",
+                "add": "Kommentar hinzufügen"
+            }
+>>>>>>> i18n: add some german translation
         },
         "loading": "Lade..."
     },
