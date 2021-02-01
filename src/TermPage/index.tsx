@@ -1,3 +1,4 @@
+import s from './style.module.css';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
@@ -33,8 +34,14 @@ export default function TermPage() {
             >
                 {term.value}
             </Header>
-            {translations && <TranslationsList termId={termId} translations={translations} />}
-            <Comments entityRef={collections.terms.doc(termId)} />
+            <div className={s.main}>
+                {translations ? (
+                    <TranslationsList termId={termId} translations={translations} />
+                ) : (
+                    <div>{t('global.loading')}</div>
+                )}
+                <Comments entityRef={collections.terms.doc(termId)} />
+            </div>
         </>
     );
 }

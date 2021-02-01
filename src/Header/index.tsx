@@ -8,13 +8,13 @@ type Props = {
 
 export default function Header({ children, subLine, mainLang }: Props) {
     return (
-        <>
+        <header className={s.header}>
             <h1 className={s.heading}>
                 <span className={s.headingInner} lang={mainLang}>
                     {children}
                 </span>
             </h1>
             {subLine}
-        </>
+        </header>
     );
 }

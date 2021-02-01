@@ -2,6 +2,10 @@
     margin-top: 0;
 }
 
+.header {
+    margin: 2rem 0 4rem;
+}
+
 .headingInner {
     background: var(--lang-color);
     box-shadow: 0.5rem 0 0 var(--lang-color), -0.5rem 0 0 var(--lang-color);

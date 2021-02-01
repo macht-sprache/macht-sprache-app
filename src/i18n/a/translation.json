@@ -10,6 +10,9 @@
             "comment": "Comment"
         }
     },
+    "global": {
+        "loading": "Loading..."
+    },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
         "filter": {

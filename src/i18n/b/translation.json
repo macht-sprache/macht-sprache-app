@@ -1,4 +1,7 @@
 {
+    "global": {
+        "loading": "Lade..."
+    },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",
         "filter": {
