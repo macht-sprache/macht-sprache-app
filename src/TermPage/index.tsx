@@ -1,12 +1,13 @@
+import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useTerm, useTranslations } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { Translation } from '../types';
-import { Trans } from 'react-i18next';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
+    const { t } = useTranslation();
     const [term] = useTerm(termId);
     const [translations] = useTranslations(termId);
 
@@ -19,6 +20,7 @@ export default function TermPage() {
             <Header
                 subLine={
                     <Trans
+                        t={t}
                         i18nKey="term.addedOn"
                         components={{ User: 'timur', FormatDate: <FormatDate date={term.createdAt.toDate()} /> }}
                     />
