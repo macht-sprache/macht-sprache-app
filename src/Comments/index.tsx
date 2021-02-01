@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useUser } from '../authHooks';
 import { addComment, useComments } from '../dataHooks';
 import { Comment } from '../types';
