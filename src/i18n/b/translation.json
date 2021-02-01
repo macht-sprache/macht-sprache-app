@@ -28,5 +28,8 @@
             "resend": "Verifizierungsemail erneut senden",
             "resent": "Verifizierungsemail gesendet"
         }
+    },
+    "term": {
+        "addedOn": "Hinzugefügt von <User /> am <FormatDate />"
     }
 }

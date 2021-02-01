@@ -3,11 +3,13 @@ import { useTerm, useTranslations } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { Translation } from '../types';
+import { Trans, useTranslation } from 'react-i18next';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
     const [term] = useTerm(termId);
     const [translations] = useTranslations(termId);
+    const { t } = useTranslation();
 
     if (!term) {
         return null;
@@ -16,7 +18,12 @@ export default function TermPage() {
     return (
         <>
             <Header
-                subLine={<>Added by USERNAME on {term.createdAt && <FormatDate date={term.createdAt.toDate()} />}</>}
+                subLine={
+                    <Trans
+                        i18nKey="term.addedOn"
+                        components={{ User: 'timur', FormatDate: <FormatDate date={term.createdAt.toDate()} /> }}
+                    />
+                }
             >
                 {term.value}
             </Header>

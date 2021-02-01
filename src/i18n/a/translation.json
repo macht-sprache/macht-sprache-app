@@ -28,5 +28,8 @@
             "resend": "Resend Verification Email",
             "resent": "Verification Email Sent"
         }
+    },
+    "term": {
+        "addedOn": "Added by <User /> on <FormatDate />"
     }
 }
