@@ -45,7 +45,7 @@ export default function AddTermPage() {
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
-                        label={t('common.entities.term')}
+                        label={t('common.entities.term.value')}
                         span={3}
                         value={model.term}
                         onChange={event => setModel(prev => ({ ...prev, term: event.target.value }))}
@@ -60,7 +60,7 @@ export default function AddTermPage() {
                         <option value={langB}>{t(`common.langLabels.${langB}` as const)}</option>
                     </Select>
                     <Textarea
-                        label={t('common.entities.comment')}
+                        label={t('common.entities.comment.value')}
                         value={model.comment}
                         onChange={event => setModel(prev => ({ ...prev, comment: event.target.value }))}
                     />

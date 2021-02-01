@@ -6,8 +6,14 @@
             "de": "German"
         },
         "entities": {
-            "term": "Term",
-            "comment": "Comment"
+            "term": {
+                "value": "Term",
+                "add": "Add Term"
+            },
+            "comment": {
+                "value": "Comment",
+                "add": "Add Comment"
+            }
         },
         "loading": "Loading..."
     },
