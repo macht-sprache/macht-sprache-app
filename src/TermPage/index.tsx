@@ -1,6 +1,7 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { useTerm, useTranslations } from '../dataHooks';
+import Comments from '../Comments';
+import { collections, useTerm, useTranslations } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { Translation } from '../types';
@@ -29,6 +30,7 @@ export default function TermPage() {
                 {term.value}
             </Header>
             {translations && <TranslationsList termId={termId} translations={translations} />}
+            <Comments entityRef={collections.terms.doc(termId)} />
         </>
     );
 }
