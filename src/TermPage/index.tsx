@@ -3,13 +3,12 @@ import { useTerm, useTranslations } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { Translation } from '../types';
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
     const [term] = useTerm(termId);
     const [translations] = useTranslations(termId);
-    const { t } = useTranslation();
 
     if (!term) {
         return null;
