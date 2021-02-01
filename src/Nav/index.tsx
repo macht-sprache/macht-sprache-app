@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
+import { useUser } from '../authHooks';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
+import { TERM_ADD } from '../routes';
 import { Lang } from '../types';
 import s from './style.module.css';
 
@@ -13,6 +15,7 @@ export default function Nav() {
 
 function Terms() {
     const { t } = useTranslation();
+    const user = useUser();
     const [terms] = useTerms();
     const [langFilter, setLangFilter] = useState<Lang>();
 
@@ -75,7 +78,7 @@ function Terms() {
                     );
                 })}
             </ul>
-            <Link to="/term/add">{t('common.entities.term.add')}</Link>
+            {user && <Link to={TERM_ADD}>{t('common.entities.term.add')}</Link>}
         </div>
     );
 }
