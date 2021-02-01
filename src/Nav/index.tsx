@@ -1,25 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
 import { Lang } from '../types';
-import Logo from './logo.svg';
 import s from './style.module.css';
 
 export default function Nav() {
-    const { t } = useTranslation();
-    return (
-        <>
-            <div className={s.header}>
-                <Link className={s.logo} to="/">
-                    <img src={Logo} alt={t('nav.logoAlt')} />
-                </Link>
-            </div>
-            <Terms />
-        </>
-    );
+    return <Terms />;
 }
 
 function Terms() {

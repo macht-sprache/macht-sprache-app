@@ -4,17 +4,41 @@
     grid-template-columns: 1fr var(--sidebarWidth) minmax(auto, 50rem) 1fr;
 }
 
+.header,
+.sidebarInner {
+    grid-gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr var(--sidebarWidth);
+}
+
+.header {
+    padding: 2rem 0;
+}
+
+.logo {
+    display: block;
+    text-decoration: none;
+    grid-column: 2;
+}
+
+.logoImg {
+    width: 100%;
+    height: 8rem;
+    object-fit: contain;
+    object-position: left;
+}
+
 .sidebar {
+    position: sticky;
+    top: 0;
     grid-column: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .sidebarInner {
-    display: grid;
-    height: 100vh;
     overflow: scroll;
-    position: sticky;
-    top: 0;
-    grid-template-columns: 1fr var(--sidebarWidth);
 }
 
 .sidebarInnerInner {
@@ -25,8 +49,7 @@
     grid-column: 3;
 }
 
-.main,
-.sidebarInnerInner {
+.main {
     padding: 1rem;
 }
 

@@ -1,24 +1,3 @@
-.logo {
-    font-family: var(--monospaceFont);
-    font-weight: bold;
-    padding: 0 0 1rem;
-    display: block;
-    text-decoration: none;
-    width: calc(var(--sidebarWidth) - 2rem);
-    margin-left: -1.5rem;
-}
-
-.header {
-    position: fixed;
-    background: white;
-    padding-top: 1rem;
-    top: 0;
-}
-
-.nav {
-    margin-top: 15rem;
-}
-
 .terms {
     font-family: var(--monospaceFont);
     list-style: none;
