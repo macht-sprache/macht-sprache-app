@@ -13,6 +13,7 @@ import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
 import TermPage from './TermPage';
 import { TopMenu } from './TopMenu';
+import { TranslationPage } from './TranslationPage';
 import { useLangCssVars } from './useLangCssVars';
 
 function App() {
@@ -45,6 +46,9 @@ function App() {
                             </Route>
                             <Route path={routes.TRANSLATION_ADD} exact>
                                 <AddTranslationPage />
+                            </Route>
+                            <Route path={routes.TRANSLATION} exact>
+                                <TranslationPage />
                             </Route>
                             <Route path="/elementTest" exact>
                                 <ElementTestPage />

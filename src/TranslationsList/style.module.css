@@ -11,6 +11,10 @@
     margin-top: 1rem;
 }
 
+.link {
+    text-decoration: none;
+}
+
 .header {
     display: flex;
     justify-content: space-between;

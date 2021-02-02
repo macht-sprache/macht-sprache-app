@@ -92,6 +92,10 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
     return termRef;
 }
 
+export function useTranslationEntity(id: string) {
+    return useDocumentData<Translation>(collections.translations.doc(id));
+}
+
 export function useTranslations(termId: string) {
     return useCollectionData<Translation>(
         collections.translations.where('term', '==', collections.terms.doc(termId)),

@@ -8,6 +8,7 @@ import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { FormatDate } from '../FormatDate';
 import { useLang } from '../useLang';
+import { Link } from 'react-router-dom';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
@@ -37,12 +38,14 @@ export function TranslationsList({ term }: { term: Term }) {
                     <div className={s.list}>
                         {translations.map(translation => (
                             <article className={s.item} key={translation.id} lang={translation.lang}>
-                                <div className={s.header}>
-                                    <h1 className={s.value}>{translation.value}</h1>
-                                    <div className={s.meta} lang={lang}>
-                                        <FormatDate date={translation.createdAt.toDate()} />
+                                <Link to={`/term/${term.id}/translation/${translation.id}`} className={s.link}>
+                                    <div className={s.header}>
+                                        <h1 className={s.value}>{translation.value}</h1>
+                                        <div className={s.meta} lang={lang}>
+                                            <FormatDate date={translation.createdAt.toDate()} />
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             </article>
                         ))}
                     </div>

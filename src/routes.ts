@@ -4,4 +4,5 @@ export const HOME = '/',
     LOGIN = '/login',
     TERM_ADD = '/term/add',
     TERM = '/term/:termId',
-    TRANSLATION_ADD = '/term/:termId/translation/add';
+    TRANSLATION_ADD = '/term/:termId/translation/add',
+    TRANSLATION = '/term/:termId/translation/:translationId';
