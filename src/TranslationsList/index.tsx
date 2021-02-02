@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { TermWithLang } from '../TermWithLang';
 import { Term } from '../types';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
+import { ColumnHeading } from '../Layout/Columns';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
@@ -13,9 +14,9 @@ export function TranslationsList({ term }: { term: Term }) {
 
     return (
         <div>
-            <h2>
+            <ColumnHeading>
                 {commentCount} {t('common.entities.translation.value', { count: commentCount })}
-            </h2>
+            </ColumnHeading>
             {translations === undefined && <>{t('common.loading')}</>}
             {translations && translations.length === 0 && (
                 <div>

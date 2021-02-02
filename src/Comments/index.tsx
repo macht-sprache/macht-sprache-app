@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../authHooks';
 import { addComment, useComments } from '../dataHooks';
+import { ColumnHeading } from '../Layout/Columns';
 import { Comment } from '../types';
 import { CommentCreate } from './CommentCreate';
 import { CommentList } from './CommentList';
@@ -19,9 +20,9 @@ export default function Comments({ entityRef: ref }: Props) {
 
     return (
         <CommentWrapper>
-            <h2>
+            <ColumnHeading>
                 {commentCount} {t('common.entities.comment.value', { count: commentCount })}
-            </h2>
+            </ColumnHeading>
             <CommentList comments={comments || []} />
             {user && <CommentCreate onCreate={onCreate} />}
         </CommentWrapper>
