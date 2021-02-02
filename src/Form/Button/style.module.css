@@ -5,6 +5,7 @@
     background: transparent;
     padding: 0.5rem;
     background: var(--backgroundColor);
+    text-decoration: none;
 }
 
 .button:not([disabled]):hover,
