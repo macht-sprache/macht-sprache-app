@@ -10,9 +10,14 @@
                 "value": "Begriff",
                 "add": "Begriff hinzufügen"
             },
+            "translation": {
+                "value": "Übersetzung",
+                "add": "Übersetzung hinzufügen"
+            },
             "comment": {
                 "value": "Kommentar",
-                "add": "Kommentar hinzufügen"
+                "add": "Kommentar hinzufügen",
+                "commentAction": "Kommentieren"
             }
         },
         "loading": "Lade..."

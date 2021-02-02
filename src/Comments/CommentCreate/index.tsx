@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
@@ -11,6 +12,7 @@ type CommentCreateProps = {
 export function CommentCreate({ onCreate }: CommentCreateProps) {
     const [submitting, setSubmitting] = useState(false);
     const [comment, setComment] = useState('');
+    const { t } = useTranslation();
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -30,12 +32,12 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
                     onChange={value => {
                         setComment(value.target.value);
                     }}
-                    label="Add your comment"
+                    label={t('common.entities.comment.add')}
                 />
             </InputContainer>
             <div className={s.buttonWrapper}>
                 <Button type="submit" disabled={!comment || submitting}>
-                    Comment
+                    {t('common.entities.comment.commentAction')}
                 </Button>
             </div>
         </form>

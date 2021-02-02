@@ -38,11 +38,11 @@ export default function AddTranslationPage() {
 
     return (
         <>
-            <Header>{'Add Translation'}</Header>
+            <Header>{t('common.entities.translation.add')}</Header>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
-                        label={'Translation'}
+                        label={t('common.entities.translation.value')}
                         value={model.translation}
                         onChange={event => setModel(prev => ({ ...prev, translation: event.target.value }))}
                     />
@@ -55,7 +55,7 @@ export default function AddTranslationPage() {
 
                 <ButtonContainer>
                     <Button primary disabled={submitting || !model.translation} type="submit">
-                        {t('term.add')}
+                        {t('common.entities.translation.add')}
                     </Button>
                 </ButtonContainer>
             </form>

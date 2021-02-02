@@ -10,9 +10,14 @@
                 "value": "Term",
                 "add": "Add Term"
             },
+            "translation": {
+                "value": "Translation",
+                "add": "Add Translation"
+            },
             "comment": {
                 "value": "Comment",
-                "add": "Add Comment"
+                "add": "Add Comment",
+                "commentAction": "Comment"
             }
         },
         "loading": "Loading..."
