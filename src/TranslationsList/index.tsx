@@ -5,11 +5,12 @@ import { TermWithLang } from '../TermWithLang';
 import { Term } from '../types';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { ColumnHeading } from '../Layout/Columns';
+import { Link } from 'react-router-dom';
+import { useUser } from '../authHooks';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
     const { t } = useTranslation();
-    const addTermLink = `/term/${term.id}/translation/add`;
     const commentCount = translations ? translations.length : 0;
 
     return (
@@ -26,9 +27,7 @@ export function TranslationsList({ term }: { term: Term }) {
                         values={{ term: term.value }}
                         components={{ TermWithLang: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
                     />
-                    <ButtonContainer align="left">
-                        <ButtonLink to={addTermLink}>{t('common.entities.translation.add')}</ButtonLink>
-                    </ButtonContainer>
+                    <AddTranslationButton termId={term.id} />
                 </div>
             )}
             {translations && translations.length > 0 && (
@@ -38,11 +37,30 @@ export function TranslationsList({ term }: { term: Term }) {
                             <li key={translation.id}>{translation.value}</li>
                         ))}
                     </ul>
-                    <ButtonContainer align="left">
-                        <ButtonLink to={addTermLink}>{t('common.entities.translation.add')}</ButtonLink>
-                    </ButtonContainer>
+                    <AddTranslationButton termId={term.id} />
                 </>
             )}
         </div>
+    );
+}
+
+function AddTranslationButton({ termId }: { termId: string }) {
+    const { t } = useTranslation();
+    const user = useUser();
+
+    if (!user) {
+        return (
+            <Trans
+                t={t}
+                i18nKey="translationList.registerToAdd"
+                components={{ LoginLink: <Link to="/login" />, SignUpLink: <Link to="/signup" /> }}
+            />
+        );
+    }
+
+    return (
+        <ButtonContainer align="left">
+            <ButtonLink to={`/term/${termId}/translation/add`}>{t('common.entities.translation.add')}</ButtonLink>
+        </ButtonContainer>
     );
 }

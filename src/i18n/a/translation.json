@@ -56,9 +56,14 @@
     },
     "term": {
         "add": "Add Term",
-        "addedOn": "Added by <User /> on <FormatDate />"
+        "addedOn": "Added by <User /> on <FormatDate />",
+        "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     },
     "translationList": {
+        "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet."
+    },
+    "comment": {
+        "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     }
 }

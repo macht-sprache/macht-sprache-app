@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { useUser } from '../../authHooks';
 import Button from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
@@ -10,6 +12,7 @@ type CommentCreateProps = {
 };
 
 export function CommentCreate({ onCreate }: CommentCreateProps) {
+    const user = useUser();
     const [submitting, setSubmitting] = useState(false);
     const [comment, setComment] = useState('');
     const { t } = useTranslation();
@@ -22,6 +25,18 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
             .catch(error => console.error(error))
             .finally(() => setSubmitting(false));
     };
+
+    if (!user) {
+        return (
+            <div>
+                <Trans
+                    t={t}
+                    i18nKey="comment.registerToAdd"
+                    components={{ LoginLink: <Link to="/login" />, SignUpLink: <Link to="/signup" /> }}
+                />
+            </div>
+        );
+    }
 
     return (
         <form className={s.form} onSubmit={onSubmit}>

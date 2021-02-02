@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { useTerms } from '../dataHooks';
@@ -78,7 +78,17 @@ function Terms() {
                     );
                 })}
             </ul>
-            {user && <Link to={TERM_ADD}>{t('common.entities.term.add')}</Link>}
+            {user ? (
+                <Link to={TERM_ADD}>{t('common.entities.term.add')}</Link>
+            ) : (
+                <div>
+                    <Trans
+                        t={t}
+                        i18nKey={'term.registerToAdd'}
+                        components={{ LoginLink: <Link to="/login" />, SignUpLink: <Link to="/signup" /> }}
+                    />
+                </div>
+            )}
         </div>
     );
 }

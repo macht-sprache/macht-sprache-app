@@ -56,9 +56,14 @@
     },
     "term": {
         "add": "Begriff hinzufügen",
-        "addedOn": "Hinzugefügt von <User /> am <FormatDate />"
+        "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
+        "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     },
     "translationList": {
+        "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>."
+    },
+    "comment": {
+        "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     }
 }

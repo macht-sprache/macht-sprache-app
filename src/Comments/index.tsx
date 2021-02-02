@@ -24,7 +24,7 @@ export default function Comments({ entityRef: ref }: Props) {
                 {commentCount} {t('common.entities.comment.value', { count: commentCount })}
             </ColumnHeading>
             <CommentList comments={comments || []} />
-            {user && <CommentCreate onCreate={onCreate} />}
+            <CommentCreate onCreate={onCreate} />
         </CommentWrapper>
     );
 }
