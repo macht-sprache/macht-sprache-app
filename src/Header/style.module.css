@@ -2,6 +2,11 @@
     margin-top: 0;
 }
 
+.headingWithSubheading {
+    composes: heading;
+    margin-left: 0.5rem;
+}
+
 .header {
     margin: 2rem 0 4rem;
 }
@@ -9,4 +14,13 @@
 .headingInner {
     background: var(--lang-color);
     box-shadow: 0.5rem 0 0 var(--lang-color), -0.5rem 0 0 var(--lang-color);
+}
+
+.subHeading {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    margin-left: -0.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: normal;
 }
