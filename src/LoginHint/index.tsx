@@ -1,6 +1,7 @@
 import { TFuncKey, Trans, useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { useUser } from '../authHooks';
+import { LOGIN, REGISTER } from '../routes';
 import s from './style.module.css';
 
 type LoginHintProps = {
@@ -21,7 +22,10 @@ export function LoginHint({ i18nKey, children }: LoginHintProps) {
             <Trans
                 t={t}
                 i18nKey={i18nKey}
-                components={{ LoginLink: <Link to="/login" />, SignUpLink: <Link to="/signup" /> }}
+                components={{
+                    LoginLink: <Link to={generatePath(LOGIN)} />,
+                    SignUpLink: <Link to={generatePath(REGISTER)} />,
+                }}
             />
         </div>
     );

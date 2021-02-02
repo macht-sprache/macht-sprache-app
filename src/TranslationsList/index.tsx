@@ -8,7 +8,8 @@ import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { FormatDate } from '../FormatDate';
 import { useLang } from '../useLang';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
+import { TRANSLATION, TRANSLATION_ADD } from '../routes';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
@@ -38,7 +39,10 @@ export function TranslationsList({ term }: { term: Term }) {
                     <div className={s.list}>
                         {translations.map(translation => (
                             <article className={s.item} key={translation.id} lang={translation.lang}>
-                                <Link to={`/term/${term.id}/translation/${translation.id}`} className={s.link}>
+                                <Link
+                                    to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })}
+                                    className={s.link}
+                                >
                                     <div className={s.header}>
                                         <h1 className={s.value}>{translation.value}</h1>
                                         <div className={s.meta} lang={lang}>
@@ -62,7 +66,9 @@ function AddTranslationButton({ termId }: { termId: string }) {
     return (
         <LoginHint i18nKey="translationList.registerToAdd">
             <ButtonContainer align="left">
-                <ButtonLink to={`/term/${termId}/translation/add`}>{t('common.entities.translation.add')}</ButtonLink>
+                <ButtonLink to={generatePath(TRANSLATION_ADD, { termId: termId })}>
+                    {t('common.entities.translation.add')}
+                </ButtonLink>
             </ButtonContainer>
         </LoginHint>
     );

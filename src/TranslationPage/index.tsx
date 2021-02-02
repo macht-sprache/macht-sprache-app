@@ -1,6 +1,7 @@
-import { Link, useParams } from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 import { useTerm, useTranslationEntity } from '../dataHooks';
 import Header from '../Header';
+import { TERM } from '../routes';
 import s from './style.module.css';
 
 export function TranslationPage() {
@@ -13,7 +14,11 @@ export function TranslationPage() {
             <Header
                 mainLang={translation?.lang}
                 subHeading={
-                    <Link lang={term?.lang} className={s.termLink} to={`/term/${term?.id}`}>
+                    <Link
+                        lang={term?.lang}
+                        className={s.termLink}
+                        to={term ? generatePath(TERM, { termId: term.id }) : '/'}
+                    >
                         {term?.value}
                     </Link>
                 }

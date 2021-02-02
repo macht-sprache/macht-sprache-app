@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { auth } from '../firebase';
 import { langA, langB } from '../languages';
 import LinkButton from '../LinkButton';
+import { LOGIN, REGISTER } from '../routes';
 import { useLang } from '../useLang';
 
 export function TopMenu() {
@@ -23,8 +24,8 @@ export function TopMenu() {
     } else {
         return (
             <>
-                <LanguageSwitcher /> <Link to="/signup">{t('auth.register')}</Link>{' '}
-                <Link to="/login">{t('auth.login')}</Link>
+                <LanguageSwitcher /> <Link to={generatePath(REGISTER)}>{t('auth.register')}</Link>{' '}
+                <Link to={generatePath(LOGIN)}>{t('auth.login')}</Link>
             </>
         );
     }

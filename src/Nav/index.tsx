@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink } from 'react-router-dom';
+import { generatePath, Link, NavLink } from 'react-router-dom';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
 import { LoginHint } from '../LoginHint';
-import { TERM_ADD } from '../routes';
+import { TERM, TERM_ADD } from '../routes';
 import { Lang } from '../types';
 import s from './style.module.css';
 
@@ -66,7 +66,7 @@ function Terms() {
                     return (
                         <li key={term.id} className={s.term}>
                             <NavLink
-                                to={`/term/${term.id}`}
+                                to={generatePath(TERM, { termId: term.id })}
                                 className={s.termLink}
                                 activeClassName={s.termLinkActive}
                                 lang={term.lang}
