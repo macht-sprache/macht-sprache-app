@@ -12,12 +12,14 @@
             },
             "translation": {
                 "value": "Übersetzung",
+                "value_plural": "Übersetzungen",
                 "add": "Übersetzung hinzufügen"
             },
             "comment": {
                 "value": "Kommentar",
+                "value_plural": "Kommentare",
                 "add": "Kommentar hinzufügen",
-                "commentAction": "Kommentieren"
+                "action": "Kommentieren"
             }
         },
         "loading": "Lade..."

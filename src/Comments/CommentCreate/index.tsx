@@ -37,7 +37,7 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
             </InputContainer>
             <div className={s.buttonWrapper}>
                 <Button type="submit" disabled={!comment || submitting}>
-                    {t('common.entities.comment.commentAction')}
+                    {t('common.entities.comment.action')}
                 </Button>
             </div>
         </form>
