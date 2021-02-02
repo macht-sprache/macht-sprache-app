@@ -6,11 +6,14 @@ import { Term } from '../types';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
+import { FormatDate } from '../FormatDate';
+import { useLang } from '../useLang';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
     const { t } = useTranslation();
     const commentCount = translations ? translations.length : 0;
+    const [lang] = useLang();
 
     return (
         <div>
@@ -31,11 +34,18 @@ export function TranslationsList({ term }: { term: Term }) {
             )}
             {translations && translations.length > 0 && (
                 <>
-                    <ul className={s.list}>
+                    <div className={s.list}>
                         {translations.map(translation => (
-                            <li key={translation.id}>{translation.value}</li>
+                            <article className={s.item} key={translation.id} lang={translation.lang}>
+                                <div className={s.header}>
+                                    <h1 className={s.value}>{translation.value}</h1>
+                                    <div className={s.meta} lang={lang}>
+                                        <FormatDate date={translation.createdAt.toDate()} />
+                                    </div>
+                                </div>
+                            </article>
                         ))}
-                    </ul>
+                    </div>
                     <AddTranslationButton termId={term.id} />
                 </>
             )}

@@ -1,0 +1,28 @@
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.item {
+    border: var(--thickBorder) solid var(--lang-color);
+}
+
+.item + .item {
+    margin-top: 1rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.value {
+    padding: 0.5rem;
+    background-color: var(--lang-color);
+    margin: 0;
+    font-size: inherit;
+}
+
+.meta {
+    padding: 0.5rem;
+}
