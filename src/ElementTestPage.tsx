@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CommentCreate } from './Comments/CommentCreate';
 import { CommentList } from './Comments/CommentList';
 import { CommentWrapper } from './Comments/CommentWrapper';
-import Button from './Form/Button';
+import Button, { ButtonContainer } from './Form/Button';
 import { Input, Select, Textarea } from './Form/Input';
 import InputContainer from './Form/InputContainer';
 import Header from './Header';
@@ -120,6 +120,10 @@ export default function ElementTestPage() {
                     }}
                 />
             </InputContainer>
+            <ButtonContainer>
+                <Button>Cancel</Button>
+                <Button primary={true}>Submit</Button>
+            </ButtonContainer>
 
             <h2>Comments</h2>
 

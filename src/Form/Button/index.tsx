@@ -19,8 +19,9 @@ export function ButtonLink({ primary = false, ...props }: ButtonLinkProps) {
 
 type ButtonContainerProps = {
     children: React.ReactNode;
+    align?: 'left' | 'right';
 };
 
-export function ButtonContainer({ children }: ButtonContainerProps) {
-    return <div className={s.buttonContainer}>{children}</div>;
+export function ButtonContainer({ children, align = 'right' }: ButtonContainerProps) {
+    return <div className={align === 'right' ? s.buttonContainer : s.buttonContainerLeftAligned}>{children}</div>;
 }
