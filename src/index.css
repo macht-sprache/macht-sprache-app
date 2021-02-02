@@ -15,13 +15,15 @@ body {
     --white: #fff;
     --black: #000;
 
-    --disabledGrey: rgb(184, 184, 184);
+    --disabledGrey: rgb(128, 128, 128);
+    --disabledGreyBackground: rgb(250, 248, 248);
     --backgroundColor: var(--white);
 
     --thickBorder: 2px;
     --thinBorder: 1px;
 
     --fontSizeL: 1.5rem;
+    --fontSizeS: 0.8rem;
 
     --sidebarWidth: 15rem;
 

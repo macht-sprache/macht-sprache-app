@@ -1,0 +1,15 @@
+.hint {
+    font-size: var(--fontSizeS);
+    font-style: italic;
+    padding: 0.5rem;
+    color: var(--disabledGrey);
+    border: var(--thickBorder) solid var(--white);
+    --sw: 6px;
+    background-image: repeating-linear-gradient(
+        -45deg,
+        var(--disabledGreyBackground),
+        var(--disabledGreyBackground) var(--sw),
+        var(--white) var(--sw),
+        var(--white) calc(var(--sw) * 2)
+    );
+}

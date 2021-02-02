@@ -5,8 +5,7 @@ import { TermWithLang } from '../TermWithLang';
 import { Term } from '../types';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { ColumnHeading } from '../Layout/Columns';
-import { Link } from 'react-router-dom';
-import { useUser } from '../authHooks';
+import { LoginHint } from '../LoginHint';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
@@ -46,21 +45,12 @@ export function TranslationsList({ term }: { term: Term }) {
 
 function AddTranslationButton({ termId }: { termId: string }) {
     const { t } = useTranslation();
-    const user = useUser();
-
-    if (!user) {
-        return (
-            <Trans
-                t={t}
-                i18nKey="translationList.registerToAdd"
-                components={{ LoginLink: <Link to="/login" />, SignUpLink: <Link to="/signup" /> }}
-            />
-        );
-    }
 
     return (
-        <ButtonContainer align="left">
-            <ButtonLink to={`/term/${termId}/translation/add`}>{t('common.entities.translation.add')}</ButtonLink>
-        </ButtonContainer>
+        <LoginHint i18nKey="translationList.registerToAdd">
+            <ButtonContainer align="left">
+                <ButtonLink to={`/term/${termId}/translation/add`}>{t('common.entities.translation.add')}</ButtonLink>
+            </ButtonContainer>
+        </LoginHint>
     );
 }

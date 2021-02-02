@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
-import { useUser } from '../authHooks';
 import { useTerms } from '../dataHooks';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
+import { LoginHint } from '../LoginHint';
 import { TERM_ADD } from '../routes';
 import { Lang } from '../types';
 import s from './style.module.css';
@@ -15,7 +15,6 @@ export default function Nav() {
 
 function Terms() {
     const { t } = useTranslation();
-    const user = useUser();
     const [terms] = useTerms();
     const [langFilter, setLangFilter] = useState<Lang>();
 
@@ -78,17 +77,9 @@ function Terms() {
                     );
                 })}
             </ul>
-            {user ? (
+            <LoginHint i18nKey="term.registerToAdd">
                 <Link to={TERM_ADD}>{t('common.entities.term.add')}</Link>
-            ) : (
-                <div>
-                    <Trans
-                        t={t}
-                        i18nKey={'term.registerToAdd'}
-                        components={{ LoginLink: <Link to="/login" />, SignUpLink: <Link to="/signup" /> }}
-                    />
-                </div>
-            )}
+            </LoginHint>
         </div>
     );
 }

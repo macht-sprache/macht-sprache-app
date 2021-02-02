@@ -8,7 +8,7 @@
 .sidebarInner {
     grid-gap: 1rem;
     display: grid;
-    grid-template-columns: 1fr var(--sidebarWidth);
+    grid-template-columns: 1fr calc(var(--sidebarWidth) - 1rem);
 }
 
 .header {
