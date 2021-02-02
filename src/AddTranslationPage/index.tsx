@@ -18,12 +18,12 @@ export default function AddTranslationPage() {
     const user = useUser();
     const history = useHistory();
     const { termId } = useParams<{ termId: string }>();
-    const [term] = useTerm(termId);
+    const term = useTerm(termId);
     const { t } = useTranslation();
     const [submitting, setSubmitting] = useState(false);
     const [model, setModel] = useState<Model>({ translation: '', comment: '' });
 
-    if (!user || !term) {
+    if (!user) {
         return null;
     }
 

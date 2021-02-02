@@ -23,4 +23,4 @@ if (process.env.REACT_APP_FIRESTORE_EMULATOR_PORT) {
     db.useEmulator(window.location.hostname, parseInt(process.env.REACT_APP_FIRESTORE_EMULATOR_PORT));
 }
 
-export { auth, db };
+export { app, auth, db };

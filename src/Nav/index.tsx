@@ -15,12 +15,8 @@ export default function Nav() {
 
 function Terms() {
     const { t } = useTranslation();
-    const [terms] = useTerms();
+    const terms = useTerms();
     const [langFilter, setLangFilter] = useState<Lang>();
-
-    if (!terms) {
-        return null;
-    }
 
     const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
         {

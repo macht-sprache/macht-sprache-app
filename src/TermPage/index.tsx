@@ -4,17 +4,13 @@ import Comments from '../Comments';
 import { collections, useTerm } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
-import { TranslationsList } from '../TranslationsList';
 import { Columns } from '../Layout/Columns';
+import { TranslationsList } from '../TranslationsList';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
     const { t } = useTranslation();
-    const [term] = useTerm(termId);
-
-    if (!term) {
-        return null;
-    }
+    const term = useTerm(termId);
 
     return (
         <>

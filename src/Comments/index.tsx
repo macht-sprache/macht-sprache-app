@@ -13,9 +13,9 @@ type Props = {
 
 export default function Comments({ entityRef: ref }: Props) {
     const user = useUser();
-    const [comments] = useComments(ref);
+    const comments = useComments(ref);
     const { t } = useTranslation();
-    const commentCount = comments ? comments.length : 0;
+    const commentCount = comments.length;
     const onCreate = async (comment: string) => user && addComment(user, ref, comment);
 
     return (
@@ -23,7 +23,7 @@ export default function Comments({ entityRef: ref }: Props) {
             <ColumnHeading>
                 {commentCount} {t('common.entities.comment.value', { count: commentCount })}
             </ColumnHeading>
-            <CommentList comments={comments || []} />
+            <CommentList comments={comments} />
             <CommentCreate onCreate={onCreate} />
         </CommentWrapper>
     );

@@ -12,9 +12,9 @@ import { generatePath, Link } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD } from '../routes';
 
 export function TranslationsList({ term }: { term: Term }) {
-    const [translations] = useTranslations(term.id);
+    const translations = useTranslations(term.id);
     const { t } = useTranslation();
-    const commentCount = translations ? translations.length : 0;
+    const commentCount = translations.length;
     const [lang] = useLang();
 
     return (
@@ -22,8 +22,7 @@ export function TranslationsList({ term }: { term: Term }) {
             <ColumnHeading>
                 {commentCount} {t('common.entities.translation.value', { count: commentCount })}
             </ColumnHeading>
-            {translations === undefined && <>{t('common.loading')}</>}
-            {translations && translations.length === 0 && (
+            {!translations.length && (
                 <div>
                     <Trans
                         t={t}
@@ -34,7 +33,7 @@ export function TranslationsList({ term }: { term: Term }) {
                     <AddTranslationButton termId={term.id} />
                 </div>
             )}
-            {translations && translations.length > 0 && (
+            {!!translations.length && (
                 <>
                     <div className={s.list}>
                         {translations.map(translation => (

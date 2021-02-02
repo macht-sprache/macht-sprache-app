@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore';
+import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { db } from './firebase';
 import { langA, langB } from './languages';
 import { Comment, Lang, Term, Translation, TranslationExample, User } from './types';
@@ -65,11 +65,11 @@ export const collections = {
 };
 
 export function useTerms() {
-    return useCollectionData<Term>(collections.terms);
+    return useFirestoreCollectionData<Term>(collections.terms, { initialData: [] }).data;
 }
 
 export function useTerm(id: string) {
-    return useDocumentData<Term>(collections.terms.doc(id));
+    return useFirestoreDocData<Term>(collections.terms.doc(id)).data;
 }
 
 export async function addTerm(user: User, value: string, lang: Lang, comment?: string) {
@@ -93,14 +93,13 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
 }
 
 export function useTranslationEntity(id: string) {
-    return useDocumentData<Translation>(collections.translations.doc(id));
+    return useFirestoreDocData<Translation>(collections.translations.doc(id)).data;
 }
 
 export function useTranslations(termId: string) {
-    return useCollectionData<Translation>(
-        collections.translations.where('term', '==', collections.terms.doc(termId)),
-        defaultOptions
-    );
+    return useFirestoreCollectionData<Translation>(
+        collections.translations.where('term', '==', collections.terms.doc(termId))
+    ).data;
 }
 
 export async function addTranslation(user: User, term: Term, value: string, comment?: string) {
@@ -124,18 +123,20 @@ export async function addTranslation(user: User, term: Term, value: string, comm
 }
 
 export function useTranslationExamples(translationId: string) {
-    return useCollectionData<TranslationExample>(
+    return useFirestoreCollectionData<TranslationExample>(
         collections.translationExamples.where(
             'translations',
             'array-contains',
             collections.translations.doc(translationId)
         ),
         defaultOptions
-    );
+    ).data;
 }
 
 export function useComments(ref: Comment['ref']) {
-    return useCollectionData<Comment>(collections.comments.where('ref', '==', ref).orderBy('createdAt'));
+    return useFirestoreCollectionData<Comment>(collections.comments.where('ref', '==', ref).orderBy('createdAt'), {
+        initialData: [],
+    }).data;
 }
 
 export const addComment = (user: User, ref: Comment['ref'], comment: string) => {
