@@ -17,11 +17,11 @@
     padding: 0.5rem;
     background: var(--backgroundColor);
     white-space: pre-wrap;
+    font-family: var(--paragraphFont);
 }
 
 .footer {
     margin-top: 0.5rem;
-    font-family: var(--monospaceFont);
     display: flex;
 }
 

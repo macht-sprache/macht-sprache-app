@@ -4,7 +4,6 @@
     flex-direction: column;
     padding: 0.5rem;
     background: white;
-    font-family: var(--monospaceFont);
     cursor: text;
     height: 4rem;
 }

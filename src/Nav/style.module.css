@@ -30,7 +30,3 @@
     background: var(--black);
     height: var(--thickBorder);
 }
-
-.nav {
-    font-family: var(--monospaceFont);
-}

@@ -1,9 +1,11 @@
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
-        'Droid Sans', 'Helvetica Neue', sans-serif;
+    --paragraphFont: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+        'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
     --monospaceFont: 'Courier New', Courier, monospace;
+
+    font-family: var(--monospaceFont);
 
     --pink: #ceb9d2;
     --blue: #1e5166;
@@ -39,8 +41,7 @@ h1,
 h2,
 h3,
 h4 {
-    font-family: var(--monospaceFont);
-    margin-top: 0;
+    /* margin-top: 0; */
 }
 
 h2 {
