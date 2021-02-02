@@ -3,7 +3,7 @@ import { useTranslations } from '../dataHooks';
 import { Trans, useTranslation } from 'react-i18next';
 import { TermWithLang } from '../TermWithLang';
 import { Term } from '../types';
-import { Link } from 'react-router-dom';
+import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 
 export function TranslationsList({ term }: { term: Term }) {
     const [translations] = useTranslations(term.id);
@@ -23,7 +23,9 @@ export function TranslationsList({ term }: { term: Term }) {
                     values={{ term: term.value }}
                     components={{ TermWithLang: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
                 />
-                <Link to={addTermLink}>{t('common.entities.translation.add')}</Link>
+                <ButtonContainer align="left">
+                    <ButtonLink to={addTermLink}>{t('common.entities.translation.add')}</ButtonLink>
+                </ButtonContainer>
             </div>
         );
     }
@@ -35,7 +37,9 @@ export function TranslationsList({ term }: { term: Term }) {
                     <li key={translation.id}>{translation.value}</li>
                 ))}
             </ul>
-            <Link to={addTermLink}>{t('common.entities.translation.add')}</Link>
+            <ButtonContainer align="left">
+                <ButtonLink to={addTermLink}>{t('common.entities.translation.add')}</ButtonLink>
+            </ButtonContainer>
         </div>
     );
 }
