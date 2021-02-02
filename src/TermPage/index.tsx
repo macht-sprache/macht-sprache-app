@@ -1,4 +1,3 @@
-import s from './style.module.css';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
@@ -6,6 +5,7 @@ import { collections, useTerm } from '../dataHooks';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { TranslationsList } from '../TranslationsList';
+import { Columns } from '../Layout/Columns';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
@@ -33,10 +33,10 @@ export default function TermPage() {
             >
                 {term.value}
             </Header>
-            <div className={s.main}>
+            <Columns>
                 <TranslationsList term={term} />
                 <Comments entityRef={collections.terms.doc(termId)} />
-            </div>
+            </Columns>
         </>
     );
 }
