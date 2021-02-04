@@ -11,7 +11,6 @@
     box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }
 
-/* .container:hover, */
 .container:focus-within {
     box-shadow: 0 0 0 var(--thickBorder) var(--orange);
 }
@@ -45,7 +44,6 @@
     font-size: var(--fontSizeS);
     color: var(--white);
     padding: 0.5rem;
-    /* margin-top: 1rem; */
 }
 
 .container:not(:focus-within) .labelEmpty {
@@ -71,28 +69,8 @@
     background-color: transparent;
 }
 
-.selectLabel {
-    composes: label;
-}
-
-.selectLabelEmpty {
-    composes: selectLabel;
-    transform: translateY(0.6rem);
-}
-
 .select:focus {
     outline: none;
-}
-
-.selectContainer {
-    composes: container;
-    justify-content: flex-start;
-    min-height: calc(4rem - var(--thickBorder) * 2);
-}
-
-.selectContainerWithError {
-    composes: selectContainer;
-    box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }
 
 .textarea {
@@ -105,25 +83,4 @@
 
 .textarea:focus {
     outline: none;
-}
-
-.textareaLabel {
-    composes: label;
-}
-
-.textareaLabelEmpty {
-    composes: textareaLabel;
-}
-
-.textareaContainer:not(:focus-within) .textareaLabelEmpty {
-    transform: translateY(1rem);
-}
-
-.textareaContainer {
-    composes: container;
-}
-
-.textareaContainerWithError {
-    composes: textareaContainer;
-    box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }

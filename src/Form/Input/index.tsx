@@ -7,15 +7,12 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
 }
 
 export function Input({ label, value, span = 4, error, ...props }: InputProps) {
-    const empty = !value;
     const inputProps = { value, ...props };
 
     return (
-        <label className={error ? s.containerError : s.container} style={{ gridColumn: `span ${span}` }}>
-            <div className={empty ? s.labelEmpty : s.label}>{label}</div>
+        <Container error={error} span={span} label={label} empty={!value}>
             <input className={s.input} aria-invalid={!!error} {...inputProps} />
-            <DisplayError>{error}</DisplayError>
-        </label>
+        </Container>
     );
 }
 
@@ -28,20 +25,14 @@ interface SelectProps
 }
 
 export function Select({ label, span = 4, children, value, error, ...props }: SelectProps) {
-    const empty = !value;
     const selectProps = { value, ...props };
 
     return (
-        <label
-            className={error ? s.selectContainerWithError : s.selectContainer}
-            style={{ gridColumn: `span ${span}` }}
-        >
-            <div className={empty ? s.selectLabelEmpty : s.selectLabel}>{label}</div>
+        <Container error={error} span={span} label={label} empty={!value}>
             <select className={s.select} aria-invalid={!!error} {...selectProps}>
                 {children}
             </select>
-            <DisplayError>{error}</DisplayError>
-        </label>
+        </Container>
     );
 }
 
@@ -53,27 +44,37 @@ interface TextareaProps
 }
 
 export function Textarea({ label, span = 4, value, error, ...props }: TextareaProps) {
-    const empty = !value;
     const testareaProps = { value, ...props };
 
     return (
-        <label
-            className={error ? s.textareaContainerWithError : s.textareaContainer}
-            style={{ gridColumn: `span ${span}` }}
-        >
-            <div className={empty ? s.textareaLabelEmpty : s.textareaLabel}>{label}</div>
+        <Container error={error} span={span} label={label} empty={!value}>
             <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} />
-            <DisplayError>{error}</DisplayError>
-        </label>
+        </Container>
     );
 }
 
-const DisplayError = ({ children }: { children: React.ReactNode }) => {
-    if (!children) return null;
-
+const Container = ({
+    children,
+    error,
+    span,
+    label,
+    empty,
+}: {
+    children: React.ReactNode;
+    error?: string;
+    span?: number;
+    label: React.ReactNode;
+    empty: boolean;
+}) => {
     return (
-        <div aria-live="assertive" className={s.error}>
+        <label className={error ? s.containerError : s.container} style={{ gridColumn: `span ${span}` }}>
+            <div className={empty ? s.labelEmpty : s.label}>{label}</div>
             {children}
-        </div>
+            {error && (
+                <div aria-live="assertive" className={s.error}>
+                    {error}
+                </div>
+            )}
+        </label>
     );
 };
