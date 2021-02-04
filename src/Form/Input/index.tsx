@@ -14,11 +14,7 @@ export function Input({ label, value, span = 4, error, ...props }: InputProps) {
         <label className={error ? s.containerError : s.container} style={{ gridColumn: `span ${span}` }}>
             <div className={empty ? s.labelEmpty : s.label}>{label}</div>
             <input className={s.input} aria-invalid={!!error} {...inputProps} />
-            {error && (
-                <div aria-live="assertive" className={s.error}>
-                    {error}
-                </div>
-            )}
+            <DisplayError>{error}</DisplayError>
         </label>
     );
 }
@@ -44,11 +40,7 @@ export function Select({ label, span = 4, children, value, error, ...props }: Se
             <select className={s.select} aria-invalid={!!error} {...selectProps}>
                 {children}
             </select>
-            {error && (
-                <div aria-live="assertive" className={s.error}>
-                    {error}
-                </div>
-            )}
+            <DisplayError>{error}</DisplayError>
         </label>
     );
 }
@@ -71,12 +63,17 @@ export function Textarea({ label, span = 4, value, error, ...props }: TextareaPr
         >
             <div className={empty ? s.textareaLabelEmpty : s.textareaLabel}>{label}</div>
             <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} />
-
-            {error && (
-                <div aria-live="assertive" className={s.error}>
-                    {error}
-                </div>
-            )}
+            <DisplayError>{error}</DisplayError>
         </label>
     );
 }
+
+const DisplayError = ({ children }: { children: React.ReactNode }) => {
+    if (!children) return null;
+
+    return (
+        <div aria-live="assertive" className={s.error}>
+            {children}
+        </div>
+    );
+};
