@@ -20,6 +20,7 @@ export default function ElementTestPage() {
     const [name, setName] = useState('');
     const [another, setAnother] = useState('');
     const [selectValue, setSelectValue] = useState('');
+    const [anotherSelectValue, setAnotherSelectValue] = useState('');
     const [textAreaValue, setTextAreaValue] = useState('');
 
     const [comments, setComments] = useState<Comment[]>([
@@ -106,6 +107,19 @@ export default function ElementTestPage() {
                     <option value="2">newspaper</option>
                     <option value="3">movie</option>
                 </Select>
+                <Select
+                    label="Another Select, full width"
+                    value={anotherSelectValue}
+                    onChange={value => {
+                        setAnotherSelectValue(value.target.value);
+                    }}
+                    // error="something is wrong here!"
+                >
+                    <option value=""></option>
+                    <option value="1">book</option>
+                    <option value="2">newspaper</option>
+                    <option value="3">movie</option>
+                </Select>
                 <Input
                     label="Another field, full width"
                     value={another}
@@ -119,6 +133,7 @@ export default function ElementTestPage() {
                     onChange={value => {
                         setTextAreaValue(value.target.value);
                     }}
+                    error="something is wrong here, too!"
                 />
             </InputContainer>
             <ButtonContainer>

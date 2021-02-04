@@ -2,10 +2,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
     background: white;
     cursor: text;
-    /* height: 4rem; */
 }
 
 .containerError {
@@ -20,12 +18,12 @@
 
 .input {
     width: 100%;
-    margin-top: 0.3rem;
     font-family: inherit;
     font-weight: bold;
     border: none;
     background: transparent;
     font-size: inherit;
+    padding: 2rem 0.5rem 0.5rem;
 }
 
 .input:focus {
@@ -34,18 +32,20 @@
 
 .label,
 .labelEmpty {
+    position: absolute;
+    left: 0.5rem;
+    top: 0.7rem;
     transition: all 0.2s;
     pointer-events: none;
     transform: translateY(0);
-    margin-top: 0.3rem;
 }
 
 .error {
     background: var(--red);
     font-size: var(--fontSizeS);
     color: var(--white);
-    box-shadow: 0 0 0 0.5rem var(--red);
-    margin-top: 1rem;
+    padding: 0.5rem;
+    /* margin-top: 1rem; */
 }
 
 .container:not(:focus-within) .labelEmpty {
@@ -61,35 +61,23 @@
 }
 
 .select {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-family: var(--monospaceFont);
-    font-size: inherit;
-    font-weight: bold;
-    border: none;
-    padding: 1.5rem 0.5rem 0.5rem;
+    composes: input;
     -webkit-appearance: none;
     cursor: pointer;
     background-image: url('./select_arrow.svg');
     background-repeat: no-repeat;
     background-size: 1rem;
-    background-position: top 1.7rem right 1rem;
+    background-position: center right 1rem;
+    background-color: transparent;
 }
 
 .selectLabel {
-    position: relative;
-    z-index: 1;
-    margin-top: 0.3rem;
-    pointer-events: none;
-    transition: all 0.2s;
+    composes: label;
 }
 
 .selectLabelEmpty {
     composes: selectLabel;
-    transform: translateY(0.7rem);
+    transform: translateY(0.6rem);
 }
 
 .select:focus {
@@ -99,15 +87,18 @@
 .selectContainer {
     composes: container;
     justify-content: flex-start;
+    min-height: calc(4rem - var(--thickBorder) * 2);
+}
+
+.selectContainerWithError {
+    composes: selectContainer;
+    box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }
 
 .textarea {
+    composes: input;
     background: transparent;
-    font-size: 1.2rem; /* for some reason inherit doesn't work */
-    font-weight: bold;
-    border: none;
-    margin: 0 -0.5rem -0.5rem;
-    padding: 0.5rem;
+    font-size: inherit;
     resize: vertical;
     min-height: 100px;
 }
@@ -117,7 +108,7 @@
 }
 
 .textareaLabel {
-    transition: all 0.2s;
+    composes: label;
 }
 
 .textareaLabelEmpty {
@@ -130,5 +121,9 @@
 
 .textareaContainer {
     composes: container;
-    height: auto;
+}
+
+.textareaContainerWithError {
+    composes: textareaContainer;
+    box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }
