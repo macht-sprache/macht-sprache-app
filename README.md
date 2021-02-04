@@ -1,4 +1,4 @@
-<img src="logo.svg" alt="macht.sprache. logo" style="width: 200px"/>
+<img src="logo.svg" alt="macht.sprache. logo" width="200"/>
 
 # macht.sprache.
 
