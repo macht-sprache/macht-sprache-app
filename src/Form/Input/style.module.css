@@ -5,10 +5,15 @@
     padding: 0.5rem;
     background: white;
     cursor: text;
-    height: 4rem;
+    /* height: 4rem; */
 }
 
-.container:hover,
+.containerError {
+    composes: container;
+    box-shadow: 0 0 0 var(--thickBorder) var(--red);
+}
+
+/* .container:hover, */
 .container:focus-within {
     box-shadow: 0 0 0 var(--thickBorder) var(--orange);
 }
@@ -33,6 +38,14 @@
     pointer-events: none;
     transform: translateY(0);
     margin-top: 0.3rem;
+}
+
+.error {
+    background: var(--red);
+    font-size: var(--fontSizeS);
+    color: var(--white);
+    box-shadow: 0 0 0 0.5rem var(--red);
+    margin-top: 1rem;
 }
 
 .container:not(:focus-within) .labelEmpty {
@@ -63,7 +76,7 @@
     background-image: url('./select_arrow.svg');
     background-repeat: no-repeat;
     background-size: 1rem;
-    background-position: center right 1rem;
+    background-position: top 1.7rem right 1rem;
 }
 
 .selectLabel {

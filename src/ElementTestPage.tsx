@@ -91,6 +91,7 @@ export default function ElementTestPage() {
                     onChange={value => {
                         setName(value.target.value);
                     }}
+                    error="something is wrong here!"
                 />
                 <Select
                     label="Media Type"

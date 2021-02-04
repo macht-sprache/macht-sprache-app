@@ -2,17 +2,23 @@ import s from './style.module.css';
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: React.ReactNode;
+    error?: string;
     span?: number;
 }
 
-export function Input({ label, value, span = 4, ...props }: InputProps) {
+export function Input({ label, value, span = 4, error, ...props }: InputProps) {
     const empty = !value;
     const inputProps = { value, ...props };
 
     return (
-        <label className={s.container} style={{ gridColumn: `span ${span}` }}>
+        <label className={error ? s.containerError : s.container} style={{ gridColumn: `span ${span}` }}>
             <div className={empty ? s.labelEmpty : s.label}>{label}</div>
-            <input className={s.input} {...inputProps} />
+            <input className={s.input} {...inputProps} aria-invalid={!!error} />
+            {error && (
+                <div aria-live="assertive" className={s.error}>
+                    {error}
+                </div>
+            )}
         </label>
     );
 }
