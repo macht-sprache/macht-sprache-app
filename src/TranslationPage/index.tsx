@@ -1,6 +1,8 @@
 import { generatePath, Link, useParams } from 'react-router-dom';
-import { useTerm, useTranslationEntity } from '../dataHooks';
+import Comments from '../Comments';
+import { collections, useTerm, useTranslationEntity } from '../dataHooks';
 import Header from '../Header';
+import { Columns } from '../Layout/Columns';
 import { TERM } from '../routes';
 import s from './style.module.css';
 
@@ -21,6 +23,9 @@ export function TranslationPage() {
             >
                 {translation.value}
             </Header>
+            <Columns>
+                <Comments entityRef={collections.translations.doc(translation.id)} />
+            </Columns>
         </>
     );
 }
