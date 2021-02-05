@@ -18,9 +18,9 @@ const creator = {
 
 export default function ElementTestPage() {
     const [name, setName] = useState('');
-    const [another, setAnother] = useState('');
+    const [another, setAnother] = useState('Disabled value');
     const [selectValue, setSelectValue] = useState('');
-    const [anotherSelectValue, setAnotherSelectValue] = useState('');
+    const [anotherSelectValue, setAnotherSelectValue] = useState('2');
     const [textAreaValue, setTextAreaValue] = useState('');
 
     const [comments, setComments] = useState<Comment[]>([
@@ -108,12 +108,12 @@ export default function ElementTestPage() {
                     <option value="3">movie</option>
                 </Select>
                 <Select
-                    label="Another Select, full width"
+                    label="Another Select, full width & disabled"
                     value={anotherSelectValue}
+                    disabled={true}
                     onChange={value => {
                         setAnotherSelectValue(value.target.value);
                     }}
-                    // error="something is wrong here!"
                 >
                     <option value=""></option>
                     <option value="1">book</option>
@@ -121,8 +121,9 @@ export default function ElementTestPage() {
                     <option value="3">movie</option>
                 </Select>
                 <Input
-                    label="Another field, full width"
+                    label="Another field, disabled"
                     value={another}
+                    disabled={true}
                     onChange={value => {
                         setAnother(value.target.value);
                     }}

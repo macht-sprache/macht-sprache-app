@@ -11,6 +11,11 @@
     box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }
 
+.containerDisabled {
+    composes: container;
+    color: var(--disabledGrey);
+}
+
 .container:focus-within {
     box-shadow: 0 0 0 var(--thickBorder) var(--orange);
 }
@@ -23,6 +28,8 @@
     background: transparent;
     font-size: inherit;
     padding: 2rem 0.5rem 0.5rem;
+    color: inherit;
+    opacity: 1;
 }
 
 .input:focus {

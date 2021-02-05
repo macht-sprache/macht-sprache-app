@@ -6,11 +6,11 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
     span?: number;
 }
 
-export function Input({ label, value, span = 4, error, ...props }: InputProps) {
-    const inputProps = { value, ...props };
+export function Input({ label, value, disabled, span = 4, error, ...props }: InputProps) {
+    const inputProps = { value, disabled, ...props };
 
     return (
-        <Container error={error} span={span} label={label} empty={!value}>
+        <Container error={error} disabled={disabled} span={span} label={label} empty={!value}>
             <input className={s.input} aria-invalid={!!error} {...inputProps} />
         </Container>
     );
@@ -24,11 +24,11 @@ interface SelectProps
     error?: React.ReactNode;
 }
 
-export function Select({ label, span = 4, children, value, error, ...props }: SelectProps) {
-    const selectProps = { value, ...props };
+export function Select({ label, span = 4, children, value, disabled, error, ...props }: SelectProps) {
+    const selectProps = { value, disabled, ...props };
 
     return (
-        <Container error={error} span={span} label={label} empty={!value}>
+        <Container error={error} disabled={disabled} span={span} label={label} empty={!value}>
             <select className={s.select} aria-invalid={!!error} {...selectProps}>
                 {children}
             </select>
@@ -43,11 +43,11 @@ interface TextareaProps
     error?: React.ReactNode;
 }
 
-export function Textarea({ label, span = 4, value, error, ...props }: TextareaProps) {
-    const testareaProps = { value, ...props };
+export function Textarea({ label, span = 4, value, disabled, error, ...props }: TextareaProps) {
+    const testareaProps = { value, disabled, ...props };
 
     return (
-        <Container error={error} span={span} label={label} empty={!value}>
+        <Container error={error} disabled={disabled} span={span} label={label} empty={!value}>
             <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} />
         </Container>
     );
@@ -59,15 +59,20 @@ const Container = ({
     span,
     label,
     empty,
+    disabled,
 }: {
     children: React.ReactNode;
     error?: React.ReactNode;
     span?: number;
     label: React.ReactNode;
     empty: boolean;
+    disabled?: boolean;
 }) => {
     return (
-        <label className={error ? s.containerError : s.container} style={{ gridColumn: `span ${span}` }}>
+        <label
+            className={error ? s.containerError : disabled ? s.containerDisabled : s.container}
+            style={{ gridColumn: `span ${span}` }}
+        >
             <div className={empty ? s.labelEmpty : s.label}>{label}</div>
             {children}
             {error && (
