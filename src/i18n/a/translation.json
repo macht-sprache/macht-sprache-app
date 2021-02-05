@@ -20,6 +20,11 @@
                 "value_plural": "Comments",
                 "add": "Add Comment",
                 "action": "Comment"
+            },
+            "translatioExample": {
+                "value": "Translation Example",
+                "value_plural": "Translation Examples",
+                "add": "Add Translation Example"
             }
         },
         "loading": "Loading..."
@@ -68,6 +73,9 @@
     "translationList": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet."
+    },
+    "translationExample": {
+        "empty": "There are no translation examples for <Term>{{term}}</Term> yet."
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."

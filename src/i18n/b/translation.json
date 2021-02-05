@@ -20,6 +20,11 @@
                 "value_plural": "Kommentare",
                 "add": "Kommentar hinzufügen",
                 "action": "Kommentieren"
+            },
+            "translatioExample": {
+                "value": "Beispielübersetzung",
+                "value_plural": "Beispielübersetzungen",
+                "add": "Beispielübersetzung hinzufügen"
             }
         },
         "loading": "Lade..."
@@ -68,6 +73,9 @@
     "translationList": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>."
+    },
+    "translationExample": {
+        "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>."
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
