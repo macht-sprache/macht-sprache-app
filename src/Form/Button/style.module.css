@@ -2,6 +2,7 @@
     display: block;
     font-size: inherit;
     font-family: var(--monospaceFont);
+    color: var(--black);
     border: var(--thinBorder) var(--black) solid;
     background: transparent;
     padding: 0.5rem;
@@ -9,15 +10,15 @@
     text-decoration: none;
 }
 
-.button:not(:disabled):hover,
-.button:focus-visible {
+.button:focus {
+    outline: none;
+}
+
+.button:hover:not(:disabled),
+.button:focus {
     color: var(--white);
     cursor: pointer;
     background: var(--black);
-}
-
-.button:focus {
-    outline: none;
 }
 
 .buttonPrimary {
@@ -26,13 +27,13 @@
     border-width: var(--thickBorder);
 }
 
-.buttonPrimary:not([disabled]):hover,
-.buttonPrimary:focus-visible {
+.buttonPrimary:hover:not(:disabled),
+.buttonPrimary:focus {
     background-color: var(--orange);
     font-weight: bold;
 }
 
-.button[disabled] {
+.button:disabled {
     color: var(--disabledGrey);
     border-color: var(--disabledGrey);
 }
