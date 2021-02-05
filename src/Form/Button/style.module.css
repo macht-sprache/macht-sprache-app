@@ -4,9 +4,8 @@
     font-family: var(--monospaceFont);
     color: var(--black);
     border: var(--thinBorder) var(--black) solid;
-    background: transparent;
     padding: 0.5rem;
-    background: var(--backgroundColor);
+    background-color: var(--backgroundColor);
     text-decoration: none;
 }
 
@@ -14,11 +13,16 @@
     outline: none;
 }
 
+.button:focus:not(:focus-visible) {
+    color: var(--black);
+    background-color: var(--backgroundColor);
+}
+
 .button:hover:not(:disabled),
 .button:focus {
     color: var(--white);
     cursor: pointer;
-    background: var(--black);
+    background-color: var(--black);
 }
 
 .buttonPrimary {
@@ -27,12 +31,16 @@
     border-width: var(--thickBorder);
 }
 
+.buttonPrimary:focus:not(:focus-visible) {
+    background-color: var(--backgroundColor);
+    font-weight: normal;
+}
+
 .buttonPrimary:hover:not(:disabled),
 .buttonPrimary:focus {
     background-color: var(--orange);
     font-weight: bold;
 }
-
 .button:disabled {
     color: var(--disabledGrey);
     border-color: var(--disabledGrey);
