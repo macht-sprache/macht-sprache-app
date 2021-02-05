@@ -52,6 +52,10 @@
             "explanation": "Please click the link we sent you to {{email}}.",
             "resend": "Resend Verification Email",
             "resent": "Verification Email Sent"
+        },
+        "errors": {
+            "email-already-in-use": "The email address is already in use by another account.",
+            "weak-password": "Password should be at least 6 characters."
         }
     },
     "term": {

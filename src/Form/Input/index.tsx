@@ -2,7 +2,7 @@ import s from './style.module.css';
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: React.ReactNode;
-    error?: string;
+    error?: React.ReactNode;
     span?: number;
 }
 
@@ -21,7 +21,7 @@ interface SelectProps
     label: React.ReactNode;
     children: React.ReactNode;
     span?: number;
-    error?: string;
+    error?: React.ReactNode;
 }
 
 export function Select({ label, span = 4, children, value, error, ...props }: SelectProps) {
@@ -40,7 +40,7 @@ interface TextareaProps
     extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
     label: React.ReactNode;
     span?: number;
-    error?: string;
+    error?: React.ReactNode;
 }
 
 export function Textarea({ label, span = 4, value, error, ...props }: TextareaProps) {
@@ -61,7 +61,7 @@ const Container = ({
     empty,
 }: {
     children: React.ReactNode;
-    error?: string;
+    error?: React.ReactNode;
     span?: number;
     label: React.ReactNode;
     empty: boolean;

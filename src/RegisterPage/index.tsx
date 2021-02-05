@@ -4,12 +4,13 @@ import { Redirect } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
+import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { HOME, REGISTER_POST } from '../routes';
 
-type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE';
+type RegistrationState = { state: 'INIT' } | { state: 'IN_PROGRESS' } | { state: 'DONE' } | { state: 'ERROR' };
 
 const signUp = async (displayName: string, email: string, password: string) => {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
@@ -33,26 +34,28 @@ export default function RegisterPage() {
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
-    const [registrationState, setRegistrationState] = useState<RegistrationState>('INIT');
-    const loadingRegistration = registrationState === 'IN_PROGRESS';
+    const [registrationState, setRegistrationState] = useState<RegistrationState>({ state: 'INIT' });
+    const [registrationError, setRegistrationError] = useState<any>();
+    const loadingRegistration = registrationState === { state: 'IN_PROGRESS' };
     const disabled = loadingRegistration || !displayName || !email || !password;
 
     if (user && !loadingRegistration) {
         return <Redirect to={HOME} />;
     }
 
-    if (registrationState === 'DONE') {
+    if (registrationState.state === 'DONE') {
         return <Redirect to={REGISTER_POST} />;
     }
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
-        setRegistrationState('IN_PROGRESS');
+        setRegistrationState({ state: 'IN_PROGRESS' });
+        setRegistrationError(undefined);
         signUp(displayName, email, password)
-            .then(() => setRegistrationState('DONE'))
+            .then(() => setRegistrationState({ state: 'DONE' }))
             .catch(error => {
-                console.error(error);
-                setRegistrationState('INIT');
+                setRegistrationError(error);
+                setRegistrationState({ state: 'ERROR' });
             });
     };
 
@@ -77,6 +80,10 @@ export default function RegisterPage() {
                         onChange={event => {
                             setEmail(event.target.value);
                         }}
+                        error={
+                            registrationError?.code === 'auth/email-already-in-use' &&
+                            t('auth.errors.email-already-in-use')
+                        }
                     />
                     <Input
                         label={t('auth.password')}
@@ -86,8 +93,14 @@ export default function RegisterPage() {
                         onChange={event => {
                             setSetPassword(event.target.value);
                         }}
+                        error={registrationError?.code === 'auth/weak-password' && t('auth.errors.weak-password')}
                     />
                 </InputContainer>
+                {registrationError.code &&
+                    registrationError.code !== 'auth/weak-password' &&
+                    registrationError.code !== 'auth/email-already-in-use' && (
+                        <ErrorBox>{registrationError.message}</ErrorBox>
+                    )}
                 <ButtonContainer>
                     <Button type="button">Cancel</Button>
                     <Button primary disabled={disabled} type="submit">
