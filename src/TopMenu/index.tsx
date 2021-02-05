@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { useUser } from '../authHooks';
+import { useUser } from '../hooks/auth';
 import { auth } from '../firebase';
 import { langA, langB } from '../languages';
 import LinkButton from '../LinkButton';

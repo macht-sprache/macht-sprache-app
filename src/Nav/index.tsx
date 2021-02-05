@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link, NavLink } from 'react-router-dom';
-import { useTerms } from '../dataHooks';
+import { useTerms } from '../hooks/data';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
 import { LoginHint } from '../LoginHint';

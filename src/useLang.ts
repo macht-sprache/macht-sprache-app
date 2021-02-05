@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUser } from './authHooks';
-import { collections } from './dataHooks';
+import { useUser } from './hooks/auth';
+import { collections } from './hooks/data';
 import { langA, langB } from './languages';
 import { Lang } from './types';
 

@@ -8,7 +8,7 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 import { Comment } from './types';
 import firebase from 'firebase/app';
-import { collections } from './dataHooks';
+import { collections } from './hooks/data';
 
 const ref = collections.terms.doc('1');
 const creator = {

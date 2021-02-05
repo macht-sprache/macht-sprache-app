@@ -1,6 +1,6 @@
 import { TFuncKey, Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { useUser } from '../authHooks';
+import { useUser } from '../hooks/auth';
 import { LOGIN, REGISTER } from '../routes';
 import s from './style.module.css';
 

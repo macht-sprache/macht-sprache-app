@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
 import AddTermPage from './AddTermPage';
 import AddTranslationPage from './AddTranslationPage';
-import { useEnsureUserEntity, UserProvider } from './authHooks';
+import { useEnsureUserEntity, UserProvider } from './hooks/auth';
 import ElementTestPage from './ElementTestPage';
 import { app } from './firebase';
 import HomePage from './HomePage';

@@ -1,8 +1,8 @@
 import firebase from 'firebase/app';
 import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
-import { db } from './firebase';
-import { langA, langB } from './languages';
-import { Comment, Lang, Term, Translation, TranslationExample, User } from './types';
+import { db } from '../firebase';
+import { langA, langB } from '../languages';
+import { Comment, Lang, Term, Translation, TranslationExample, User } from '../types';
 
 const defaultOptions = { idField: 'id' };
 const defaultSnapshotOptions: firebase.firestore.SnapshotOptions = { serverTimestamps: 'estimate' };

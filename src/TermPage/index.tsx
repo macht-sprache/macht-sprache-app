@@ -1,7 +1,7 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
-import { collections, useTerm } from '../dataHooks';
+import { collections, useTerm } from '../hooks/data';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { Columns } from '../Layout/Columns';

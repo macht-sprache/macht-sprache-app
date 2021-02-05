@@ -1,11 +1,11 @@
 import type firebase from 'firebase';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useAuthState as _useAuthState } from 'react-firebase-hooks/auth';
-import { collections } from './dataHooks';
-import { auth } from './firebase';
-import { i18n } from './i18n/config';
-import { User } from './types';
-import { toLanguageOrDefault } from './useLang';
+import { collections } from './data';
+import { auth } from '../firebase';
+import { i18n } from '../i18n/config';
+import { User } from '../types';
+import { toLanguageOrDefault } from '../useLang';
 
 const userContext = createContext<User | undefined>(undefined);
 

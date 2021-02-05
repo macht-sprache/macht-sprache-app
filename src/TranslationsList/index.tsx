@@ -1,5 +1,5 @@
 import s from './style.module.css';
-import { useTranslations } from '../dataHooks';
+import { useTranslations } from '../hooks/data';
 import { Trans, useTranslation } from 'react-i18next';
 import { TermWithLang } from '../TermWithLang';
 import { Term } from '../types';

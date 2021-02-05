@@ -1,8 +1,8 @@
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, useHistory } from 'react-router-dom';
-import { useUser } from '../authHooks';
-import { addTerm } from '../dataHooks';
+import { useUser } from '../hooks/auth';
+import { addTerm } from '../hooks/data';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';

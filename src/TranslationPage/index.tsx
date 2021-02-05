@@ -1,6 +1,6 @@
 import { generatePath, Link, useParams } from 'react-router-dom';
 import Comments from '../Comments';
-import { collections, useTerm, useTranslationEntity } from '../dataHooks';
+import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import Header from '../Header';
 import { Columns } from '../Layout/Columns';
 import { TERM } from '../routes';
