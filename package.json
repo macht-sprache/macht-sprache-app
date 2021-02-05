@@ -32,6 +32,8 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "start-firebase": "firebase emulators:start --import=./local-db --export-on-exit=./local-db",
+        "deploy:rules": "npx firebase deploy --only firestore:rules",
+        "deploy:site-next": "npm run build && firebase hosting:channel:deploy next",
         "format": "prettier --write ."
     },
     "eslintConfig": {
