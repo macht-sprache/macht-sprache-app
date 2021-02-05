@@ -1,26 +1,29 @@
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, useHistory } from 'react-router-dom';
-import { useUser } from '../hooks/auth';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { HOME, REGISTER_POST } from '../routes';
+import { useUser } from '../hooks/auth';
+import { addContinueParam, useContinuePath } from '../hooks/location';
+import { REGISTER_POST } from '../routes';
 
 export default function LoginPage() {
     const user = useUser();
     const { t } = useTranslation();
     const history = useHistory();
+    const continuePath = useContinuePath();
+
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
     const [loggingIn, setLoggingIn] = useState(false);
     const [loginError, setLoginError] = useState<any>();
 
     if (user) {
-        return <Redirect to={HOME} />;
+        return <Redirect to={continuePath} />;
     }
 
     const disabled = loggingIn || !email || !password;
@@ -32,7 +35,7 @@ export default function LoginPage() {
         auth.signInWithEmailAndPassword(email, password)
             .then(auth => {
                 if (!auth.user?.emailVerified) {
-                    history.push(REGISTER_POST);
+                    history.push(addContinueParam(REGISTER_POST, continuePath));
                 }
             })
             .catch(error => {
