@@ -55,7 +55,9 @@
         },
         "errors": {
             "email-already-in-use": "Die Adresse ist schon mit einem Account verknüpft.",
-            "weak-password": "Passwort zu kurz."
+            "weak-password": "Passwort zu kurz.",
+            "user-not-found": "Benutzer nicht gefunden.",
+            "wrong-password": "Passwort falsch."
         }
     },
     "term": {

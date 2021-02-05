@@ -55,7 +55,9 @@
         },
         "errors": {
             "email-already-in-use": "The email address is already in use by another account.",
-            "weak-password": "Password should be at least 6 characters."
+            "weak-password": "Password should be at least 6 characters.",
+            "user-not-found": "User not found",
+            "wrong-password": "Wrong Password"
         }
     },
     "term": {

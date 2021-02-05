@@ -4,6 +4,7 @@ import { Redirect, useHistory } from 'react-router-dom';
 import { useUser } from '../authHooks';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
+import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
@@ -16,6 +17,7 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
     const [loggingIn, setLoggingIn] = useState(false);
+    const [loginError, setLoginError] = useState<any>();
 
     if (user) {
         return <Redirect to={HOME} />;
@@ -26,6 +28,7 @@ export default function LoginPage() {
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setLoggingIn(true);
+        setLoginError(undefined);
         auth.signInWithEmailAndPassword(email, password)
             .then(auth => {
                 if (!auth.user?.emailVerified) {
@@ -33,7 +36,7 @@ export default function LoginPage() {
                 }
             })
             .catch(error => {
-                console.error(error);
+                setLoginError(error);
                 setLoggingIn(false);
             });
     };
@@ -47,20 +50,29 @@ export default function LoginPage() {
                         label={t('auth.email')}
                         value={email}
                         autoComplete="email"
+                        disabled={loggingIn}
                         onChange={value => {
                             setEmail(value.target.value);
                         }}
+                        error={loginError?.code === 'auth/user-not-found' && t('auth.errors.user-not-found')}
                     />
                     <Input
                         label={t('auth.password')}
                         value={password}
                         autoComplete="current-password"
                         type="password"
+                        disabled={loggingIn}
                         onChange={value => {
                             setSetPassword(value.target.value);
                         }}
+                        error={loginError?.code === 'auth/wrong-password' && t('auth.errors.wrong-password')}
                     />
                 </InputContainer>
+
+                {loginError &&
+                    loginError.code &&
+                    loginError.code !== 'auth/user-not-found' &&
+                    loginError.code !== 'auth/wrong-password' && <ErrorBox>{loginError.message}</ErrorBox>}
                 <ButtonContainer>
                     <Button type="button">Cancel</Button>
                     <Button primary type="submit" disabled={disabled}>
