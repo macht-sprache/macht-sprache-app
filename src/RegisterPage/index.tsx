@@ -1,18 +1,19 @@
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
-import { useUser } from '../hooks/auth';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { HOME, REGISTER_POST } from '../routes';
+import { useUser } from '../hooks/auth';
+import { addContinueParam, useContinuePath } from '../hooks/location';
+import { REGISTER_POST } from '../routes';
 
 type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE' | 'ERROR';
 
-const signUp = async (displayName: string, email: string, password: string) => {
+const signUp = async (displayName: string, email: string, password: string, continuePath: string) => {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
 
     if (!user) {
@@ -23,7 +24,7 @@ const signUp = async (displayName: string, email: string, password: string) => {
 
     if (!user.emailVerified) {
         await user.sendEmailVerification({
-            url: window.location.origin + REGISTER_POST + '?success',
+            url: window.location.origin + addContinueParam(REGISTER_POST + '?success', continuePath),
         });
     }
 };
@@ -31,6 +32,8 @@ const signUp = async (displayName: string, email: string, password: string) => {
 export default function RegisterPage() {
     const user = useUser();
     const { t } = useTranslation();
+    const continuePath = useContinuePath();
+
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
@@ -40,18 +43,18 @@ export default function RegisterPage() {
     const disabled = loadingRegistration || !displayName || !email || !password;
 
     if (user && !loadingRegistration) {
-        return <Redirect to={HOME} />;
+        return <Redirect to={continuePath} />;
     }
 
     if (registrationState === 'DONE') {
-        return <Redirect to={REGISTER_POST} />;
+        return <Redirect to={addContinueParam(REGISTER_POST, continuePath)} />;
     }
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setRegistrationState('IN_PROGRESS');
         setRegistrationError(undefined);
-        signUp(displayName, email, password)
+        signUp(displayName, email, password, continuePath)
             .then(() => setRegistrationState('DONE'))
             .catch(error => {
                 setRegistrationError(error);

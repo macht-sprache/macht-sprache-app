@@ -2,14 +2,17 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, useLocation } from 'react-router-dom';
 import { useAuthState, useUser } from '../hooks/auth';
-import Button, { ButtonContainer } from '../Form/Button';
+import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
 import { REGISTER_POST } from '../routes';
+import { addContinueParam, useContinuePath } from '../hooks/location';
 
 export default function RegisterPostPage() {
     const user = useUser();
     const { t } = useTranslation();
     const [authUser, authLoading] = useAuthState();
+    const continuePath = useContinuePath();
+
     const [resendState, setResendState] = useState<'INIT' | 'SENDING' | 'SENT'>('INIT');
     const location = useLocation();
 
@@ -17,18 +20,18 @@ export default function RegisterPostPage() {
     const success = params.has('success');
 
     if (success) {
-        return <VerificationSuccess />;
+        return <VerificationSuccess continuePath={continuePath} />;
     }
 
     if (user || (!authLoading && !authUser)) {
-        return <Redirect to="/" />;
+        return <Redirect to={continuePath} />;
     }
 
     const resendVerification = () => {
         setResendState('SENDING');
         authUser
             ?.sendEmailVerification({
-                url: window.location.origin + REGISTER_POST + '?success',
+                url: window.location.origin + addContinueParam(REGISTER_POST + '?success', continuePath),
             })
             .then(() => setResendState('SENT'))
             .catch(error => {
@@ -50,11 +53,14 @@ export default function RegisterPostPage() {
     );
 }
 
-function VerificationSuccess() {
+function VerificationSuccess({ continuePath }: { continuePath: string }) {
     const { t } = useTranslation();
     return (
         <>
             <Header>{t('auth.emailVerification.headingVerified')}</Header>
+            <ButtonContainer>
+                <ButtonLink to={continuePath}>{t('auth.emailVerification.continue')}</ButtonLink>
+            </ButtonContainer>
         </>
     );
 }

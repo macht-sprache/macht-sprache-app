@@ -56,7 +56,8 @@
             "headingVerified": "Email Verifiziert",
             "explanation": "Bitte klicke auf den Link den wir an {{email}} geschickt haben.",
             "resend": "Verifizierungsemail erneut senden",
-            "resent": "Verifizierungsemail gesendet"
+            "resent": "Verifizierungsemail gesendet",
+            "continue": "Weiter"
         },
         "errors": {
             "email-already-in-use": "Die Adresse ist schon mit einem Account verknüpft.",

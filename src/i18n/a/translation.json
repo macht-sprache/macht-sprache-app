@@ -56,7 +56,8 @@
             "headingVerified": "Email Verified",
             "explanation": "Please click the link we sent you to {{email}}.",
             "resend": "Resend Verification Email",
-            "resent": "Verification Email Sent"
+            "resent": "Verification Email Sent",
+            "continue": "Continue"
         },
         "errors": {
             "email-already-in-use": "The email address is already in use by another account.",
