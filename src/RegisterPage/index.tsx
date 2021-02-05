@@ -10,7 +10,7 @@ import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { HOME, REGISTER_POST } from '../routes';
 
-type RegistrationState = { state: 'INIT' } | { state: 'IN_PROGRESS' } | { state: 'DONE' } | { state: 'ERROR' };
+type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE' | 'ERROR';
 
 const signUp = async (displayName: string, email: string, password: string) => {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
@@ -34,28 +34,28 @@ export default function RegisterPage() {
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
-    const [registrationState, setRegistrationState] = useState<RegistrationState>({ state: 'INIT' });
+    const [registrationState, setRegistrationState] = useState<RegistrationState>('INIT');
     const [registrationError, setRegistrationError] = useState<any>();
-    const loadingRegistration = registrationState === { state: 'IN_PROGRESS' };
+    const loadingRegistration = registrationState === 'IN_PROGRESS';
     const disabled = loadingRegistration || !displayName || !email || !password;
 
     if (user && !loadingRegistration) {
         return <Redirect to={HOME} />;
     }
 
-    if (registrationState.state === 'DONE') {
+    if (registrationState === 'DONE') {
         return <Redirect to={REGISTER_POST} />;
     }
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
-        setRegistrationState({ state: 'IN_PROGRESS' });
+        setRegistrationState('IN_PROGRESS');
         setRegistrationError(undefined);
         signUp(displayName, email, password)
-            .then(() => setRegistrationState({ state: 'DONE' }))
+            .then(() => setRegistrationState('DONE'))
             .catch(error => {
                 setRegistrationError(error);
-                setRegistrationState({ state: 'ERROR' });
+                setRegistrationState('ERROR');
             });
     };
 
@@ -68,6 +68,7 @@ export default function RegisterPage() {
                         label={t('auth.displayName')}
                         value={displayName}
                         autoComplete="nickname"
+                        disabled={registrationState === 'IN_PROGRESS'}
                         onChange={event => {
                             setUserName(event.target.value);
                         }}
@@ -80,6 +81,7 @@ export default function RegisterPage() {
                         onChange={event => {
                             setEmail(event.target.value);
                         }}
+                        disabled={registrationState === 'IN_PROGRESS'}
                         error={
                             registrationError?.code === 'auth/email-already-in-use' &&
                             t('auth.errors.email-already-in-use')
@@ -93,10 +95,12 @@ export default function RegisterPage() {
                         onChange={event => {
                             setSetPassword(event.target.value);
                         }}
+                        disabled={registrationState === 'IN_PROGRESS'}
                         error={registrationError?.code === 'auth/weak-password' && t('auth.errors.weak-password')}
                     />
                 </InputContainer>
-                {registrationError.code &&
+                {registrationError &&
+                    registrationError.code &&
                     registrationError.code !== 'auth/weak-password' &&
                     registrationError.code !== 'auth/email-already-in-use' && (
                         <ErrorBox>{registrationError.message}</ErrorBox>
