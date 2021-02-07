@@ -14,6 +14,10 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
             .then(response => response.json())
             .then(data => {
                 setData(data);
+            })
+            .catch(error => {
+                // TODO display error
+                console.log('error loading from WP: ', error);
             });
     }, [slugs, lang]);
 
