@@ -14,6 +14,8 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
         return <>{t('common.loading')}</>;
     }
 
+    // there will be an empty array if the query works but does not match anything,
+    // e.g. if the slug is wrong.
     if (content?.length === 0) {
         return <>not found, something went wrong.</>;
     }
