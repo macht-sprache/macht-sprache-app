@@ -14,6 +14,7 @@ import Nav from './Nav';
 import RegisterPage from './RegisterPage';
 import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
+import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
 import { TopMenu } from './TopMenu';
 import { TranslationPage } from './TranslationPage';
@@ -54,6 +55,11 @@ function App() {
                                     </Route>
                                     <Route path={routes.TRANSLATION} exact>
                                         <TranslationPage />
+                                    </Route>
+                                    <Route path={routes.ABOUT} exact>
+                                        <StaticContentPage
+                                            slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }}
+                                        />
                                     </Route>
                                     <Route path="/elementTest" exact>
                                         <ElementTestPage />

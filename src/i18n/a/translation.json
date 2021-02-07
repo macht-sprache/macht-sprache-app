@@ -42,7 +42,8 @@
             "de": {
                 "longLabel": "show german terms only"
             }
-        }
+        },
+        "about": "about"
     },
     "auth": {
         "displayName": "User Name",

@@ -42,7 +42,8 @@
             "de": {
                 "longLabel": "Zeige nur deutsche Begriffe"
             }
-        }
+        },
+        "about": "über"
     },
     "auth": {
         "displayName": "Benutzername",
