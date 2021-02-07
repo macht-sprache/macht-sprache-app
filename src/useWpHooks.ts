@@ -12,8 +12,13 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
     useEffect(() => {
         fetch(`${WP_BASE_URL}${WP_CONTENT_TYPE}?lang=${lang}&slug=${slugs[lang]}`)
             .then(response => response.json())
-            .then(data => {
-                setData(data);
+            .then(response => {
+                if (response.length) {
+                    setData(response[0]);
+                } else {
+                    // there will be an empty array if the query works but does not match anything,
+                    // e.g. if the slug is wrong. Should show an error somehow.
+                }
             })
             .catch(error => {
                 // TODO display error

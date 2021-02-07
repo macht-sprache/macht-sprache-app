@@ -14,16 +14,10 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
         return <>{t('common.loading')}</>;
     }
 
-    // there will be an empty array if the query works but does not match anything,
-    // e.g. if the slug is wrong.
-    if (content?.length === 0) {
-        return <>not found, something went wrong.</>;
-    }
-
     return (
         <>
-            <Header>{content[0].title.rendered}</Header>
-            <div dangerouslySetInnerHTML={{ __html: content[0].content.rendered }} />
+            <Header>{content.title.rendered}</Header>
+            <div dangerouslySetInnerHTML={{ __html: content.content.rendered }} />
         </>
     );
 }
