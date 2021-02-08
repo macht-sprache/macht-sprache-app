@@ -4,6 +4,10 @@
     grid-gap: 2rem;
 }
 
+.columns > * {
+    min-width: 0;
+}
+
 .columnHeading {
     margin-top: 0;
 }
