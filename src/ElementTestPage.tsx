@@ -1,4 +1,6 @@
+import firebase from 'firebase/app';
 import { useState } from 'react';
+import BookSearch from './BookSearch';
 import { CommentCreate } from './Comments/CommentCreate';
 import { CommentList } from './Comments/CommentList';
 import { CommentWrapper } from './Comments/CommentWrapper';
@@ -6,10 +8,9 @@ import Button, { ButtonContainer } from './Form/Button';
 import { Input, Select, Textarea } from './Form/Input';
 import InputContainer from './Form/InputContainer';
 import Header from './Header';
-import { Comment } from './types';
-import firebase from 'firebase/app';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
+import { Comment } from './types';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -156,6 +157,10 @@ export default function ElementTestPage() {
                 <MultiStepIndicatorStep active={true}>Second</MultiStepIndicatorStep>
                 <MultiStepIndicatorStep>another one</MultiStepIndicatorStep>
             </MultiStepIndicator>
+
+            <h2>Book Search</h2>
+            <BookSearch label="Find German Books" lang="de" />
+            <BookSearch label="Find English Books" lang="en" />
         </>
     );
 }
