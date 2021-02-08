@@ -79,3 +79,12 @@ interface UserMini {
 export interface User extends UserMini {
     lang: Lang;
 }
+
+export interface Book {
+    id: string;
+    title: string;
+    authors: string[];
+    publisher: string;
+    isbn: string;
+    coverUrl?: string;
+}

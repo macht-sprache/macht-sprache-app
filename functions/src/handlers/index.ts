@@ -1,11 +1,62 @@
 import { LanguageServiceClient } from '@google-cloud/language';
-import { all, isNil, last, partition, slice, zip } from 'rambdax';
-import { Lang } from '../../../src/types';
+import { CallableContext } from 'firebase-functions/lib/providers/https';
+import { books_v1, google } from 'googleapis';
+import { all, isNil, isValid, last, partition, slice, zip } from 'rambdax';
+import { Book, Lang } from '../../../src/types';
 import { functions } from '../firebase';
 
+const booksApi = google.books('v1');
 const languageClient = new LanguageServiceClient();
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const verifyUser = (context: CallableContext) => {
+    if (!context.auth?.uid || !context.auth?.token.email_verified) {
+        throw new Error('User is not verified.');
+    }
+};
+
+const BookSchema = {
+    id: String,
+    title: String,
+    authors: [String],
+    publisher: String,
+    isbn: String,
+    'coverUrl?': String,
+};
+
+const isValidBook = (book: object): book is Book => isValid({ input: book, schema: BookSchema });
+const getCover = (volumeInfo: books_v1.Schema$Volume['volumeInfo']) => {
+    const imageLinks = volumeInfo?.imageLinks;
+    const cover =
+        imageLinks?.extraLarge ||
+        imageLinks?.large ||
+        imageLinks?.medium ||
+        imageLinks?.small ||
+        imageLinks?.thumbnail ||
+        imageLinks?.smallThumbnail;
+    return cover?.replace('http://', 'https://');
+};
+
+export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
+    verifyUser(context);
+
+    const { data } = await booksApi.volumes.list({ langRestrict: lang, q: 'intitle:' + query, maxResults: 20 });
+    const volumes = data.items || [];
+    const books = volumes
+        .map(
+            ({ id, volumeInfo }): Partial<Book> => ({
+                id: id ?? undefined,
+                title: volumeInfo?.title,
+                authors: volumeInfo?.authors,
+                publisher: volumeInfo?.publisher,
+                isbn: volumeInfo?.industryIdentifiers?.find(identifier => identifier.type?.startsWith('ISBN'))
+                    ?.identifier,
+                coverUrl: getCover(volumeInfo),
+            })
+        )
+        .filter(isValidBook);
+    return books;
+});
+
 const findTermMatches = async (term: string, snippet: string, language: Lang) => {
     const content = term + '\n\n' + snippet;
 
@@ -52,7 +103,5 @@ const findTermMatches = async (term: string, snippet: string, language: Lang) =>
 };
 
 export const addTranslationExample = functions.https.onCall(async (data, context) => {
-    if (!context.auth?.uid || !context.auth?.token.email_verified) {
-        return;
-    }
+    verifyUser(context);
 });
