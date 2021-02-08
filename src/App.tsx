@@ -59,6 +59,15 @@ function App() {
                                             slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }}
                                         />
                                     </Route>
+                                    <Route path={routes.CODE_OF_CONDUCT} exact>
+                                        <StaticContentPage slugs={{ en: 'code-of-conduct', de: 'code-of-conduct' }} />
+                                    </Route>
+                                    <Route path={routes.IMPRINT} exact>
+                                        <StaticContentPage
+                                            slugs={{ en: 'macht-sprache-imprint', de: 'macht-sprache-imprint' }}
+                                        />
+                                    </Route>
+
                                     <Route path="/elementTest" exact>
                                         <ElementTestPage />
                                     </Route>

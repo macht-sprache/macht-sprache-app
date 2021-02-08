@@ -46,7 +46,9 @@
                 "longLabel": "Zeige nur deutsche Begriffe"
             }
         },
-        "about": "über"
+        "about": "über",
+        "imprint": "impressum",
+        "coc": "code of conduct"
     },
     "auth": {
         "displayName": "Benutzername",

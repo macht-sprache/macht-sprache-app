@@ -46,7 +46,9 @@
                 "longLabel": "show german terms only"
             }
         },
-        "about": "about"
+        "about": "about",
+        "imprint": "imprint",
+        "coc": "code of conduct"
     },
     "auth": {
         "displayName": "User Name",
