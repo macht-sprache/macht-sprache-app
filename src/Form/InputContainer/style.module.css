@@ -1,4 +1,5 @@
 .container {
+    composes: global(inputContainer);
     display: grid;
     gap: var(--thickBorder);
     background: var(--black);
