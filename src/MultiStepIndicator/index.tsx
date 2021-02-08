@@ -1,7 +1,9 @@
 import s from './style.module.css';
 
+type AllowedChild = React.ReactElement<typeof MultiStepIndicatorStep>;
+
 type MultiStepIndicatorProps = {
-    children?: React.ReactElement<MultiStepIndicatorStepProps> | React.ReactElement<MultiStepIndicatorStepProps>[];
+    children?: AllowedChild | AllowedChild[];
 };
 
 export function MultiStepIndicator({ children }: MultiStepIndicatorProps) {
