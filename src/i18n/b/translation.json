@@ -75,9 +75,10 @@
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     },
-    "translationList": {
+    "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
-        "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>."
+        "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>.",
+        "addTranslation": "Füge eine übersetzung für <Term>{{term}}</Term> hinzu:"
     },
     "translationExample": {
         "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>."

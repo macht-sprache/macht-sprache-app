@@ -1,5 +1,5 @@
 import { FormEventHandler, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
 import { useUser } from '../hooks/auth';
 import { addTranslation, useTerm } from '../hooks/data';
@@ -8,6 +8,7 @@ import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { TERM } from '../routes';
+import { TermWithLang } from '../TermWithLang';
 
 type Model = {
     translation: string;
@@ -39,6 +40,14 @@ export default function AddTranslationPage() {
     return (
         <>
             <Header>{t('common.entities.translation.add')}</Header>
+            <p>
+                <Trans
+                    t={t}
+                    values={{ term: term.value }}
+                    i18nKey="translation.addTranslation"
+                    components={{ Term: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
+                />
+            </p>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input

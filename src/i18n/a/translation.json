@@ -75,9 +75,10 @@
         "addedOn": "Added by <User /> on <FormatDate />",
         "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     },
-    "translationList": {
+    "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
-        "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet."
+        "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet.",
+        "addTranslation": "Add a translation for <Term>{{term}}</Term>:"
     },
     "translationExample": {
         "empty": "There are no translation examples for <Term>{{term}}</Term> yet."

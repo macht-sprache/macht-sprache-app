@@ -26,7 +26,7 @@ export function TranslationsList({ term }: { term: Term }) {
                 <div>
                     <Trans
                         t={t}
-                        i18nKey="translationList.empty"
+                        i18nKey="translation.empty"
                         values={{ term: term.value }}
                         components={{ TermWithLang: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
                     />
@@ -63,7 +63,7 @@ function AddTranslationButton({ termId }: { termId: string }) {
     const { t } = useTranslation();
 
     return (
-        <LoginHint i18nKey="translationList.registerToAdd">
+        <LoginHint i18nKey="translation.registerToAdd">
             <ButtonContainer align="left">
                 <ButtonLink to={generatePath(TRANSLATION_ADD, { termId: termId })}>
                     {t('common.entities.translation.add')}
