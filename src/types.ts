@@ -36,30 +36,38 @@ export interface Translation extends Commentable {
 
 export interface TranslationExample extends Commentable {
     id: string;
-    translations: DocReference<Translation>[];
-    creatorId: string;
+    translation: DocReference<Translation>;
+    creator: UserMini;
     createdAt: Timestamp;
 
-    authors: string[];
-    originalSnippet: Snippet;
+    original: Snippet;
     translated: Snippet;
 }
 
 type Snippet = BookSnippet | LinkSnippet;
 
 interface BaseSnippet {
-    title: string;
     text: string;
+    matches: string[];
 }
 
 interface BookSnippet extends BaseSnippet {
     type: 'BOOK';
-    isbn: string;
+    source: DocReference<Book>;
+    pageNumber?: string;
 }
 
 interface LinkSnippet extends BaseSnippet {
     type: 'LINK';
     link: string;
+}
+export interface Book {
+    id: string;
+    title: string;
+    authors: string[];
+    publisher: string;
+    isbn: string;
+    coverUrl?: string;
 }
 
 export interface Comment {
@@ -78,13 +86,4 @@ interface UserMini {
 
 export interface User extends UserMini {
     lang: Lang;
-}
-
-export interface Book {
-    id: string;
-    title: string;
-    authors: string[];
-    publisher: string;
-    isbn: string;
-    coverUrl?: string;
 }
