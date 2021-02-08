@@ -70,6 +70,10 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    match /books/{book} {
+      allow read: if true;
+    }
+
     function isValidComment() {
       let data = request.resource.data;
       return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'comment']) &&
