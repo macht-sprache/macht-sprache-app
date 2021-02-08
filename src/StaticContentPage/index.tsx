@@ -7,17 +7,26 @@ type StaticContentPageProps = {
 };
 
 export function StaticContentPage({ slugs }: StaticContentPageProps) {
-    const [content] = useWp(slugs);
+    const { response, error } = useWp(slugs);
     const { t } = useTranslation();
 
-    if (!content) {
-        return <>{t('common.loading')}</>;
+    if (error) {
+        return (
+            <>
+                <Header>{t('common.error.general')}</Header>
+                {error.message}
+            </>
+        );
+    }
+
+    if (!response) {
+        return <Header>{t('common.loading')}</Header>;
     }
 
     return (
         <>
-            <Header>{content.title.rendered}</Header>
-            <div dangerouslySetInnerHTML={{ __html: content.content.rendered }} />
+            <Header>{response.title}</Header>
+            <div dangerouslySetInnerHTML={{ __html: response.body }} />
         </>
     );
 }

@@ -27,7 +27,10 @@
                 "add": "Beispielübersetzung hinzufügen"
             }
         },
-        "loading": "Lade..."
+        "loading": "Lade...",
+        "error": {
+            "general": "Da ist etwas schief gegangen"
+        }
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",

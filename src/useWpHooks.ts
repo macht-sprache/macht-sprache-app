@@ -5,26 +5,38 @@ import { useLang } from './useLang';
 const WP_BASE_URL = 'https://pocolit.com/wp-json/wp/v2/';
 const WP_CONTENT_TYPE = 'pages';
 
+type WpResponse = { title: string; body: string };
+type StateType = { response?: WpResponse; isLoading: boolean; error?: Error };
+
 export function useWp(slugs: { [langA]: string; [langB]: string }) {
     const [lang] = useLang();
-    const [data, setData] = useState();
+    const [state, setState] = useState<StateType>({ isLoading: false });
 
     useEffect(() => {
         fetch(`${WP_BASE_URL}${WP_CONTENT_TYPE}?lang=${lang}&slug=${slugs[lang]}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response.length) {
-                    setData(response[0]);
+            .then(data => data.json())
+            .then(data => {
+                if (data.length) {
+                    if (!data[0].title.rendered || !data[0].content.rendered) {
+                        setState({ isLoading: false, error: new Error('Response not properly formatted') });
+                    }
+
+                    setState({
+                        response: { title: data[0].title.rendered, body: data[0].content.rendered },
+                        isLoading: false,
+                    });
                 } else {
-                    // there will be an empty array if the query works but does not match anything,
-                    // e.g. if the slug is wrong. Should show an error somehow.
+                    setState({ isLoading: false, error: new Error('WP query did not give results') });
                 }
             })
             .catch(error => {
-                // TODO display error
-                console.log('error loading from WP: ', error);
+                setState({ isLoading: false, error: error });
             });
+
+        return () => {
+            // cancel fetch https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+        };
     }, [slugs, lang]);
 
-    return [data as any];
+    return state;
 }

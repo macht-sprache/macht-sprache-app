@@ -27,7 +27,10 @@
                 "add": "Add Translation Example"
             }
         },
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "error": {
+            "general": "Something went wrong"
+        }
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
