@@ -24,19 +24,51 @@
 .footer {
     margin-top: 0.5rem;
     display: flex;
+    justify-content: space-between;
 }
 
 .date {
     flex: 0 0 auto;
-}
-
-.date:before {
-    content: '|';
-    margin: 0 0.5rem;
+    margin-right: 2rem;
 }
 
 .creator {
+    position: relative;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.creatorInner {
+    display: block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.creator:after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    right: 100%;
+    top: 0;
+    display: block;
+    height: 2rem;
+    width: 2rem;
+    margin-top: calc(-0.5rem - var(--thickBorder));
+    margin-right: 0.5rem;
+    background-image: linear-gradient(
+            to right,
+            transparent 0,
+            transparent calc(100% - var(--thickBorder)),
+            var(--black) calc(100% - var(--thickBorder)),
+            var(--black) calc(100%)
+        ),
+        linear-gradient(
+            45deg,
+            transparent 0,
+            transparent calc(50% - var(--thickBorder) / 2),
+            var(--black) calc(50% - var(--thickBorder) / 2),
+            var(--black) calc(50% + var(--thickBorder) / 2),
+            var(--backgroundColor) calc(50% + var(--thickBorder) / 2)
+        );
 }

@@ -14,9 +14,11 @@ export function CommentList({ comments }: CommentListProps) {
                     <li key={id} className={s.comment}>
                         <div className={s.body}>{comment}</div>
                         <div className={s.footer}>
-                            <span className={s.creator}>{creator.displayName}</span>
                             <span className={s.date}>
                                 <FormatDate date={createdAt.toDate()} />
+                            </span>
+                            <span className={s.creator}>
+                                <span className={s.creatorInner}>{creator.displayName}</span>
                             </span>
                         </div>
                     </li>
