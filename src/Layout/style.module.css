@@ -47,10 +47,8 @@
 
 .main {
     grid-column: 3;
-}
-
-.main {
     padding: 1rem;
+    min-width: 0;
 }
 
 .topRightMenu {
