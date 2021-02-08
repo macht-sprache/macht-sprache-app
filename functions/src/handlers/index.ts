@@ -185,5 +185,5 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
 
     await translationExampleRef.set(translationExample);
 
-    return translationExampleRef.id;
+    return { translationExampleId: translationExampleRef.id };
 });
