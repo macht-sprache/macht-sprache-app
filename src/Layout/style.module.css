@@ -40,7 +40,7 @@
 
 .sidebarInner {
     overflow: scroll;
-    flex: 0 1;
+    flex: 1 0;
 }
 
 .sidebarInnerInner,
@@ -52,8 +52,16 @@
     margin: 1rem 0;
 }
 
+.footerInner {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.25rem -0.5rem;
+}
+
 .footerLink {
     text-decoration: none;
+    display: inline-block;
+    margin: 0.25rem 0.5rem;
 }
 
 .footerLink:hover,

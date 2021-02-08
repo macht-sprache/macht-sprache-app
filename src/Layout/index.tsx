@@ -4,7 +4,7 @@ import s from './style.module.css';
 import Logo from './logo.svg';
 import Nav from '../Nav';
 import { TopMenu } from '../TopMenu';
-import { ABOUT } from '../routes';
+import { ABOUT, IMPRINT, CODE_OF_CONDUCT } from '../routes';
 
 type Props = {
     children: React.ReactNode;
@@ -12,6 +12,22 @@ type Props = {
 
 function Layout({ children }: Props) {
     const { t } = useTranslation();
+
+    const FOOTER_LINKS = [
+        {
+            to: ABOUT,
+            label: t('nav.about'),
+        },
+        {
+            to: IMPRINT,
+            label: t('nav.imprint'),
+        },
+        {
+            to: CODE_OF_CONDUCT,
+            label: t('nav.coc'),
+        },
+    ];
+
     return (
         <div className={s.container}>
             <div className={s.sidebar}>
@@ -27,9 +43,11 @@ function Layout({ children }: Props) {
                 </div>
                 <footer className={s.footer}>
                     <div className={s.footerInner}>
-                        <NavLink className={s.footerLink} activeClassName={s.footerLinkActive} to={ABOUT}>
-                            {t('nav.about')}
-                        </NavLink>
+                        {FOOTER_LINKS.map(({ to, label }, index) => (
+                            <NavLink key={index} className={s.footerLink} activeClassName={s.footerLinkActive} to={to}>
+                                {label}
+                            </NavLink>
+                        ))}
                     </div>
                 </footer>
             </div>
