@@ -31,7 +31,7 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "start-firebase": "firebase emulators:start --import=./local-db --export-on-exit=./local-db",
+        "start-firebase": "GOOGLE_APPLICATION_CREDENTIALS=\"`pwd`/functions/gcloud-dev-service-account.json\" firebase emulators:start --import=./local-db --export-on-exit=./local-db",
         "deploy:rules": "firebase deploy --only firestore:rules",
         "deploy:indexes": "firebase deploy --only firestore:indexes",
         "deploy:functions": "firebase deploy --only functions",
