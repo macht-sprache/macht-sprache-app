@@ -5,5 +5,5 @@ type Props = {
 };
 
 export default function InputContainer({ children }: Props) {
-    return <div className={s.container}>{children}</div>;
+    return <div className={s.container + ' inputContainer'}>{children}</div>;
 }

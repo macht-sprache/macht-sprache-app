@@ -46,11 +46,15 @@
     border-color: var(--disabledGrey);
 }
 
+:global(.inputContainer) + .buttonContainer {
+    margin-top: 1rem;
+}
+
 .buttonContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    margin: 1.75rem -0.25rem -0.25rem;
+    margin: -0.25rem;
 }
 
 .buttonContainerLeftAligned {
