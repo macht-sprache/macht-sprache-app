@@ -4,7 +4,6 @@ import { db } from '../firebase';
 import { langA, langB } from '../languages';
 import { Comment, Lang, Term, Translation, TranslationExample, User } from '../types';
 
-const defaultOptions = { idField: 'id' };
 const defaultSnapshotOptions: firebase.firestore.SnapshotOptions = { serverTimestamps: 'estimate' };
 
 const getCreatedAt = (entity: { id?: string; createdAt: firebase.firestore.Timestamp }) =>
@@ -45,6 +44,19 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
     },
 };
 
+const TranslationExampleConverter: firebase.firestore.FirestoreDataConverter<TranslationExample> = {
+    toFirestore: (translationExample: TranslationExample) => {
+        const { id, ...data } = translationExample;
+        return data;
+    },
+    fromFirestore: (snapshot): TranslationExample => {
+        const { translation, creator, createdAt, original, translated, commentCount } = snapshot.data(
+            defaultSnapshotOptions
+        );
+        return { id: snapshot.id, translation, creator, createdAt, original, translated, commentCount };
+    },
+};
+
 const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
     toFirestore: (comment: Comment) => {
         const { id, ...data } = comment;
@@ -60,7 +72,7 @@ export const collections = {
     users: db.collection('users').withConverter(UserConverter),
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
-    translationExamples: db.collection('translationExamples'),
+    translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),
     comments: db.collection('comments').withConverter(CommentConverter),
 };
 
@@ -124,12 +136,7 @@ export async function addTranslation(user: User, term: Term, value: string, comm
 
 export function useTranslationExamples(translationId: string) {
     return useFirestoreCollectionData<TranslationExample>(
-        collections.translationExamples.where(
-            'translations',
-            'array-contains',
-            collections.translations.doc(translationId)
-        ),
-        defaultOptions
+        collections.translationExamples.where('translation', '==', collections.translations.doc(translationId))
     ).data;
 }
 
