@@ -13,8 +13,12 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
     const [state, setState] = useState<StateType>({ isLoading: false });
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         setState({ isLoading: true });
-        fetch(`${WP_BASE_URL}${WP_CONTENT_TYPE}?lang=${lang}&slug=${slugs[lang]}`)
+
+        fetch(`${WP_BASE_URL}${WP_CONTENT_TYPE}?lang=${lang}&slug=${slugs[lang]}`, { signal })
             .then(data => data.json())
             .then(data => {
                 if (data.length) {
@@ -35,7 +39,7 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
             });
 
         return () => {
-            // cancel fetch https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+            controller.abort();
         };
     }, [slugs, lang]);
 
