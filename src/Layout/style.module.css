@@ -5,7 +5,8 @@
 }
 
 .header,
-.sidebarInner {
+.sidebarInner,
+.footer {
     grid-gap: 1rem;
     display: grid;
     grid-template-columns: 1fr calc(var(--sidebarWidth) - 1rem);
@@ -39,10 +40,29 @@
 
 .sidebarInner {
     overflow: scroll;
+    flex: 0 1;
 }
 
-.sidebarInnerInner {
+.sidebarInnerInner,
+.footerInner {
     grid-column: 2;
+}
+
+.footer {
+    margin: 1rem 0;
+}
+
+.footerLink {
+    text-decoration: none;
+}
+
+.footerLink:hover,
+.footerLinkActive {
+    box-shadow: 0 var(--thickBorder) var(--black);
+}
+
+.footerLinkActive {
+    font-weight: bold;
 }
 
 .main {

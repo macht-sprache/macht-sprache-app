@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generatePath, Link, NavLink } from 'react-router-dom';
+import { generatePath, NavLink } from 'react-router-dom';
 import { useTerms } from '../hooks/data';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { langA, langB } from '../languages';
@@ -9,6 +9,7 @@ import { TERM, TERM_ADD } from '../routes';
 import { Lang } from '../types';
 import s from './style.module.css';
 import { useLang } from '../useLang';
+import { ButtonLink } from '../Form/Button';
 
 export default function Nav() {
     return <Terms />;
@@ -75,7 +76,9 @@ function Terms() {
                 })}
             </ul>
             <LoginHint i18nKey="term.registerToAdd">
-                <Link to={TERM_ADD}>{t('common.entities.term.add')}</Link>
+                <div className={s.addTermButtonContainer}>
+                    <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
+                </div>
             </LoginHint>
         </div>
     );

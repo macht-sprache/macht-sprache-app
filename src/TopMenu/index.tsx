@@ -6,7 +6,7 @@ import { useUser } from '../hooks/auth';
 import { useAddContinueParam } from '../hooks/location';
 import { langA, langB } from '../languages';
 import LinkButton from '../LinkButton';
-import { ABOUT, LOGIN, REGISTER } from '../routes';
+import { LOGIN, REGISTER } from '../routes';
 import { useLang } from '../useLang';
 
 export function TopMenu() {
@@ -19,7 +19,7 @@ export function TopMenu() {
 
     return (
         <>
-            <Link to={ABOUT}>{t('nav.about')}</Link> <LanguageSwitcher />{' '}
+            <LanguageSwitcher />{' '}
             {user ? (
                 <>
                     {user.displayName} <LinkButton onClick={logout}>{t('auth.logout')}</LinkButton>

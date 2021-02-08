@@ -10,13 +10,11 @@ import HomePage from './HomePage';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
 import LoginPage from './LoginPage';
-import Nav from './Nav';
 import RegisterPage from './RegisterPage';
 import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
 import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
-import { TopMenu } from './TopMenu';
 import { TranslationPage } from './TranslationPage';
 import { useLangCssVars } from './useLangCssVars';
 
@@ -29,7 +27,7 @@ function App() {
             <UserProvider value={user}>
                 <TranslationProvider>
                     <Router>
-                        <Layout sidebar={<Nav />} topRightMenu={<TopMenu />}>
+                        <Layout>
                             <Suspense fallback={<>Loading…</>}>
                                 <Switch>
                                     <Route path={routes.HOME} exact>
