@@ -8,6 +8,7 @@ import { LoginHint } from '../LoginHint';
 import { TERM, TERM_ADD } from '../routes';
 import { Lang } from '../types';
 import s from './style.module.css';
+import { useLang } from '../useLang';
 
 export default function Nav() {
     return <Terms />;
@@ -17,6 +18,10 @@ function Terms() {
     const { t } = useTranslation();
     const terms = useTerms();
     const [langFilter, setLangFilter] = useState<Lang>();
+    const [lang] = useLang();
+    const sortedTerms = terms
+        .filter(term => (langFilter ? langFilter !== term.lang : true))
+        .sort(({ value: valueA }, { value: valueB }) => valueA.localeCompare(valueB, lang));
 
     const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
         {
@@ -54,11 +59,7 @@ function Terms() {
                 ))}
             </HorizontalRadioContainer>
             <ul className={s.terms}>
-                {terms.map(term => {
-                    if (langFilter && langFilter !== term.lang) {
-                        return null;
-                    }
-
+                {sortedTerms.map(term => {
                     return (
                         <li key={term.id} className={s.term}>
                             <NavLink
