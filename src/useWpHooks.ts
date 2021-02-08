@@ -13,6 +13,7 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
     const [state, setState] = useState<StateType>({ isLoading: false });
 
     useEffect(() => {
+        setState({ isLoading: true });
         fetch(`${WP_BASE_URL}${WP_CONTENT_TYPE}?lang=${lang}&slug=${slugs[lang]}`)
             .then(data => data.json())
             .then(data => {

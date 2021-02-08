@@ -7,7 +7,7 @@ type StaticContentPageProps = {
 };
 
 export function StaticContentPage({ slugs }: StaticContentPageProps) {
-    const { response, error } = useWp(slugs);
+    const { response, isLoading, error } = useWp(slugs);
     const { t } = useTranslation();
 
     if (error) {
@@ -19,7 +19,7 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
         );
     }
 
-    if (!response) {
+    if (!response || isLoading) {
         return <Header>{t('common.loading')}</Header>;
     }
 
