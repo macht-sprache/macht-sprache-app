@@ -9,6 +9,7 @@ import Header from './Header';
 import { Comment } from './types';
 import firebase from 'firebase/app';
 import { collections } from './hooks/data';
+import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -148,6 +149,13 @@ export default function ElementTestPage() {
                 <CommentList comments={comments} />
                 <CommentCreate onCreate={onCreate} />
             </CommentWrapper>
+
+            <h2>Multi Step Indicator</h2>
+            <MultiStepIndicator>
+                <MultiStepIndicatorStep>First thing</MultiStepIndicatorStep>
+                <MultiStepIndicatorStep active={true}>Second</MultiStepIndicatorStep>
+                <MultiStepIndicatorStep>another one</MultiStepIndicatorStep>
+            </MultiStepIndicator>
         </>
     );
 }

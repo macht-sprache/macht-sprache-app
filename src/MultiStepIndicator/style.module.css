@@ -1,0 +1,42 @@
+.list {
+    --dotSize: 0.5rem;
+    --itemPaddingBotton: 0.3rem;
+    display: flex;
+    padding-bottom: calc(var(--dotSize) + var(--thinBorder) + var(--itemPaddingBotton));
+    background-image: linear-gradient(
+        to top,
+        transparent calc(var(--dotSize) / 2),
+        var(--black) calc(var(--dotSize) / 2),
+        var(--black) calc(var(--dotSize) / 2 + var(--thinBorder)),
+        transparent calc(var(--dotSize) / 2 + var(--thinBorder)),
+        transparent
+    );
+}
+
+.item {
+    position: relative;
+}
+
+.item:before {
+    content: '';
+    position: absolute;
+    top: calc(100% + var(--itemPaddingBotton));
+    left: calc(50% - var(--dotSize) / 2);
+    height: calc(var(--dotSize) + var(--thinBorder));
+    width: calc(var(--dotSize) + var(--thinBorder));
+    background: var(--white);
+    border: var(--black) solid var(--thinBorder);
+    border-radius: 50%;
+}
+
+.item + .item {
+    margin-left: 1.5rem;
+}
+
+.item[aria-selected] {
+    font-weight: bold;
+}
+
+.item[aria-selected]:before {
+    border-width: var(--thickBorder);
+}
