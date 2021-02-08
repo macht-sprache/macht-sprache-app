@@ -4,7 +4,7 @@ import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import Header from '../Header';
 import { Columns } from '../Layout/Columns';
 import { TERM } from '../routes';
-import { TranlsationExamplesList } from '../TranslationExamplesList';
+import TranslationExamplesList from '../TranslationExamplesList';
 import s from './style.module.css';
 
 export function TranslationPage() {
@@ -25,7 +25,7 @@ export function TranslationPage() {
                 {translation.value}
             </Header>
             <Columns>
-                <TranlsationExamplesList term={term} />
+                <TranslationExamplesList term={term} translation={translation} />
                 <Comments entityRef={collections.translations.doc(translation.id)} />
             </Columns>
         </>

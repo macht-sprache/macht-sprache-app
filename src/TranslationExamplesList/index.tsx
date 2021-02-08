@@ -3,13 +3,14 @@ import { CommentWrapper } from '../Comments/CommentWrapper';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ColumnHeading } from '../Layout/Columns';
 import { TermWithLang } from '../TermWithLang';
-import { Term } from '../types';
+import { Term, Translation } from '../types';
 
-type tranlsationExamplesListProps = {
+type Props = {
     term: Term;
+    translation: Translation;
 };
 
-export function TranlsationExamplesList({ term }: tranlsationExamplesListProps) {
+export default function TranslationExamplesList({ term }: Props) {
     const { t } = useTranslation();
 
     return (
