@@ -181,6 +181,7 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
             // @ts-ignore
             source: translatedBookRef,
         },
+        commentCount: 0,
     };
 
     await translationExampleRef.set(translationExample);
