@@ -13,6 +13,7 @@ type CommentCreateProps = {
 export function CommentCreate({ onCreate }: CommentCreateProps) {
     const [submitting, setSubmitting] = useState(false);
     const [comment, setComment] = useState('');
+    const [hasFocus, setHasFocus] = useState(false);
     const { t } = useTranslation();
 
     const onSubmit = (event: React.FormEvent) => {
@@ -35,9 +36,15 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
                             setComment(value.target.value);
                         }}
                         label={t('common.entities.comment.add')}
+                        onFocus={() => {
+                            setHasFocus(true);
+                        }}
+                        onBlur={() => {
+                            setHasFocus(false);
+                        }}
                     />
                 </InputContainer>
-                <div className={s.buttonWrapper}>
+                <div className={hasFocus ? s.buttonWrapperWithFocus : s.buttonWrapper}>
                     <Button type="submit" disabled={!comment || submitting}>
                         {t('common.entities.comment.action')}
                     </Button>

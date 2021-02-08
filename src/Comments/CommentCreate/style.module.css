@@ -2,10 +2,13 @@
     margin-top: 0.5rem;
     display: flex;
     justify-content: flex-end;
+    --borderFocusColor: var(--black);
 }
 
 .buttonWrapper:before {
     content: '';
+    position: relative;
+    z-index: 1;
     display: block;
     height: 3rem;
     width: 3rem;
@@ -15,15 +18,20 @@
             to right,
             transparent 0,
             transparent calc(100% - var(--thickBorder)),
-            var(--black) calc(100% - var(--thickBorder)),
-            var(--black) calc(100%)
+            var(--borderFocusColor) calc(100% - var(--thickBorder)),
+            var(--borderFocusColor) calc(100%)
         ),
         linear-gradient(
             45deg,
             transparent 0,
             transparent calc(50% - var(--thickBorder) / 2),
-            var(--black) calc(50% - var(--thickBorder) / 2),
-            var(--black) calc(50% + var(--thickBorder) / 2),
+            var(--borderFocusColor) calc(50% - var(--thickBorder) / 2),
+            var(--borderFocusColor) calc(50% + var(--thickBorder) / 2),
             var(--backgroundColor) calc(50% + var(--thickBorder) / 2)
         );
+}
+
+.buttonWrapperWithFocus {
+    composes: buttonWrapper;
+    --borderFocusColor: var(--orange);
 }
