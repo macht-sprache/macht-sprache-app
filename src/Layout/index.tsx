@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, NavLink } from 'react-router-dom';
 import s from './style.module.css';
 import Logo from './logo.svg';
-import Nav from '../Nav';
+import { Terms } from '../Terms';
 import { TopMenu } from '../TopMenu';
 import { ABOUT, IMPRINT, CODE_OF_CONDUCT } from '../routes';
 
@@ -36,11 +36,14 @@ function Layout({ children }: Props) {
                         <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
                     </Link>
                 </div>
-                <div className={s.sidebarInner}>
-                    <div className={s.sidebarInnerInner}>
-                        <Nav />
-                    </div>
-                </div>
+                <Terms
+                    classNames={{
+                        terms: s.terms,
+                        termsInner: s.termsInner,
+                        termsControl: s.termsControl,
+                        termsControlInner: s.termsControlInner,
+                    }}
+                />
                 <footer className={s.footer}>
                     <div className={s.footerInner}>
                         {FOOTER_LINKS.map(({ to, label }, index) => (

@@ -23,38 +23,33 @@ export function TranslationsList({ term }: { term: Term }) {
                 {commentCount} {t('common.entities.translation.value', { count: commentCount })}
             </ColumnHeading>
             {!translations.length && (
-                <div>
-                    <Trans
-                        t={t}
-                        i18nKey="translation.empty"
-                        values={{ term: term.value }}
-                        components={{ TermWithLang: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
-                    />
-                    <AddTranslationButton termId={term.id} />
-                </div>
+                <Trans
+                    t={t}
+                    i18nKey="translation.empty"
+                    values={{ term: term.value }}
+                    components={{ TermWithLang: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
+                />
             )}
             {!!translations.length && (
-                <>
-                    <div className={s.list}>
-                        {translations.map(translation => (
-                            <article className={s.item} key={translation.id} lang={translation.lang}>
-                                <Link
-                                    to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })}
-                                    className={s.link}
-                                >
-                                    <div className={s.header}>
-                                        <h1 className={s.value}>{translation.value}</h1>
-                                        <div className={s.meta} lang={lang}>
-                                            <FormatDate date={translation.createdAt.toDate()} />
-                                        </div>
+                <div className={s.list}>
+                    {translations.map(translation => (
+                        <article className={s.item} key={translation.id} lang={translation.lang}>
+                            <Link
+                                to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })}
+                                className={s.link}
+                            >
+                                <div className={s.header}>
+                                    <h1 className={s.value}>{translation.value}</h1>
+                                    <div className={s.meta} lang={lang}>
+                                        <FormatDate date={translation.createdAt.toDate()} />
                                     </div>
-                                </Link>
-                            </article>
-                        ))}
-                    </div>
-                    <AddTranslationButton termId={term.id} />
-                </>
+                                </div>
+                            </Link>
+                        </article>
+                    ))}
+                </div>
             )}
+            <AddTranslationButton termId={term.id} />
         </div>
     );
 }
@@ -63,12 +58,14 @@ function AddTranslationButton({ termId }: { termId: string }) {
     const { t } = useTranslation();
 
     return (
-        <LoginHint i18nKey="translation.registerToAdd">
-            <ButtonContainer align="left">
-                <ButtonLink to={generatePath(TRANSLATION_ADD, { termId: termId })}>
-                    {t('common.entities.translation.add')}
-                </ButtonLink>
-            </ButtonContainer>
-        </LoginHint>
+        <div className={s.addTranslationButtonContainer}>
+            <LoginHint i18nKey="translation.registerToAdd">
+                <ButtonContainer align="left">
+                    <ButtonLink to={generatePath(TRANSLATION_ADD, { termId: termId })}>
+                        {t('common.entities.translation.add')}
+                    </ButtonLink>
+                </ButtonContainer>
+            </LoginHint>
+        </div>
     );
 }
