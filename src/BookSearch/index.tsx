@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Button from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { findBooks } from '../functions';
@@ -7,9 +8,11 @@ import { Book, Lang } from '../types';
 type Props = {
     label: string;
     lang: Lang;
+    onSelect?: (book: Book | undefined) => void;
+    selectedBook?: Book;
 };
 
-export default function BookSearch({ label, lang }: Props) {
+export default function BookSearch({ label, lang, onSelect = () => {}, selectedBook }: Props) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Book[]>([]);
 
@@ -32,6 +35,25 @@ export default function BookSearch({ label, lang }: Props) {
         }
     }, [lang, query]);
 
+    if (selectedBook) {
+        return (
+            <div>
+                {selectedBook.coverUrl ? (
+                    <img src={selectedBook.coverUrl} alt="" title={selectedBook.title} />
+                ) : (
+                    selectedBook.title
+                )}
+                <Button
+                    onClick={() => {
+                        onSelect(undefined);
+                    }}
+                >
+                    Select different Book
+                </Button>
+            </div>
+        );
+    }
+
     return (
         <div>
             <InputContainer>
@@ -40,7 +62,13 @@ export default function BookSearch({ label, lang }: Props) {
             <ul>
                 {results.map(book => (
                     <li key={book.id}>
-                        {book.coverUrl ? <img src={book.coverUrl} alt="" title={book.title} /> : book.title}
+                        <button
+                            onClick={() => {
+                                onSelect(book);
+                            }}
+                        >
+                            {book.coverUrl ? <img src={book.coverUrl} alt="" title={book.title} /> : book.title}
+                        </button>
                     </li>
                 ))}
             </ul>
