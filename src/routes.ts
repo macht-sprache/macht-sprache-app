@@ -6,6 +6,7 @@ export const HOME = '/',
     TERM = '/term/:termId',
     TRANSLATION_ADD = '/term/:termId/translation/add',
     TRANSLATION = '/term/:termId/translation/:translationId',
+    TRANSLATION_EXAMPLE_ADD = '/term/:termId/translation/:translationId/translation-example/add',
     ABOUT = '/about',
     CODE_OF_CONDUCT = '/code-of-conduct',
     IMPRINT = '/imprint';

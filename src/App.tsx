@@ -17,6 +17,7 @@ import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
 import { TranslationPage } from './TranslationPage';
 import { useLangCssVars } from './useLangCssVars';
+import { AddTranslationExamplePage } from './AddTranslationExamplePage';
 
 function App() {
     useLangCssVars();
@@ -53,6 +54,9 @@ function App() {
                                     </Route>
                                     <Route path={routes.TRANSLATION} exact>
                                         <TranslationPage />
+                                    </Route>
+                                    <Route path={routes.TRANSLATION_EXAMPLE_ADD} exact>
+                                        <AddTranslationExamplePage />
                                     </Route>
                                     <Route path={routes.ABOUT} exact>
                                         <StaticContentPage

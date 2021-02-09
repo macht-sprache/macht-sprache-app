@@ -1,0 +1,6 @@
+.termLink {
+    text-decoration: none;
+    background: var(--lang-color);
+    padding: 0.5rem;
+    position: relative;
+}

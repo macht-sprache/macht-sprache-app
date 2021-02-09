@@ -1,12 +1,15 @@
 import { Fragment } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { generatePath } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
-import Button, { ButtonContainer } from '../Form/Button';
+import { ButtonLink } from '../Form/Button';
 import { useTranslationExamples } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
+import { TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import TextWithHighlights from '../TextWithHighlights';
 import { Term, Translation } from '../types';
+import s from './style.module.css';
 
 type Props = {
     term: Term;
@@ -21,14 +24,14 @@ export default function TranslationExamplesList({ term, translation }: Props) {
         <CommentWrapper>
             <ColumnHeading>{t('common.entities.translatioExample.value_plural')}</ColumnHeading>
             {!translationExamples.length && (
-                <div>
+                <p>
                     <Trans
                         t={t}
                         i18nKey={'translationExample.empty'}
                         components={{ Term: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
                         values={{ term: term.value }}
                     />
-                </div>
+                </p>
             )}
             {!!translationExamples.length && (
                 <ul>
@@ -50,9 +53,13 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                     ))}
                 </ul>
             )}
-            <ButtonContainer align="left">
-                <Button>{t('common.entities.translatioExample.add')}</Button>
-            </ButtonContainer>
+            <div className={s.addExampleButton}>
+                <ButtonLink
+                    to={generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id })}
+                >
+                    {t('common.entities.translatioExample.add')}
+                </ButtonLink>
+            </div>
         </CommentWrapper>
     );
 }

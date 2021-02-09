@@ -83,7 +83,8 @@
         "addTranslation": "Füge eine übersetzung für <Term>{{term}}</Term> hinzu:"
     },
     "translationExample": {
-        "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>."
+        "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>.",
+        "add": "Füge eine Beispielübersetzung für <Term>{{term}}</Term> nach <Translation>{{translation}}</Translation> hinzu:"
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
