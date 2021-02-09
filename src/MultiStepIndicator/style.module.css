@@ -35,10 +35,10 @@
     margin-left: 1.5rem;
 }
 
-.item[aria-selected] {
+.item[aria-selected='true'] {
     font-weight: bold;
 }
 
-.item[aria-selected]:before {
+.item[aria-selected='true']:before {
     border-width: var(--thickBorder);
 }
