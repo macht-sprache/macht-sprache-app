@@ -1,7 +1,7 @@
 import s from './style.module.css';
 
 type TermWithLangProps = {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     lang: string;
 };
 
