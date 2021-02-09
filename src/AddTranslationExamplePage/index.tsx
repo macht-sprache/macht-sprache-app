@@ -28,10 +28,9 @@ export function AddTranslationExamplePage() {
                 <Trans
                     t={t}
                     i18nKey="translationExample.add"
-                    values={{ term: term.value, translation: translation.value }}
                     components={{
-                        Term: <TermWithLang lang={term.lang} />,
-                        Translation: <TermWithLang lang={translation.lang} />,
+                        Term: <TermWithLang term={term} />,
+                        Translation: <TermWithLang term={translation} />,
                     }}
                 />
             </h2>

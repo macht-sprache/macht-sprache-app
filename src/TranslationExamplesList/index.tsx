@@ -28,7 +28,7 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                     <Trans
                         t={t}
                         i18nKey={'translationExample.empty'}
-                        components={{ Term: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
+                        components={{ Term: <TermWithLang term={term} /> }}
                         values={{ term: term.value }}
                     />
                 </p>

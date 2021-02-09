@@ -27,7 +27,7 @@ export function TranslationsList({ term }: { term: Term }) {
                     t={t}
                     i18nKey="translation.empty"
                     values={{ term: term.value }}
-                    components={{ TermWithLang: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
+                    components={{ TermWithLang: <TermWithLang term={term} /> }}
                 />
             )}
             {!!translations.length && (

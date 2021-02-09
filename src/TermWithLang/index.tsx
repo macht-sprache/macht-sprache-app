@@ -1,14 +1,14 @@
+import { Term, Translation } from '../types';
 import s from './style.module.css';
 
 type TermWithLangProps = {
-    children?: React.ReactNode;
-    lang: string;
+    term: Term | Translation;
 };
 
-export function TermWithLang({ children, lang }: TermWithLangProps) {
+export function TermWithLang({ term }: TermWithLangProps) {
     return (
-        <span className={s.term} lang={lang}>
-            {children}
+        <span className={s.term} lang={term.lang}>
+            {term.value}
         </span>
     );
 }

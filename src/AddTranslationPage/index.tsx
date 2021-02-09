@@ -41,12 +41,7 @@ export default function AddTranslationPage() {
         <>
             <Header>{t('common.entities.translation.add')}</Header>
             <p>
-                <Trans
-                    t={t}
-                    values={{ term: term.value }}
-                    i18nKey="translation.addTranslation"
-                    components={{ Term: <TermWithLang lang={term.lang}>foo</TermWithLang> }}
-                />
+                <Trans t={t} i18nKey="translation.addTranslation" components={{ Term: <TermWithLang term={term} /> }} />
             </p>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
