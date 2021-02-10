@@ -105,7 +105,7 @@
             }
         },
         "snippet": {
-            "description": "Beispieltext aus <Book /> mit <Term />",
+            "description": "Beispieltext aus <Book>{{book}}</Book> mit <Term />",
             "label": "Beispieltext",
             "pageNumber": "Seitennummer"
         },
