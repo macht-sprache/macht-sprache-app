@@ -28,6 +28,7 @@
             }
         },
         "loading": "Loading...",
+        "saving": "Saving...",
         "error": {
             "general": "Something went wrong"
         }

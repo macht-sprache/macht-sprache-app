@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, Link, useParams } from 'react-router-dom';
+import { generatePath, Link, useHistory, useParams } from 'react-router-dom';
 import Button, { ButtonContainer } from '../Form/Button';
 import Header from '../Header';
 import { useTerm, useTranslationEntity } from '../hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
-import { TERM } from '../routes';
+import { TERM, TRANSLATION } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import s from './style.module.css';
 import BookSearch from '../BookSearch';
@@ -13,22 +13,25 @@ import { Book } from '../types';
 import { Columns } from '../Layout/Columns';
 import InputContainer from '../Form/InputContainer';
 import { Input, Textarea } from '../Form/Input';
+import { addTranslationExample } from '../functions';
+import { TranslationExampleModel } from '../modelTypes';
 
 export function AddTranslationExamplePage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
     const term = useTerm(termId);
+    const history = useHistory();
     const translation = useTranslationEntity(translationId);
     const { t } = useTranslation();
     const [step, setStep] = useState<number>(0);
-
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [type, setType] = useState<'BOOK'>();
     const [originalBook, setOriginalBook] = useState<Book | undefined>();
     const [translatedBook, setTranslatedBook] = useState<Book | undefined>();
 
     const [snippets, setSnippets] = useState<{
-        original?: string;
+        original: string;
         originalPageNo?: string;
-        translated?: string;
+        translated: string;
         translatedPageNo?: string;
     }>({ original: '', originalPageNo: '', translated: '', translatedPageNo: '' });
 
@@ -38,6 +41,32 @@ export function AddTranslationExamplePage() {
 
     const save = () => {
         console.log('saving...', originalBook, translatedBook, snippets);
+        if (originalBook && translatedBook) {
+            setSubmitting(true);
+
+            addTranslationExample({
+                termId,
+                translationId,
+                original: {
+                    type: 'BOOK',
+                    text: snippets.original,
+                    pageNumber: snippets.originalPageNo,
+                    bookId: originalBook.id,
+                },
+                translated: {
+                    type: 'BOOK',
+                    text: snippets.translated,
+                    pageNumber: snippets.translatedPageNo,
+                    bookId: translatedBook.id,
+                },
+            }).then(() => {
+                setSubmitting(false);
+                console.log('saved, yeahhH!!');
+                history.push(generatePath(TRANSLATION, { termId, translationId }));
+            });
+        } else {
+            console.log("books aren't set. should not be possible. what happened?!");
+        }
     };
 
     const steps = [
@@ -180,14 +209,20 @@ export function AddTranslationExamplePage() {
                     }}
                 />
             </p>
-            <MultiStepIndicator>
-                {steps.map(({ label }, index) => (
-                    <MultiStepIndicatorStep key={index} active={index === step}>
-                        {label}
-                    </MultiStepIndicatorStep>
-                ))}
-            </MultiStepIndicator>
-            <div className={s.steps}>{steps[step].body}</div>
+            {submitting ? (
+                <>{t('common.saving')}</>
+            ) : (
+                <>
+                    <MultiStepIndicator>
+                        {steps.map(({ label }, index) => (
+                            <MultiStepIndicatorStep key={index} active={index === step}>
+                                {label}
+                            </MultiStepIndicatorStep>
+                        ))}
+                    </MultiStepIndicator>
+                    <div className={s.steps}>{steps[step].body}</div>
+                </>
+            )}
         </>
     );
 }

@@ -28,6 +28,7 @@
             }
         },
         "loading": "Lade...",
+        "saving": "Speichere...",
         "error": {
             "general": "Da ist etwas schief gegangen"
         }
