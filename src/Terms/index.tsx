@@ -26,7 +26,7 @@ export function Terms({ classNames }: TermsProps) {
     const [langFilter, setLangFilter] = useState<Lang>();
     const [lang] = useLang();
     const sortedTerms = terms
-        .filter(term => (langFilter ? langFilter !== term.lang : true))
+        .filter(term => !langFilter || langFilter === term.lang)
         .sort(({ value: valueA }, { value: valueB }) => valueA.localeCompare(valueB, lang));
 
     const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
