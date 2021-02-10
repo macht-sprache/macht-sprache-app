@@ -10,7 +10,7 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
-import { Comment } from './types';
+import { Book, Comment } from './types';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -24,6 +24,7 @@ export default function ElementTestPage() {
     const [selectValue, setSelectValue] = useState('');
     const [anotherSelectValue, setAnotherSelectValue] = useState('2');
     const [textAreaValue, setTextAreaValue] = useState('');
+    const [book, setBook] = useState<Book>();
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -167,7 +168,8 @@ export default function ElementTestPage() {
             </MultiStepIndicator>
 
             <h2>Book Search</h2>
-            <BookSearch label="Find German Books" lang="de" />
+            <BookSearch label="Find German Books" lang="de" selectedBook={book} onSelect={setBook} />
+            <p />
             <BookSearch label="Find English Books" lang="en" />
         </>
     );

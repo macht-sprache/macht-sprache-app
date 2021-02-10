@@ -1,0 +1,99 @@
+.resultList {
+    list-style: none;
+    padding: 0;
+    overflow: scroll;
+    display: flex;
+    margin: 1rem 0 0;
+}
+
+.resultItem {
+    margin: 0 1.5rem calc(var(--thickBorder) * 5) 0;
+    flex: 0 0;
+    display: inline-block;
+}
+
+.bookPages {
+    position: relative;
+    --bc: var(--black);
+    --d: calc((var(--thickBorder) + var(--thickBorder)) + var(--thickBorder));
+    --d2: calc((var(--d) * 2));
+    box-shadow: var(--d) var(--d) 0 calc(var(--thickBorder) * -1) var(--white), var(--d) var(--d) 0 0px var(--bc),
+        var(--d2) var(--d2) 0 calc(var(--thickBorder) * -1) var(--white), var(--d2) var(--d2) 0 0px var(--bc);
+    border: solid var(--bc) var(--thickBorder);
+}
+
+.bookPages:before {
+    content: '';
+    position: absolute;
+    background: var(--bc);
+    top: 100%;
+    height: var(--thickBorder);
+    width: 1rem;
+    transform: rotate(45deg);
+    transform-origin: left;
+}
+
+.resultButton {
+    composes: bookPages;
+    height: 8rem;
+    padding: 0;
+    cursor: pointer;
+}
+
+.resultButton:hover {
+    --bc: var(--orange);
+}
+
+.resultImage {
+    height: 100%;
+}
+
+.selected {
+    composes: bookPages;
+    height: 10rem;
+    position: relative;
+    width: max-content;
+    margin-top: 1rem;
+}
+
+.selectedImage {
+    height: 100%;
+    display: block;
+}
+
+.selectedCancelButton {
+    position: absolute;
+    top: -0.5rem;
+    left: -0.5rem;
+    background: var(--red);
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+    border: var(--black) solid var(--thickBorder);
+    cursor: pointer;
+}
+
+.selectedCancelButton:hover {
+    border-color: var(--orange);
+}
+
+.selectedCancelButton:before,
+.selectedCancelButton:after {
+    content: '';
+    position: absolute;
+    height: var(--thickBorder);
+    width: 1.2rem;
+    background: var(--black);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.selectedCancelButton:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.noResults {
+    margin-top: 1rem;
+    font-weight: bold;
+}

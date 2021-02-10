@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Button from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { findBooks } from '../functions';
 import { Book, Lang } from '../types';
+import s from './style.module.css';
 
 type Props = {
     label: string;
@@ -15,15 +15,18 @@ type Props = {
 export default function BookSearch({ label, lang, onSelect = () => {}, selectedBook }: Props) {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Book[]>([]);
+    const [searching, setSearching] = useState<boolean>();
 
     useEffect(() => {
         if (!query) {
             setResults([]);
         } else {
             let currentRequest = true;
+            setSearching(true);
             const timeoutId = window.setTimeout(() => {
                 findBooks(query, lang).then(({ data }) => {
                     if (currentRequest) {
+                        setSearching(false);
                         setResults(data);
                     }
                 });
@@ -37,19 +40,20 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
 
     if (selectedBook) {
         return (
-            <div>
+            <div className={s.selected}>
                 {selectedBook.coverUrl ? (
-                    <img src={selectedBook.coverUrl} alt="" title={selectedBook.title} />
+                    <img className={s.selectedImage} src={selectedBook.coverUrl} alt="" title={selectedBook.title} />
                 ) : (
                     selectedBook.title
                 )}
-                <Button
+                <button
+                    className={s.selectedCancelButton}
                     onClick={() => {
                         onSelect(undefined);
                     }}
-                >
-                    Select different Book
-                </Button>
+                    title={'Select different Book'}
+                    aria-label="Select different Book"
+                ></button>
             </div>
         );
     }
@@ -57,21 +61,30 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     return (
         <div>
             <InputContainer>
-                <Input label={label} value={query} onChange={event => setQuery(event.target.value)} />
+                <Input label={label} value={query} onChange={event => setQuery(event.target.value)} busy={searching} />
             </InputContainer>
-            <ul>
-                {results.map(book => (
-                    <li key={book.id}>
-                        <button
-                            onClick={() => {
-                                onSelect(book);
-                            }}
-                        >
-                            {book.coverUrl ? <img src={book.coverUrl} alt="" title={book.title} /> : book.title}
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            {!!results.length && (
+                <ul className={s.resultList}>
+                    {results.map(book => (
+                        <li key={book.id} className={s.resultItem}>
+                            <button
+                                onClick={() => {
+                                    onSelect(book);
+                                }}
+                                className={s.resultButton}
+                                title={book.title}
+                            >
+                                {book.coverUrl ? (
+                                    <img className={s.resultImage} src={book.coverUrl} alt="" title={book.title} />
+                                ) : (
+                                    book.title
+                                )}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+            {!results.length && !!query && <div className={s.noResults}>no results</div>}
         </div>
     );
 }

@@ -8,8 +8,6 @@ const icons = {
     WEBSITE: require('./website.svg').default,
 };
 
-console.log(icons);
-
 interface TypeSelectorProps
     extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     label: string;

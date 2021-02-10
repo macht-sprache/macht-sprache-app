@@ -111,20 +111,28 @@ export function AddTranslationExamplePage() {
             body: (
                 <>
                     <p>{t('translationExample.steps.source.description')}</p>
-                    <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookOriginalTitle')}</h3>
-                    <BookSearch
-                        label={t('translationExample.steps.source.bookSearchOriginal')}
-                        lang={term.lang}
-                        selectedBook={originalBook}
-                        onSelect={setOriginalBook}
-                    />
-                    <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookTranslatedTitle')}</h3>
-                    <BookSearch
-                        label={t('translationExample.steps.source.bookSearchTranslation')}
-                        lang={translation.lang}
-                        selectedBook={translatedBook}
-                        onSelect={setTranslatedBook}
-                    />
+                    <div className={s.searchBookSection}>
+                        <h3 className={s.bookSearchHeading}>
+                            {t('translationExample.steps.source.bookOriginalTitle')}
+                        </h3>
+                        <BookSearch
+                            label={t('translationExample.steps.source.bookSearchOriginal')}
+                            lang={term.lang}
+                            selectedBook={originalBook}
+                            onSelect={setOriginalBook}
+                        />
+                    </div>
+                    <div className={s.searchBookSection}>
+                        <h3 className={s.bookSearchHeading}>
+                            {t('translationExample.steps.source.bookTranslatedTitle')}
+                        </h3>
+                        <BookSearch
+                            label={t('translationExample.steps.source.bookSearchTranslation')}
+                            lang={translation.lang}
+                            selectedBook={translatedBook}
+                            onSelect={setTranslatedBook}
+                        />
+                    </div>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!(originalBook && translatedBook)}>
                             Next
