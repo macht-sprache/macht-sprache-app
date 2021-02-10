@@ -14,7 +14,7 @@ import { Columns } from '../Layout/Columns';
 import InputContainer from '../Form/InputContainer';
 import { Input, Textarea } from '../Form/Input';
 import { addTranslationExample } from '../functions';
-import { TranslationExampleModel } from '../modelTypes';
+import SavingState from '../SavingState';
 
 export function AddTranslationExamplePage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
@@ -40,7 +40,6 @@ export function AddTranslationExamplePage() {
     };
 
     const save = () => {
-        console.log('saving...', originalBook, translatedBook, snippets);
         if (originalBook && translatedBook) {
             setSubmitting(true);
 
@@ -61,7 +60,6 @@ export function AddTranslationExamplePage() {
                 },
             }).then(() => {
                 setSubmitting(false);
-                console.log('saved, yeahhH!!');
                 history.push(generatePath(TRANSLATION, { termId, translationId }));
             });
         } else {
@@ -210,7 +208,7 @@ export function AddTranslationExamplePage() {
                 />
             </p>
             {submitting ? (
-                <>{t('common.saving')}</>
+                <SavingState />
             ) : (
                 <>
                     <MultiStepIndicator>
