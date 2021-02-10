@@ -111,7 +111,7 @@ export function AddTranslationExamplePage() {
             body: (
                 <>
                     <p>{t('translationExample.steps.source.description')}</p>
-                    <div className={s.searchBookSection}>
+                    <div className={s.section}>
                         <h3 className={s.bookSearchHeading}>
                             {t('translationExample.steps.source.bookOriginalTitle')}
                         </h3>
@@ -122,7 +122,7 @@ export function AddTranslationExamplePage() {
                             onSelect={setOriginalBook}
                         />
                     </div>
-                    <div className={s.searchBookSection}>
+                    <div className={s.section}>
                         <h3 className={s.bookSearchHeading}>
                             {t('translationExample.steps.source.bookTranslatedTitle')}
                         </h3>
@@ -145,61 +145,65 @@ export function AddTranslationExamplePage() {
             label: t('translationExample.steps.example.label'),
             body: (
                 <>
-                    <Columns>
-                        <div>
-                            <p>
-                                <Trans
-                                    i18nKey="translationExample.snippet.description"
-                                    values={{ book: originalBook?.title }}
-                                    components={{ Term: <TermWithLang term={term} />, Book: <em /> }}
-                                />
-                            </p>
-                            <InputContainer>
-                                <Textarea
-                                    label={t('translationExample.snippet.label')}
-                                    value={snippets?.original}
-                                    onChange={e =>
-                                        setSnippets(prevProps => ({ ...prevProps, original: e.target.value }))
-                                    }
-                                />
-                                <Input
-                                    type="text"
-                                    label={t('translationExample.snippet.pageNumber')}
-                                    value={snippets?.originalPageNo}
-                                    onChange={e =>
-                                        setSnippets(prevProps => ({ ...prevProps, originalPageNo: e.target.value }))
-                                    }
-                                />
-                            </InputContainer>
-                        </div>
-                        <div>
-                            <p>
-                                <Trans
-                                    i18nKey="translationExample.snippet.description"
-                                    values={{ book: translatedBook?.title }}
-                                    components={{ Term: <TermWithLang term={translation} />, Book: <em /> }}
-                                />
-                            </p>
-                            <InputContainer>
-                                <Textarea
-                                    label={t('translationExample.snippet.label')}
-                                    value={snippets?.translated}
-                                    onChange={e =>
-                                        setSnippets(prevProps => ({ ...prevProps, translated: e.target.value }))
-                                    }
-                                />
-                                <Input
-                                    type="text"
-                                    label={t('translationExample.snippet.pageNumber')}
-                                    value={snippets?.translatedPageNo}
-                                    onChange={e =>
-                                        setSnippets(prevProps => ({ ...prevProps, translatedPageNo: e.target.value }))
-                                    }
-                                />
-                            </InputContainer>
-                        </div>
-                    </Columns>
-
+                    <div className={s.section}>
+                        <Columns>
+                            <div>
+                                <p>
+                                    <Trans
+                                        i18nKey="translationExample.snippet.description"
+                                        values={{ book: originalBook?.title }}
+                                        components={{ Term: <TermWithLang term={term} />, Book: <em /> }}
+                                    />
+                                </p>
+                                <InputContainer>
+                                    <Textarea
+                                        label={t('translationExample.snippet.label')}
+                                        value={snippets?.original}
+                                        onChange={e =>
+                                            setSnippets(prevProps => ({ ...prevProps, original: e.target.value }))
+                                        }
+                                    />
+                                    <Input
+                                        type="text"
+                                        label={t('translationExample.snippet.pageNumber')}
+                                        value={snippets?.originalPageNo}
+                                        onChange={e =>
+                                            setSnippets(prevProps => ({ ...prevProps, originalPageNo: e.target.value }))
+                                        }
+                                    />
+                                </InputContainer>
+                            </div>
+                            <div>
+                                <p>
+                                    <Trans
+                                        i18nKey="translationExample.snippet.description"
+                                        values={{ book: translatedBook?.title }}
+                                        components={{ Term: <TermWithLang term={translation} />, Book: <em /> }}
+                                    />
+                                </p>
+                                <InputContainer>
+                                    <Textarea
+                                        label={t('translationExample.snippet.label')}
+                                        value={snippets?.translated}
+                                        onChange={e =>
+                                            setSnippets(prevProps => ({ ...prevProps, translated: e.target.value }))
+                                        }
+                                    />
+                                    <Input
+                                        type="text"
+                                        label={t('translationExample.snippet.pageNumber')}
+                                        value={snippets?.translatedPageNo}
+                                        onChange={e =>
+                                            setSnippets(prevProps => ({
+                                                ...prevProps,
+                                                translatedPageNo: e.target.value,
+                                            }))
+                                        }
+                                    />
+                                </InputContainer>
+                            </div>
+                        </Columns>
+                    </div>
                     <ButtonContainer>
                         <Button primary onClick={save}>
                             Save
