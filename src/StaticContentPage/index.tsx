@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
+import PageLoadingState from '../PageLoadingState';
 import { useWp } from '../useWpHooks';
 
 type StaticContentPageProps = {
@@ -20,7 +21,7 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
     }
 
     if (!response || isLoading) {
-        return <Header>{t('common.loading')}</Header>;
+        return <PageLoadingState />;
     }
 
     return (

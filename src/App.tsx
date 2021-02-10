@@ -2,14 +2,16 @@ import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
 import AddTermPage from './AddTermPage';
+import { AddTranslationExamplePage } from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
-import { useEnsureUserEntity, UserProvider } from './hooks/auth';
 import ElementTestPage from './ElementTestPage';
 import { app } from './firebase';
 import HomePage from './HomePage';
+import { useEnsureUserEntity, UserProvider } from './hooks/auth';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
 import LoginPage from './LoginPage';
+import PageLoadingState from './PageLoadingState';
 import RegisterPage from './RegisterPage';
 import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
@@ -17,7 +19,6 @@ import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
 import { TranslationPage } from './TranslationPage';
 import { useLangCssVars } from './useLangCssVars';
-import { AddTranslationExamplePage } from './AddTranslationExamplePage';
 
 function App() {
     useLangCssVars();
@@ -29,7 +30,7 @@ function App() {
                 <TranslationProvider>
                     <Router>
                         <Layout>
-                            <Suspense fallback={<>Loading…</>}>
+                            <Suspense fallback={<PageLoadingState />}>
                                 <Switch>
                                     <Route path={routes.HOME} exact>
                                         <HomePage />
