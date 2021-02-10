@@ -87,16 +87,34 @@
         "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>.",
         "add": "Füge eine Beispielübersetzung für <Term>{{term}}</Term> nach <Translation>{{translation}}</Translation> hinzu:",
         "steps": {
-            "type": "Art",
-            "source": "Quelle",
-            "example": "Beispiel"
+            "type": {
+                "label": "Art",
+                "description": "Wähle die Art des Mediums aus, welches du hinzufügen möchtest:"
+
+            },
+            "source": {
+                "label": "Quelle",
+                "description": "Suche nach den Büchern, die du hinzufügen möchtest:",
+                "bookSearchOriginal": "Originalen Buchtitel suchen",
+                "bookSearchTranslation": "Übersetzten Buchtitel suchen",
+                "bookOriginalTitle": "Unübersetztes Buch in originaler Fassung",
+                "bookTranslatedTitle": "Übersetzte Version"
+            },
+            "example": {
+                "label": "Beispiel"
+            }
         },
-        "bookSearchOriginal": "Originalen Buchtitel suchen",
-        "bookSearchTranslation": "Übersetzten Buchtitel suchen",
         "snippet": {
             "description": "Beispieltext aus <Book /> mit <Term />",
             "label": "Beispieltext",
             "pageNumber": "Seitennummer"
+        },
+        "types": {
+            "MOVIE": "Film",
+            "BOOK": "Buch",
+            "NEWSPAPER": "Zeitung",
+            "OTHER": "Anderes",
+            "WEBSITE": "Website"
         }
     },
     "comment": {

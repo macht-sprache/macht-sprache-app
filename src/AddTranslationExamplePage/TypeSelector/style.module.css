@@ -36,6 +36,7 @@
 
 .radio:checked + .label {
     background: var(--orange);
+    font-weight: bold;
 }
 
 .container {

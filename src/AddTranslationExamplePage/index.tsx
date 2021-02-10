@@ -70,9 +70,10 @@ export function AddTranslationExamplePage() {
 
     const steps = [
         {
-            label: t('translationExample.steps.type'),
+            label: t('translationExample.steps.type.label'),
             body: (
                 <>
+                    <p>{t('translationExample.steps.type.description')}</p>
                     <TypeSelectorContainer>
                         <TypeSelector
                             name="type"
@@ -80,12 +81,22 @@ export function AddTranslationExamplePage() {
                             onChange={el => {
                                 setType(el.target.value as 'BOOK');
                             }}
-                            label="Book"
+                            label={t('translationExample.types.BOOK')}
                         />
-                        <TypeSelector name="type" value="WEBSITE" label="Website" disabled />
-                        <TypeSelector name="type" value="NEWSPAPER" label="Newspaper" disabled />
-                        <TypeSelector name="type" value="MOVIE" label="Movie" disabled />
-                        <TypeSelector name="type" value="OTHER" label="Other" disabled />
+                        <TypeSelector
+                            name="type"
+                            value="WEBSITE"
+                            label={t('translationExample.types.WEBSITE')}
+                            disabled
+                        />
+                        <TypeSelector
+                            name="type"
+                            value="NEWSPAPER"
+                            label={t('translationExample.types.NEWSPAPER')}
+                            disabled
+                        />
+                        <TypeSelector name="type" value="MOVIE" label={t('translationExample.types.MOVIE')} disabled />
+                        <TypeSelector name="type" value="OTHER" label={t('translationExample.types.OTHER')} disabled />
                     </TypeSelectorContainer>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!type}>
@@ -96,19 +107,20 @@ export function AddTranslationExamplePage() {
             ),
         },
         {
-            label: t('translationExample.steps.source'),
+            label: t('translationExample.steps.source.label'),
             body: (
                 <>
-                    <h3>Original Book</h3>
+                    <p>{t('translationExample.steps.source.description')}</p>
+                    <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookOriginalTitle')}</h3>
                     <BookSearch
-                        label={t('translationExample.bookSearchOriginal')}
+                        label={t('translationExample.steps.source.bookSearchOriginal')}
                         lang={term.lang}
                         selectedBook={originalBook}
                         onSelect={setOriginalBook}
                     />
-                    <h3>Translated Book</h3>
+                    <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookTranslatedTitle')}</h3>
                     <BookSearch
-                        label={t('translationExample.bookSearchTranslation')}
+                        label={t('translationExample.steps.source.bookSearchTranslation')}
                         lang={translation.lang}
                         selectedBook={translatedBook}
                         onSelect={setTranslatedBook}
@@ -122,7 +134,7 @@ export function AddTranslationExamplePage() {
             ),
         },
         {
-            label: t('translationExample.steps.example'),
+            label: t('translationExample.steps.example.label'),
             body: (
                 <>
                     <Columns>

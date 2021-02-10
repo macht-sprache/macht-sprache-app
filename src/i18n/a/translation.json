@@ -87,16 +87,33 @@
         "empty": "There are no translation examples for <Term>{{term}}</Term> yet.",
         "add": "Add an example for the translation from <Term>{{term}}</Term> to <Translation>{{translation}}</Translation>",
         "steps": {
-            "type": "Type",
-            "source": "Source",
-            "example": "Example"
+            "type": {
+                "label": "Type",
+                "description": "Select the type of the source you want to add:"
+            },
+            "source": {
+                "label": "Source",
+                "description": "Select the Books you want to add:",
+                "bookSearchOriginal": "Serach by the title of the original book",
+                "bookSearchTranslation": "Serach by the title of the original book",
+                "bookOriginalTitle": "Original Book",
+                "bookTranslatedTitle": "Translated Book"
+            },
+            "example": {
+                "label": "Example"
+            }
         },
-        "bookSearchOriginal": "Serach by the title of the original book",
-        "bookSearchTranslation": "Serach by the title of the original book",
         "snippet": {
             "description": "Sample text of <Book>{{book}}</Book> with <Term /> in it",
             "label": "Sample Text",
             "pageNumber": "Page Number"
+        },
+        "types": {
+            "MOVIE": "Movie",
+            "BOOK": "Book",
+            "NEWSPAPER": "Newspaper",
+            "OTHER": "Other",
+            "WEBSITE": "Website"
         }
     },
     "comment": {
