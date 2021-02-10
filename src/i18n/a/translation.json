@@ -114,6 +114,9 @@
             "NEWSPAPER": "Newspaper",
             "OTHER": "Other",
             "WEBSITE": "Website"
+        },
+        "bookSearch": {
+            "cancelSelection": "Select a different book"
         }
     },
     "comment": {

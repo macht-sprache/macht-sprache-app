@@ -115,6 +115,9 @@
             "NEWSPAPER": "Zeitung",
             "OTHER": "Anderes",
             "WEBSITE": "Website"
+        },
+        "bookSearch": {
+            "cancelSelection": "Suche ein anderes Buch aus"
         }
     },
     "comment": {

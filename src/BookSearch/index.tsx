@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { findBooks } from '../functions';
@@ -16,6 +17,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Book[]>([]);
     const [searching, setSearching] = useState<boolean>();
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!query) {
@@ -51,8 +53,8 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                     onClick={() => {
                         onSelect(undefined);
                     }}
-                    title={'Select different Book'}
-                    aria-label="Select different Book"
+                    title={t('translationExample.bookSearch.cancelSelection')}
+                    aria-label={t('translationExample.bookSearch.cancelSelection')}
                 ></button>
             </div>
         );

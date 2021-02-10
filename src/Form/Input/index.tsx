@@ -28,7 +28,6 @@ interface SelectProps
 
 export function Select({ label, span = 4, children, value, disabled, error, busy, ...props }: SelectProps) {
     const selectProps = { value, disabled, ...props };
-    console.log(busy);
 
     return (
         <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
