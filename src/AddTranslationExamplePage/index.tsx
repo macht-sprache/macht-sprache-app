@@ -15,6 +15,7 @@ import InputContainer from '../Form/InputContainer';
 import { Input, Textarea } from '../Form/Input';
 import { addTranslationExample } from '../functions';
 import SavingState from '../SavingState';
+import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
 export function AddTranslationExamplePage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
@@ -72,16 +73,20 @@ export function AddTranslationExamplePage() {
             label: t('translationExample.steps.type'),
             body: (
                 <>
-                    <input
-                        type="radio"
-                        id="book"
-                        name="type"
-                        value="BOOK"
-                        onChange={el => {
-                            setType(el.target.value as 'BOOK');
-                        }}
-                    />
-                    <label htmlFor="book">Book</label>
+                    <TypeSelectorContainer>
+                        <TypeSelector
+                            name="type"
+                            value="BOOK"
+                            onChange={el => {
+                                setType(el.target.value as 'BOOK');
+                            }}
+                            label="Book"
+                        />
+                        <TypeSelector name="type" value="WEBSITE" label="Website" disabled />
+                        <TypeSelector name="type" value="NEWSPAPER" label="Newspaper" disabled />
+                        <TypeSelector name="type" value="MOVIE" label="Movie" disabled />
+                        <TypeSelector name="type" value="OTHER" label="Other" disabled />
+                    </TypeSelectorContainer>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!type}>
                             Next

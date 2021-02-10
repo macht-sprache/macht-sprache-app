@@ -1,0 +1,45 @@
+.icon {
+    height: 6rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.radio {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+.labelWrapper {
+    margin: 0.5rem;
+}
+
+.label {
+    display: block;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.radio:not(:disabled) + .label {
+    cursor: pointer;
+}
+
+.radio:disabled + .label {
+    opacity: 0.3;
+}
+
+.radio:focus + .label {
+    box-shadow: 0 0 0 var(--thickBorder) var(--orange);
+}
+
+.radio:checked + .label {
+    background: var(--orange);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -0.5rem;
+}
