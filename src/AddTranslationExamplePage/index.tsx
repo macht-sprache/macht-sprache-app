@@ -73,31 +73,43 @@ export function AddTranslationExamplePage() {
             label: t('translationExample.steps.type.label'),
             body: (
                 <>
-                    <p>{t('translationExample.steps.type.description')}</p>
-                    <TypeSelectorContainer>
-                        <TypeSelector
-                            name="type"
-                            value="BOOK"
-                            onChange={el => {
-                                setType(el.target.value as 'BOOK');
-                            }}
-                            label={t('translationExample.types.BOOK')}
-                        />
-                        <TypeSelector
-                            name="type"
-                            value="WEBSITE"
-                            label={t('translationExample.types.WEBSITE')}
-                            disabled
-                        />
-                        <TypeSelector
-                            name="type"
-                            value="NEWSPAPER"
-                            label={t('translationExample.types.NEWSPAPER')}
-                            disabled
-                        />
-                        <TypeSelector name="type" value="MOVIE" label={t('translationExample.types.MOVIE')} disabled />
-                        <TypeSelector name="type" value="OTHER" label={t('translationExample.types.OTHER')} disabled />
-                    </TypeSelectorContainer>
+                    <Section>
+                        <p>{t('translationExample.steps.type.description')}</p>
+                        <TypeSelectorContainer>
+                            <TypeSelector
+                                name="type"
+                                value="BOOK"
+                                onChange={el => {
+                                    setType(el.target.value as 'BOOK');
+                                }}
+                                label={t('translationExample.types.BOOK')}
+                            />
+                            <TypeSelector
+                                name="type"
+                                value="WEBSITE"
+                                label={t('translationExample.types.WEBSITE')}
+                                disabled
+                            />
+                            <TypeSelector
+                                name="type"
+                                value="NEWSPAPER"
+                                label={t('translationExample.types.NEWSPAPER')}
+                                disabled
+                            />
+                            <TypeSelector
+                                name="type"
+                                value="MOVIE"
+                                label={t('translationExample.types.MOVIE')}
+                                disabled
+                            />
+                            <TypeSelector
+                                name="type"
+                                value="OTHER"
+                                label={t('translationExample.types.OTHER')}
+                                disabled
+                            />
+                        </TypeSelectorContainer>
+                    </Section>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!type}>
                             Next
@@ -111,7 +123,7 @@ export function AddTranslationExamplePage() {
             body: (
                 <>
                     <p>{t('translationExample.steps.source.description')}</p>
-                    <div className={s.section}>
+                    <Section>
                         <h3 className={s.bookSearchHeading}>
                             {t('translationExample.steps.source.bookOriginalTitle')}
                         </h3>
@@ -121,8 +133,8 @@ export function AddTranslationExamplePage() {
                             selectedBook={originalBook}
                             onSelect={setOriginalBook}
                         />
-                    </div>
-                    <div className={s.section}>
+                    </Section>
+                    <Section>
                         <h3 className={s.bookSearchHeading}>
                             {t('translationExample.steps.source.bookTranslatedTitle')}
                         </h3>
@@ -132,7 +144,7 @@ export function AddTranslationExamplePage() {
                             selectedBook={translatedBook}
                             onSelect={setTranslatedBook}
                         />
-                    </div>
+                    </Section>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!(originalBook && translatedBook)}>
                             Next
@@ -145,7 +157,7 @@ export function AddTranslationExamplePage() {
             label: t('translationExample.steps.example.label'),
             body: (
                 <>
-                    <div className={s.section}>
+                    <Section>
                         <Columns>
                             <div>
                                 <p>
@@ -203,7 +215,7 @@ export function AddTranslationExamplePage() {
                                 </InputContainer>
                             </div>
                         </Columns>
-                    </div>
+                    </Section>
                     <ButtonContainer>
                         <Button primary onClick={save}>
                             Save
@@ -253,3 +265,5 @@ export function AddTranslationExamplePage() {
         </>
     );
 }
+
+const Section = ({ children }: { children: React.ReactNode }) => <div className={s.section}>{children}</div>;
