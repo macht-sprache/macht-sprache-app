@@ -4,13 +4,14 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
     label: React.ReactNode;
     error?: React.ReactNode;
     span?: number;
+    busy?: boolean;
 }
 
-export function Input({ label, value, disabled, span = 4, error, ...props }: InputProps) {
+export function Input({ label, value, disabled, span = 4, busy = false, error, ...props }: InputProps) {
     const inputProps = { value, disabled, ...props };
 
     return (
-        <Container error={error} disabled={disabled} span={span} label={label} empty={!value}>
+        <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
             <input className={s.input} aria-invalid={!!error} {...inputProps} />
         </Container>
     );
@@ -22,13 +23,15 @@ interface SelectProps
     children: React.ReactNode;
     span?: number;
     error?: React.ReactNode;
+    busy?: boolean;
 }
 
-export function Select({ label, span = 4, children, value, disabled, error, ...props }: SelectProps) {
+export function Select({ label, span = 4, children, value, disabled, error, busy, ...props }: SelectProps) {
     const selectProps = { value, disabled, ...props };
+    console.log(busy);
 
     return (
-        <Container error={error} disabled={disabled} span={span} label={label} empty={!value}>
+        <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
             <select className={s.select} aria-invalid={!!error} {...selectProps}>
                 {children}
             </select>
@@ -41,13 +44,14 @@ interface TextareaProps
     label: React.ReactNode;
     span?: number;
     error?: React.ReactNode;
+    busy?: boolean;
 }
 
-export function Textarea({ label, span = 4, value, disabled, error, ...props }: TextareaProps) {
+export function Textarea({ label, span = 4, value, disabled, error, busy, ...props }: TextareaProps) {
     const testareaProps = { value, disabled, ...props };
 
     return (
-        <Container error={error} disabled={disabled} span={span} label={label} empty={!value}>
+        <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
             <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} />
         </Container>
     );
@@ -60,6 +64,7 @@ const Container = ({
     label,
     empty,
     disabled,
+    busy,
 }: {
     children: React.ReactNode;
     error?: React.ReactNode;
@@ -67,10 +72,11 @@ const Container = ({
     label: React.ReactNode;
     empty: boolean;
     disabled?: boolean;
+    busy?: boolean;
 }) => {
     return (
         <label
-            className={error ? s.containerError : disabled ? s.containerDisabled : s.container}
+            className={error ? s.containerError : disabled ? s.containerDisabled : busy ? s.containerBusy : s.container}
             style={{ gridColumn: `span ${span}` }}
         >
             <div className={empty ? s.labelEmpty : s.label}>{label}</div>

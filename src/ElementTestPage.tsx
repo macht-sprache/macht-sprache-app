@@ -123,9 +123,17 @@ export default function ElementTestPage() {
                     <option value="3">movie</option>
                 </Select>
                 <Input
-                    label="Another field, disabled"
+                    label="Another field, busy"
+                    busy={true}
                     value={another}
+                    onChange={value => {
+                        setAnother(value.target.value);
+                    }}
+                />
+                <Input
+                    label="Another field, disabled"
                     disabled={true}
+                    value={another}
                     onChange={value => {
                         setAnother(value.target.value);
                     }}
