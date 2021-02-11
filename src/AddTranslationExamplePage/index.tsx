@@ -17,6 +17,8 @@ import { addTranslationExample } from '../functions';
 import SavingState from '../SavingState';
 import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
+const SNIPPET_MAX_LENGTH = 200; // SHOULD MAYBE BE DECLARED SOMEWHERE ELSE?
+
 export function AddTranslationExamplePage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
     const term = useTerm(termId);
@@ -171,9 +173,11 @@ export function AddTranslationExamplePage() {
                                     <Textarea
                                         label={t('translationExample.snippet.label')}
                                         value={snippets?.original}
+                                        maxLength={SNIPPET_MAX_LENGTH}
                                         onChange={e =>
                                             setSnippets(prevProps => ({ ...prevProps, original: e.target.value }))
                                         }
+                                        minHeight="10rem"
                                     />
                                     <Input
                                         type="text"
@@ -197,9 +201,11 @@ export function AddTranslationExamplePage() {
                                     <Textarea
                                         label={t('translationExample.snippet.label')}
                                         value={snippets?.translated}
+                                        maxLength={SNIPPET_MAX_LENGTH}
                                         onChange={e =>
                                             setSnippets(prevProps => ({ ...prevProps, translated: e.target.value }))
                                         }
+                                        minHeight="10rem"
                                     />
                                     <Input
                                         type="text"
