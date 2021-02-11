@@ -158,3 +158,7 @@ export const addComment = (user: User, ref: Comment['ref'], comment: string) => 
         comment,
     });
 };
+
+export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, initialData?: T) => {
+    return useFirestoreDocData<T>(ref, initialData && { initialData }).data;
+};
