@@ -90,7 +90,8 @@ function Heading({ snippet, lang }: { snippet: BookSnippet; lang: Lang }) {
 
     return (
         <h1 className={s.heading} lang={lang}>
-            {book.title}
+            {book.coverUrl && <img className={s.headingImg} alt="" src={book.coverUrl} />}
+            <span>{book.title}</span>
         </h1>
     );
 }
