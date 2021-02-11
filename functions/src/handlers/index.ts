@@ -45,13 +45,7 @@ const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book>
 
 const getCover = (volumeInfo: books_v1.Schema$Volume['volumeInfo']) => {
     const imageLinks = volumeInfo?.imageLinks;
-    const cover =
-        imageLinks?.extraLarge ||
-        imageLinks?.large ||
-        imageLinks?.medium ||
-        imageLinks?.small ||
-        imageLinks?.thumbnail ||
-        imageLinks?.smallThumbnail;
+    const cover = imageLinks?.thumbnail || imageLinks?.smallThumbnail;
     return cover?.replace('http://', 'https://');
 };
 
