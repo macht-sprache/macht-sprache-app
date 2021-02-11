@@ -16,8 +16,9 @@ export function TranslationPage() {
         <>
             <Header
                 mainLang={translation.lang}
+                subHeadingLang={term.lang}
                 subHeading={
-                    <Link lang={term.lang} className={s.termLink} to={generatePath(TERM, { termId: term.id })}>
+                    <Link className={s.termLink} to={generatePath(TERM, { termId: term.id })}>
                         {term.value}
                     </Link>
                 }
