@@ -1,5 +1,5 @@
-import { Fragment, memo } from 'react';
 import escapeRegExp from 'lodash.escaperegexp';
+import { Fragment, memo } from 'react';
 
 type Props = {
     text: string;
@@ -7,7 +7,7 @@ type Props = {
 };
 
 function TextWithHighlights({ text, highlighted }: Props) {
-    const regExp = new RegExp(`(${highlighted.map(escapeRegExp).join('|')})`);
+    const regExp = new RegExp(`\\b(${highlighted.map(escapeRegExp).join('|')})\\b`);
     return (
         <>
             {text
