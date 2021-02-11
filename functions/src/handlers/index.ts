@@ -53,7 +53,13 @@ const getCover = (volumeInfo: books_v1.Schema$Volume['volumeInfo']) => {
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);
 
-    const { data } = await booksApi.volumes.list({ langRestrict: lang, q: 'intitle:' + query, maxResults: 20 });
+    const { data } = await booksApi.volumes.list({
+        langRestrict: lang,
+        q: query,
+        printType: 'books',
+        maxResults: 20,
+        orderBy: 'relevance',
+    });
     const volumes = data.items || [];
     const books = volumes.map(volumeToBook).filter(isValidBook);
     return books;
