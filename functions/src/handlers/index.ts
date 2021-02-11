@@ -22,7 +22,7 @@ const BookSchema = {
     id: String,
     title: String,
     authors: [String],
-    publisher: String,
+    'publisher?': String,
     isbn: String,
     'coverUrl?': String,
 };
