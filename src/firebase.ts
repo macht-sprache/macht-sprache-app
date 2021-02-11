@@ -15,7 +15,7 @@ const appConfig = {
 const app = firebase.initializeApp(appConfig);
 const auth = app.auth();
 const db = app.firestore();
-const functions = app.functions();
+const functions = app.functions(process.env.REACT_APP_FIREBASE_REGION);
 
 if (process.env.REACT_APP_AUTH_EMULATOR_PORT) {
     auth.useEmulator(window.location.origin.replace(window.location.port, process.env.REACT_APP_AUTH_EMULATOR_PORT));
