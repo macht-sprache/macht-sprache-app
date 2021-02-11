@@ -92,7 +92,6 @@
             "type": {
                 "label": "Art",
                 "description": "Wähle die Art des Mediums aus, welches du hinzufügen möchtest:"
-
             },
             "source": {
                 "label": "Quelle",
@@ -121,7 +120,8 @@
         "bookSearch": {
             "cancelSelection": "Suche ein anderes Buch aus"
         },
-        "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
+        "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
+        "publishedBy": "Published by {{publisher}}"
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."

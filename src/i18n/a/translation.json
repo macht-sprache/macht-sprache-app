@@ -120,7 +120,8 @@
         "bookSearch": {
             "cancelSelection": "Select a different book"
         },
-        "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
+        "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
+        "publishedBy": "Published by {{publisher}}"
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."

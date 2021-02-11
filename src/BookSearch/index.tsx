@@ -43,11 +43,31 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     if (selectedBook) {
         return (
             <div className={s.selected}>
-                {selectedBook.coverUrl ? (
-                    <img className={s.selectedImage} src={selectedBook.coverUrl} alt="" title={selectedBook.title} />
-                ) : (
-                    selectedBook.title
-                )}
+                <div className={s.selectedCover}>
+                    {selectedBook.coverUrl ? (
+                        <img
+                            className={s.selectedImage}
+                            src={selectedBook.coverUrl}
+                            alt=""
+                            title={selectedBook.title}
+                        />
+                    ) : (
+                        selectedBook.title
+                    )}
+                </div>
+                <div className={s.selectedMeta}>
+                    <div>{selectedBook.authors.join(', ')}</div>
+                    <h3 lang={lang} className={s.selectedHeading}>
+                        {selectedBook.title}
+                    </h3>
+                    <div className={s.selectedMetaBottom}>
+                        {selectedBook.publisher &&
+                            t('translationExample.publishedBy', { publisher: selectedBook.publisher })}{' '}
+                        in YEAR
+                        <br />
+                        ISBN: {selectedBook.isbn}
+                    </div>
+                </div>
                 <button
                     className={s.selectedCancelButton}
                     onClick={() => {

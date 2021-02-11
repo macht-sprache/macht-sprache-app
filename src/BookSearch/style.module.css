@@ -49,16 +49,29 @@
 }
 
 .selected {
-    composes: bookPages;
-    height: 10rem;
     position: relative;
-    width: max-content;
     margin-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.selectedCover {
+    composes: bookPages;
+    align-self: stretch;
+    margin-right: 1.5rem;
+}
+
+.selectedMetaBottom {
+    font-style: italic;
 }
 
 .selectedImage {
-    height: 100%;
+    height: 10rem;
     display: block;
+}
+
+.selectedHeading {
+    margin: 0;
 }
 
 .selectedCancelButton {
