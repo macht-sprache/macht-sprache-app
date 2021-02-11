@@ -45,9 +45,20 @@ interface TextareaProps
     span?: number;
     error?: React.ReactNode;
     busy?: boolean;
+    minHeight?: string;
 }
 
-export function Textarea({ label, span = 4, value, disabled, error, busy, maxLength, ...props }: TextareaProps) {
+export function Textarea({
+    label,
+    span = 4,
+    value,
+    disabled,
+    error,
+    busy,
+    maxLength,
+    minHeight,
+    ...props
+}: TextareaProps) {
     const { t } = useTranslation();
     const testareaProps = { value, disabled, maxLength, ...props };
     const charLeft = typeof value === 'string' && maxLength ? maxLength - value.length : 0;
@@ -63,7 +74,7 @@ export function Textarea({ label, span = 4, value, disabled, error, busy, maxLen
             empty={!value}
             warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
         >
-            <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} />
+            <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} style={{ minHeight }} />
         </Container>
     );
 }
