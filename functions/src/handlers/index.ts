@@ -23,20 +23,25 @@ const BookSchema = {
     title: String,
     authors: [String],
     'publisher?': String,
+    year: Number,
     isbn: String,
     'coverUrl?': String,
 };
 
 const isValidBook = (book: object): book is Book => isValid({ input: book, schema: BookSchema });
 
-const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => ({
-    id: id ?? undefined,
-    title: volumeInfo?.title,
-    authors: volumeInfo?.authors,
-    publisher: volumeInfo?.publisher,
-    isbn: volumeInfo?.industryIdentifiers?.find(identifier => identifier.type?.startsWith('ISBN'))?.identifier,
-    coverUrl: getCover(volumeInfo),
-});
+const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => {
+    const year = volumeInfo?.publishedDate?.match(/^\d+/)?.[0];
+    return {
+        id: id ?? undefined,
+        title: volumeInfo?.title,
+        authors: volumeInfo?.authors,
+        publisher: volumeInfo?.publisher,
+        year: typeof year == 'string' ? parseInt(year) : undefined,
+        isbn: volumeInfo?.industryIdentifiers?.find(identifier => identifier.type?.startsWith('ISBN'))?.identifier,
+        coverUrl: getCover(volumeInfo),
+    };
+};
 
 const getCover = (volumeInfo: books_v1.Schema$Volume['volumeInfo']) => {
     const imageLinks = volumeInfo?.imageLinks;

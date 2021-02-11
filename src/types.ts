@@ -66,6 +66,7 @@ export interface Book {
     title: string;
     authors: string[];
     publisher?: string;
+    year: number;
     isbn: string;
     coverUrl?: string;
 }
