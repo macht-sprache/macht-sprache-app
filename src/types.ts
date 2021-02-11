@@ -51,7 +51,7 @@ interface BaseSnippet {
     matches: string[];
 }
 
-interface BookSnippet extends BaseSnippet {
+export interface BookSnippet extends BaseSnippet {
     type: 'BOOK';
     source: DocReference<Book>;
     pageNumber?: string;
