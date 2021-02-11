@@ -118,7 +118,8 @@
         },
         "bookSearch": {
             "cancelSelection": "Select a different book"
-        }
+        },
+        "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."

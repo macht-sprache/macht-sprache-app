@@ -4,6 +4,7 @@ import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useDocument } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
+import { LoginHint } from '../LoginHint';
 import { TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import TextWithHighlights from '../TextWithHighlights';
@@ -45,11 +46,13 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                 </div>
             )}
             <div className={s.addExampleButton}>
-                <ButtonLink
-                    to={generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id })}
-                >
-                    {t('common.entities.translatioExample.add')}
-                </ButtonLink>
+                <LoginHint i18nKey="translationExample.registerToAdd">
+                    <ButtonLink
+                        to={generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id })}
+                    >
+                        {t('common.entities.translatioExample.add')}
+                    </ButtonLink>
+                </LoginHint>
             </div>
         </CommentWrapper>
     );

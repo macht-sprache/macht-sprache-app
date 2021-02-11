@@ -119,7 +119,8 @@
         },
         "bookSearch": {
             "cancelSelection": "Suche ein anderes Buch aus"
-        }
+        },
+        "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
