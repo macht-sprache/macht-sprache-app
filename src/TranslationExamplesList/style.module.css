@@ -3,11 +3,6 @@
     margin-top: 2rem;
 }
 
-.example {
-    /* border: var(--thickBorder) solid var(--black);
-    padding: 0.5rem; */
-}
-
 .example + .example {
     margin-top: 2rem;
 }

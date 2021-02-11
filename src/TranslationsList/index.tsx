@@ -23,12 +23,14 @@ export function TranslationsList({ term }: { term: Term }) {
                 {commentCount} {t('common.entities.translation.value', { count: commentCount })}
             </ColumnHeading>
             {!translations.length && (
-                <Trans
-                    t={t}
-                    i18nKey="translation.empty"
-                    values={{ term: term.value }}
-                    components={{ TermWithLang: <TermWithLang term={term} /> }}
-                />
+                <p>
+                    <Trans
+                        t={t}
+                        i18nKey="translation.empty"
+                        values={{ term: term.value }}
+                        components={{ TermWithLang: <TermWithLang term={term} /> }}
+                    />
+                </p>
             )}
             {!!translations.length && (
                 <div className={s.list}>
