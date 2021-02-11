@@ -7,11 +7,23 @@
     margin-top: 2rem;
 }
 
-.heading {
-    font-size: inherit;
+.header {
     margin: 0 0 0.5rem;
     display: flex;
     align-items: flex-end;
+}
+
+.headingOriginal {
+    font-size: inherit;
+    margin: 0;
+    color: var(--lang-color);
+    background: var(--white);
+    box-shadow: 0 0 0 0.2rem var(--white);
+}
+
+.headingTranslated {
+    composes: headingOriginal;
+    margin-left: 1rem;
 }
 
 .headingImg {

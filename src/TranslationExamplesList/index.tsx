@@ -71,7 +71,14 @@ function TranslationExampleArticle({
 
     return (
         <article className={s.example}>
-            {example.original.type === 'BOOK' && <Heading lang={term.lang} snippet={example.original} />}
+            {example.original.type === 'BOOK' && example.translated.type === 'BOOK' && (
+                <Header
+                    langOriginal={term.lang}
+                    langTranslated={translation.lang}
+                    snippetOriginal={example.original}
+                    snippetTranslated={example.translated}
+                />
+            )}
             <div lang={term.lang} className={s.exampleTextOriginal}>
                 <TextWithHighlights text={example.original.text} highlighted={example.original.matches} />
             </div>
@@ -85,13 +92,32 @@ function TranslationExampleArticle({
     );
 }
 
-function Heading({ snippet, lang }: { snippet: BookSnippet; lang: Lang }) {
-    const book = useDocument(snippet.source);
+function Header({
+    snippetOriginal,
+    snippetTranslated,
+    langOriginal,
+    langTranslated,
+}: {
+    snippetOriginal: BookSnippet;
+    snippetTranslated: BookSnippet;
+    langOriginal: Lang;
+    langTranslated: Lang;
+}) {
+    const bookOriginal = useDocument(snippetOriginal.source);
+    const translatedBook = useDocument(snippetTranslated.source);
 
     return (
-        <h1 className={s.heading} lang={lang}>
-            {book.coverUrl && <img className={s.headingImg} alt="" src={book.coverUrl} />}
-            <span>{book.title}</span>
-        </h1>
+        <header className={s.header}>
+            {bookOriginal.coverUrl && <img className={s.headingImg} alt="" src={bookOriginal.coverUrl} />}
+            <div>
+                {bookOriginal.authors.join(', ')}
+                <h1 className={s.headingOriginal} lang={langOriginal}>
+                    {bookOriginal.title}
+                </h1>
+                <h1 className={s.headingTranslated} lang={langTranslated}>
+                    {translatedBook.title}
+                </h1>
+            </div>
+        </header>
     );
 }
