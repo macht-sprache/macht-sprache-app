@@ -17,7 +17,7 @@ import { addTranslationExample } from '../functions';
 import SavingState from '../SavingState';
 import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
-const SNIPPET_MAX_LENGTH = 200; // SHOULD MAYBE BE DECLARED SOMEWHERE ELSE?
+const SNIPPET_MAX_LENGTH = 350; // SHOULD MAYBE BE DECLARED SOMEWHERE ELSE?
 
 export function AddTranslationExamplePage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
@@ -177,7 +177,7 @@ export function AddTranslationExamplePage() {
                                         onChange={e =>
                                             setSnippets(prevProps => ({ ...prevProps, original: e.target.value }))
                                         }
-                                        minHeight="10rem"
+                                        minHeight="15rem"
                                     />
                                     <Input
                                         type="text"
@@ -205,7 +205,7 @@ export function AddTranslationExamplePage() {
                                         onChange={e =>
                                             setSnippets(prevProps => ({ ...prevProps, translated: e.target.value }))
                                         }
-                                        minHeight="10rem"
+                                        minHeight="15rem"
                                     />
                                     <Input
                                         type="text"
