@@ -145,7 +145,7 @@ export default function ElementTestPage() {
                     onChange={value => {
                         setTextAreaValue(value.target.value);
                     }}
-                    error="something is wrong here, too!"
+                    maxLength={100}
                 />
             </InputContainer>
             <ButtonContainer>

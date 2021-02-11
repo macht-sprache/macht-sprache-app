@@ -84,6 +84,11 @@
     padding: 0.5rem;
 }
 
+.warning {
+    composes: error;
+    background: var(--orange);
+}
+
 .container:not(:focus-within) .labelEmpty {
     transform: translateY(0.7rem);
 }

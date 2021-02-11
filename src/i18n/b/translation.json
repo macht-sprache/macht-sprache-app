@@ -32,7 +32,8 @@
         "saving": "Speichere...",
         "error": {
             "general": "Da ist etwas schief gegangen"
-        }
+        },
+        "textAeraCharWarning": "Noch {{count}} Zeichen übrig."
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",

@@ -32,7 +32,8 @@
         "saving": "Saving...",
         "error": {
             "general": "Something went wrong"
-        }
+        },
+        "textAeraCharWarning": "{{count}} characters left."
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import s from './style.module.css';
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -46,11 +47,22 @@ interface TextareaProps
     busy?: boolean;
 }
 
-export function Textarea({ label, span = 4, value, disabled, error, busy, ...props }: TextareaProps) {
-    const testareaProps = { value, disabled, ...props };
+export function Textarea({ label, span = 4, value, disabled, error, busy, maxLength, ...props }: TextareaProps) {
+    const { t } = useTranslation();
+    const testareaProps = { value, disabled, maxLength, ...props };
+    const charLeft = typeof value === 'string' && maxLength ? maxLength - value.length : 0;
+    const displayCharLimitWarning = typeof value === 'string' && maxLength && charLeft < 20;
 
     return (
-        <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
+        <Container
+            busy={busy}
+            error={error}
+            disabled={disabled}
+            span={span}
+            label={label}
+            empty={!value}
+            warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
+        >
             <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} />
         </Container>
     );
@@ -64,6 +76,7 @@ const Container = ({
     empty,
     disabled,
     busy,
+    warning,
 }: {
     children: React.ReactNode;
     error?: React.ReactNode;
@@ -72,6 +85,7 @@ const Container = ({
     empty: boolean;
     disabled?: boolean;
     busy?: boolean;
+    warning?: string;
 }) => {
     return (
         <label
@@ -83,6 +97,11 @@ const Container = ({
             {error && (
                 <div aria-live="assertive" className={s.error}>
                     {error}
+                </div>
+            )}
+            {warning && (
+                <div aria-live="assertive" className={s.warning}>
+                    {warning}
                 </div>
             )}
         </label>
