@@ -18,6 +18,7 @@
             "comment": {
                 "value": "Comment",
                 "value_plural": "Comments",
+                "withCount": "{{count}} $t(common.entities.comment.value, {\"count\": {{count}} })",
                 "add": "Add Comment",
                 "action": "Comment"
             },

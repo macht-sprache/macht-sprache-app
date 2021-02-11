@@ -1,14 +1,13 @@
-import { Fragment } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ButtonLink } from '../Form/Button';
-import { useTranslationExamples } from '../hooks/data';
+import { useTranslationExamples, useDocument } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import TextWithHighlights from '../TextWithHighlights';
-import { Term, Translation } from '../types';
+import { Term, Translation, TranslationExample, BookSnippet, Lang } from '../types';
 import s from './style.module.css';
 
 type Props = {
@@ -34,24 +33,16 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                 </p>
             )}
             {!!translationExamples.length && (
-                <ul>
+                <div>
                     {translationExamples.map(translationExample => (
-                        <Fragment key={translationExample.id}>
-                            <li lang={term.lang}>
-                                <TextWithHighlights
-                                    text={translationExample.original.text}
-                                    highlighted={translationExample.original.matches}
-                                />
-                            </li>
-                            <li lang={translation.lang}>
-                                <TextWithHighlights
-                                    text={translationExample.translated.text}
-                                    highlighted={translationExample.translated.matches}
-                                />
-                            </li>
-                        </Fragment>
+                        <TranslationExampleArticle
+                            key={translationExample.id}
+                            term={term}
+                            translation={translation}
+                            example={translationExample}
+                        />
                     ))}
-                </ul>
+                </div>
             )}
             <div className={s.addExampleButton}>
                 <ButtonLink
@@ -61,5 +52,42 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                 </ButtonLink>
             </div>
         </CommentWrapper>
+    );
+}
+
+function TranslationExampleArticle({
+    example,
+    term,
+    translation,
+}: {
+    example: TranslationExample;
+    term: Term;
+    translation: Translation;
+}) {
+    const { t } = useTranslation();
+
+    return (
+        <article className={s.example}>
+            {example.original.type === 'BOOK' && <Heading lang={term.lang} snippet={example.original} />}
+            <div lang={term.lang} className={s.exampleTextOriginal}>
+                <TextWithHighlights text={example.original.text} highlighted={example.original.matches} />
+            </div>
+            <div lang={translation.lang} className={s.exampleTextTranslated}>
+                <TextWithHighlights text={example.translated.text} highlighted={example.translated.matches} />
+            </div>
+            <footer className={s.footer}>
+                {t('common.entities.comment.withCount', { count: example.commentCount })}
+            </footer>
+        </article>
+    );
+}
+
+function Heading({ snippet, lang }: { snippet: BookSnippet; lang: Lang }) {
+    const book = useDocument(snippet.source);
+
+    return (
+        <h1 className={s.heading} lang={lang}>
+            {book.title}
+        </h1>
     );
 }

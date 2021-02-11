@@ -1,4 +1,46 @@
 .addExampleButton {
     display: flex;
-    margin-top: 1rem;
+    margin-top: 2rem;
+}
+
+.example {
+    /* border: var(--thickBorder) solid var(--black);
+    padding: 0.5rem; */
+}
+
+.example + .example {
+    margin-top: 2rem;
+}
+
+.heading {
+    font-size: inherit;
+    margin: 0 0 0.5rem;
+}
+
+.exampleText {
+    padding: 0.5rem;
+    background: var(--lang-color);
+    border: var(--thickBorder) solid var(--white);
+    font-style: italic;
+    font-family: var(--paragraphFont);
+    font-weight: 200;
+}
+
+.exampleText strong {
+    font-weight: 500;
+}
+
+.exampleTextOriginal {
+    composes: exampleText;
+    margin: 0 1rem 0 calc(var(--thickBorder) * -1);
+}
+
+.exampleTextTranslated {
+    composes: exampleText;
+    margin: calc(var(--thickBorder) * -1) calc(var(--thickBorder) * -1) 0 1rem;
+}
+
+.footer {
+    margin-top: 0.5rem;
+    text-align: right;
 }
