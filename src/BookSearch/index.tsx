@@ -63,7 +63,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                     <div className={s.selectedMetaBottom}>
                         {selectedBook.publisher &&
                             t('translationExample.publishedBy', { publisher: selectedBook.publisher })}{' '}
-                        in YEAR
+                        in {selectedBook.year}
                         <br />
                         ISBN: {selectedBook.isbn}
                     </div>
