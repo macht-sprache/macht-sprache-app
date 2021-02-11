@@ -2,7 +2,7 @@ import { LanguageServiceClient } from '@google-cloud/language';
 import { firestore } from 'firebase-admin';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { books_v1, google } from 'googleapis';
-import { all, isNil, isValid, last, partition, slice, zip } from 'rambdax';
+import { all, isNil, isValid, last, partition, slice, take, zip } from 'rambdax';
 import { TranslationExampleModel } from '../../../src/modelTypes';
 import { Book, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
 import { db, functions } from '../firebase';
@@ -66,7 +66,7 @@ export const findBooks = functions.https.onCall(async ({ query, lang }: { query:
         orderBy: 'relevance',
     });
     const volumes = data.items || [];
-    const books = volumes.map(volumeToBook).filter(isValidBook);
+    const books = take(10, volumes.map(volumeToBook).filter(isValidBook));
     return books;
 });
 
