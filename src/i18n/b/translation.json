@@ -121,7 +121,7 @@
             "cancelSelection": "Suche ein anderes Buch aus"
         },
         "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
-        "publishedBy": "Published by {{publisher}}"
+        "publishedBy": "Veröffentlicht bei {{publisher}}"
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
