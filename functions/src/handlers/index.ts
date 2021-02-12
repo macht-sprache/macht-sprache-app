@@ -1,12 +1,10 @@
 import { firestore } from 'firebase-admin';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { TranslationExampleModel } from '../../../src/modelTypes';
-import { DocReference, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
-import { db, functions } from '../firebase';
+import { Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
+import { convertRef, db, functions, WithoutId } from '../firebase';
 import { ensureBookRef, searchBooks } from './books';
 import { findTermMatches } from './language';
-
-type WithoutId<T> = Omit<T, 'id'>;
 
 const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
@@ -18,8 +16,6 @@ export const findBooks = functions.https.onCall(async ({ query, lang }: { query:
     verifyUser(context);
     return searchBooks(query, lang);
 });
-
-const convertRef = <T>(ref: firestore.DocumentReference) => (ref as unknown) as DocReference<T>;
 
 export const addTranslationExample = functions.https.onCall(async (model: TranslationExampleModel, context) => {
     verifyUser(context);
