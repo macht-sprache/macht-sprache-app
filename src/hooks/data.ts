@@ -50,10 +50,10 @@ const TranslationExampleConverter: firebase.firestore.FirestoreDataConverter<Tra
         return data;
     },
     fromFirestore: (snapshot): TranslationExample => {
-        const { translation, creator, createdAt, original, translated, commentCount } = snapshot.data(
+        const { translation, creator, createdAt, type, original, translated, commentCount } = snapshot.data(
             defaultSnapshotOptions
         );
-        return { id: snapshot.id, translation, creator, createdAt, original, translated, commentCount };
+        return { id: snapshot.id, translation, creator, type, createdAt, original, translated, commentCount };
     },
 };
 

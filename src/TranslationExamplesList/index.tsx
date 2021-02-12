@@ -71,7 +71,7 @@ function TranslationExampleArticle({
 
     return (
         <article className={s.example}>
-            {example.original.type === 'BOOK' && example.translated.type === 'BOOK' && (
+            {example.type === 'BOOK' && (
                 <Header
                     langOriginal={term.lang}
                     langTranslated={translation.lang}

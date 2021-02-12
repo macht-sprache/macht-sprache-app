@@ -1,15 +1,23 @@
-type BookSnippetModel = {
-    type: 'BOOK';
+import { TranslationExampleType } from './types';
+
+interface BaseTranslationExampleModel<T extends TranslationExampleType, U extends BaseSnippetModel> {
+    termId: string;
+    translationId: string;
+    type: T;
+    original: U;
+    translated: U;
+}
+
+interface BaseSnippetModel {
+    text: string;
+}
+
+interface BookSnippetModel extends BaseSnippetModel {
     text: string;
     pageNumber?: string;
     bookId: string;
-};
+}
 
-type SnippetModel = BookSnippetModel;
+type BookTranslationExampleModel = BaseTranslationExampleModel<'BOOK', BookSnippetModel>;
 
-export type TranslationExampleModel = {
-    termId: string;
-    translationId: string;
-    original: SnippetModel;
-    translated: SnippetModel;
-};
+export type TranslationExampleModel = BookTranslationExampleModel;

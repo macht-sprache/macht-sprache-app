@@ -4,7 +4,7 @@ import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { books_v1, google } from 'googleapis';
 import { all, isNil, isValid, last, partition, slice, take, zip } from 'rambdax';
 import { TranslationExampleModel } from '../../../src/modelTypes';
-import { Book, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
+import { Book, Lang, Term, Translation, TranslationExample, User, DocReference } from '../../../src/types';
 import { db, functions } from '../firebase';
 
 type WithoutId<T> = Omit<T, 'id'>;
@@ -132,6 +132,8 @@ const ensureBookRef = async (bookId: string) => {
     return bookRef;
 };
 
+const convertRef = <T>(ref: firestore.DocumentReference) => (ref as unknown) as DocReference<T>;
+
 export const addTranslationExample = functions.https.onCall(async (model: TranslationExampleModel, context) => {
     verifyUser(context);
 
@@ -168,23 +170,19 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
             id: userId,
             displayName: user.displayName,
         },
-        // @ts-ignore
-        translation: translationSnap.ref,
+        translation: convertRef(translationSnap.ref),
+        type: model.type,
         original: {
-            type: model.original.type,
             text: model.original.text,
             pageNumber: model.original.pageNumber,
             matches: originalMatches,
-            // @ts-ignore
-            source: originalBookRef,
+            source: convertRef(originalBookRef),
         },
         translated: {
-            type: model.translated.type,
             text: model.translated.text,
             pageNumber: model.translated.pageNumber,
             matches: translatedMatches,
-            // @ts-ignore
-            source: translatedBookRef,
+            source: convertRef(translatedBookRef),
         },
         commentCount: 0,
     };

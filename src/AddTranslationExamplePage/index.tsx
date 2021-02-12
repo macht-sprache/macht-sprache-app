@@ -49,14 +49,13 @@ export function AddTranslationExamplePage() {
             addTranslationExample({
                 termId,
                 translationId,
+                type: 'BOOK',
                 original: {
-                    type: 'BOOK',
                     text: snippets.original,
                     pageNumber: snippets.originalPageNo,
                     bookId: originalBook.id,
                 },
                 translated: {
-                    type: 'BOOK',
                     text: snippets.translated,
                     pageNumber: snippets.translatedPageNo,
                     bookId: translatedBook.id,
