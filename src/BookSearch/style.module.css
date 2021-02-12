@@ -27,6 +27,7 @@
     position: absolute;
     background: var(--bc);
     top: 100%;
+    left: 0;
     height: var(--thickBorder);
     width: 1rem;
     transform: rotate(45deg);
@@ -38,6 +39,7 @@
     height: 8rem;
     padding: 0;
     cursor: pointer;
+    background: var(--disabledGreyBackground);
 }
 
 .resultButton:hover {
@@ -46,6 +48,15 @@
 
 .resultImage {
     height: 100%;
+}
+
+.resultImageFallback {
+    width: 6rem;
+    padding: 0.5rem;
+    font-size: var(--fontSizeS);
+    font-style: italic;
+    font-family: var(--monospaceFont);
+    hyphens: auto;
 }
 
 .selected {
@@ -65,9 +76,20 @@
     font-style: italic;
 }
 
-.selectedImage {
+.selectedImage,
+.selectedImageFallback {
     height: 10rem;
     display: block;
+}
+
+.selectedImageFallback {
+    width: 7rem;
+    padding: 0.5rem;
+    background: var(--disabledGreyBackground);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-style: italic;
 }
 
 .selectedHeading {

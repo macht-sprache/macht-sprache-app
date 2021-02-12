@@ -52,7 +52,9 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                             title={selectedBook.title}
                         />
                     ) : (
-                        selectedBook.title
+                        <div lang={lang} className={s.selectedImageFallback}>
+                            {selectedBook.title}
+                        </div>
                     )}
                 </div>
                 <div className={s.selectedMeta}>
@@ -88,7 +90,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
             {!!results.length && (
                 <ul className={s.resultList}>
                     {results.map(book => (
-                        <li key={book.id} className={s.resultItem}>
+                        <li key={book.id} className={s.resultItem} lang={lang}>
                             <button
                                 onClick={() => {
                                     onSelect(book);
@@ -97,9 +99,15 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                                 title={book.title}
                             >
                                 {book.coverUrl ? (
-                                    <img className={s.resultImage} src={book.coverUrl} alt="" title={book.title} />
+                                    <img
+                                        lang={lang}
+                                        className={s.resultImage}
+                                        src={book.coverUrl}
+                                        alt=""
+                                        title={book.title}
+                                    />
                                 ) : (
-                                    book.title
+                                    <div className={s.resultImageFallback}>{book.title}</div>
                                 )}
                             </button>
                         </li>
