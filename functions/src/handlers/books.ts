@@ -1,0 +1,73 @@
+import { books_v1, google } from 'googleapis';
+import { isValid, take } from 'rambdax';
+import { Book, Lang } from '../../../src/types';
+import { db } from '../firebase';
+
+const booksApi = google.books('v1');
+
+const BookSchema = {
+    id: String,
+    title: String,
+    authors: [String],
+    'publisher?': String,
+    year: Number,
+    isbn: String,
+    'coverUrl?': String,
+};
+
+const isValidBook = (book: object): book is Book => isValid({ input: book, schema: BookSchema });
+
+const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => {
+    const year = volumeInfo?.publishedDate?.match(/^\d+/)?.[0];
+    return {
+        id: id ?? undefined,
+        title: volumeInfo?.title,
+        authors: volumeInfo?.authors,
+        publisher: volumeInfo?.publisher,
+        year: typeof year == 'string' ? parseInt(year) : undefined,
+        isbn: volumeInfo?.industryIdentifiers?.find(identifier => identifier.type?.startsWith('ISBN'))?.identifier,
+        coverUrl: getCover(volumeInfo),
+    };
+};
+
+const getCover = (volumeInfo: books_v1.Schema$Volume['volumeInfo']) => {
+    const imageLinks = volumeInfo?.imageLinks;
+    const cover = imageLinks?.thumbnail || imageLinks?.smallThumbnail;
+    return cover?.replace('http://', 'https://');
+};
+
+export const searchBooks = async (query: string, lang: Lang) => {
+    const { data } = await booksApi.volumes.list({
+        langRestrict: lang,
+        q: query,
+        printType: 'books',
+        maxResults: 20,
+        orderBy: 'relevance',
+    });
+    const volumes = data.items || [];
+    const books = take(10, volumes.map(volumeToBook).filter(isValidBook));
+    return books;
+};
+
+const getBook = async (id: string) => {
+    const { data } = await booksApi.volumes.get({ volumeId: id });
+    const maybeBook = volumeToBook(data);
+
+    if (isValidBook(maybeBook)) {
+        return maybeBook;
+    }
+
+    throw new Error(`Book ${id} not found.`);
+};
+
+export const ensureBookRef = async (bookId: string) => {
+    const bookRef = db.collection('books').doc(bookId);
+    const bookSnap = await bookRef.get();
+
+    if (!bookSnap.exists) {
+        const { id, ...bookEntity } = await getBook(bookId);
+        await bookRef.set(bookEntity);
+    }
+
+    return bookRef;
+};

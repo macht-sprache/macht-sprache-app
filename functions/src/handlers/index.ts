@@ -1,15 +1,12 @@
 import { firestore } from 'firebase-admin';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
-import { books_v1, google } from 'googleapis';
-import { isValid, take } from 'rambdax';
 import { TranslationExampleModel } from '../../../src/modelTypes';
-import { Book, DocReference, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
+import { DocReference, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
 import { db, functions } from '../firebase';
+import { ensureBookRef, searchBooks } from './books';
 import { findTermMatches } from './language';
 
 type WithoutId<T> = Omit<T, 'id'>;
-
-const booksApi = google.books('v1');
 
 const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
@@ -17,74 +14,10 @@ const verifyUser = (context: CallableContext) => {
     }
 };
 
-const BookSchema = {
-    id: String,
-    title: String,
-    authors: [String],
-    'publisher?': String,
-    year: Number,
-    isbn: String,
-    'coverUrl?': String,
-};
-
-const isValidBook = (book: object): book is Book => isValid({ input: book, schema: BookSchema });
-
-const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => {
-    const year = volumeInfo?.publishedDate?.match(/^\d+/)?.[0];
-    return {
-        id: id ?? undefined,
-        title: volumeInfo?.title,
-        authors: volumeInfo?.authors,
-        publisher: volumeInfo?.publisher,
-        year: typeof year == 'string' ? parseInt(year) : undefined,
-        isbn: volumeInfo?.industryIdentifiers?.find(identifier => identifier.type?.startsWith('ISBN'))?.identifier,
-        coverUrl: getCover(volumeInfo),
-    };
-};
-
-const getCover = (volumeInfo: books_v1.Schema$Volume['volumeInfo']) => {
-    const imageLinks = volumeInfo?.imageLinks;
-    const cover = imageLinks?.thumbnail || imageLinks?.smallThumbnail;
-    return cover?.replace('http://', 'https://');
-};
-
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);
-
-    const { data } = await booksApi.volumes.list({
-        langRestrict: lang,
-        q: query,
-        printType: 'books',
-        maxResults: 20,
-        orderBy: 'relevance',
-    });
-    const volumes = data.items || [];
-    const books = take(10, volumes.map(volumeToBook).filter(isValidBook));
-    return books;
+    return searchBooks(query, lang);
 });
-
-const getBook = async (id: string) => {
-    const { data } = await booksApi.volumes.get({ volumeId: id });
-    const maybeBook = volumeToBook(data);
-
-    if (isValidBook(maybeBook)) {
-        return maybeBook;
-    }
-
-    throw new Error(`Book ${id} not found.`);
-};
-
-const ensureBookRef = async (bookId: string) => {
-    const bookRef = db.collection('books').doc(bookId);
-    const bookSnap = await bookRef.get();
-
-    if (!bookSnap.exists) {
-        const { id, ...bookEntity } = await getBook(bookId);
-        await bookRef.set(bookEntity);
-    }
-
-    return bookRef;
-};
 
 const convertRef = <T>(ref: firestore.DocumentReference) => (ref as unknown) as DocReference<T>;
 
