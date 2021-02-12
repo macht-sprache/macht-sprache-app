@@ -1,6 +1,6 @@
-import { TranslationExampleType } from './types';
+import { SourceType } from './types';
 
-interface BaseTranslationExampleModel<T extends TranslationExampleType, U extends BaseSnippetModel> {
+interface BaseTranslationExampleModel<T extends SourceType, U extends BaseSnippetModel> {
     termId: string;
     translationId: string;
     type: T;

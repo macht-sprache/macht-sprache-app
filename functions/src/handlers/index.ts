@@ -1,7 +1,7 @@
 import { firestore } from 'firebase-admin';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { TranslationExampleModel } from '../../../src/modelTypes';
-import { Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
+import { BookSource, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
 import { convertRef, db, functions, WithoutId } from '../firebase';
 import { ensureBookRef, searchBooks } from './books';
 import { findTermMatches } from './language';
@@ -59,13 +59,13 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
             text: model.original.text,
             pageNumber: model.original.pageNumber,
             matches: originalMatches,
-            source: convertRef(originalBookRef),
+            source: convertRef<BookSource>(originalBookRef),
         },
         translated: {
             text: model.translated.text,
             pageNumber: model.translated.pageNumber,
             matches: translatedMatches,
-            source: convertRef(translatedBookRef),
+            source: convertRef<BookSource>(translatedBookRef),
         },
         commentCount: 0,
     };

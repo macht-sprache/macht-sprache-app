@@ -34,9 +34,9 @@ export interface Translation extends Commentable {
     lang: Lang;
 }
 
-export type TranslationExampleType = 'BOOK' | 'LINK';
+export type SourceType = 'BOOK' | 'WEBPAGE' | 'MOVIE';
 
-interface BaseTranslationExample<T extends TranslationExampleType, U extends BaseSnippet> extends Commentable {
+interface BaseTranslationExample<T extends SourceType, U extends BaseSnippet> extends Commentable {
     id: string;
     translation: DocReference<Translation>;
     creator: UserMini;
@@ -46,24 +46,44 @@ interface BaseTranslationExample<T extends TranslationExampleType, U extends Bas
     translated: U;
 }
 
-type BookTranslationExample = BaseTranslationExample<'BOOK', BookSnippet>;
+export type BookTranslationExample = BaseTranslationExample<'BOOK', BookSnippet>;
 
-type LinkTranslationExample = BaseTranslationExample<'LINK', LinkSnippet>;
+export type MovieTranslationExample = BaseTranslationExample<'MOVIE', MovieSnippet>;
 
-export type TranslationExample = BookTranslationExample | LinkTranslationExample;
+export type WebPageTranslationExample = BaseTranslationExample<'WEBPAGE', WebPageSnippet>;
+
+export type TranslationExample = BookTranslationExample | MovieTranslationExample | WebPageTranslationExample;
 interface BaseSnippet {
     text: string;
     matches: string[];
 }
 
 export interface BookSnippet extends BaseSnippet {
-    source: DocReference<Book>;
+    source: DocReference<BookSource>;
     pageNumber?: string;
 }
 
-interface LinkSnippet extends BaseSnippet {
-    link: string;
+interface MovieSnippet extends BaseSnippet {
+    source: DocReference<MovieSource>;
 }
+
+interface WebPageSnippet extends BaseSnippet {
+    source: DocReference<WebPageSource>;
+}
+
+interface BaseSource<T extends SourceType> {
+    id: string;
+    type: T;
+    title: string;
+    terms: DocReference<Term>[];
+    translations: DocReference<Translation>[];
+}
+
+export interface BookSource extends BaseSource<'BOOK'>, Book {}
+export interface MovieSource extends BaseSource<'MOVIE'>, Movie {}
+export interface WebPageSource extends BaseSource<'WEBPAGE'>, WebPage {}
+
+export type Source = BookSource | MovieSource | WebPageSource;
 export interface Book {
     id: string;
     title: string;
@@ -72,6 +92,25 @@ export interface Book {
     year: number;
     isbn: string;
     coverUrl?: string;
+}
+
+export interface Movie {
+    id: string;
+    title: string;
+    directors: string[];
+    studio?: string;
+    year: number;
+    coverUrl?: string;
+}
+
+export interface WebPage {
+    title: string;
+    authors: string[];
+    publisher?: string;
+    year?: number;
+    logo?: string;
+    image?: string;
+    url: string;
 }
 
 export interface Comment {

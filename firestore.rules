@@ -70,7 +70,12 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    // TODO: Remove
     match /books/{book} {
+      allow read: if true;
+    }
+
+    match /sources/{book} {
       allow read: if true;
     }
 

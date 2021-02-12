@@ -1,9 +1,14 @@
 import { books_v1, google } from 'googleapis';
 import { isValid, take } from 'rambdax';
-import { Book, Lang } from '../../../src/types';
-import { db } from '../firebase';
+import { Book, BookSource, Lang } from '../../../src/types';
+import { db, WithoutId } from '../firebase';
 
 const booksApi = google.books('v1');
+
+const sourceIdPrefix = 'gbooks:';
+
+const makeSourceId = (volumeId: string) => sourceIdPrefix + volumeId;
+const makeVolumeId = (sourceId: string) => sourceId.replace(sourceIdPrefix, '');
 
 const BookSchema = {
     id: String,
@@ -20,7 +25,7 @@ const isValidBook = (book: object): book is Book => isValid({ input: book, schem
 const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => {
     const year = volumeInfo?.publishedDate?.match(/^\d+/)?.[0];
     return {
-        id: id ?? undefined,
+        id: id ? makeSourceId(id) : undefined,
         title: volumeInfo?.title,
         authors: volumeInfo?.authors,
         publisher: volumeInfo?.publisher,
@@ -49,24 +54,30 @@ export const searchBooks = async (query: string, lang: Lang) => {
     return books;
 };
 
-const getBook = async (id: string) => {
-    const { data } = await booksApi.volumes.get({ volumeId: id });
+const getBook = async (sourceId: string) => {
+    const { data } = await booksApi.volumes.get({ volumeId: makeVolumeId(sourceId) });
     const maybeBook = volumeToBook(data);
 
     if (isValidBook(maybeBook)) {
         return maybeBook;
     }
 
-    throw new Error(`Book ${id} not found.`);
+    throw new Error(`Book ${sourceId} not found.`);
 };
 
 export const ensureBookRef = async (bookId: string) => {
-    const bookRef = db.collection('books').doc(bookId);
+    const bookRef = db.collection('sources').doc(bookId);
     const bookSnap = await bookRef.get();
 
     if (!bookSnap.exists) {
         const { id, ...bookEntity } = await getBook(bookId);
-        await bookRef.set(bookEntity);
+        const bookSource: WithoutId<BookSource> = {
+            ...bookEntity,
+            type: 'BOOK',
+            terms: [],
+            translations: [],
+        };
+        await bookRef.set(bookSource);
     }
 
     return bookRef;
