@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button, { ButtonLink } from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { findBooks } from '../functions';
+import LinkButton from '../LinkButton';
 import { Book, Lang } from '../types';
 import s from './style.module.css';
 
@@ -68,6 +70,17 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                         in {selectedBook.year}
                         <br />
                         ISBN: {selectedBook.isbn}
+                        <br />
+                        <div className={s.selectedCancelButtonInline}>
+                            <Button
+                                onClick={() => {
+                                    onSelect(undefined);
+                                }}
+                                size="small"
+                            >
+                                {t('translationExample.bookSearch.cancelSelection')}
+                            </Button>
+                        </div>
                     </div>
                 </div>
                 <button
@@ -76,7 +89,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                         onSelect(undefined);
                     }}
                     title={t('translationExample.bookSearch.cancelSelection')}
-                    aria-label={t('translationExample.bookSearch.cancelSelection')}
+                    aria-hidden="true"
                 ></button>
             </div>
         );
@@ -96,14 +109,13 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                                     onSelect(book);
                                 }}
                                 className={s.resultButton}
-                                title={book.title}
+                                lang={lang}
                             >
                                 {book.coverUrl ? (
                                     <img
-                                        lang={lang}
                                         className={s.resultImage}
                                         src={book.coverUrl}
-                                        alt=""
+                                        alt={book.title}
                                         title={book.title}
                                     />
                                 ) : (
