@@ -46,6 +46,11 @@
     border-color: var(--disabledGrey);
 }
 
+.small {
+    padding: 0.3rem;
+    font-size: var(--fontSizeS);
+}
+
 :global(.inputContainer) + .buttonContainer {
     margin-top: 1rem;
 }
