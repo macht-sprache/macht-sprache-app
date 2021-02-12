@@ -41,8 +41,8 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
     ]);
 
     const [originalBookRef, translatedBookRef] = await Promise.all([
-        ensureBookRef(model.original.bookId),
-        ensureBookRef(model.translated.bookId),
+        ensureBookRef(model.original.bookId, termSnap.ref, translationSnap.ref),
+        ensureBookRef(model.translated.bookId, termSnap.ref, translationSnap.ref),
     ]);
 
     const translationExampleRef = db.collection('translationExamples').doc();
