@@ -1,16 +1,15 @@
-import { LanguageServiceClient } from '@google-cloud/language';
 import { firestore } from 'firebase-admin';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { books_v1, google } from 'googleapis';
-import { all, isNil, isValid, last, partition, slice, take, zip } from 'rambdax';
+import { isValid, take } from 'rambdax';
 import { TranslationExampleModel } from '../../../src/modelTypes';
-import { Book, Lang, Term, Translation, TranslationExample, User, DocReference } from '../../../src/types';
+import { Book, DocReference, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
 import { db, functions } from '../firebase';
+import { findTermMatches } from './language';
 
 type WithoutId<T> = Omit<T, 'id'>;
 
 const booksApi = google.books('v1');
-const languageClient = new LanguageServiceClient();
 
 const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
@@ -73,51 +72,6 @@ const getBook = async (id: string) => {
     }
 
     throw new Error(`Book ${id} not found.`);
-};
-
-const findTermMatches = async (term: string, snippet: string, language: Lang) => {
-    const content = term + '\n\n' + snippet;
-
-    const [{ tokens }] = await languageClient.analyzeSyntax({
-        document: {
-            type: 'PLAIN_TEXT',
-            content,
-            language,
-        },
-        encodingType: 'UTF16',
-    });
-
-    if (!tokens) {
-        return [];
-    }
-
-    const [termTokens, snippetTokens] = partition(({ text }) => {
-        const beginOffset = text?.beginOffset;
-        return !isNil(beginOffset) && beginOffset <= term.length;
-    }, tokens);
-
-    const termMatches = snippetTokens.reduce<string[]>((prev, cur, index) => {
-        const snippetTokensToMatch = snippetTokens.slice(index, index + termTokens.length);
-        const tokenPairs = zip(termTokens, snippetTokensToMatch);
-        if (
-            tokenPairs.length === termTokens.length &&
-            all(
-                ([termToken, snippetToken]) => termToken.lemma?.toLowerCase() === snippetToken.lemma?.toLowerCase(),
-                tokenPairs
-            )
-        ) {
-            const startIndex = cur.text?.beginOffset;
-            const lastToken = last(snippetTokensToMatch);
-            const endIndex = (lastToken.text?.beginOffset || 0) + (lastToken.text?.content?.length || 0);
-
-            if (typeof startIndex === 'number') {
-                prev.push(slice(startIndex, endIndex, content));
-            }
-        }
-        return prev;
-    }, []);
-
-    return termMatches;
 };
 
 const ensureBookRef = async (bookId: string) => {
