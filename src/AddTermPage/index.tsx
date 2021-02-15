@@ -10,7 +10,6 @@ import Header from '../Header';
 import { langA, langB } from '../languages';
 import { TERM } from '../routes';
 import { Lang } from '../types';
-import { useLang } from '../useLang';
 
 type Model = {
     term: string;
@@ -21,7 +20,6 @@ type Model = {
 export default function AddTermPage() {
     const user = useUser();
     const history = useHistory();
-    const [lang] = useLang();
     const { t } = useTranslation();
     const [submitting, setSubmitting] = useState(false);
     const [model, setModel] = useState<Model>({ term: '', lang: '', comment: '' });
