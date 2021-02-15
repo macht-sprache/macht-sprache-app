@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Link, LinkProps } from 'react-router-dom';
 import s from './style.module.css';
 
@@ -7,13 +8,9 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
 }
 
 export default function Button({ primary = false, size = 'medium', ...props }: Props) {
-    let className = primary ? s.buttonPrimary : s.button;
-
-    if (size === 'small') {
-        className += ' ' + s.small;
-    }
-
-    return <button className={className} {...props} />;
+    return (
+        <button className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })} {...props} />
+    );
 }
 
 interface ButtonLinkProps extends LinkProps {

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import s from './style.module.css';
 
@@ -100,7 +101,11 @@ const Container = ({
 }) => {
     return (
         <label
-            className={error ? s.containerError : disabled ? s.containerDisabled : busy ? s.containerBusy : s.container}
+            className={clsx(s.container, {
+                [s.containerError]: error,
+                [s.containerDisabled]: disabled,
+                [s.containerBusy]: busy,
+            })}
             style={{ gridColumn: `span ${span}` }}
         >
             <div className={empty ? s.labelEmpty : s.label}>{label}</div>

@@ -7,17 +7,14 @@
 }
 
 .containerError {
-    composes: container;
     box-shadow: 0 0 0 var(--thickBorder) var(--red);
 }
 
 .containerDisabled {
-    composes: container;
     color: var(--disabledGrey);
 }
 
 .containerBusy {
-    composes: container;
     --w: calc(var(--thickBorder) * 1);
     --l: 2rem;
 }
