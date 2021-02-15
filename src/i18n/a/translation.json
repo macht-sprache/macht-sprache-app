@@ -33,7 +33,12 @@
         "error": {
             "general": "Something went wrong"
         },
-        "textAeraCharWarning": "{{count}} characters left."
+        "textAeraCharWarning": "{{count}} characters left.",
+        "formNav": {
+            "next": "Next",
+            "cancel": "Cancel",
+            "save": "Save"
+        }
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",

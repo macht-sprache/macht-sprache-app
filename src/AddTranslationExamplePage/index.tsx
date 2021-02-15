@@ -113,7 +113,7 @@ export function AddTranslationExamplePage() {
                     </Section>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!type}>
-                            Next
+                            {t('common.formNav.next')}
                         </Button>
                     </ButtonContainer>
                 </>
@@ -148,7 +148,7 @@ export function AddTranslationExamplePage() {
                     </Section>
                     <ButtonContainer>
                         <Button primary onClick={incrementStep} disabled={!(originalBook && translatedBook)}>
-                            Next
+                            {t('common.formNav.next')}
                         </Button>
                     </ButtonContainer>
                 </>
@@ -223,7 +223,7 @@ export function AddTranslationExamplePage() {
                     </Section>
                     <ButtonContainer>
                         <Button primary onClick={save}>
-                            Save
+                            {t('common.formNav.save')}
                         </Button>
                     </ButtonContainer>
                 </>

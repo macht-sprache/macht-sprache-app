@@ -33,7 +33,12 @@
         "error": {
             "general": "Da ist etwas schief gegangen"
         },
-        "textAeraCharWarning": "Noch {{count}} Zeichen übrig."
+        "textAeraCharWarning": "Noch {{count}} Zeichen übrig.",
+        "formNav": {
+            "next": "Weiter",
+            "cancel": "Abbrechen",
+            "save": "Speichern"
+        }
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",

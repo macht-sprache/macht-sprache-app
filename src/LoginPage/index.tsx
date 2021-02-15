@@ -77,7 +77,7 @@ export default function LoginPage() {
                     loginError.code !== 'auth/user-not-found' &&
                     loginError.code !== 'auth/wrong-password' && <ErrorBox>{loginError.message}</ErrorBox>}
                 <ButtonContainer>
-                    <Button type="button">Cancel</Button>
+                    <Button type="button">{t('common.formNav.cancel')}</Button>
                     <Button primary type="submit" disabled={disabled}>
                         {t('auth.login')}
                     </Button>

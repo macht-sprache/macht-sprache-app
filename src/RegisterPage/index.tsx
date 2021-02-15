@@ -109,7 +109,7 @@ export default function RegisterPage() {
                         <ErrorBox>{registrationError.message}</ErrorBox>
                     )}
                 <ButtonContainer>
-                    <Button type="button">Cancel</Button>
+                    <Button type="button">{t('common.formNav.cancel')}</Button>
                     <Button primary disabled={disabled} type="submit">
                         {t('auth.register')}
                     </Button>
