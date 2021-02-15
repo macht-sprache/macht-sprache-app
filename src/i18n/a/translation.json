@@ -100,9 +100,9 @@
             },
             "source": {
                 "label": "Source",
-                "description": "Select the Books you want to add:",
-                "bookSearchOriginal": "Serach by the title of the original book",
-                "bookSearchTranslation": "Serach by the title of the original book",
+                "description": "Select the books you want to add:",
+                "bookSearchOriginal": "Search by the title of the original book",
+                "bookSearchTranslation": "Search by the title of the translated book",
                 "bookOriginalTitle": "Original Book",
                 "bookTranslatedTitle": "Translated Book"
             },
