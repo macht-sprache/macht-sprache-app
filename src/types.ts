@@ -75,8 +75,7 @@ interface BaseSource<T extends SourceType> {
     id: string;
     type: T;
     title: string;
-    terms: DocReference<Term>[];
-    translations: DocReference<Translation>[];
+    refs: DocReference<Term | Translation>[];
 }
 
 export interface BookSource extends BaseSource<'BOOK'>, Book {}

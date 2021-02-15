@@ -79,14 +79,12 @@ export const ensureBookRef = async (
         const newBookSource: WithoutId<BookSource> = {
             ...bookEntity,
             type: 'BOOK',
-            terms: [convertRef(termRef)],
-            translations: [convertRef(translationRef)],
+            refs: [convertRef(termRef), convertRef(translationRef)],
         };
         await bookRef.set(newBookSource);
     } else {
         const update: Partial<WithoutId<BookSource>> = {
-            terms: [...bookSource.terms, convertRef(termRef)],
-            translations: [...bookSource.translations, convertRef(translationRef)],
+            refs: [...bookSource.refs, convertRef(termRef), convertRef(translationRef)],
         };
         await bookRef.update(update);
     }
