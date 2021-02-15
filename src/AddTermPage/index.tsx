@@ -24,7 +24,7 @@ export default function AddTermPage() {
     const [lang] = useLang();
     const { t } = useTranslation();
     const [submitting, setSubmitting] = useState(false);
-    const [model, setModel] = useState<Model>({ term: '', lang, comment: '' });
+    const [model, setModel] = useState<Model>({ term: '', lang: '', comment: '' });
 
     if (!user) {
         return null;
@@ -56,6 +56,7 @@ export default function AddTermPage() {
                         span={1}
                         onChange={event => setModel(prev => ({ ...prev, lang: event.target.value as Lang }))}
                     >
+                        <option value=""></option>
                         <option value={langA}>{t(`common.langLabels.${langA}` as const)}</option>
                         <option value={langB}>{t(`common.langLabels.${langB}` as const)}</option>
                     </Select>
