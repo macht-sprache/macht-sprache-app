@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { forwardRef } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import s from './style.module.css';
 
@@ -7,11 +8,19 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
     size?: 'small' | 'medium';
 }
 
-export default function Button({ primary = false, size = 'medium', ...props }: Props) {
+export type Ref = HTMLButtonElement;
+
+const Button = forwardRef<Ref | null, Props>(({ primary = false, size = 'medium', ...props }: Props, ref) => {
     return (
-        <button className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })} {...props} />
+        <button
+            ref={ref}
+            className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })}
+            {...props}
+        />
     );
-}
+});
+
+export default Button;
 
 interface ButtonLinkProps extends LinkProps {
     primary?: boolean;
