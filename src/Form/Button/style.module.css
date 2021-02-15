@@ -26,7 +26,6 @@
 }
 
 .buttonPrimary {
-    composes: button;
     border-color: var(--orange);
     border-width: var(--thickBorder);
 }
@@ -41,6 +40,7 @@
     background-color: var(--orange);
     font-weight: bold;
 }
+
 .button:disabled {
     color: var(--disabledGrey);
     border-color: var(--disabledGrey);

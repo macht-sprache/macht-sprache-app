@@ -15,10 +15,11 @@ export default function Button({ primary = false, size = 'medium', ...props }: P
 
 interface ButtonLinkProps extends LinkProps {
     primary?: boolean;
+    size?: 'small' | 'medium';
 }
 
-export function ButtonLink({ primary = false, ...props }: ButtonLinkProps) {
-    return <Link className={primary ? s.buttonPrimary : s.button} {...props} />;
+export function ButtonLink({ primary = false, size, ...props }: ButtonLinkProps) {
+    return <Link className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })} {...props} />;
 }
 
 type ButtonContainerProps = {
