@@ -1,5 +1,5 @@
 import firebase from 'firebase/app';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';
