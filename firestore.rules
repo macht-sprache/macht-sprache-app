@@ -63,7 +63,7 @@ service cloud.firestore {
 
     match /translations/{translation} {
       allow read: if true;
-      allow create: if isValidatedUser() && isCreator();
+      allow create: if isValidatedUser() && isCreator() && isValidTranslation();
     }
 
     match /translationExamples/{translationExample} {
