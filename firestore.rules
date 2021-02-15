@@ -64,6 +64,21 @@ service cloud.firestore {
     match /translations/{translation} {
       allow read: if true;
       allow create: if isValidatedUser() && isCreator() && isValidTranslation();
+
+      function isValidRating() {
+        let data = request.resource.data;
+        return data.keys().hasOnly(['rating', 'updatedAt']) &&
+          data.rating is number &&
+          data.rating >= 0 &&
+          data.rating <= 1 &&
+          data.updatedAt == request.time;
+      }
+
+      match /ratings/{userId} {
+        allow read: if isUser(userId);
+        allow create, update: if isValidatedUser() && isUser(userId) && isValidRating();
+        allow delete: if isValidatedUser() && isUser(userId);
+      }
     }
 
     match /translationExamples/{translationExample} {

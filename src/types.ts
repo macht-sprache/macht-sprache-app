@@ -112,6 +112,11 @@ export interface WebPage {
     url: string;
 }
 
+export interface Rating {
+    rating: number;
+    updatedAt: Timestamp;
+}
+
 export interface Comment {
     id: string;
     creator: UserMini;

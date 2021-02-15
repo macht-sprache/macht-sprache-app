@@ -3,7 +3,18 @@ import { useMemo } from 'react';
 import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';
-import { Comment, DocReference, Lang, Source, SourceType, Term, Translation, TranslationExample, User } from '../types';
+import {
+    Comment,
+    DocReference,
+    Lang,
+    Rating,
+    Source,
+    SourceType,
+    Term,
+    Translation,
+    TranslationExample,
+    User,
+} from '../types';
 
 const defaultSnapshotOptions: firebase.firestore.SnapshotOptions = { serverTimestamps: 'estimate' };
 
@@ -77,6 +88,17 @@ const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
             case 'WEBPAGE':
                 return { ...base, type, authors, url };
         }
+    },
+};
+
+const RatingConverter: firebase.firestore.FirestoreDataConverter<Rating> = {
+    toFirestore: (rating: Pick<Rating, 'rating'>) => ({
+        rating: rating.rating,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }),
+    fromFirestore: (snapshot): Rating => {
+        const { rating, updatedAt } = snapshot.data(defaultSnapshotOptions);
+        return { rating, updatedAt };
     },
 };
 
@@ -181,6 +203,20 @@ export function useSources(ref: DocReference<Term | Translation>) {
 
     return grouped;
 }
+
+export function useRating(userId: string, translationId: string) {
+    return useFirestoreDocData<Rating | undefined>(
+        collections.translations.doc(translationId).collection('ratings').withConverter(RatingConverter).doc(userId)
+    ).data;
+}
+
+export const setRating = (userId: string, translationId: string, rating: number) =>
+    collections.translations
+        .doc(translationId)
+        .collection('ratings')
+        .withConverter(RatingConverter)
+        .doc(userId)
+        .set({ rating, updatedAt: firebase.firestore.Timestamp.now() });
 
 export function useComments(ref: Comment['ref']) {
     return useFirestoreCollectionData<Comment>(collections.comments.where('ref', '==', ref).orderBy('createdAt'), {
