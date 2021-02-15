@@ -51,8 +51,10 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
         return { ...data, createdAt: getCreatedAt(translation) };
     },
     fromFirestore: (snapshot): Translation => {
-        const { term, creator, createdAt, value, variants, lang, commentCount } = snapshot.data(defaultSnapshotOptions);
-        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, commentCount };
+        const { term, creator, createdAt, value, variants, lang, ratings, commentCount } = snapshot.data(
+            defaultSnapshotOptions
+        );
+        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, ratings, commentCount };
     },
 };
 

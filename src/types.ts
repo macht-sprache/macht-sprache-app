@@ -32,6 +32,7 @@ export interface Translation extends Commentable {
     value: string;
     variants: string[];
     lang: Lang;
+    ratings?: number[];
 }
 
 export type SourceType = 'BOOK' | 'WEBPAGE' | 'MOVIE';
