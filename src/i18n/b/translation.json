@@ -54,7 +54,7 @@
         "coc": "code of conduct"
     },
     "auth": {
-        "displayName": "Benutzername",
+        "displayName": "Benutzer:innenname",
         "email": "Email Adresse",
         "password": "Passwort",
         "register": "Registrieren",
@@ -71,7 +71,7 @@
         "errors": {
             "email-already-in-use": "Die Adresse ist schon mit einem Account verknüpft.",
             "weak-password": "Passwort zu kurz.",
-            "user-not-found": "Benutzer nicht gefunden.",
+            "user-not-found": "Benutzer:in nicht gefunden.",
             "wrong-password": "Passwort falsch."
         }
     },
