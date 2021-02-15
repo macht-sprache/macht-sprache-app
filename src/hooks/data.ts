@@ -1,8 +1,9 @@
 import firebase from 'firebase/app';
+import { useEffect, useMemo } from 'react';
 import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';
-import { Comment, Lang, Term, Translation, TranslationExample, User } from '../types';
+import { Comment, DocReference, Lang, Source, SourceType, Term, Translation, TranslationExample, User } from '../types';
 
 const defaultSnapshotOptions: firebase.firestore.SnapshotOptions = { serverTimestamps: 'estimate' };
 
@@ -57,6 +58,28 @@ const TranslationExampleConverter: firebase.firestore.FirestoreDataConverter<Tra
     },
 };
 
+const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
+    toFirestore: (source: Source) => {
+        const { id, ...data } = source;
+        return data;
+    },
+    fromFirestore: (snapshot): Source => {
+        const { id } = snapshot;
+        const data = snapshot.data(defaultSnapshotOptions);
+        const { title, terms, translations, authors, directors, year, isbn, url, refs } = data;
+        const type: SourceType = data.type;
+        const base = { id, title, terms, translations, refs };
+        switch (type) {
+            case 'BOOK':
+                return { ...base, type, authors, year, isbn };
+            case 'MOVIE':
+                return { ...base, type, directors, year };
+            case 'WEBPAGE':
+                return { ...base, type, authors, url };
+        }
+    },
+};
+
 const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
     toFirestore: (comment: Comment) => {
         const { id, ...data } = comment;
@@ -73,6 +96,7 @@ export const collections = {
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
     translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),
+    sources: db.collection('sources').withConverter(SourceConverter),
     comments: db.collection('comments').withConverter(CommentConverter),
 };
 
@@ -138,6 +162,24 @@ export function useTranslationExamples(translationId: string) {
     return useFirestoreCollectionData<TranslationExample>(
         collections.translationExamples.where('translation', '==', collections.translations.doc(translationId))
     ).data;
+}
+
+export function useSources(ref: DocReference<Term | Translation>) {
+    const sources = useFirestoreCollectionData<Source>(collections.sources.where('refs', 'array-contains', ref)).data;
+    const grouped = useMemo(() => {
+        return sources.reduce<{ [refId: string]: Source[] }>((acc, cur) => {
+            cur.refs.forEach(({ id }) => {
+                if (acc[id]) {
+                    acc[id].push(cur);
+                } else {
+                    acc[id] = [cur];
+                }
+            });
+            return acc;
+        }, {});
+    }, [sources]);
+
+    return grouped;
 }
 
 export function useComments(ref: Comment['ref']) {
