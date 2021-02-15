@@ -92,7 +92,7 @@
     },
     "translationExample": {
         "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>.",
-        "add": "Füge eine Beispielübersetzung für <Term>{{term}}</Term> nach <Translation>{{translation}}</Translation> hinzu:",
+        "add": "Füge eine Beispielübersetzung hinzu für: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
         "steps": {
             "type": {
                 "label": "Art",

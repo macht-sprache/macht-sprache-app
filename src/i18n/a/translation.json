@@ -92,7 +92,7 @@
     },
     "translationExample": {
         "empty": "There are no translation examples for <Term>{{term}}</Term> yet.",
-        "add": "Add an example for the translation from <Term>{{term}}</Term> to <Translation>{{translation}}</Translation>",
+        "add": "Add an example for this translation: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
         "steps": {
             "type": {
                 "label": "Type",
