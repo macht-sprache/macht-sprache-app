@@ -96,7 +96,7 @@
         "steps": {
             "type": {
                 "label": "Type",
-                "description": "Select the type of the source you want to add:"
+                "description": "Select the type of source you want to add:"
             },
             "source": {
                 "label": "Source",
@@ -111,7 +111,7 @@
             }
         },
         "snippet": {
-            "description": "Sample text of <Book>{{book}}</Book> with <Term /> in it",
+            "description": "Sample text of <Book>{{book}}</Book> containing <Term />",
             "label": "Sample Text",
             "pageNumber": "Page Number"
         },
