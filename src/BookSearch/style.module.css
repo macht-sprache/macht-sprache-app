@@ -10,6 +10,11 @@
     margin: 0 1.5rem calc(var(--thickBorder) * 5) 0;
     flex: 0 0;
     display: inline-block;
+    --pageColor: var(--white);
+}
+
+.ariaSelected {
+    --pageColor: var(--orange);
 }
 
 .bookPages {
@@ -17,8 +22,8 @@
     --bc: var(--black);
     --d: calc((var(--thickBorder) + var(--thickBorder)) + var(--thickBorder));
     --d2: calc((var(--d) * 2));
-    box-shadow: var(--d) var(--d) 0 calc(var(--thickBorder) * -1) var(--white), var(--d) var(--d) 0 0px var(--bc),
-        var(--d2) var(--d2) 0 calc(var(--thickBorder) * -1) var(--white), var(--d2) var(--d2) 0 0px var(--bc);
+    box-shadow: var(--d) var(--d) 0 calc(var(--thickBorder) * -1) var(--pageColor), var(--d) var(--d) 0 0px var(--bc),
+        var(--d2) var(--d2) 0 calc(var(--thickBorder) * -1) var(--pageColor), var(--d2) var(--d2) 0 0px var(--bc);
     border: solid var(--bc) var(--thickBorder);
 }
 
@@ -44,6 +49,7 @@
 
 .resultButton:hover {
     --bc: var(--orange);
+    --pageColor: var(--white);
 }
 
 .resultImage {
@@ -68,6 +74,7 @@
 
 .selectedCover {
     composes: bookPages;
+    --pageColor: var(--white);
     align-self: stretch;
     margin-right: 1.5rem;
 }
@@ -135,4 +142,12 @@
 .noResults {
     margin-top: 1rem;
     font-weight: bold;
+}
+
+.ariaInputDescription {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
 }

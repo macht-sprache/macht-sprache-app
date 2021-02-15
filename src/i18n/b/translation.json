@@ -118,7 +118,9 @@
             "WEBSITE": "Website"
         },
         "bookSearch": {
-            "cancelSelection": "Suche ein anderes Buch aus"
+            "cancelSelection": "Suche ein anderes Buch aus",
+            "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
+            "ariaNoResults": "Keine Ergebnisse. "
         },
         "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "publishedBy": "Veröffentlicht bei {{publisher}}"

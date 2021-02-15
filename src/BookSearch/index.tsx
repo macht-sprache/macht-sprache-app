@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../Form/Button';
 import { Input } from '../Form/Input';
@@ -18,17 +19,45 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Book[]>([]);
     const [searching, setSearching] = useState<boolean>();
+    const [domIdInput] = useState('idInput_' + Math.random());
+    const [domIdList] = useState('idList_' + Math.random());
+    const [domIdDescription] = useState('idDescription_' + Math.random());
+    const [ariaSelectedIndex, setAriaSelectedIndex] = useState<number>(0);
+    const cancelButtonRef = useRef<HTMLButtonElement>(null);
     const { t } = useTranslation();
+
+    const onKeyDown = useCallback(
+        (e: React.KeyboardEvent) => {
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (ariaSelectedIndex < results.length - 1) {
+                    setAriaSelectedIndex(prevIndex => prevIndex + 1);
+                }
+            }
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (ariaSelectedIndex !== 0) {
+                    setAriaSelectedIndex(prevIndex => prevIndex - 1);
+                }
+            }
+            if (e.key === 'Enter') {
+                onSelect(results[ariaSelectedIndex]);
+            }
+        },
+        [ariaSelectedIndex, onSelect, results]
+    );
 
     useEffect(() => {
         if (!query) {
             setResults([]);
+            setSearching(false);
         } else {
             let currentRequest = true;
             setSearching(true);
             const timeoutId = window.setTimeout(() => {
                 findBooks(query, lang).then(({ data }) => {
                     if (currentRequest) {
+                        setAriaSelectedIndex(0);
                         setSearching(false);
                         setResults(data);
                     }
@@ -40,6 +69,12 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
             };
         }
     }, [lang, query]);
+
+    useEffect(() => {
+        if (selectedBook) {
+            cancelButtonRef.current?.focus();
+        }
+    }, [selectedBook]);
 
     if (selectedBook) {
         return (
@@ -76,6 +111,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                                     onSelect(undefined);
                                 }}
                                 size="small"
+                                ref={cancelButtonRef}
                             >
                                 {t('translationExample.bookSearch.cancelSelection')}
                             </Button>
@@ -89,6 +125,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                     }}
                     title={t('translationExample.bookSearch.cancelSelection')}
                     aria-hidden="true"
+                    tabIndex={-1}
                 ></button>
             </div>
         );
@@ -97,18 +134,41 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     return (
         <div>
             <InputContainer>
-                <Input label={label} value={query} onChange={event => setQuery(event.target.value)} busy={searching} />
+                <Input
+                    id={domIdInput}
+                    label={label}
+                    value={query}
+                    onChange={event => setQuery(event.target.value)}
+                    busy={searching}
+                    aria-describedby={domIdDescription}
+                    aria-owns={domIdList}
+                    aria-expanded={!!results.length}
+                    aria-autocomplete="both"
+                    aria-activedescendant={domIdList + '_' + ariaSelectedIndex}
+                    onKeyDown={onKeyDown}
+                />
             </InputContainer>
+            <div id={domIdDescription} className={s.ariaInputDescription}>
+                {!results.length && <>{t('translationExample.bookSearch.ariaNoResults')}</>}
+                {t('translationExample.bookSearch.ariaDescription')}
+            </div>
             {!!results.length && (
-                <ul className={s.resultList}>
-                    {results.map(book => (
-                        <li key={book.id} className={s.resultItem} lang={lang}>
+                <ul className={s.resultList} id={domIdList} role="listbox">
+                    {results.map((book, index) => (
+                        <li
+                            key={book.id}
+                            className={clsx(s.resultItem, { [s.ariaSelected]: ariaSelectedIndex === index })}
+                            lang={lang}
+                        >
                             <button
                                 onClick={() => {
                                     onSelect(book);
                                 }}
                                 className={s.resultButton}
                                 lang={lang}
+                                role="option"
+                                aria-selected={ariaSelectedIndex === index}
+                                id={domIdList + '_' + index}
                             >
                                 {book.coverUrl ? (
                                     <img

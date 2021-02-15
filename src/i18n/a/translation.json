@@ -118,7 +118,9 @@
             "WEBSITE": "Website"
         },
         "bookSearch": {
-            "cancelSelection": "Select a different book"
+            "cancelSelection": "Select a different book",
+            "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",
+            "ariaNoResults": "No results. "
         },
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "publishedBy": "Published by {{publisher}}"
