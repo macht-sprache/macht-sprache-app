@@ -59,40 +59,49 @@ function TranslationItem({
     sources: Source[];
 }) {
     const [lang] = useLang();
+    const { t } = useTranslation();
 
     return (
         <article className={s.item} lang={translation.lang}>
             <Link to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })} className={s.link}>
-                <div className={s.header}>
+                <header className={s.header}>
                     <h1 className={s.value}>{translation.value}</h1>
-                    <div className={s.meta} lang={lang}>
-                        <FormatDate date={translation.createdAt.toDate()} />
-                    </div>
-                </div>
-                {!!sources.length && (
-                    <ul className={s.translationExampleList}>
-                        {sources.map(example => {
-                            if (example.type === 'BOOK') {
-                                return (
-                                    <li key={example.id} className={s.translationExampleListItem}>
-                                        {example.coverUrl ? (
-                                            <img
-                                                src={example.coverUrl}
-                                                alt={example.title}
-                                                title={example.title}
-                                                className={s.translationExampleListImage}
-                                            />
-                                        ) : (
-                                            example.title
-                                        )}
-                                    </li>
-                                );
-                            }
+                </header>
+                <div className={s.body}>
+                    {!!sources.length && (
+                        <ul className={s.translationExampleList}>
+                            {sources.map(example => {
+                                if (example.type === 'BOOK') {
+                                    return (
+                                        <li key={example.id} className={s.translationExampleListItem}>
+                                            {example.coverUrl ? (
+                                                <img
+                                                    src={example.coverUrl}
+                                                    alt={example.title}
+                                                    title={example.title}
+                                                    className={s.translationExampleListImage}
+                                                />
+                                            ) : (
+                                                example.title
+                                            )}
+                                        </li>
+                                    );
+                                }
 
-                            return null;
-                        })}
-                    </ul>
-                )}
+                                return null;
+                            })}
+                        </ul>
+                    )}
+                    <footer className={s.footer} lang={lang}>
+                        <div className={s.comments}>
+                            {t('common.entities.comment.withCount', { count: translation.commentCount })}
+                        </div>
+
+                        <div className={s.date}>
+                            <FormatDate date={translation.createdAt.toDate()} />
+                        </div>
+                    </footer>
+                </div>
             </Link>
         </article>
     );
