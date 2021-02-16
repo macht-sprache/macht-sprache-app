@@ -1,0 +1,45 @@
+.container {
+    --height: 10rem;
+    --minWidth: 8rem;
+    --borderColor: var(--black);
+    --pageColor: var(--white);
+
+    position: relative;
+    --d: calc((var(--thickBorder) + var(--thickBorder)) + var(--thickBorder));
+    --d2: calc((var(--d) * 2));
+    box-shadow: var(--d) var(--d) 0 calc(var(--thickBorder) * -1) var(--pageColor),
+        var(--d) var(--d) 0 0px var(--borderColor), var(--d2) var(--d2) 0 calc(var(--thickBorder) * -1) var(--pageColor),
+        var(--d2) var(--d2) 0 0px var(--borderColor);
+    border: solid var(--borderColor) var(--thickBorder);
+    margin: 0 calc(var(--thickBorder) * 6) calc(var(--thickBorder) * 6) 0;
+}
+
+.container:before {
+    content: '';
+    position: absolute;
+    background: var(--borderColor);
+    top: 100%;
+    left: 0;
+    height: var(--thickBorder);
+    width: 1rem;
+    transform: rotate(45deg);
+    transform-origin: left;
+}
+
+.cover {
+    display: block;
+    height: var(--height);
+    min-width: var(--minWidth);
+}
+
+.fallback {
+    width: var(--minWidth);
+    height: var(--height);
+    padding: 0.5rem;
+    background: var(--disabledGreyBackground);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-style: italic;
+    font-family: var(--monospaceFont);
+}

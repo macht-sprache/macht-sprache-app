@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { BookCoverIcon } from '../BookCoverIcon';
 import Button from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
@@ -79,20 +80,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     if (selectedBook) {
         return (
             <div className={s.selected}>
-                <div className={s.selectedCover}>
-                    {selectedBook.coverUrl ? (
-                        <img
-                            className={s.selectedImage}
-                            src={selectedBook.coverUrl}
-                            alt=""
-                            title={selectedBook.title}
-                        />
-                    ) : (
-                        <div lang={lang} className={s.selectedImageFallback}>
-                            {selectedBook.title}
-                        </div>
-                    )}
-                </div>
+                <BookCoverIcon book={selectedBook} lang={lang} />
                 <div className={s.selectedMeta}>
                     <div>{selectedBook.authors.join(', ')}</div>
                     <h3 lang={lang} className={s.selectedHeading}>
@@ -170,16 +158,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                                 aria-selected={ariaSelectedIndex === index}
                                 id={domIdList + '_' + index}
                             >
-                                {book.coverUrl ? (
-                                    <img
-                                        className={s.resultImage}
-                                        src={book.coverUrl}
-                                        alt={book.title}
-                                        title={book.title}
-                                    />
-                                ) : (
-                                    <div className={s.resultImageFallback}>{book.title}</div>
-                                )}
+                                <BookCoverIcon book={book} className={s.resultButtonIcon} />
                             </button>
                         </li>
                     ))}
