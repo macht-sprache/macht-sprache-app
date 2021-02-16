@@ -1,11 +1,11 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useDocument } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
-import { TRANSLATION_EXAMPLE_ADD } from '../routes';
+import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import TextWithHighlights from '../TextWithHighlights';
 import { Term, Translation, TranslationExample, BookSnippet, Lang } from '../types';
@@ -70,25 +70,34 @@ function TranslationExampleArticle({
     const { t } = useTranslation();
 
     return (
-        <article className={s.example}>
-            {example.type === 'BOOK' && (
-                <Header
-                    langOriginal={term.lang}
-                    langTranslated={translation.lang}
-                    snippetOriginal={example.original}
-                    snippetTranslated={example.translated}
-                />
-            )}
-            <div lang={term.lang} className={s.exampleTextOriginal}>
-                <TextWithHighlights text={example.original.text} highlighted={example.original.matches} />
-            </div>
-            <div lang={translation.lang} className={s.exampleTextTranslated}>
-                <TextWithHighlights text={example.translated.text} highlighted={example.translated.matches} />
-            </div>
-            <footer className={s.footer}>
-                {t('common.entities.comment.withCount', { count: example.commentCount })}
-            </footer>
-        </article>
+        <Link
+            to={generatePath(TRANSLATION_EXAMPLE, {
+                termId: term.id,
+                translationId: translation.id,
+                translationExampleId: example.id,
+            })}
+            className={s.link}
+        >
+            <article className={s.example}>
+                {example.type === 'BOOK' && (
+                    <Header
+                        langOriginal={term.lang}
+                        langTranslated={translation.lang}
+                        snippetOriginal={example.original}
+                        snippetTranslated={example.translated}
+                    />
+                )}
+                <div lang={term.lang} className={s.exampleTextOriginal}>
+                    <TextWithHighlights text={example.original.text} highlighted={example.original.matches} />
+                </div>
+                <div lang={translation.lang} className={s.exampleTextTranslated}>
+                    <TextWithHighlights text={example.translated.text} highlighted={example.translated.matches} />
+                </div>
+                <footer className={s.footer}>
+                    {t('common.entities.comment.withCount', { count: example.commentCount })}
+                </footer>
+            </article>
+        </Link>
     );
 }
 
@@ -104,7 +113,7 @@ function Header({
     langTranslated: Lang;
 }) {
     const bookOriginal = useDocument(snippetOriginal.source);
-    const translatedBook = useDocument(snippetTranslated.source);
+    const bookTranslated = useDocument(snippetTranslated.source);
 
     return (
         <header className={s.header}>
@@ -119,7 +128,7 @@ function Header({
                     {bookOriginal.title}
                 </h1>
                 <h1 className={s.headingTranslated} lang={langTranslated}>
-                    {translatedBook.title}
+                    {bookTranslated.title}
                 </h1>
             </div>
         </header>

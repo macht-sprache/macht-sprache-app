@@ -182,6 +182,10 @@ export async function addTranslation(user: User, term: Term, value: string, comm
     return translationRef;
 }
 
+export function useTranslationExample(id: string) {
+    return useFirestoreDocData<TranslationExample>(collections.translationExamples.doc(id)).data;
+}
+
 export function useTranslationExamples(translationId: string) {
     return useFirestoreCollectionData<TranslationExample>(
         collections.translationExamples.where('translation', '==', collections.translations.doc(translationId))

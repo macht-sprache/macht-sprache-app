@@ -17,6 +17,7 @@ import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
 import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
+import { TranslationExamplePage } from './TranslationExamplePage';
 import { TranslationPage } from './TranslationPage';
 import { useLangCssVars } from './useLangCssVars';
 
@@ -58,6 +59,9 @@ function App() {
                                     </Route>
                                     <Route path={routes.TRANSLATION_EXAMPLE_ADD} exact>
                                         <AddTranslationExamplePage />
+                                    </Route>
+                                    <Route path={routes.TRANSLATION_EXAMPLE} exact>
+                                        <TranslationExamplePage />
                                     </Route>
                                     <Route path={routes.ABOUT} exact>
                                         <StaticContentPage

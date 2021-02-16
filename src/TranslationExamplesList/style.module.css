@@ -3,6 +3,10 @@
     margin-top: 2rem;
 }
 
+.link {
+    text-decoration: none;
+}
+
 .example + .example {
     margin-top: 2rem;
 }
