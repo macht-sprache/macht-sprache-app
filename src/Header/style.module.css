@@ -31,7 +31,8 @@
 }
 
 .topHeading + .topHeading + .heading {
-    margin-left: 1rem;
+    margin-left: 0;
+    margin-top: 1rem;
 }
 
 .topHeadingLink {

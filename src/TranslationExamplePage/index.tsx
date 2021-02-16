@@ -1,7 +1,8 @@
-import { generatePath, Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { generatePath, useParams } from 'react-router-dom';
+import Comments from '../Comments';
 import Header from '../Header';
-import { useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
-import { Columns } from '../Layout/Columns';
+import { collections, useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
 import { TERM, TRANSLATION } from '../routes';
 import { BookTranslationExample, Term, Translation } from '../types';
 import s from './style.module.css';
@@ -34,6 +35,7 @@ function BookPage({
 }) {
     const bookOriginal = useDocument(translationExample.original.source);
     const bookTranslated = useDocument(translationExample.translated.source);
+    const { t } = useTranslation();
 
     return (
         <>
@@ -50,13 +52,29 @@ function BookPage({
                         lang: translation.lang,
                     },
                 ]}
+                subLine={
+                    <p>
+                        {t('translationExample.page.subLine', {
+                            author: bookOriginal.authors.join(', '),
+                            year: bookOriginal.year,
+                            publisher: bookOriginal.publisher,
+                        })}
+                    </p>
+                }
             >
-                {bookOriginal.title} → {bookTranslated.title}
+                {t('translationExample.page.heading')}
+                {bookOriginal.title}
             </Header>
 
-            <Columns>
+            <div className={s.body}>
                 <div>beispiel!!</div>
-            </Columns>
+                <div>beispiel!!</div>
+                <div>beispiel!!</div>
+                <div>beispiel!!</div>
+                <div className={s.comments}>
+                    <Comments entityRef={collections.translations.doc(translationExample.id)} />
+                </div>
+            </div>
         </>
     );
 }

@@ -128,7 +128,11 @@
             "ariaNoResults": "Keine Ergebnisse. "
         },
         "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
-        "publishedBy": "Veröffentlicht bei {{publisher}}"
+        "publishedBy": "Veröffentlicht bei {{publisher}}",
+        "page": {
+            "heading": "Beispiel: ",
+            "subLine": "Original von {{author}}, veröffentlich bei {{publisher}} {{year}}."
+        }
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."

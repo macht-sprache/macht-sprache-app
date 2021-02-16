@@ -1,0 +1,9 @@
+.body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+}
+
+.comments {
+    grid-column: 2 / 4;
+}

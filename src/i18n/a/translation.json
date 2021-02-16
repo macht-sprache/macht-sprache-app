@@ -128,7 +128,11 @@
             "ariaNoResults": "No results. "
         },
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
-        "publishedBy": "Published by {{publisher}}"
+        "publishedBy": "Published by {{publisher}}",
+        "page": {
+            "heading": "Example: ",
+            "subLine": "Original by {{author}}, published by {{publisher}} in {{year}}."
+        }
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
