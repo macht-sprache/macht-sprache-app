@@ -28,10 +28,16 @@
 
 .headingImg {
     height: 5rem;
-    flex: 0 0;
+    min-width: 3rem;
+    object-fit: cover;
     margin-right: 0.5rem;
     margin-left: calc(var(--thickBorder) * -1);
     border: var(--thickBorder) solid var(--white);
+    background: var(--white);
+}
+
+.headingImgContainer {
+    flex: 0 0;
 }
 
 .exampleText {

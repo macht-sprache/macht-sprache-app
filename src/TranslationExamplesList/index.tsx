@@ -108,7 +108,11 @@ function Header({
 
     return (
         <header className={s.header}>
-            {bookOriginal.coverUrl && <img className={s.headingImg} alt="" src={bookOriginal.coverUrl} />}
+            {bookOriginal.coverUrl && (
+                <div className={s.headingImgContainer}>
+                    <img className={s.headingImg} alt="" src={bookOriginal.coverUrl} />
+                </div>
+            )}
             <div>
                 {bookOriginal.authors.join(', ')}
                 <h1 className={s.headingOriginal} lang={langOriginal}>
