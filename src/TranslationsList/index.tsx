@@ -1,8 +1,8 @@
 import s from './style.module.css';
-import { useTranslations } from '../hooks/data';
+import { collections, useSources, useTranslations } from '../hooks/data';
 import { Trans, useTranslation } from 'react-i18next';
 import { TermWithLang } from '../TermWithLang';
-import { Term } from '../types';
+import { Source, Term, Translation } from '../types';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
@@ -15,7 +15,7 @@ export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
     const { t } = useTranslation();
     const commentCount = translations.length;
-    const [lang] = useLang();
+    const sources = useSources(collections.terms.doc(term.id));
 
     return (
         <div>
@@ -35,24 +35,66 @@ export function TranslationsList({ term }: { term: Term }) {
             {!!translations.length && (
                 <div className={s.list}>
                     {translations.map(translation => (
-                        <article className={s.item} key={translation.id} lang={translation.lang}>
-                            <Link
-                                to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })}
-                                className={s.link}
-                            >
-                                <div className={s.header}>
-                                    <h1 className={s.value}>{translation.value}</h1>
-                                    <div className={s.meta} lang={lang}>
-                                        <FormatDate date={translation.createdAt.toDate()} />
-                                    </div>
-                                </div>
-                            </Link>
-                        </article>
+                        <TranslationItem
+                            key={translation.id}
+                            term={term}
+                            translation={translation}
+                            sources={sources[translation.id]}
+                        />
                     ))}
                 </div>
             )}
             <AddTranslationButton termId={term.id} />
         </div>
+    );
+}
+
+function TranslationItem({
+    translation,
+    term,
+    sources = [],
+}: {
+    translation: Translation;
+    term: Term;
+    sources: Source[];
+}) {
+    const [lang] = useLang();
+
+    return (
+        <article className={s.item} lang={translation.lang}>
+            <Link to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })} className={s.link}>
+                <div className={s.header}>
+                    <h1 className={s.value}>{translation.value}</h1>
+                    <div className={s.meta} lang={lang}>
+                        <FormatDate date={translation.createdAt.toDate()} />
+                    </div>
+                </div>
+                {!!sources.length && (
+                    <ul className={s.translationExampleList}>
+                        {sources.map(example => {
+                            if (example.type === 'BOOK') {
+                                return (
+                                    <li key={example.id} className={s.translationExampleListItem}>
+                                        {example.coverUrl ? (
+                                            <img
+                                                src={example.coverUrl}
+                                                alt={example.title}
+                                                title={example.title}
+                                                className={s.translationExampleListImage}
+                                            />
+                                        ) : (
+                                            example.title
+                                        )}
+                                    </li>
+                                );
+                            }
+
+                            return null;
+                        })}
+                    </ul>
+                )}
+            </Link>
+        </article>
     );
 }
 
