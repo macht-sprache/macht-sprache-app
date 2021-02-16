@@ -35,19 +35,6 @@ body {
     --lineHeightParagraph: 1.6;
 }
 
-html,
-body,
-#root {
-    /* height: 100%; */
-}
-
-h1,
-h2,
-h3,
-h4 {
-    /* margin-top: 0; */
-}
-
 h2 {
     font-size: 1.3rem;
 }
@@ -58,6 +45,11 @@ a {
 
 p {
     line-height: var(--lineHeightParagraph);
+}
+
+[lang='de'] p,
+p[lang='de'] {
+    hyphens: auto;
 }
 
 *,
