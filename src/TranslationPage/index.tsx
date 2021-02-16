@@ -16,12 +16,13 @@ export function TranslationPage() {
         <>
             <Header
                 mainLang={translation.lang}
-                subHeadingLang={term.lang}
-                subHeading={
-                    <Link className={s.termLink} to={generatePath(TERM, { termId: term.id })}>
-                        {term.value}
-                    </Link>
-                }
+                topHeading={[
+                    {
+                        to: generatePath(TERM, { termId: term.id }),
+                        inner: term.value,
+                        lang: term.lang,
+                    },
+                ]}
             >
                 {translation.value}
             </Header>

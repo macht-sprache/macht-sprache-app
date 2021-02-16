@@ -2,11 +2,6 @@
     margin-top: 0;
 }
 
-.headingWithSubheading {
-    composes: heading;
-    margin-left: 0.5rem;
-}
-
 .header {
     margin: 2rem 0 4rem;
 }
@@ -16,11 +11,42 @@
     box-shadow: 0.5rem 0 0 var(--lang-color), -0.5rem 0 0 var(--lang-color);
 }
 
-.subHeading {
+.subHeading,
+.topHeading {
     margin-top: 0;
     margin-bottom: 0.5rem;
     margin-left: -0.5rem;
     font-size: 1rem;
     font-style: italic;
     font-weight: normal;
+}
+
+.topHeading + .topHeading {
+    margin-top: 1rem;
+    margin-left: 0;
+}
+
+.topHeading + .heading {
+    margin-left: 0.5rem;
+}
+
+.topHeading + .topHeading + .heading {
+    margin-left: 1rem;
+}
+
+.topHeadingLink {
+    text-decoration: none;
+    background: var(--lang-color);
+    padding: 0.5rem;
+    position: relative;
+}
+
+.topHeadingLink:hover:before {
+    content: '';
+    position: absolute;
+    bottom: 0.4rem;
+    left: 0.3rem;
+    right: 0.3rem;
+    background: var(--black);
+    height: var(--thickBorder);
 }

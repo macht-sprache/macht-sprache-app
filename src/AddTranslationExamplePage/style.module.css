@@ -1,10 +1,3 @@
-.termLink {
-    text-decoration: none;
-    background: var(--lang-color);
-    padding: 0.5rem;
-    position: relative;
-}
-
 .steps {
     padding: 1rem 0 0;
 }

@@ -2,7 +2,7 @@ import { generatePath, Link, useParams } from 'react-router-dom';
 import Header from '../Header';
 import { useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
 import { Columns } from '../Layout/Columns';
-import { TRANSLATION } from '../routes';
+import { TERM, TRANSLATION } from '../routes';
 import { BookTranslationExample, Term, Translation } from '../types';
 import s from './style.module.css';
 
@@ -38,16 +38,18 @@ function BookPage({
     return (
         <>
             <Header
-                // mainLang={translation.lang}
-                subHeadingLang={term.lang}
-                subHeading={
-                    <Link
-                        className={s.termLink}
-                        to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })}
-                    >
-                        {term.value} → {translation.value}
-                    </Link>
-                }
+                topHeading={[
+                    {
+                        to: generatePath(TERM, { termId: term.id }),
+                        inner: term.value,
+                        lang: term.lang,
+                    },
+                    {
+                        to: generatePath(TRANSLATION, { termId: term.id, translationId: translation.id }),
+                        inner: translation.value,
+                        lang: translation.lang,
+                    },
+                ]}
             >
                 {bookOriginal.title} → {bookTranslated.title}
             </Header>
