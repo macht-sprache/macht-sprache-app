@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
@@ -15,7 +15,6 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
     const [comment, setComment] = useState('');
     const [hasFocus, setHasFocus] = useState(false);
     const { t } = useTranslation();
-    const formRef = useRef<HTMLFormElement>(null);
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
@@ -29,16 +28,18 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
     };
 
     const submit = () => {
-        setSubmitting(true);
-        onCreate(comment)
-            .then(() => setComment(''))
-            .catch(error => console.error(error))
-            .finally(() => setSubmitting(false));
+        if (comment) {
+            setSubmitting(true);
+            onCreate(comment)
+                .then(() => setComment(''))
+                .catch(error => console.error(error))
+                .finally(() => setSubmitting(false));
+        }
     };
 
     return (
         <LoginHint i18nKey="comment.registerToAdd">
-            <form ref={formRef} className={s.form} onSubmit={onSubmit}>
+            <form className={s.form} onSubmit={onSubmit}>
                 <InputContainer>
                     <Textarea
                         value={comment}
