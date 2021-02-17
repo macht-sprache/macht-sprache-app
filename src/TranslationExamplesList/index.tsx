@@ -1,6 +1,7 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
+import { ExampleText } from '../ExampleText';
 import { ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useDocument } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
@@ -87,12 +88,8 @@ function TranslationExampleArticle({
                         snippetTranslated={example.translated}
                     />
                 )}
-                <div lang={term.lang} className={s.exampleTextOriginal}>
-                    <TextWithHighlights text={example.original.text} highlighted={example.original.matches} />
-                </div>
-                <div lang={translation.lang} className={s.exampleTextTranslated}>
-                    <TextWithHighlights text={example.translated.text} highlighted={example.translated.matches} />
-                </div>
+                <ExampleText lang={term.lang} snippet={example.original} className={s.exampleTextOriginal} />
+                <ExampleText lang={translation.lang} snippet={example.translated} className={s.exampleTextTranslated} />
                 <footer className={s.footer}>
                     {t('common.entities.comment.withCount', { count: example.commentCount })}
                 </footer>

@@ -54,7 +54,8 @@ export type MovieTranslationExample = BaseTranslationExample<'MOVIE', MovieSnipp
 export type WebPageTranslationExample = BaseTranslationExample<'WEBPAGE', WebPageSnippet>;
 
 export type TranslationExample = BookTranslationExample | MovieTranslationExample | WebPageTranslationExample;
-interface BaseSnippet {
+
+export interface BaseSnippet {
     text: string;
     matches: string[];
 }
