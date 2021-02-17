@@ -90,6 +90,8 @@ function BookPage({
 }
 
 function Book({ source, isOriginal = false }: { source: BookSource; isOriginal?: boolean }) {
+    const { t } = useTranslation();
+
     return (
         <div className={clsx(s.bookContainer, { [s.original]: isOriginal })}>
             <div className={s.bookIconContainer}>
@@ -98,8 +100,10 @@ function Book({ source, isOriginal = false }: { source: BookSource; isOriginal?:
             <div className={s.meta}>
                 <h3 className={s.heading}>{source.title}</h3>
                 <dl className={s.definitionList}>
-                    <DefintionListItem definition="Publisher">{source.publisher}</DefintionListItem>
-                    <DefintionListItem definition="Year">{source.year}</DefintionListItem>
+                    <DefintionListItem definition={t('translationExample.publisher')}>
+                        {source.publisher}
+                    </DefintionListItem>
+                    <DefintionListItem definition={t('translationExample.year')}>{source.year}</DefintionListItem>
                     <DefintionListItem definition="ISBN">{source.isbn}</DefintionListItem>
                 </dl>
             </div>

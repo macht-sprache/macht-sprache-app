@@ -129,6 +129,8 @@
         },
         "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "publishedBy": "Veröffentlicht bei {{publisher}}",
+        "publisher": "Verlag",
+        "year": "Jahr",
         "page": {
             "heading": "Beispiel: ",
             "subLine": "Original von {{author}}, veröffentlich bei {{publisher}} {{year}}."

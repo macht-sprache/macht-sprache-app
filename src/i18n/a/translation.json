@@ -129,6 +129,8 @@
         },
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "publishedBy": "Published by {{publisher}}",
+        "publisher": "Publisher",
+        "year": "Year",
         "page": {
             "heading": "Example: ",
             "subLine": "Original by {{author}}, published by {{publisher}} in {{year}}."
