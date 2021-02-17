@@ -2,12 +2,22 @@
     position: relative;
     width: 10rem;
     height: 3rem;
-    border-bottom: var(--thickBorder) solid var(--lang-color);
+    /* border-bottom: var(--thickBorder) solid var(--lang-color); */
+}
+
+.container:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--thickBorder);
+    background: var(--lang-color);
+    box-shadow: 0 0 0 var(--thickBorder) var(--white);
 }
 
 .ratings {
     width: 100%;
-    height: calc(100% - var(--thickBorder));
+    height: calc(100% - var(--thickBorder) * 2);
     display: flex;
     align-items: flex-end;
 }
@@ -16,6 +26,7 @@
     position: relative;
     background: var(--lang-color);
     flex: 1;
+    box-shadow: 0 0 0 var(--thickBorder) var(--white);
 }
 
 .ratingInner {
@@ -45,6 +56,7 @@
 .userRating {
     --size: 1rem;
     position: absolute;
+    z-index: 1;
     bottom: calc((var(--size) + var(--thickBorder)) * -0.5);
     margin-left: calc(var(--size) * -0.5);
     width: var(--size);
