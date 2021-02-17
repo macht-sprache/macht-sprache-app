@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
@@ -15,9 +15,20 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
     const [comment, setComment] = useState('');
     const [hasFocus, setHasFocus] = useState(false);
     const { t } = useTranslation();
+    const formRef = useRef<HTMLFormElement>(null);
 
     const onSubmit = (event: React.FormEvent) => {
         event.preventDefault();
+        submit();
+    };
+
+    const onKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' && event.altKey === true) {
+            submit();
+        }
+    };
+
+    const submit = () => {
         setSubmitting(true);
         onCreate(comment)
             .then(() => setComment(''))
@@ -27,7 +38,7 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
 
     return (
         <LoginHint i18nKey="comment.registerToAdd">
-            <form className={s.form} onSubmit={onSubmit}>
+            <form ref={formRef} className={s.form} onSubmit={onSubmit}>
                 <InputContainer>
                     <Textarea
                         value={comment}
@@ -42,6 +53,7 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
                         onBlur={() => {
                             setHasFocus(false);
                         }}
+                        onKeyDown={onKeyDown}
                     />
                 </InputContainer>
                 <div className={hasFocus ? s.buttonWrapperWithFocus : s.buttonWrapper}>
