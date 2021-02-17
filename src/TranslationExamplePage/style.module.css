@@ -1,9 +1,49 @@
 .body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-gap: 1rem;
+    grid-gap: 2rem;
 }
 
 .comments {
     grid-column: 2 / 4;
+}
+
+.bookContainer {
+    display: flex;
+    align-items: flex-start;
+    grid-column: span 2;
+    margin: -0.5rem;
+}
+
+.bookContainer.original {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.bookContainer > * {
+    margin: 0.5rem;
+}
+
+.heading {
+    margin: 0;
+    font-size: var(--fontSizeM);
+}
+
+.definitionList {
+    margin: 0;
+    font-size: var(--fontSizeS);
+}
+
+.definitionListKey {
+    margin-top: 0.5rem;
+}
+
+.definitionListValue {
+    font-style: italic;
+    margin: 0 0.5rem;
+}
+
+.bookIcon {
+    --height: 8rem;
+    --minWidth: 5rem;
 }

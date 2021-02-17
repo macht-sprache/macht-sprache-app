@@ -1,10 +1,12 @@
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
+import { BookCoverIcon } from '../BookCoverIcon';
 import Comments from '../Comments';
 import Header from '../Header';
 import { collections, useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
 import { TERM, TRANSLATION } from '../routes';
-import { BookTranslationExample, Term, Translation } from '../types';
+import { BookSource, BookTranslationExample, Term, Translation } from '../types';
 import s from './style.module.css';
 
 export function TranslationExamplePage() {
@@ -67,10 +69,8 @@ function BookPage({
             </Header>
 
             <div className={s.body}>
-                <div>beispiel!!</div>
-                <div>beispiel!!</div>
-                <div>beispiel!!</div>
-                <div>beispiel!!</div>
+                <Book source={bookOriginal} isOriginal={true} />
+                <Book source={bookTranslated} />
                 <div className={s.comments}>
                     <Comments entityRef={collections.translations.doc(translationExample.id)} />
                 </div>
@@ -78,3 +78,28 @@ function BookPage({
         </>
     );
 }
+
+function Book({ source, isOriginal = false }: { source: BookSource; isOriginal?: boolean }) {
+    return (
+        <div className={clsx(s.bookContainer, { [s.original]: isOriginal })}>
+            <div className={s.bookIconContainer}>
+                <BookCoverIcon book={source} className={s.bookIcon} />
+            </div>
+            <div className={s.meta}>
+                <h3 className={s.heading}>{source.title}</h3>
+                <dl className={s.definitionList}>
+                    <DefintionListItem definition="Publisher">{source.publisher}</DefintionListItem>
+                    <DefintionListItem definition="Year">{source.year}</DefintionListItem>
+                    <DefintionListItem definition="ISBN">{source.isbn}</DefintionListItem>
+                </dl>
+            </div>
+        </div>
+    );
+}
+
+const DefintionListItem = ({ definition, children }: { definition: React.ReactNode; children: React.ReactNode }) => (
+    <>
+        <dt className={s.definitionListKey}>{definition}</dt>
+        <dd className={s.definitionListValue}>{children}</dd>
+    </>
+);
