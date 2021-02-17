@@ -1,29 +1,49 @@
 import clsx from 'clsx';
-import { Lang, Rating } from '../../types';
+import { Lang } from '../../types';
 import s from './style.module.css';
 import Tooltip from 'rc-tooltip';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useLang } from '../../useLang';
 
 type SmallRatingWidgetProps = {
     ratings: number[];
     lang: Lang;
     termValue: string;
-    userRating?: Rating;
+    rangeInputProps?: React.InputHTMLAttributes<any>;
 };
 
-export function SmallRatingWidget({ ratings, userRating, lang, termValue }: SmallRatingWidgetProps) {
+export function SmallRatingWidget({ ratings, lang, termValue, rangeInputProps }: SmallRatingWidgetProps) {
     const max = Math.max(...ratings);
-    const columnWidth = 1 / ratings.length;
     const { t } = useTranslation();
-    if (userRating) {
-        console.log((ratings.length - 1) * userRating.rating);
-    }
+    const [globalLang] = useLang();
+    const [domIdInput] = useState('idDataList_' + Math.random());
+
+    const distributionLabel = [
+        t('rating.ratingDistribution'),
+        ...ratings.map((rating, index) => {
+            return t('rating.ratingDistributionTimes', {
+                times: rating,
+                value: t('rating.values', { returnObjects: true })[index],
+            });
+        }),
+    ].join(' ');
+
+    const sliderLabel = [
+        t('rating.rangeInputLabel', { from: 1, to: ratings.length, term: termValue }),
+        ...ratings.map((rating, index) => {
+            return t('rating.scaleDescription', {
+                number: index + 1,
+                value: t('rating.values', { returnObjects: true })[index],
+            });
+        }),
+    ].join(' ');
 
     return (
         <div className={s.container} lang={lang}>
-            <div className={s.ratings}>
+            <div className={s.ratings} aria-label={distributionLabel} lang={globalLang}>
                 {ratings.map((rating, index) => (
-                    <div key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
+                    <div lang={lang} key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
                         <Tooltip
                             overlay={t('rating.values', { returnObjects: true })[index]}
                             placement="top"
@@ -34,20 +54,21 @@ export function SmallRatingWidget({ ratings, userRating, lang, termValue }: Smal
                     </div>
                 ))}
             </div>
-            {userRating && (
-                <Tooltip
-                    overlay={
-                        t('rating.yourRating', { term: termValue }) +
-                        t('rating.values', { returnObjects: true })[(ratings.length - 1) * userRating.rating]
-                    }
-                    placement="bottom"
-                    mouseLeaveDelay={0}
-                >
-                    <div
-                        className={s.userRating}
-                        style={{ left: `${(userRating.rating * (1 - columnWidth) + columnWidth / 2) * 100}%` }}
+            {rangeInputProps && (
+                <>
+                    <label htmlFor={domIdInput} lang={globalLang} className={s.hiddenLabel}>
+                        {sliderLabel}
+                    </label>
+                    <input
+                        type="range"
+                        list={domIdInput}
+                        min={1}
+                        max={ratings.length}
+                        step={1}
+                        className={s.rangeInput}
+                        {...rangeInputProps}
                     />
-                </Tooltip>
+                </>
             )}
         </div>
     );

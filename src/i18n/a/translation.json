@@ -138,7 +138,10 @@
     },
     "rating": {
         "values": ["Never", "Rarely", "Sometimes", "Regularly", "Always"],
-        "yourRating": "You would translate to \"{{term}}\": "
+        "rangeInputLabel": "How often would you use \"{{term}}\"? On a scale of {{from}} to {{to}}.",
+        "ratingDistribution": "Usage statistics of other users: ",
+        "ratingDistributionTimes": "{{times}} times \"{{value}}.\"",
+        "scaleDescription": "{{number}} is \"{{value}}\". "
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."

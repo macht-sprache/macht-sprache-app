@@ -136,6 +136,13 @@
             "subLine": "Original von {{author}}, veröffentlich bei {{publisher}} {{year}}."
         }
     },
+    "rating": {
+        "values": ["Niemals", "Selten", "Manchmal", "Regelmäßig", "Ständig"],
+        "rangeInputLabel": "Wie oft würdest du \"{{term}}\" benutzen? Auf einer Skala von {{from}} bis {{to}}.",
+        "ratingDistribution": "Benutzungsstatistiken anderer Benutzer:innen: ",
+        "ratingDistributionTimes": "{{times}} mal \"{{value}}\".",
+        "scaleDescription": "{{number}} bedeuted \"{{value}}\". "
+    },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     }

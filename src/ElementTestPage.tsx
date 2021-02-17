@@ -26,6 +26,7 @@ export default function ElementTestPage() {
     const [anotherSelectValue, setAnotherSelectValue] = useState('2');
     const [textAreaValue, setTextAreaValue] = useState('');
     const [book, setBook] = useState<Book>();
+    const [rating, setRating] = useState(2);
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -88,11 +89,11 @@ export default function ElementTestPage() {
                 lang="de"
                 termValue="Indianer"
                 ratings={[5, 2, 0, 12, 21]}
-                userRating={{
-                    rating: 0.25,
-                    updatedAt: firebase.firestore.Timestamp.fromDate(
-                        new Date('Mon Jan 25 2021 12:20:26 GMT+0100 (Central European Standard Time)')
-                    ),
+                rangeInputProps={{
+                    value: rating,
+                    onChange: e => {
+                        setRating(e.currentTarget.value);
+                    },
                 }}
             ></SmallRatingWidget>
 

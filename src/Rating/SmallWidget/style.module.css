@@ -59,8 +59,46 @@
     z-index: 1;
     bottom: calc((var(--size) + var(--thickBorder)) * -0.5);
     margin-left: calc(var(--size) * -0.5);
-    width: var(--size);
-    height: var(--size);
     background: var(--orange);
     border-radius: 50%;
+}
+
+.rangeInput {
+    --size: 1rem;
+    --columnCount: 5;
+    --marginLeftRight: calc(100% / var(--columnCount) / 2 - 0.5rem);
+    z-index: 2;
+    position: absolute;
+    bottom: calc(var(--size) * -0.5 - var(--thickBorder) / 2);
+    left: var(--marginLeftRight);
+    width: calc(100% - var(--marginLeftRight) * 2);
+    background: transparent;
+    -webkit-appearance: none;
+}
+
+.rangeInput::-webkit-slider-thumb {
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: var(--orange);
+    cursor: pointer;
+    -webkit-appearance: none;
+}
+
+.rangeInput::-moz-range-thumb {
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: var(--orange);
+    cursor: pointer;
+    border: none;
+    margin-top: calc(var(--thickBorder) * -0.5);
+}
+
+.hiddenLabel {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
 }
