@@ -1,8 +1,7 @@
 .container {
     position: relative;
-    width: 10rem;
+    width: 12rem;
     height: 3rem;
-    /* border-bottom: var(--thickBorder) solid var(--lang-color); */
 }
 
 .container:after {
@@ -101,4 +100,15 @@
     width: 1px;
     overflow: hidden;
     clip: rect(1px, 1px, 1px, 1px);
+}
+
+.userUsageDisplay {
+    font-size: var(--fontSizeS);
+    margin-top: 0.6rem;
+    text-align: center;
+    visibility: hidden;
+}
+
+.container:hover .userUsageDisplay {
+    visibility: visible;
 }

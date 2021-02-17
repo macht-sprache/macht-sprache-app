@@ -68,6 +68,10 @@ export function SmallRatingWidget({ ratings, lang, termValue, rangeInputProps }:
                         className={s.rangeInput}
                         {...rangeInputProps}
                     />
+                    <div className={s.userUsageDisplay} lang={globalLang}>
+                        {t('rating.yourRating')}
+                        {t('rating.values', { returnObjects: true })[(rangeInputProps.value as number) - 1]}
+                    </div>
                 </>
             )}
         </div>
