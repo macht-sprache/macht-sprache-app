@@ -10,6 +10,7 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
+import { SmallRatingWidget } from './Rating/SmallWidget';
 import { Book, Comment } from './types';
 
 const ref = collections.terms.doc('1');
@@ -79,14 +80,17 @@ export default function ElementTestPage() {
     return (
         <>
             <Header>Element Test Page</Header>
-            <h2>Button</h2>
+            <Heading>Rating Widget</Heading>
+            <SmallRatingWidget lang="de" ratings={[5, 2, 0, 12, 21]}></SmallRatingWidget>
+
+            <Heading>Button</Heading>
             <Button>button</Button>
-            <h2>Primary Button</h2>
+            <Heading>Primary Button</Heading>
             <Button primary={true}>button</Button>
-            <h2>Button Disabled</h2>
+            <Heading>Button Disabled</Heading>
             <Button disabled>button</Button>
 
-            <h2>Form</h2>
+            <Heading>Form</Heading>
             <InputContainer>
                 <Input
                     label="Name"
@@ -125,7 +129,7 @@ export default function ElementTestPage() {
                 </Select>
                 <Input
                     label="Another field, busy"
-                    busy={true}
+                    // busy={true}
                     value={another}
                     onChange={value => {
                         setAnother(value.target.value);
@@ -153,24 +157,28 @@ export default function ElementTestPage() {
                 <Button primary={true}>Submit</Button>
             </ButtonContainer>
 
-            <h2>Comments</h2>
+            <Heading>Comments</Heading>
 
             <CommentWrapper>
                 <CommentList comments={comments} />
                 <CommentCreate onCreate={onCreate} />
             </CommentWrapper>
 
-            <h2>Multi Step Indicator</h2>
+            <Heading>Multi Step Indicator</Heading>
             <MultiStepIndicator>
                 <MultiStepIndicatorStep>First thing</MultiStepIndicatorStep>
                 <MultiStepIndicatorStep active={true}>Second</MultiStepIndicatorStep>
                 <MultiStepIndicatorStep>another one</MultiStepIndicatorStep>
             </MultiStepIndicator>
 
-            <h2>Book Search</h2>
+            <Heading>Book Search</Heading>
             <BookSearch label="Find German Books" lang="de" selectedBook={book} onSelect={setBook} />
             <p />
             <BookSearch label="Find English Books" lang="en" />
         </>
     );
+}
+
+function Heading({ children }: { children: React.ReactNode }) {
+    return <h2 style={{ marginTop: '3rem' }}>{children}</h2>;
 }

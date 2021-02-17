@@ -1,0 +1,21 @@
+.container {
+    width: 5rem;
+    height: 2rem;
+    border-bottom: var(--thickBorder) solid var(--lang-color);
+}
+
+.ratings {
+    width: 100%;
+    height: calc(100% - var(--thickBorder));
+    display: flex;
+    align-items: flex-end;
+}
+
+.rating {
+    background: var(--lang-color);
+    flex: 1;
+}
+
+.rating + .rating {
+    margin-left: var(--thickBorder);
+}
