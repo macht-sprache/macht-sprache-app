@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Lang, Rating } from '../../types';
 import s from './style.module.css';
 
@@ -15,7 +16,9 @@ export function SmallRatingWidget({ ratings, userRating, lang }: SmallRatingWidg
         <div className={s.container} lang={lang}>
             <div className={s.ratings}>
                 {ratings.map((rating, index) => (
-                    <div key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating} />
+                    <div key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
+                        <div className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}>{rating}</div>
+                    </div>
                 ))}
             </div>
             {userRating && (

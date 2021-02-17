@@ -13,8 +13,28 @@
 }
 
 .rating {
+    position: relative;
     background: var(--lang-color);
     flex: 1;
+}
+
+.ratingInner {
+    display: none;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: var(--fontSizeS);
+    bottom: 100%;
+    padding: 0.2rem;
+}
+
+.ratingInner.inside {
+    bottom: auto;
+    top: 0;
+}
+
+.container:hover .ratingInner {
+    display: block;
 }
 
 .rating + .rating {
