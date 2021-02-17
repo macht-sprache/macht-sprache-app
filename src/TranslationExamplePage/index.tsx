@@ -7,7 +7,6 @@ import { ExampleText } from '../ExampleText';
 import Header from '../Header';
 import { collections, useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
 import { TERM, TRANSLATION } from '../routes';
-import TextWithHighlights from '../TextWithHighlights';
 import { BookSource, BookTranslationExample, Term, Translation } from '../types';
 import s from './style.module.css';
 

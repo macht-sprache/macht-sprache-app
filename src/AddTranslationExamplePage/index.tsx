@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, Link, useHistory, useParams } from 'react-router-dom';
+import { generatePath, useHistory, useParams } from 'react-router-dom';
 import Button, { ButtonContainer } from '../Form/Button';
 import Header from '../Header';
 import { useTerm, useTranslationEntity } from '../hooks/data';

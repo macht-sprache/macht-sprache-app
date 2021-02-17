@@ -8,7 +8,6 @@ import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import TextWithHighlights from '../TextWithHighlights';
 import { Term, Translation, TranslationExample, BookSnippet, Lang } from '../types';
 import s from './style.module.css';
 

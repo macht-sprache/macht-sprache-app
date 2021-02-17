@@ -1,11 +1,10 @@
-import { generatePath, Link, useParams } from 'react-router-dom';
+import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../Comments';
 import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import Header from '../Header';
 import { Columns } from '../Layout/Columns';
 import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
-import s from './style.module.css';
 
 export function TranslationPage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
