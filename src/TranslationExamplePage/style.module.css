@@ -1,17 +1,17 @@
 .body {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-gap: 2rem;
 }
 
 .comments {
-    grid-column: 2 / 4;
+    grid-column: 3 / -3;
 }
 
 .bookContainer {
     display: flex;
     align-items: flex-start;
-    grid-column: span 2;
+    grid-column: span 4;
     margin: -0.5rem;
 }
 
@@ -46,4 +46,17 @@
 .bookIcon {
     --height: 8rem;
     --minWidth: 5rem;
+}
+
+.snippetOriginal,
+.snippetTranslated {
+    align-self: flex-start;
+}
+
+.snippetOriginal {
+    grid-column: 2 / 5;
+}
+
+.snippetTranslated {
+    grid-column: 5 / -2;
 }

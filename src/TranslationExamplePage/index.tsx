@@ -3,9 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import { BookCoverIcon } from '../BookCoverIcon';
 import Comments from '../Comments';
+import { ExampleText } from '../ExampleText';
 import Header from '../Header';
 import { collections, useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
 import { TERM, TRANSLATION } from '../routes';
+import TextWithHighlights from '../TextWithHighlights';
 import { BookSource, BookTranslationExample, Term, Translation } from '../types';
 import s from './style.module.css';
 
@@ -71,6 +73,14 @@ function BookPage({
             <div className={s.body}>
                 <Book source={bookOriginal} isOriginal={true} />
                 <Book source={bookTranslated} />
+
+                <ExampleText lang={term.lang} snippet={translationExample.original} className={s.snippetOriginal} />
+                <ExampleText
+                    lang={translation.lang}
+                    snippet={translationExample.translated}
+                    className={s.snippetTranslated}
+                />
+
                 <div className={s.comments}>
                     <Comments entityRef={collections.translations.doc(translationExample.id)} />
                 </div>
