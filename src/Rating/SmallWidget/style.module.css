@@ -19,13 +19,14 @@
 }
 
 .ratingInner {
-    display: none;
+    visibility: hidden;
     position: absolute;
     width: 100%;
     text-align: center;
     font-size: var(--fontSizeS);
     bottom: 100%;
     padding: 0.2rem;
+    cursor: default;
 }
 
 .ratingInner.inside {
@@ -34,7 +35,7 @@
 }
 
 .container:hover .ratingInner {
-    display: block;
+    visibility: visible;
 }
 
 .rating + .rating {

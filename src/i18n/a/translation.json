@@ -136,6 +136,10 @@
             "subLine": "Original by {{author}}, published by {{publisher}} in {{year}}."
         }
     },
+    "rating": {
+        "values": ["Never", "Rarely", "Sometimes", "Regularly", "Always"],
+        "yourRating": "You would translate to \"{{term}}\": "
+    },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     }

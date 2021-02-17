@@ -82,13 +82,14 @@ export default function ElementTestPage() {
             <Header>Element Test Page</Header>
             <Heading>Rating Widget</Heading>
             <p>Without user rating</p>
-            <SmallRatingWidget lang="de" ratings={[5, 2, 0, 12, 21]}></SmallRatingWidget>
+            <SmallRatingWidget termValue="Indianer" lang="de" ratings={[5, 2, 0, 12, 21]}></SmallRatingWidget>
             <p>With user rating</p>
             <SmallRatingWidget
                 lang="de"
+                termValue="Indianer"
                 ratings={[5, 2, 0, 12, 21]}
                 userRating={{
-                    rating: 1,
+                    rating: 0.25,
                     updatedAt: firebase.firestore.Timestamp.fromDate(
                         new Date('Mon Jan 25 2021 12:20:26 GMT+0100 (Central European Standard Time)')
                     ),
