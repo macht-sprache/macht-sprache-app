@@ -1,6 +1,7 @@
 .container {
-    width: 5rem;
-    height: 2rem;
+    position: relative;
+    width: 10rem;
+    height: 3rem;
     border-bottom: var(--thickBorder) solid var(--lang-color);
 }
 
@@ -18,4 +19,15 @@
 
 .rating + .rating {
     margin-left: var(--thickBorder);
+}
+
+.userRating {
+    --size: 1rem;
+    position: absolute;
+    bottom: calc((var(--size) + var(--thickBorder)) * -0.5);
+    margin-left: calc(var(--size) * -0.5);
+    width: var(--size);
+    height: var(--size);
+    background: var(--orange);
+    border-radius: 50%;
 }
