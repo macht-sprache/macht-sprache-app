@@ -25,7 +25,7 @@ export function RatingWidget({
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();
-    const [domIdInput] = useState('idDataList_' + Math.random());
+    const [domIdInput] = useState('idInput_' + Math.random());
 
     const distributionLabel = [
         t('rating.ratingDistribution'),
@@ -75,6 +75,7 @@ export function RatingWidget({
                         step={1}
                         className={clsx(s.rangeInput, { [s.unset]: !rangeInputProps?.value })}
                         {...rangeInputProps}
+                        value={typeof rangeInputProps.value !== 'undefined' ? rangeInputProps.value : RATING_STEPS / 2}
                     />
                     <div className={s.userUsageDisplay} lang={globalLang}>
                         {rangeInputProps.value ? (
@@ -110,17 +111,11 @@ export function RatingWidgetContainer({ translation, term }: RatingWidgetContain
 function RatingWidgetLoggedIn({ translation, term, user }: { translation: Translation; term: Term; user: User }) {
     const rating = useRating(user?.id, translation.id);
 
-    const [ratingSlider, setRatingSlider] = useState<number | undefined>(
-        rating?.rating ? rating.rating * (RATING_STEPS - 1) + 1 : undefined
-    );
-
     const rangeInputProps = user && {
-        value: ratingSlider,
+        value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
             const ratingFromSlider = parseInt(e.currentTarget.value);
-            const rating = (1 / (RATING_STEPS - 1)) * (ratingFromSlider - 1);
-            setRatingSlider(ratingFromSlider);
-            setRating(user.id, translation.id, rating);
+            setRating(user.id, translation.id, fromSliderValue(ratingFromSlider));
         },
     };
 
@@ -132,4 +127,12 @@ function RatingWidgetLoggedIn({ translation, term, user }: { translation: Transl
             rangeInputProps={rangeInputProps}
         />
     );
+}
+
+function toSliderValue(rating: number) {
+    return rating * (RATING_STEPS - 1) + 1;
+}
+
+function fromSliderValue(rating: number) {
+    return (1 / (RATING_STEPS - 1)) * (rating - 1);
 }
