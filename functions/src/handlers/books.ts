@@ -1,8 +1,9 @@
+import { firestore } from 'firebase-admin';
 import { books_v1, google } from 'googleapis';
 import { isValid, take } from 'rambdax';
+import { langA, langB } from '../../../src/languages';
 import { Book, BookSource, Lang } from '../../../src/types';
 import { convertRef, db, WithoutId } from '../firebase';
-import { firestore } from 'firebase-admin';
 
 const booksApi = google.books('v1');
 
@@ -13,6 +14,7 @@ const makeVolumeId = (sourceId: string) => sourceId.replace(sourceIdPrefix, '');
 
 const BookSchema = {
     id: String,
+    lang: String,
     title: String,
     authors: [String],
     'publisher?': String,
@@ -27,6 +29,7 @@ const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book>
     const year = volumeInfo?.publishedDate?.match(/^\d+/)?.[0];
     return {
         id: id ? makeSourceId(id) : undefined,
+        lang: ([langA, langB] as const).find(lang => lang === volumeInfo?.language),
         title: volumeInfo?.title,
         authors: volumeInfo?.authors,
         publisher: volumeInfo?.publisher,

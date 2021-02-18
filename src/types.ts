@@ -87,6 +87,7 @@ export interface WebPageSource extends BaseSource<'WEBPAGE'>, WebPage {}
 export type Source = BookSource | MovieSource | WebPageSource;
 export interface Book {
     id: string;
+    lang: Lang;
     title: string;
     authors: string[];
     publisher?: string;
