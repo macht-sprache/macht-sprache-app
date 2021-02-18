@@ -81,7 +81,7 @@ function BookPage({
                 />
 
                 <div className={s.comments}>
-                    <Comments entityRef={collections.translations.doc(translationExample.id)} />
+                    <Comments entityRef={collections.translationExamples.doc(translationExample.id)} />
                 </div>
             </div>
         </>
