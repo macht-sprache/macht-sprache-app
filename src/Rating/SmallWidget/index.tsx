@@ -5,15 +5,21 @@ import Tooltip from 'rc-tooltip';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useLang } from '../../useLang';
+import { RATING_STEPS } from '../../constants';
 
 type SmallRatingWidgetProps = {
-    ratings: number[];
+    ratings?: number[];
     lang: Lang;
     termValue: string;
     rangeInputProps?: React.InputHTMLAttributes<any>;
 };
 
-export function SmallRatingWidget({ ratings, lang, termValue, rangeInputProps }: SmallRatingWidgetProps) {
+export function SmallRatingWidget({
+    ratings = new Array(RATING_STEPS).fill(0),
+    lang,
+    termValue,
+    rangeInputProps,
+}: SmallRatingWidgetProps) {
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();
@@ -65,12 +71,18 @@ export function SmallRatingWidget({ ratings, lang, termValue, rangeInputProps }:
                         min={1}
                         max={ratings.length}
                         step={1}
-                        className={s.rangeInput}
+                        className={clsx(s.rangeInput, { [s.unset]: !rangeInputProps?.value })}
                         {...rangeInputProps}
                     />
                     <div className={s.userUsageDisplay} lang={globalLang}>
-                        {t('rating.yourRating')}
-                        {t('rating.values', { returnObjects: true })[(rangeInputProps.value as number) - 1]}
+                        {rangeInputProps.value ? (
+                            <>
+                                {t('rating.yourRating')}
+                                {t('rating.values', { returnObjects: true })[(rangeInputProps.value as number) - 1]}
+                            </>
+                        ) : (
+                            <>Drag to set your usage.</>
+                        )}
                     </div>
                 </>
             )}
