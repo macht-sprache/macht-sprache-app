@@ -7,19 +7,19 @@ import { useState } from 'react';
 import { useLang } from '../../useLang';
 import { RATING_STEPS } from '../../constants';
 
-type SmallRatingWidgetProps = {
+type RatingWidgetProps = {
     ratings?: number[];
     lang: Lang;
     termValue: string;
     rangeInputProps?: React.InputHTMLAttributes<any>;
 };
 
-export function SmallRatingWidget({
+export function RatingWidget({
     ratings = new Array(RATING_STEPS).fill(0),
     lang,
     termValue,
     rangeInputProps,
-}: SmallRatingWidgetProps) {
+}: RatingWidgetProps) {
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();

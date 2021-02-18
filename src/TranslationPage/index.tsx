@@ -6,7 +6,7 @@ import { Columns } from '../Layout/Columns';
 import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { useUser } from 'reactfire';
-import { SmallRatingWidget } from '../Rating/SmallWidget';
+import { RatingWidget } from '../Rating/RatingWidget';
 import { RATING_STEPS } from '../constants';
 import { useState } from 'react';
 import s from './style.module.css';
@@ -46,7 +46,7 @@ export function TranslationPage() {
             >
                 {translation.value}
                 <div className={s.rating}>
-                    <SmallRatingWidget
+                    <RatingWidget
                         rangeInputProps={rangeInputProps}
                         termValue={term.value}
                         lang={translation.lang}

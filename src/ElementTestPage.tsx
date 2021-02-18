@@ -10,7 +10,7 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
-import { SmallRatingWidget } from './Rating/SmallWidget';
+import { RatingWidget } from './Rating/RatingWidget';
 import { Book, Comment } from './types';
 
 const ref = collections.terms.doc('1');
@@ -83,9 +83,9 @@ export default function ElementTestPage() {
             <Header>Element Test Page</Header>
             <Heading>Rating Widget</Heading>
             <p>Without user rating</p>
-            <SmallRatingWidget termValue="Indianer" lang="de" ratings={[5, 2, 0, 12, 21]}></SmallRatingWidget>
+            <RatingWidget termValue="Indianer" lang="de" ratings={[5, 2, 0, 12, 21]} />
             <p>With user rating</p>
-            <SmallRatingWidget
+            <RatingWidget
                 lang="de"
                 termValue="Indianer"
                 ratings={[5, 2, 0, 12, 21]}
@@ -95,7 +95,7 @@ export default function ElementTestPage() {
                         setRating(e.currentTarget.value);
                     },
                 }}
-            ></SmallRatingWidget>
+            />
 
             <Heading>Button</Heading>
             <Button>button</Button>
