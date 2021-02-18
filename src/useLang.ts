@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { auth } from './firebase';
 import { useUser } from './hooks/auth';
 import { collections } from './hooks/data';
 import { langA, langB } from './languages';
@@ -29,6 +30,7 @@ export const useLang = () => {
 
     useEffect(() => {
         document.documentElement.setAttribute('lang', lang);
+        auth.languageCode = lang;
     }, [lang]);
 
     const setLang = useCallback(
