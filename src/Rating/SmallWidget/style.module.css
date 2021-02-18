@@ -1,4 +1,7 @@
 .container {
+    --thumbSize: 1rem;
+    --thumbShadowWidth: 0;
+
     position: relative;
     width: 12rem;
     height: 3rem;
@@ -13,6 +16,14 @@
     height: var(--thickBorder);
     background: var(--lang-color);
     box-shadow: 0 0 0 var(--thickBorder) var(--white);
+}
+
+.container:focus-within {
+    --thumbShadowWidth: 0.1rem;
+}
+
+.container:focus-within:after {
+    background: var(--orange);
 }
 
 .ratings {
@@ -53,28 +64,21 @@
     margin-left: var(--thickBorder);
 }
 
-.userRating {
-    --size: 1rem;
-    position: absolute;
-    z-index: 1;
-    bottom: calc((var(--size) + var(--thickBorder)) * -0.5);
-    margin-left: calc(var(--size) * -0.5);
-    background: var(--orange);
-    border-radius: 50%;
-}
-
 .rangeInput {
-    --size: 1rem;
     --columnCount: 5;
     --marginLeftRight: calc(100% / var(--columnCount) / 2 - 0.5rem);
     --thumbOpacity: 1;
     z-index: 2;
     position: absolute;
-    bottom: calc(var(--size) * -0.5 - var(--thickBorder) / 2);
+    bottom: calc(var(--thumbSize) * -0.5 - var(--thickBorder) / 2);
     left: var(--marginLeftRight);
     width: calc(100% - var(--marginLeftRight) * 2);
     background: transparent;
     -webkit-appearance: none;
+}
+
+.rangeInput:focus {
+    outline: none;
 }
 
 .rangeInput.unset {
@@ -82,24 +86,26 @@
 }
 
 .rangeInput::-webkit-slider-thumb {
-    width: var(--size);
-    height: var(--size);
+    width: var(--thumbSize);
+    height: var(--thumbSize);
     border-radius: 50%;
     background: var(--orange);
     cursor: pointer;
     -webkit-appearance: none;
     opacity: var(--thumbOpacity);
+    box-shadow: 0 0 0 var(--thumbShadowWidth) var(--orange);
 }
 
 .rangeInput::-moz-range-thumb {
-    width: var(--size);
-    height: var(--size);
+    width: var(--thumbSize);
+    height: var(--thumbSize);
     border-radius: 50%;
     background: var(--orange);
     cursor: pointer;
     border: none;
     margin-top: calc(var(--thickBorder) * -0.5);
     opacity: var(--thumbOpacity);
+    box-shadow: 0 0 0 var(--thumbShadowWidth) var(--orange);
 }
 
 .hiddenLabel {
