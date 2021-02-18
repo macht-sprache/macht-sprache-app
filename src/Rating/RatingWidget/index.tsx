@@ -134,5 +134,5 @@ function toSliderValue(rating: number) {
 }
 
 function fromSliderValue(rating: number) {
-    return (1 / (RATING_STEPS - 1)) * (rating - 1);
+    return (rating - 1) / (RATING_STEPS - 1);
 }
