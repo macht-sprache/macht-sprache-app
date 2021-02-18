@@ -142,7 +142,8 @@
         "ratingDistribution": "Usage statistics of other users: ",
         "ratingDistributionTimes": "{{times}} times \"{{value}}.\"",
         "scaleDescription": "{{number}} is \"{{value}}\". ",
-        "yourRating": "Your Usage: "
+        "yourRating": "Your Usage: ",
+        "dragToSet": "Drag to set your usage."
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."

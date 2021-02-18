@@ -81,7 +81,7 @@ export function SmallRatingWidget({
                                 {t('rating.values', { returnObjects: true })[(rangeInputProps.value as number) - 1]}
                             </>
                         ) : (
-                            <>Drag to set your usage.</>
+                            <>{t('rating.dragToSet')}</>
                         )}
                     </div>
                 </>

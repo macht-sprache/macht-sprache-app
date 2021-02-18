@@ -31,6 +31,7 @@
     height: calc(100% - var(--thickBorder) * 2);
     display: flex;
     align-items: flex-end;
+    padding-top: var(--thickBorder);
 }
 
 .rating {

@@ -142,7 +142,8 @@
         "ratingDistribution": "Benutzungsstatistiken anderer Benutzer:innen: ",
         "ratingDistributionTimes": "{{times}} mal \"{{value}}\".",
         "scaleDescription": "{{number}} bedeuted \"{{value}}\". ",
-        "yourRating": "Deine Benutzung: "
+        "yourRating": "Deine Benutzung: ",
+        "dragToSet": "Schiebe, um deine Benutzung fest zu legen."
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."

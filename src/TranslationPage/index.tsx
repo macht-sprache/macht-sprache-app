@@ -9,6 +9,7 @@ import { useUser } from 'reactfire';
 import { SmallRatingWidget } from '../Rating/SmallWidget';
 import { RATING_STEPS } from '../constants';
 import { useState } from 'react';
+import s from './style.module.css';
 
 export function TranslationPage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
@@ -44,12 +45,14 @@ export function TranslationPage() {
                 ]}
             >
                 {translation.value}
-                <SmallRatingWidget
-                    rangeInputProps={rangeInputProps}
-                    termValue={term.value}
-                    lang={translation.lang}
-                    ratings={translation.ratings}
-                />
+                <div className={s.rating}>
+                    <SmallRatingWidget
+                        rangeInputProps={rangeInputProps}
+                        termValue={term.value}
+                        lang={translation.lang}
+                        ratings={translation.ratings}
+                    />
+                </div>
             </Header>
             <Columns>
                 <TranslationExamplesList term={term} translation={translation} />
