@@ -15,13 +15,13 @@ export function TranslationPage() {
     const term = useTerm(termId);
     const translation = useTranslationEntity(translationId);
     const user = useUser();
-    const rating = useRating(user.data.uid, translationId);
+    const rating = useRating(user.data?.uid, translationId);
 
     const [ratingSlider, setRatingSlider] = useState<number | undefined>(
         rating?.rating ? rating.rating * (RATING_STEPS - 1) + 1 : undefined
     );
 
-    const rangeInputProps = {
+    const rangeInputProps = user.data && {
         value: ratingSlider,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
             const ratingFromSlider = parseInt(e.currentTarget.value);
