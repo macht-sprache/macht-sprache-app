@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import { Lang, Term, Translation } from '../../types';
+import { Lang, Term, Translation, User } from '../../types';
 import s from './style.module.css';
 import Tooltip from 'rc-tooltip';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useLang } from '../../useLang';
 import { RATING_STEPS } from '../../constants';
-import { useUser } from 'reactfire';
 import { setRating, useRating } from '../../hooks/data';
+import { useUser } from '../../hooks/auth';
 
 type RatingWidgetProps = {
     ratings?: number[];
@@ -99,19 +99,28 @@ type RatingWidgetContainerProps = {
 
 export function RatingWidgetContainer({ translation, term }: RatingWidgetContainerProps) {
     const user = useUser();
-    const rating = useRating(user.data?.uid, translation.id);
+
+    if (user) {
+        return <RatingWidgetLoggedIn term={term} translation={translation} user={user} />;
+    }
+
+    return <RatingWidget ratings={translation.ratings} lang={translation.lang} termValue={term.value} />;
+}
+
+function RatingWidgetLoggedIn({ translation, term, user }: { translation: Translation; term: Term; user: User }) {
+    const rating = useRating(user?.id, translation.id);
 
     const [ratingSlider, setRatingSlider] = useState<number | undefined>(
         rating?.rating ? rating.rating * (RATING_STEPS - 1) + 1 : undefined
     );
 
-    const rangeInputProps = user.data && {
+    const rangeInputProps = user && {
         value: ratingSlider,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
             const ratingFromSlider = parseInt(e.currentTarget.value);
             const rating = (1 / (RATING_STEPS - 1)) * (ratingFromSlider - 1);
             setRatingSlider(ratingFromSlider);
-            setRating(user.data.uid, translation.id, rating);
+            setRating(user.id, translation.id, rating);
         },
     };
 
