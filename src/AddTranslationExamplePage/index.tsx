@@ -5,7 +5,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import Header from '../Header';
 import { useTerm, useTranslationEntity } from '../hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
-import { TERM, TRANSLATION } from '../routes';
+import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import s from './style.module.css';
 import BookSearch from '../BookSearch';
@@ -60,9 +60,15 @@ export function AddTranslationExamplePage() {
                     pageNumber: snippets.translatedPageNo,
                     bookId: translatedBook.id,
                 },
-            }).then(() => {
+            }).then(translationExample => {
                 setSubmitting(false);
-                history.push(generatePath(TRANSLATION, { termId, translationId }));
+                history.push(
+                    generatePath(TRANSLATION_EXAMPLE, {
+                        termId,
+                        translationId,
+                        translationExampleId: translationExample.data.translationExampleId,
+                    })
+                );
             });
         } else {
             console.log("books aren't set. should not be possible. what happened?!");

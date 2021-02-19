@@ -7,7 +7,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { TERM, TRANSLATION } from '../routes';
+import { TRANSLATION } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 
 type Model = {
