@@ -147,5 +147,9 @@
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
+    },
+    "notFound": {
+        "heading": "Page not found",
+        "paragraph": "This page does not exist. <Link>Take me home</Link>."
     }
 }

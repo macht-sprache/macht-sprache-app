@@ -11,6 +11,7 @@ import { useEnsureUserEntity, UserProvider } from './hooks/auth';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
 import LoginPage from './LoginPage';
+import { NotFoundPage } from './NotFoundPage';
 import PageLoadingState from './PageLoadingState';
 import RegisterPage from './RegisterPage';
 import RegisterPostPage from './RegisterPostPage';
@@ -83,6 +84,10 @@ function App() {
 
                                         <Route path="/elementTest" exact>
                                             <ElementTestPage />
+                                        </Route>
+
+                                        <Route>
+                                            <NotFoundPage />
                                         </Route>
                                     </Switch>
                                 </Suspense>

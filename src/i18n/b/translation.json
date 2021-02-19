@@ -147,5 +147,9 @@
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
+    },
+    "notFound": {
+        "heading": "Seite nicht gefunden",
+        "paragraph": "Diese Seite gibt es nicht. <Link>Zur Homepage</Link>."
     }
 }
