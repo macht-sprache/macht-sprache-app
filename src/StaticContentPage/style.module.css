@@ -1,0 +1,8 @@
+.body li {
+    line-height: var(--lineHeightParagraph);
+    margin-bottom: 0.5rem;
+}
+
+.body h2 {
+    margin-top: 2rem;
+}
