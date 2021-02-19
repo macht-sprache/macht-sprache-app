@@ -133,7 +133,7 @@ export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, ini
     const data = snapshot.data();
 
     if (!data) {
-        throw new Error(ERROR_NOT_FOUND);
+        throw ERROR_NOT_FOUND;
     }
 
     return data;

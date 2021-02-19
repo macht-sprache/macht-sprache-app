@@ -9,8 +9,8 @@ const ErrorBoundary: React.FC = ({ children }) => {
     return (
         <ErrorBoundaryComponent
             resetKeys={[location]}
-            fallbackRender={({ error }) => {
-                if (error.message === ERROR_NOT_FOUND) {
+            fallbackRender={({ error }: { error: unknown }) => {
+                if (error === ERROR_NOT_FOUND) {
                     return <NotFoundPage />;
                 }
                 return <Header>Something Went Wrong</Header>;
