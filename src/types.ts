@@ -73,18 +73,28 @@ interface WebPageSnippet extends BaseSnippet {
     source: DocReference<WebPageSource>;
 }
 
-interface BaseSource<T extends SourceType> {
+export interface BaseSource<T extends SourceType> {
     id: string;
     type: T;
     title: string;
     refs: DocReference<Term | Translation>[];
 }
 
-export interface BookSource extends BaseSource<'BOOK'>, Book {}
-export interface MovieSource extends BaseSource<'MOVIE'>, Movie {}
-export interface WebPageSource extends BaseSource<'WEBPAGE'>, WebPage {}
+export type BookSource = SourceForType<'BOOK'>;
+export type MovieSource = SourceForType<'MOVIE'>;
+export type WebPageSource = SourceForType<'WEBPAGE'>;
 
 export type Source = BookSource | MovieSource | WebPageSource;
+
+export type SourceForType<T extends SourceType> = SourceMediaForType<T> & BaseSource<T>;
+export type SourceMediaForType<T extends SourceType> = T extends 'BOOK'
+    ? Book
+    : T extends 'MOVIE'
+    ? Movie
+    : T extends 'WEBPAGE'
+    ? WebPage
+    : never;
+
 export interface Book {
     id: string;
     lang: Lang;
@@ -106,6 +116,7 @@ export interface Movie {
 }
 
 export interface WebPage {
+    id: string;
     title: string;
     authors: string[];
     publisher?: string;

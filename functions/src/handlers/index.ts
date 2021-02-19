@@ -1,9 +1,19 @@
 import { firestore } from 'firebase-admin';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { TranslationExampleModel } from '../../../src/modelTypes';
-import { BookSource, Lang, Term, Translation, TranslationExample, User } from '../../../src/types';
+import {
+    BookSource,
+    Lang,
+    Source,
+    SourceMediaForType,
+    SourceType,
+    Term,
+    Translation,
+    TranslationExample,
+    User,
+} from '../../../src/types';
 import { convertRef, db, functions, WithoutId } from '../firebase';
-import { ensureBookRef, searchBooks } from './books';
+import { getBook, searchBooks } from './books';
 import { findTermMatches } from './language';
 
 const verifyUser = (context: CallableContext) => {
@@ -41,8 +51,8 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
     ]);
 
     const [originalBookRef, translatedBookRef] = await Promise.all([
-        ensureBookRef(model.original.bookId, termSnap.ref, translationSnap.ref),
-        ensureBookRef(model.translated.bookId, termSnap.ref, translationSnap.ref),
+        writeSource(model.original.bookId, model.type, getBook, termSnap.ref, translationSnap.ref),
+        writeSource(model.translated.bookId, model.type, getBook, termSnap.ref, translationSnap.ref),
     ]);
 
     const translationExampleRef = db.collection('translationExamples').doc();
@@ -74,3 +84,31 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
 
     return { translationExampleId: translationExampleRef.id };
 });
+
+async function writeSource<T extends SourceType>(
+    sourceId: string,
+    sourceType: T,
+    getSource: (sourceId: string) => Promise<SourceMediaForType<T>>,
+    termRef: firestore.DocumentReference,
+    translationRef: firestore.DocumentReference
+) {
+    const sourceRef = db.collection('sources').doc(sourceId);
+    const sourceMedium = (await sourceRef.get()).data() as WithoutId<Source> | undefined;
+
+    if (!sourceMedium) {
+        const { id, ...sourceMedia } = await getSource(sourceId);
+        const newSource = {
+            ...sourceMedia,
+            type: sourceType,
+            refs: [convertRef(termRef), convertRef(translationRef)],
+        };
+        await sourceRef.set(newSource);
+    } else {
+        const update: Partial<WithoutId<Source>> = {
+            refs: [...sourceMedium.refs, convertRef(termRef), convertRef(translationRef)],
+        };
+        await sourceRef.update(update);
+    }
+
+    return sourceRef;
+}

@@ -1,9 +1,7 @@
-import { firestore } from 'firebase-admin';
 import { books_v1, google } from 'googleapis';
 import { isValid, take } from 'rambdax';
 import { langA, langB } from '../../../src/languages';
-import { Book, BookSource, Lang } from '../../../src/types';
-import { convertRef, db, WithoutId } from '../firebase';
+import { Book, Lang } from '../../../src/types';
 
 const booksApi = google.books('v1');
 
@@ -58,7 +56,7 @@ export const searchBooks = async (query: string, lang: Lang) => {
     return books;
 };
 
-const getBook = async (sourceId: string) => {
+export const getBook = async (sourceId: string) => {
     const { data } = await booksApi.volumes.get({ volumeId: makeVolumeId(sourceId) });
     const maybeBook = volumeToBook(data);
 
@@ -67,30 +65,4 @@ const getBook = async (sourceId: string) => {
     }
 
     throw new Error(`Book ${sourceId} not found.`);
-};
-
-export const ensureBookRef = async (
-    bookId: string,
-    termRef: firestore.DocumentReference,
-    translationRef: firestore.DocumentReference
-) => {
-    const bookRef = db.collection('sources').doc(bookId);
-    const bookSource = (await bookRef.get()).data() as WithoutId<BookSource> | undefined;
-
-    if (!bookSource) {
-        const { id, ...bookEntity } = await getBook(bookId);
-        const newBookSource: WithoutId<BookSource> = {
-            ...bookEntity,
-            type: 'BOOK',
-            refs: [convertRef(termRef), convertRef(translationRef)],
-        };
-        await bookRef.set(newBookSource);
-    } else {
-        const update: Partial<WithoutId<BookSource>> = {
-            refs: [...bookSource.refs, convertRef(termRef), convertRef(translationRef)],
-        };
-        await bookRef.update(update);
-    }
-
-    return bookRef;
 };
