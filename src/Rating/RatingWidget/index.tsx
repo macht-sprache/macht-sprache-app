@@ -72,7 +72,7 @@ export function RatingWidget({
                         list={domIdInput}
                         min={1}
                         max={ratings.length}
-                        step={1}
+                        step={0.1}
                         className={clsx(s.rangeInput, { [s.unset]: !rangeInputProps?.value })}
                         {...rangeInputProps}
                         value={typeof rangeInputProps.value !== 'undefined' ? rangeInputProps.value : RATING_STEPS / 2}
@@ -81,7 +81,11 @@ export function RatingWidget({
                         {rangeInputProps.value ? (
                             <>
                                 {t('rating.yourRating')}
-                                {t('rating.values', { returnObjects: true })[(rangeInputProps.value as number) - 1]}
+                                {
+                                    t('rating.values', { returnObjects: true })[
+                                        Math.round(rangeInputProps.value as number) - 1
+                                    ]
+                                }
                             </>
                         ) : (
                             <>{t('rating.dragToSet')}</>
@@ -114,7 +118,7 @@ function RatingWidgetLoggedIn({ translation, term, user }: { translation: Transl
     const rangeInputProps = user && {
         value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-            const ratingFromSlider = parseInt(e.currentTarget.value);
+            const ratingFromSlider = parseFloat(e.currentTarget.value);
             setRating(user.id, translation.id, fromSliderValue(ratingFromSlider));
         },
     };
