@@ -75,7 +75,11 @@ export function RatingWidget({
                         step={0.1}
                         className={clsx(s.rangeInput, { [s.unset]: !rangeInputProps?.value })}
                         {...rangeInputProps}
-                        value={typeof rangeInputProps.value !== 'undefined' ? rangeInputProps.value : RATING_STEPS / 2}
+                        value={
+                            typeof rangeInputProps.value !== 'undefined'
+                                ? rangeInputProps.value
+                                : (RATING_STEPS + 1) / 2
+                        }
                     />
                     <div className={s.userUsageDisplay} lang={globalLang}>
                         {rangeInputProps.value ? (
