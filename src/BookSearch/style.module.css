@@ -25,7 +25,6 @@
 
 .resultButton .resultButtonIcon {
     --height: 8rem;
-    --minWidth: 6rem;
 }
 
 .resultButton:hover .resultButtonIcon {

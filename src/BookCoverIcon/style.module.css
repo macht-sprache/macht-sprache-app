@@ -1,6 +1,6 @@
 .container {
     --height: 10rem;
-    --minWidth: 8rem;
+    --minWidth: calc(var(--height) / 2);
     --borderColor: var(--black);
     --pageColor: var(--white);
 
@@ -30,6 +30,7 @@
     display: block;
     height: var(--height);
     min-width: var(--minWidth);
+    object-fit: cover;
 }
 
 .fallback {
