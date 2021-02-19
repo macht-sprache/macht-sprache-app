@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import { useMemo } from 'react';
-import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
+import { useFirestoreCollectionData, useFirestoreDoc, useFirestoreDocData } from 'reactfire';
+import { ERROR_NOT_FOUND } from '../constants';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';
 import {
@@ -124,12 +125,26 @@ export const collections = {
     comments: db.collection('comments').withConverter(CommentConverter),
 };
 
+export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, initialData?: T) => {
+    const { data: snapshot } = useFirestoreDoc<firebase.firestore.DocumentSnapshot<T>>(
+        ref,
+        initialData && { initialData }
+    );
+    const data = snapshot.data();
+
+    if (!data) {
+        throw new Error(ERROR_NOT_FOUND);
+    }
+
+    return data;
+};
+
 export function useTerms() {
     return useFirestoreCollectionData<Term>(collections.terms, { initialData: [] }).data;
 }
 
 export function useTerm(id: string) {
-    return useFirestoreDocData<Term>(collections.terms.doc(id)).data;
+    return useDocument(collections.terms.doc(id));
 }
 
 export async function addTerm(user: User, value: string, lang: Lang, comment?: string) {
@@ -153,7 +168,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
 }
 
 export function useTranslationEntity(id: string) {
-    return useFirestoreDocData<Translation>(collections.translations.doc(id)).data;
+    return useDocument(collections.translations.doc(id));
 }
 
 export function useTranslations(termId: string) {
@@ -183,7 +198,7 @@ export async function addTranslation(user: User, term: Term, value: string, comm
 }
 
 export function useTranslationExample(id: string) {
-    return useFirestoreDocData<TranslationExample>(collections.translationExamples.doc(id)).data;
+    return useDocument(collections.translationExamples.doc(id));
 }
 
 export function useTranslationExamples(translationId: string) {
@@ -241,8 +256,4 @@ export const addComment = (user: User, ref: Comment['ref'], comment: string) => 
         createdAt: firebase.firestore.Timestamp.now(),
         comment,
     });
-};
-
-export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, initialData?: T) => {
-    return useFirestoreDocData<T>(ref, initialData && { initialData }).data;
 };
