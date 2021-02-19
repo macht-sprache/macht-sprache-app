@@ -7,7 +7,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { TERM } from '../routes';
+import { TERM, TRANSLATION } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 
 type Model = {
@@ -32,7 +32,9 @@ export default function AddTranslationPage() {
         event.preventDefault();
         setSubmitting(true);
         addTranslation(user, term, model.translation, model.comment)
-            .then(() => history.push(generatePath(TERM, { termId: term.id })))
+            .then(translation => {
+                history.push(generatePath(TRANSLATION, { termId: term.id, translationId: translation.id }));
+            })
             .catch(console.error)
             .finally(() => setSubmitting(false));
     };
