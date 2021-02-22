@@ -92,7 +92,7 @@ function Book({ source, isOriginal = false }: { source: BookSource; isOriginal?:
     const { t } = useTranslation();
 
     return (
-        <div className={clsx(s.bookContainer, { [s.original]: isOriginal })}>
+        <div className={clsx(s.bookContainer, { [s.original]: isOriginal, [s.translated]: !isOriginal })}>
             <div className={s.bookIconContainer}>
                 <BookCoverIcon book={source} className={s.bookIcon} />
             </div>

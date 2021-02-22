@@ -15,9 +15,11 @@
     margin: -0.5rem;
 }
 
-.bookContainer.original {
-    flex-direction: row-reverse;
-    text-align: right;
+@media (min-width: 751px) {
+    .bookContainer.original {
+        flex-direction: row-reverse;
+        text-align: right;
+    }
 }
 
 .bookContainer > * {
@@ -58,4 +60,50 @@
 
 .snippetTranslated {
     grid-column: 5 / -2;
+}
+
+@media (max-width: 900px) {
+    .snippetOriginal {
+        grid-column: 1 / 5;
+    }
+
+    .snippetTranslated {
+        grid-column: 5 / -1;
+    }
+}
+
+@media (max-width: 750px) {
+    .body {
+        grid-gap: 1rem;
+    }
+
+    .snippetOriginal,
+    .snippetTranslated,
+    .bookContainer,
+    .comments {
+        grid-column: span 8;
+    }
+
+    .snippetOriginal,
+    .snippetTranslated {
+        margin-bottom: 2rem;
+    }
+
+    .snippetOriginal {
+        grid-row: 2;
+    }
+
+    .bookIcon {
+        --height: 6rem;
+    }
+
+    .snippetTranslated,
+    .bookContainer.translated {
+        margin-left: 1rem;
+    }
+
+    .snippetOriginal,
+    .bookContainer.original {
+        margin-right: 1rem;
+    }
 }
