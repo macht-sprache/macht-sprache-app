@@ -8,6 +8,7 @@ import { ABOUT, IMPRINT, CODE_OF_CONDUCT } from '../routes';
 import LinkButton from '../LinkButton';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
+import { useLaunched } from '../useLaunched';
 
 type Props = {
     children: React.ReactNode;
@@ -18,6 +19,7 @@ function Layout({ children }: Props) {
     const [domIdMenu] = useState('idMenu_' + Math.random());
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
+    const [loggedInOrLaunched] = useLaunched();
 
     useEffect(() => {
         document.body.classList.toggle(s.bodyMenuOpen, menuOpen);
@@ -46,14 +48,16 @@ function Layout({ children }: Props) {
                 <div className={s.topRightMenu}>
                     <TopMenu />
                 </div>
-                <Terms
-                    classNames={{
-                        terms: s.terms,
-                        termsInner: s.termsInner,
-                        termsControl: s.termsControl,
-                        termsControlInner: s.termsControlInner,
-                    }}
-                />
+                {loggedInOrLaunched && (
+                    <Terms
+                        classNames={{
+                            terms: s.terms,
+                            termsInner: s.termsInner,
+                            termsControl: s.termsControl,
+                            termsControlInner: s.termsControlInner,
+                        }}
+                    />
+                )}
                 <Footer />
             </div>
             <main className={s.main}>{children}</main>

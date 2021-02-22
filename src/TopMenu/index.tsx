@@ -8,10 +8,12 @@ import { langA, langB } from '../languages';
 import LinkButton from '../LinkButton';
 import { LOGIN, REGISTER } from '../routes';
 import { useLang } from '../useLang';
+import { useLaunched } from '../useLaunched';
 
 export function TopMenu() {
     const user = useUser();
     const { t } = useTranslation();
+    const [launched] = useLaunched();
     const addContinueParam = useAddContinueParam();
     const logout = useCallback(() => {
         auth.signOut();
@@ -26,7 +28,11 @@ export function TopMenu() {
                 </>
             ) : (
                 <>
-                    <Link to={addContinueParam(generatePath(REGISTER))}>{t('auth.register')}</Link>{' '}
+                    {launched && (
+                        <>
+                            <Link to={addContinueParam(generatePath(REGISTER))}>{t('auth.register')}</Link>{' '}
+                        </>
+                    )}
                     <Link to={addContinueParam(generatePath(LOGIN))}>{t('auth.login')}</Link>
                 </>
             )}

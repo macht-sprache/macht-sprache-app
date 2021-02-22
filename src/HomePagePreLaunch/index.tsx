@@ -1,10 +1,10 @@
 import Header from '../Header';
 
-export default function Home() {
+export function HomePagePreLaunch() {
     return (
         <>
             <Header>Home</Header>
-            <p>logged in or launched</p>
+            <p>this is the public, non-logged in home page.</p>
         </>
     );
 }
