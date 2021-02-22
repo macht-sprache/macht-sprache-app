@@ -7,10 +7,11 @@ const MACHT_SPRACHE_TAGS = { en: '523', de: '520' };
 
 export function NewsFeed() {
     const { t } = useTranslation();
-    const { response } = useWpPosts(MACHT_SPRACHE_TAGS);
+    const { response, isLoading } = useWpPosts(MACHT_SPRACHE_TAGS);
 
     return (
         <div>
+            {isLoading && <>{t('common.loading')}</>}
             {response?.map(({ title, link, excerpt, date }, index) => (
                 <article key={index} className={s.article}>
                     <a href={link} target="_blank" rel="noreferrer" className={s.link}>
