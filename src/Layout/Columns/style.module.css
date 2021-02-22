@@ -4,6 +4,12 @@
     grid-gap: 2rem;
 }
 
+@media (max-width: 700px) {
+    .columns {
+        grid-template-columns: 1fr;
+    }
+}
+
 .columns > * {
     min-width: 0;
 }
