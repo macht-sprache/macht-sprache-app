@@ -151,5 +151,8 @@
     "notFound": {
         "heading": "Seite nicht gefunden",
         "paragraph": "Diese Seite gibt es nicht. <Link>Zur Homepage</Link>."
+    },
+    "newsFeed": {
+        "clickForMore": "Hier klicken für mehr..."
     }
 }

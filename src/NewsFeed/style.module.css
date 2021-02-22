@@ -1,0 +1,37 @@
+.link {
+    text-decoration: none;
+}
+
+.heading {
+    font-size: inherit;
+    line-height: var(--lineHeightParagraph);
+    margin: 0;
+}
+
+.excerpt p {
+    margin: 0;
+}
+
+.article {
+    background: var(--white);
+    padding: 0.5rem;
+    box-shadow: 0 0 0 var(--thickBorder) var(--orange);
+}
+
+.article:hover {
+    background: var(--orange);
+}
+
+.article + .article {
+    margin-top: 1rem;
+}
+
+.date {
+    margin: 0.5rem 0;
+    font-style: italic;
+}
+
+.clickForMore {
+    margin-top: 0.5rem;
+    font-style: italic;
+}
