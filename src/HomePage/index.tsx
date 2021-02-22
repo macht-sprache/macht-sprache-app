@@ -4,7 +4,7 @@ export default function Home() {
     return (
         <>
             <Header>Home</Header>
-            <p>logged in or launched</p>
+            <p>Your're logged in :-) </p>
         </>
     );
 }

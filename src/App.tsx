@@ -8,6 +8,7 @@ import ElementTestPage from './ElementTestPage';
 import ErrorBoundary from './ErrorBoundary';
 import { app } from './firebase';
 import HomePage from './HomePage';
+import { HomePagePreLaunch } from './HomePagePreLaunch';
 import { useEnsureUserEntity, UserProvider } from './hooks/auth';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
@@ -23,10 +24,12 @@ import { TranslationExamplePage } from './TranslationExamplePage';
 import { TranslationPage } from './TranslationPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
+import { useLaunched } from './useLaunched';
 
 function App() {
     useLangCssVars();
     const user = useEnsureUserEntity();
+    const [launched] = useLaunched();
 
     return (
         <FirebaseAppProvider firebaseApp={app} suspense>
@@ -39,7 +42,7 @@ function App() {
                                     <Suspense fallback={<PageLoadingState />}>
                                         <Switch>
                                             <Route path={routes.HOME} exact>
-                                                <HomePage />
+                                                {launched ? <HomePage /> : <HomePagePreLaunch />}
                                             </Route>
                                             <Route path={routes.REGISTER} exact>
                                                 <RegisterPage />

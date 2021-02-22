@@ -152,6 +152,10 @@
         "heading": "Seite nicht gefunden",
         "paragraph": "Diese Seite gibt es nicht. <Link>Zur Homepage</Link>."
     },
+    "home": {
+        "news": "Neuigkeiten",
+        "about": "Über macht.sprache."
+    },
     "newsFeed": {
         "clickForMore": "Hier klicken für mehr..."
     }
