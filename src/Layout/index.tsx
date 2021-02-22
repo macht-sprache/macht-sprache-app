@@ -70,12 +70,9 @@ export default Layout;
 
 function Footer() {
     const { t } = useTranslation();
+    const [launched] = useLaunched();
 
-    const FOOTER_LINKS = [
-        {
-            to: ABOUT,
-            label: t('nav.about'),
-        },
+    let footerLinks = [
         {
             to: IMPRINT,
             label: t('nav.imprint'),
@@ -86,10 +83,20 @@ function Footer() {
         },
     ];
 
+    if (launched) {
+        footerLinks = [
+            ...footerLinks,
+            {
+                to: ABOUT,
+                label: t('nav.about'),
+            },
+        ];
+    }
+
     return (
         <footer className={s.footer}>
             <div className={s.footerInner}>
-                {FOOTER_LINKS.map(({ to, label }, index) => (
+                {footerLinks.map(({ to, label }, index) => (
                     <NavLink key={index} className={s.footerLink} activeClassName={s.footerLinkActive} to={to}>
                         {label}
                     </NavLink>
