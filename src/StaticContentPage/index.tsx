@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
 import PageLoadingState from '../PageLoadingState';
-import { useWp } from '../useWpHooks';
+import { useWpPage } from '../useWpHooks';
 import s from './style.module.css';
 
 type StaticContentPageProps = {
@@ -9,7 +9,7 @@ type StaticContentPageProps = {
 };
 
 export function StaticContentPage({ slugs }: StaticContentPageProps) {
-    const { response, isLoading, error } = useWp(slugs);
+    const { response, isLoading, error } = useWpPage(slugs);
     const { t } = useTranslation();
 
     if (error) {

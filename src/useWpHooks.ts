@@ -3,12 +3,11 @@ import { langA, langB } from './languages';
 import { useLang } from './useLang';
 
 const WP_BASE_URL = 'https://pocolit.com/wp-json/wp/v2/';
-const WP_CONTENT_TYPE = 'pages';
 
-type WpResponse = { title: string; body: string };
+type WpResponse = { title: string; body: string; date: Date; excerpt: string; link: string };
 type StateType = { response?: WpResponse; isLoading: boolean; error?: Error };
 
-export function useWp(slugs: { [langA]: string; [langB]: string }) {
+export function useWpPage(slugs: { [langA]: string; [langB]: string }) {
     const [lang] = useLang();
     const [state, setState] = useState<StateType>({ isLoading: false });
 
@@ -18,7 +17,7 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
 
         setState({ isLoading: true });
 
-        fetch(`${WP_BASE_URL}${WP_CONTENT_TYPE}?lang=${lang}&slug=${slugs[lang]}`, { signal })
+        fetch(`${WP_BASE_URL}pages?lang=${lang}&slug=${slugs[lang]}`, { signal })
             .then(data => data.json())
             .then(data => {
                 if (data.length) {
@@ -27,7 +26,7 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
                     }
 
                     setState({
-                        response: { title: data[0].title.rendered, body: data[0].content.rendered },
+                        response: transformWpPost(data[0]),
                         isLoading: false,
                     });
                 } else {
@@ -44,4 +43,58 @@ export function useWp(slugs: { [langA]: string; [langB]: string }) {
     }, [slugs, lang]);
 
     return state;
+}
+
+type PostsStateType = { response?: [WpResponse]; isLoading: boolean; error?: Error };
+
+export function useWpPosts(tags: { [langA]: string; [langB]: string }) {
+    const [lang] = useLang();
+    const [state, setState] = useState<PostsStateType>({ isLoading: false });
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        setState({ isLoading: true });
+
+        fetch(`${WP_BASE_URL}posts?lang=${lang}&tags=${tags[lang]}`, { signal })
+            .then(data => data.json())
+            .then(data => {
+                if (data.length) {
+                    const formattedResponse = data.map(transformWpPost);
+
+                    setState({
+                        response: formattedResponse,
+                        isLoading: false,
+                    });
+                } else {
+                    setState({ isLoading: false, error: new Error('WP query did not give results') });
+                }
+            })
+            .catch(error => {
+                setState({ isLoading: false, error: error });
+            });
+
+        return () => {
+            controller.abort();
+        };
+    }, [lang, tags]);
+
+    return state;
+}
+
+function transformWpPost(post: {
+    title: { rendered: string };
+    content: { rendered: string };
+    excerpt: { rendered: string };
+    date: string;
+    link: string;
+}) {
+    return {
+        title: post.title.rendered,
+        body: post.content.rendered,
+        date: new Date(post.date),
+        link: post.link,
+        excerpt: post.excerpt.rendered,
+    };
 }
