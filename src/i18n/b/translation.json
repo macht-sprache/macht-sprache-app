@@ -141,7 +141,7 @@
     "rating": {
         "values": ["Niemals", "Selten", "Manchmal", "Regelmäßig", "Ständig"],
         "rangeInputLabel": "Wie oft würdest du \"{{term}}\" benutzen? Auf einer Skala von {{from}} bis {{to}}.",
-        "ratingDistribution": "Benutzungsstatistiken anderer Benutzer:innen: ",
+        "ratingDistribution": "Benutzungsstatistiken aller Benutzer:innen: ",
         "ratingDistributionTimes": "{{times}} mal \"{{value}}\".",
         "scaleDescription": "{{number}} bedeuted \"{{value}}\". ",
         "yourRating": "Deine Benutzung: ",
