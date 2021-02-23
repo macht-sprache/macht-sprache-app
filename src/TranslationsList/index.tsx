@@ -93,7 +93,25 @@ function TranslationItem({
                 </Link>
             </header>
             <div className={s.body}>
-                {!!sources.length && (
+                {!sources.length ? (
+                    <p className={s.noExample}>
+                        <Trans
+                            t={t}
+                            i18nKey={'translationExample.translationListNoExample'}
+                            components={{
+                                Link: (
+                                    <Link
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                        }}
+                                        to={addExampleLink}
+                                    />
+                                ),
+                            }}
+                            values={{ term: term.value }}
+                        />
+                    </p>
+                ) : (
                     <ul className={s.translationExampleList}>
                         {sources.map(example => {
                             if (example.type === 'BOOK') {

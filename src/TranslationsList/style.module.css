@@ -51,6 +51,13 @@
     font-size: inherit;
 }
 
+.noExample {
+    margin: 0 0 0.5rem;
+    font-size: var(--fontSizeS);
+    background: var(--disabledGreyBackground);
+    padding: 0.5rem;
+}
+
 .meta {
     padding: 0.5rem;
 }

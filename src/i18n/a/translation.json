@@ -135,7 +135,8 @@
         "page": {
             "heading": "Example: ",
             "subLine": "Original by {{author}}, published by {{publisher}} in {{year}}."
-        }
+        },
+        "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one."
     },
     "rating": {
         "values": ["Never", "Rarely", "Sometimes", "Regularly", "Always"],
