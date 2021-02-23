@@ -24,11 +24,13 @@ export function TranslationPage() {
                         lang: term.lang,
                     },
                 ]}
+                rating={
+                    <div className={s.rating}>
+                        <RatingWidgetContainer term={term} translation={translation} />
+                    </div>
+                }
             >
                 {translation.value}
-                <div className={s.rating}>
-                    <RatingWidgetContainer term={term} translation={translation} />
-                </div>
             </Header>
             <Columns>
                 <TranslationExamplesList term={term} translation={translation} />

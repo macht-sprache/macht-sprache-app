@@ -6,6 +6,7 @@
     width: 12rem;
     height: 3rem;
     font-weight: normal;
+    margin-bottom: 2rem;
 }
 
 .container:after {

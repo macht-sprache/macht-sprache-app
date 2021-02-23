@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Lang } from '../types';
+import { useLang } from '../useLang';
 import s from './style.module.css';
 
 type Props = {
@@ -11,9 +12,12 @@ type Props = {
         to: string;
         inner: React.ReactNode;
     }[];
+    rating?: React.ReactNode;
 };
 
-export default function Header({ children, subLine, mainLang, topHeading }: Props) {
+export default function Header({ children, subLine, mainLang, topHeading, rating }: Props) {
+    const [lang] = useLang();
+
     return (
         <header className={s.header}>
             {topHeading &&
@@ -28,6 +32,11 @@ export default function Header({ children, subLine, mainLang, topHeading }: Prop
                 })}
             <h1 className={s.heading} lang={mainLang}>
                 <span className={s.headingInner}>{children}</span>
+                {rating && (
+                    <div lang={lang} className={s.rating}>
+                        {rating}
+                    </div>
+                )}
             </h1>
             {subLine}
         </header>
