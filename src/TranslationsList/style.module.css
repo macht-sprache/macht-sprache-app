@@ -22,6 +22,8 @@
 
 .link {
     text-decoration: none;
+    flex: 0 1 auto;
+    min-width: 0;
 }
 
 .link:hover {
@@ -34,14 +36,8 @@
     align-items: center;
 }
 
-.addExampleHeaderLink {
-    font-size: var(--fontSizeS);
-    margin-right: 0.5rem;
-    text-decoration: none;
-}
-
-.addExampleHeaderLink:hover {
-    text-decoration: underline;
+.rating {
+    margin: 0 0.5rem;
 }
 
 .body {
@@ -53,6 +49,9 @@
     background-color: var(--mainColor);
     margin: 0;
     font-size: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .noExample {

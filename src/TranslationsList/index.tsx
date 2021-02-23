@@ -11,6 +11,7 @@ import { useLang } from '../useLang';
 import { generatePath, Link, useHistory } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import clsx from 'clsx';
+import { RatingWidgetContainer } from '../Rating/RatingWidget';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -83,15 +84,9 @@ function TranslationItem({
                 >
                     <h1 className={s.value}>{translation.value}</h1>
                 </Link>
-                <Link
-                    to={addExampleLink}
-                    className={s.addExampleHeaderLink}
-                    onClick={e => {
-                        e.stopPropagation();
-                    }}
-                >
-                    {t('common.entities.translatioExample.addShort')}
-                </Link>
+                <div className={s.rating}>
+                    <RatingWidgetContainer term={term} translation={translation} size="small" />
+                </div>
             </header>
             <div className={s.body}>
                 {!sources.length ? (
@@ -166,7 +161,7 @@ function AddExampleButton({ to, className }: { to: string; className?: string })
             onClick={e => {
                 e.stopPropagation();
             }}
-            aria-hidden="true"
+            aria-label={t('common.entities.translatioExample.add')}
             title={t('common.entities.translatioExample.add')}
         >
             +
