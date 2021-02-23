@@ -25,7 +25,8 @@
             "translatioExample": {
                 "value": "Translation Example",
                 "value_plural": "Translation Examples",
-                "add": "Add Translation Example"
+                "add": "Add Translation Example",
+                "addShort": "Add Example"
             }
         },
         "loading": "Loading...",

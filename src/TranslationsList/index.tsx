@@ -8,8 +8,8 @@ import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { FormatDate } from '../FormatDate';
 import { useLang } from '../useLang';
-import { generatePath, Link } from 'react-router-dom';
-import { TRANSLATION, TRANSLATION_ADD } from '../routes';
+import { generatePath, Link, useHistory } from 'react-router-dom';
+import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -60,49 +60,73 @@ function TranslationItem({
 }) {
     const [lang] = useLang();
     const { t } = useTranslation();
+    const history = useHistory();
+    const link = generatePath(TRANSLATION, { termId: term.id, translationId: translation.id });
+    const addExampleLink = generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id });
 
     return (
-        <article className={s.item} lang={translation.lang}>
-            <Link to={generatePath(TRANSLATION, { termId: term.id, translationId: translation.id })} className={s.link}>
-                <header className={s.header}>
+        <article
+            className={s.item}
+            lang={translation.lang}
+            onClick={() => {
+                history.push(link);
+            }}
+        >
+            <header className={s.header}>
+                <Link
+                    to={link}
+                    onClick={e => {
+                        e.stopPropagation();
+                    }}
+                    className={s.link}
+                >
                     <h1 className={s.value}>{translation.value}</h1>
-                </header>
-                <div className={s.body}>
-                    {!!sources.length && (
-                        <ul className={s.translationExampleList}>
-                            {sources.map(example => {
-                                if (example.type === 'BOOK') {
-                                    return (
-                                        <li key={example.id} className={s.translationExampleListItem}>
-                                            {example.coverUrl ? (
-                                                <img
-                                                    src={example.coverUrl}
-                                                    alt={example.title}
-                                                    title={example.title}
-                                                    className={s.translationExampleListImage}
-                                                />
-                                            ) : (
-                                                example.title
-                                            )}
-                                        </li>
-                                    );
-                                }
+                </Link>
+                <Link
+                    to={addExampleLink}
+                    className={s.addExampleHeaderLink}
+                    onClick={e => {
+                        e.stopPropagation();
+                    }}
+                >
+                    {t('common.entities.translatioExample.addShort')}
+                </Link>
+            </header>
+            <div className={s.body}>
+                {!!sources.length && (
+                    <ul className={s.translationExampleList}>
+                        {sources.map(example => {
+                            if (example.type === 'BOOK') {
+                                return (
+                                    <li key={example.id} className={s.translationExampleListItem}>
+                                        {example.coverUrl ? (
+                                            <img
+                                                src={example.coverUrl}
+                                                alt={example.title}
+                                                title={example.title}
+                                                className={s.translationExampleListImage}
+                                            />
+                                        ) : (
+                                            example.title
+                                        )}
+                                    </li>
+                                );
+                            }
 
-                                return null;
-                            })}
-                        </ul>
-                    )}
-                    <footer className={s.footer} lang={lang}>
-                        <div className={s.comments}>
-                            {t('common.entities.comment.withCount', { count: translation.commentCount })}
-                        </div>
+                            return null;
+                        })}
+                    </ul>
+                )}
+                <footer className={s.footer} lang={lang}>
+                    <div className={s.comments}>
+                        {t('common.entities.comment.withCount', { count: translation.commentCount })}
+                    </div>
 
-                        <div className={s.date}>
-                            <FormatDate date={translation.createdAt.toDate()} />
-                        </div>
-                    </footer>
-                </div>
-            </Link>
+                    <div className={s.date}>
+                        <FormatDate date={translation.createdAt.toDate()} />
+                    </div>
+                </footer>
+            </div>
         </article>
     );
 }

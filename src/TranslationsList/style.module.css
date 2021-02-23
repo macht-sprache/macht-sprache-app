@@ -4,7 +4,16 @@
 }
 
 .item {
+    --mainColor: var(--lang-color);
+
     background: var(--white);
+    border: var(--thickBorder) solid var(--mainColor);
+    display: block;
+    cursor: pointer;
+}
+
+.item:hover {
+    --mainColor: var(--orange);
 }
 
 .item + .item {
@@ -12,18 +21,23 @@
 }
 
 .link {
-    --mainColor: var(--lang-color);
     text-decoration: none;
-    border: var(--thickBorder) solid var(--mainColor);
-    display: block;
 }
 
-.link:hover {
-    --mainColor: var(--orange);
-}
 .header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.addExampleHeaderLink {
+    font-size: var(--fontSizeS);
+    margin-right: 0.5rem;
+    text-decoration: none;
+}
+
+.addExampleHeaderLink:hover {
+    text-decoration: underline;
 }
 
 .body {

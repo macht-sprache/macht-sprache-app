@@ -25,7 +25,8 @@
             "translatioExample": {
                 "value": "Beispielübersetzung",
                 "value_plural": "Beispielübersetzungen",
-                "add": "Beispielübersetzung hinzufügen"
+                "add": "Beispielübersetzung hinzufügen",
+                "addShort": "Übersetzung hinzufügen"
             }
         },
         "loading": "Lade...",
