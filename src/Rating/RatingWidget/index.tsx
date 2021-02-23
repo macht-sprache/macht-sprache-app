@@ -30,6 +30,7 @@ export function RatingWidget({
     const { t } = useTranslation();
     const [globalLang] = useLang();
     const [domIdInput] = useState('idInput_' + Math.random());
+    const sumOfAllRatings = ratings.reduce((a, b) => a + b, 0);
 
     const distributionLabel = [
         t('rating.ratingDistribution'),
@@ -50,6 +51,10 @@ export function RatingWidget({
             });
         }),
     ].join(' ');
+
+    if (size === 'small' && sumOfAllRatings === 0) {
+        return null;
+    }
 
     return (
         <div
