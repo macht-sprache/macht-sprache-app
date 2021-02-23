@@ -24,6 +24,10 @@
     text-decoration: none;
 }
 
+.link:hover {
+    text-decoration: underline;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -54,8 +58,41 @@
 .noExample {
     margin: 0 0 0.5rem;
     font-size: var(--fontSizeS);
+    display: flex;
+    align-items: center;
+    color: var(--disabledGrey);
+    font-style: italic;
+}
+
+.noExampleButton {
+    margin-right: 0.5rem;
+}
+
+.noExampleText {
+    visibility: hidden;
+}
+
+.item:hover .noExampleText {
+    visibility: visible;
+}
+
+.addExampleButton {
+    height: 5rem;
+    width: 3rem;
     background: var(--disabledGreyBackground);
-    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--disabledGrey);
+    flex: 0 0 auto;
+    font-size: var(--fontSizeM);
+    font-style: normal;
+}
+
+.addExampleButton:hover {
+    color: var(--black);
+    border: var(--black) solid var(--thinBorder);
 }
 
 .meta {
@@ -86,5 +123,8 @@
     height: 5rem;
     min-width: 2rem;
     object-fit: cover;
+}
+
+.translationExampleListItem {
     margin: 0.25rem;
 }

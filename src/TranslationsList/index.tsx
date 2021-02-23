@@ -10,6 +10,7 @@ import { FormatDate } from '../FormatDate';
 import { useLang } from '../useLang';
 import { generatePath, Link, useHistory } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
+import clsx from 'clsx';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -94,23 +95,26 @@ function TranslationItem({
             </header>
             <div className={s.body}>
                 {!sources.length ? (
-                    <p className={s.noExample}>
-                        <Trans
-                            t={t}
-                            i18nKey={'translationExample.translationListNoExample'}
-                            components={{
-                                Link: (
-                                    <Link
-                                        onClick={e => {
-                                            e.stopPropagation();
-                                        }}
-                                        to={addExampleLink}
-                                    />
-                                ),
-                            }}
-                            values={{ term: term.value }}
-                        />
-                    </p>
+                    <div className={s.noExample}>
+                        <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
+                        <span className={s.noExampleText}>
+                            <Trans
+                                t={t}
+                                i18nKey={'translationExample.translationListNoExample'}
+                                components={{
+                                    Link: (
+                                        <Link
+                                            onClick={e => {
+                                                e.stopPropagation();
+                                            }}
+                                            to={addExampleLink}
+                                        />
+                                    ),
+                                }}
+                                values={{ term: term.value }}
+                            />
+                        </span>
+                    </div>
                 ) : (
                     <ul className={s.translationExampleList}>
                         {sources.map(example => {
@@ -133,6 +137,9 @@ function TranslationItem({
 
                             return null;
                         })}
+                        <li className={s.translationExampleListItem}>
+                            <AddExampleButton to={addExampleLink} />
+                        </li>
                     </ul>
                 )}
                 <footer className={s.footer} lang={lang}>
@@ -146,6 +153,24 @@ function TranslationItem({
                 </footer>
             </div>
         </article>
+    );
+}
+
+function AddExampleButton({ to, className }: { to: string; className?: string }) {
+    const { t } = useTranslation();
+
+    return (
+        <Link
+            to={to}
+            className={clsx(s.addExampleButton, className)}
+            onClick={e => {
+                e.stopPropagation();
+            }}
+            aria-hidden="true"
+            title={t('common.entities.translatioExample.add')}
+        >
+            +
+        </Link>
     );
 }
 
