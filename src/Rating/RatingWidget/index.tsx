@@ -9,11 +9,14 @@ import { RATING_STEPS } from '../../constants';
 import { setRating, useRating } from '../../hooks/data';
 import { useUser } from '../../hooks/auth';
 
+type Sizes = 'small' | 'medium';
+
 type RatingWidgetProps = {
     ratings?: number[];
     lang: Lang;
     termValue: string;
     rangeInputProps?: React.InputHTMLAttributes<any>;
+    size?: Sizes;
 };
 
 export function RatingWidget({
@@ -21,6 +24,7 @@ export function RatingWidget({
     lang,
     termValue,
     rangeInputProps,
+    size = 'medium',
 }: RatingWidgetProps) {
     const max = Math.max(...ratings);
     const { t } = useTranslation();
@@ -48,17 +52,24 @@ export function RatingWidget({
     ].join(' ');
 
     return (
-        <div className={s.container} lang={lang}>
+        <div
+            className={clsx(s.container, s[size])}
+            lang={lang}
+            title={size === 'small' ? distributionLabel : undefined}
+            aria-label={size === 'small' ? distributionLabel : undefined}
+        >
             <div className={s.ratings} aria-label={distributionLabel} lang={globalLang}>
                 {ratings.map((rating, index) => (
                     <div lang={lang} key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
-                        <Tooltip
-                            overlay={t('rating.values', { returnObjects: true })[index]}
-                            placement="top"
-                            mouseLeaveDelay={0}
-                        >
-                            <div className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}>{rating}</div>
-                        </Tooltip>
+                        {size !== 'small' && (
+                            <Tooltip
+                                overlay={t('rating.values', { returnObjects: true })[index]}
+                                placement="top"
+                                mouseLeaveDelay={0}
+                            >
+                                <div className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}>{rating}</div>
+                            </Tooltip>
+                        )}
                     </div>
                 ))}
             </div>
@@ -80,21 +91,24 @@ export function RatingWidget({
                                 ? rangeInputProps.value
                                 : (RATING_STEPS + 1) / 2
                         }
+                        disabled={size === 'small'}
                     />
-                    <div className={s.userUsageDisplay} lang={globalLang}>
-                        {rangeInputProps.value ? (
-                            <>
-                                {t('rating.yourRating')}
-                                {
-                                    t('rating.values', { returnObjects: true })[
-                                        Math.round(rangeInputProps.value as number) - 1
-                                    ]
-                                }
-                            </>
-                        ) : (
-                            <>{t('rating.dragToSet')}</>
-                        )}
-                    </div>
+                    {size !== 'small' && (
+                        <div className={s.userUsageDisplay} lang={globalLang}>
+                            {rangeInputProps.value ? (
+                                <>
+                                    {t('rating.yourRating')}
+                                    {
+                                        t('rating.values', { returnObjects: true })[
+                                            Math.round(rangeInputProps.value as number) - 1
+                                        ]
+                                    }
+                                </>
+                            ) : (
+                                <>{t('rating.dragToSet')}</>
+                            )}
+                        </div>
+                    )}
                 </>
             )}
         </div>
@@ -104,19 +118,30 @@ export function RatingWidget({
 type RatingWidgetContainerProps = {
     term: Term;
     translation: Translation;
+    size?: Sizes;
 };
 
-export function RatingWidgetContainer({ translation, term }: RatingWidgetContainerProps) {
+export function RatingWidgetContainer({ translation, term, size }: RatingWidgetContainerProps) {
     const user = useUser();
 
     if (user) {
-        return <RatingWidgetLoggedIn term={term} translation={translation} user={user} />;
+        return <RatingWidgetLoggedIn size={size} term={term} translation={translation} user={user} />;
     }
 
-    return <RatingWidget ratings={translation.ratings} lang={translation.lang} termValue={term.value} />;
+    return <RatingWidget size={size} ratings={translation.ratings} lang={translation.lang} termValue={term.value} />;
 }
 
-function RatingWidgetLoggedIn({ translation, term, user }: { translation: Translation; term: Term; user: User }) {
+function RatingWidgetLoggedIn({
+    translation,
+    term,
+    user,
+    size,
+}: {
+    translation: Translation;
+    term: Term;
+    user: User;
+    size?: Sizes;
+}) {
     const rating = useRating(user?.id, translation.id);
 
     const rangeInputProps = user && {
@@ -133,6 +158,7 @@ function RatingWidgetLoggedIn({ translation, term, user }: { translation: Transl
             lang={translation.lang}
             termValue={term.value}
             rangeInputProps={rangeInputProps}
+            size={size}
         />
     );
 }

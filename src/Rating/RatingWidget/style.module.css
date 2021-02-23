@@ -19,6 +19,13 @@
     box-shadow: 0 0 0 var(--thickBorder) var(--white);
 }
 
+.container.small {
+    --thumbSize: 0.7rem;
+    margin: 0;
+    width: 5rem;
+    height: 1.9rem;
+}
+
 .container:focus-within {
     --thumbShadowWidth: 0.1rem;
 }
@@ -87,12 +94,23 @@
     --thumbOpacity: 0.5;
 }
 
+.small .rangeInput.unset {
+    --thumbOpacity: 0;
+}
+
+.rangeInput:not(:disabled)::-webkit-slider-thumb {
+    cursor: pointer;
+}
+
+.rangeInput:not(:disabled)::-moz-range-thumb {
+    cursor: pointer;
+}
+
 .rangeInput::-webkit-slider-thumb {
     width: var(--thumbSize);
     height: var(--thumbSize);
     border-radius: 50%;
     background: var(--orange);
-    cursor: pointer;
     -webkit-appearance: none;
     opacity: var(--thumbOpacity);
     box-shadow: 0 0 0 var(--thumbShadowWidth) var(--orange);
@@ -103,7 +121,6 @@
     height: var(--thumbSize);
     border-radius: 50%;
     background: var(--orange);
-    cursor: pointer;
     border: none;
     margin-top: calc(var(--thickBorder) * -0.5);
     opacity: var(--thumbOpacity);
