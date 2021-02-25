@@ -83,11 +83,19 @@ export default function ElementTestPage() {
             <Header>Element Test Page</Header>
             <Heading>Rating Widget</Heading>
             <p>Without user rating</p>
-            <RatingWidget termValue="Indianer" lang="de" ratings={[5, 2, 0, 12, 21]} />
+            <RatingWidget
+                termLang="de"
+                termValue="Indianer"
+                translationLang="en"
+                translationValue="Native American"
+                ratings={[5, 2, 0, 12, 21]}
+            />
             <p>With user rating</p>
             <RatingWidget
-                lang="de"
+                termLang="de"
                 termValue="Indianer"
+                translationLang="en"
+                translationValue="Native American"
                 ratings={[5, 2, 0, 12, 21]}
                 rangeInputProps={{
                     value: rating,

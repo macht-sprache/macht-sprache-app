@@ -38,6 +38,7 @@
         "formNav": {
             "next": "Weiter",
             "cancel": "Abbrechen",
+            "close": "Schließen",
             "save": "Speichern"
         }
     },
@@ -145,7 +146,9 @@
         "ratingDistributionTimes": "{{times}} mal \"{{value}}\".",
         "scaleDescription": "{{number}} bedeuted \"{{value}}\". ",
         "yourRating": "Deine Benutzung: ",
-        "dragToSet": "Schiebe, um deine Benutzung fest zu legen."
+        "dragToSet": "Schiebe, um deine Benutzung fest zu legen.",
+        "clickToSet": "Klick, um deine Benutzung fest zu legen.",
+        "overlayHeading": "Wie oft würdest du <Term>{{term}}</Term> zu <Translation>{{translation}}</Translation> übersetzen?"
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."

@@ -1,3 +1,30 @@
+.unsetButtonContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.unsetButton {
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    font-family: inherit;
+    background: transparent;
+    border: none;
+    color: transparent;
+}
+
+.unsetButton:hover {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(0.2rem);
+    color: var(--black);
+}
+
 .container {
     --thumbSize: 1rem;
     --thumbShadowWidth: 0;
@@ -151,8 +178,4 @@
 
 .container:hover .userUsageDisplay {
     visibility: visible;
-}
-
-.initialSetButton {
-    font-size: var(--fontSizeM);
 }

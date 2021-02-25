@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { Lang, Term, Translation, User } from '../../types';
 import s from './style.module.css';
 import Tooltip from 'rc-tooltip';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useRef, useState } from 'react';
 import { useLang } from '../../useLang';
 import { RATING_STEPS } from '../../constants';
@@ -10,19 +10,23 @@ import { setRating, useRating } from '../../hooks/data';
 import { useUser } from '../../hooks/auth';
 import { useButton } from '@react-aria/button';
 import { ModalDialog } from '../../ModalDialog';
-import Button from '../../Form/Button';
+import Button, { ButtonContainer } from '../../Form/Button';
+import { WrappedInLangColor } from '../../TermWithLang';
 
 type Sizes = 'small' | 'medium' | 'large';
 
 type RatingDisplayProps = {
     ratings?: number[];
-    lang: Lang;
+    termLang: Lang;
     termValue: string;
+    translationValue: string;
+    translationLang: Lang;
     rangeInputProps?: React.InputHTMLAttributes<any>;
     size?: Sizes;
 };
 
 export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
+    const { t } = useTranslation();
     const [overlayOpen, setOverlayOpen] = useState(false);
     let openButtonRef = useRef<HTMLElement>(null);
     let closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -47,32 +51,47 @@ export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
     const unset = !ratingDisplayProps?.rangeInputProps?.value;
 
     return (
-        <>
+        <div className={s.unsetButtonContainer}>
             <RatingDisplay {...ratingDisplayProps} />
-            <div className={s.initialSetButton}>
-                {unset && <button {...openButtonProps}>click to add your usage</button>}
-            </div>
+            {unset && (
+                <button {...openButtonProps} className={s.unsetButton}>
+                    {t('rating.clickToSet')}
+                </button>
+            )}
             {overlayOpen && (
                 <ModalDialog
-                    title="How often would you use this word?"
+                    title={
+                        <Trans
+                            t={t}
+                            i18nKey="rating.overlayHeading"
+                            values={{
+                                translation: ratingDisplayProps.translationValue,
+                                term: ratingDisplayProps.termValue,
+                            }}
+                            components={{
+                                Term: <WrappedInLangColor lang={ratingDisplayProps.termLang} />,
+                                Translation: <WrappedInLangColor lang={ratingDisplayProps.translationLang} />,
+                            }}
+                        />
+                    }
                     isOpen
                     onClose={() => setOverlayOpen(false)}
                     isDismissable
                 >
-                    <RatingDisplay {...ratingDisplayProps} />
-
-                    <Button {...closeButtonProps} ref={closeButtonRef} style={{ marginTop: 10 }}>
-                        close
-                    </Button>
+                    <RatingDisplay {...ratingDisplayProps} size="large" />
+                    <ButtonContainer>
+                        <Button {...closeButtonProps} ref={closeButtonRef} style={{ marginTop: 10 }}>
+                            {t('common.formNav.close')}
+                        </Button>
+                    </ButtonContainer>
                 </ModalDialog>
             )}
-        </>
+        </div>
     );
 }
 
 function RatingDisplay({
     ratings = new Array(RATING_STEPS).fill(0),
-    lang,
     termValue,
     rangeInputProps,
     size = 'medium',
@@ -110,13 +129,12 @@ function RatingDisplay({
     return (
         <div
             className={clsx(s.container, s[size])}
-            lang={lang}
             title={size === 'small' ? distributionLabel : undefined}
             aria-label={size === 'small' ? distributionLabel : undefined}
         >
             <div className={s.ratings} aria-label={distributionLabel} lang={globalLang}>
                 {ratings.map((rating, index) => (
-                    <div lang={lang} key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
+                    <div key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
                         {size !== 'small' && (
                             <Tooltip
                                 overlay={t('rating.values', { returnObjects: true })[index]}
@@ -184,7 +202,16 @@ export function RatingWidgetContainer({ translation, term, size }: RatingWidgetC
         return <RatingWidgetLoggedIn size={size} term={term} translation={translation} user={user} />;
     }
 
-    return <RatingDisplay size={size} ratings={translation.ratings} lang={translation.lang} termValue={term.value} />;
+    return (
+        <RatingDisplay
+            size={size}
+            ratings={translation.ratings}
+            translationLang={translation.lang}
+            translationValue={translation.value}
+            termValue={term.value}
+            termLang={term.lang}
+        />
+    );
 }
 
 function RatingWidgetLoggedIn({
@@ -199,6 +226,7 @@ function RatingWidgetLoggedIn({
     size?: Sizes;
 }) {
     const rating = useRating(user?.id, translation.id);
+    console.log(term, translation);
 
     const rangeInputProps = user && {
         value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,
@@ -211,8 +239,10 @@ function RatingWidgetLoggedIn({
     return (
         <RatingWidget
             ratings={translation.ratings}
-            lang={translation.lang}
             termValue={term.value}
+            termLang={term.lang}
+            translationValue={translation.value}
+            translationLang={translation.lang}
             rangeInputProps={rangeInputProps}
             size={size}
         />

@@ -38,6 +38,7 @@
         "formNav": {
             "next": "Next",
             "cancel": "Cancel",
+            "close": "Close",
             "save": "Save"
         }
     },
@@ -145,7 +146,9 @@
         "ratingDistributionTimes": "{{times}} times \"{{value}}.\"",
         "scaleDescription": "{{number}} is \"{{value}}\". ",
         "yourRating": "Your Usage: ",
-        "dragToSet": "Drag to set your usage."
+        "dragToSet": "Drag to set your usage.",
+        "clickToSet": "Click to set your usage",
+        "overlayHeading": "How often would you translate <Term>{{term}}</Term> to <Translation>{{translation}}</Translation>"
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
