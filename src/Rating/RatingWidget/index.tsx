@@ -94,6 +94,7 @@ export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
 function RatingDisplay({
     ratings = new Array(RATING_STEPS).fill(0),
     termValue,
+    translationLang,
     rangeInputProps,
     size = 'medium',
 }: RatingDisplayProps) {
@@ -133,6 +134,7 @@ function RatingDisplay({
             className={clsx(s.container, s[size])}
             title={size === 'small' ? distributionLabel : undefined}
             aria-label={size === 'small' ? distributionLabel : undefined}
+            lang={translationLang}
         >
             <div className={s.ratings} aria-label={distributionLabel} lang={globalLang}>
                 {ratings.map((rating, index) => (
