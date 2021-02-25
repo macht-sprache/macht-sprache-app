@@ -136,16 +136,23 @@ function RatingDisplay({
             aria-label={size === 'small' ? distributionLabel : undefined}
             lang={translationLang}
         >
-            <div className={s.ratings} aria-label={distributionLabel} lang={globalLang}>
+            <div className={s.ratings} aria-label={distributionLabel}>
                 {ratings.map((rating, index) => (
                     <div key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
                         {size !== 'small' && (
                             <Tooltip
-                                overlay={t('rating.values', { returnObjects: true })[index]}
+                                overlay={
+                                    <span lang={globalLang}>{t('rating.values', { returnObjects: true })[index]}</span>
+                                }
                                 placement="top"
                                 mouseLeaveDelay={0}
                             >
-                                <div className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}>{rating}</div>
+                                <div
+                                    lang={globalLang}
+                                    className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}
+                                >
+                                    {rating}
+                                </div>
                             </Tooltip>
                         )}
                     </div>
