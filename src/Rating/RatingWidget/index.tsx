@@ -12,7 +12,7 @@ import { useButton } from '@react-aria/button';
 import { ModalDialog } from '../../ModalDialog';
 import Button from '../../Form/Button';
 
-type Sizes = 'small' | 'medium';
+type Sizes = 'small' | 'medium' | 'large';
 
 type RatingDisplayProps = {
     ratings?: number[];
