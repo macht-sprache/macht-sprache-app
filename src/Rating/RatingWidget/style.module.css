@@ -95,12 +95,18 @@
     cursor: default;
 }
 
+.large .ratingInner {
+    padding: 1rem;
+    font-weight: bold;
+}
+
 .ratingInner.inside {
     bottom: auto;
     top: 0;
 }
 
-.container:hover .ratingInner {
+.container:hover .ratingInner,
+.large .ratingInner {
     visibility: visible;
 }
 
@@ -162,13 +168,17 @@
     box-shadow: 0 0 0 var(--thumbShadowWidth) var(--orange);
 }
 
-.permanentSliderLabel {
+.permanentSliderLabel,
+.userUsageDisplay {
     position: absolute;
-    display: flex;
-    justify-content: space-between;
     top: 100%;
     margin-top: 0.5rem;
     width: 100%;
+}
+
+.permanentSliderLabel {
+    display: flex;
+    justify-content: space-between;
 }
 
 .hiddenLabel {
@@ -181,14 +191,12 @@
 
 .userUsageDisplay {
     font-size: var(--fontSizeS);
-    margin-top: 0.6rem;
     text-align: center;
     visibility: hidden;
 }
 
 .large .userUsageDisplay {
     font-size: inherit;
-    margin-top: 1rem;
     font-style: italic;
 }
 

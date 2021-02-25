@@ -53,7 +53,7 @@ export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
     return (
         <div className={s.unsetButtonContainer}>
             <RatingDisplay {...ratingDisplayProps} />
-            {unset && (
+            {unset && ratingDisplayProps.size !== 'small' && (
                 <button {...openButtonProps} className={s.unsetButton}>
                     {t('rating.clickToSet')}
                 </button>
@@ -78,6 +78,7 @@ export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
                     onClose={() => setOverlayOpen(false)}
                     isDismissable
                 >
+                    <p>{t('rating.dragToSet')}</p>
                     <RatingDisplay {...ratingDisplayProps} size="large" />
                     <ButtonContainer>
                         <Button {...closeButtonProps} ref={closeButtonRef} style={{ marginTop: 10 }}>
@@ -176,7 +177,7 @@ function RatingDisplay({
                     />
                     {size !== 'small' && (
                         <div className={s.userUsageDisplay} lang={globalLang}>
-                            {rangeInputProps.value ? (
+                            {rangeInputProps.value && (
                                 <>
                                     {size !== 'large' && t('rating.yourRating')}
                                     {
@@ -185,9 +186,8 @@ function RatingDisplay({
                                         ]
                                     }
                                 </>
-                            ) : (
-                                <>{t('rating.dragToSet')}</>
                             )}
+                            {!rangeInputProps.value && size !== 'large' && <>{t('rating.dragToSet')}</>}
                         </div>
                     )}
                 </>
