@@ -14,20 +14,20 @@ type ModalDialogProps = {
 };
 
 export function ModalDialog(props: ModalDialogProps) {
-    let { title, children } = props;
+    const { title, children } = props;
 
     // Handle interacting outside the dialog and pressing
     // the Escape key to close the modal.
-    let ref = useRef<HTMLElement>(null);
-    let { overlayProps } = useOverlay(props, ref);
+    const ref = useRef<HTMLElement>(null);
+    const { overlayProps } = useOverlay(props, ref);
 
     // Prevent scrolling while the modal is open, and hide content
     // outside the modal from screen readers.
     usePreventScroll();
-    let { modalProps } = useModal();
+    const { modalProps } = useModal();
 
     // Get props for the dialog and its title
-    let { dialogProps, titleProps } = useDialog(props as any, ref);
+    const { dialogProps, titleProps } = useDialog(props as any, ref);
 
     return (
         <OverlayContainer>
