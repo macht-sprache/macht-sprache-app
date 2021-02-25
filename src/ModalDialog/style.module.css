@@ -19,5 +19,19 @@
 }
 
 .overlay {
-    padding: 0.5rem;
+    padding: 2rem;
+    flex-basis: 600px;
+    min-width: 0;
+    --lang-color: var(--orange);
+}
+
+@media (max-width: 500px) {
+    .overlay {
+        padding: 1rem;
+    }
+}
+
+.title {
+    line-height: var(--lineHeightParagraph);
+    margin-top: 0;
 }

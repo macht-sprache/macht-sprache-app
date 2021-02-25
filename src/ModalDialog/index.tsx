@@ -34,7 +34,7 @@ export function ModalDialog(props: ModalDialogProps) {
             <div className={s.background}>
                 <FocusScope contain restoreFocus autoFocus>
                     <div {...overlayProps} {...dialogProps} {...modalProps} ref={ref as any} className={s.overlay}>
-                        <h3 {...titleProps} style={{ marginTop: 0 }}>
+                        <h3 {...titleProps} className={s.title}>
                             {title}
                         </h3>
                         {children}
