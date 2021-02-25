@@ -157,6 +157,7 @@ function RatingDisplay({
                         )}
                     </div>
                 ))}
+                {sumOfAllRatings === 0 && <div className={s.emtpyMessage}>No data yet.</div>}
             </div>
             {size === 'large' && (
                 <div aria-hidden="true" className={s.permanentSliderLabel}>
