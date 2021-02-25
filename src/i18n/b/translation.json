@@ -148,7 +148,8 @@
         "yourRating": "Deine Benutzung: ",
         "dragToSet": "Schiebe, um deine Benutzung fest zu legen.",
         "clickToSet": "Klick, um deine Benutzung fest zu legen.",
-        "overlayHeading": "Wie oft würdest du <Term>{{term}}</Term> zu <Translation>{{translation}}</Translation> übersetzen?"
+        "overlayHeading": "Wie oft würdest du <Term>{{term}}</Term> zu <Translation>{{translation}}</Translation> übersetzen?",
+        "noData": "Bisher keine Daten."
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
