@@ -18,6 +18,9 @@ export function TranslationsList({ term }: { term: Term }) {
     const { t } = useTranslation();
     const commentCount = translations.length;
     const sources = useSources(collections.terms.doc(term.id));
+    const translationsSorted = translations.sort((a, b) => {
+        return averageRatings(a.ratings) < averageRatings(b.ratings) ? 1 : -1;
+    });
 
     return (
         <div>
@@ -36,7 +39,7 @@ export function TranslationsList({ term }: { term: Term }) {
             )}
             {!!translations.length && (
                 <div className={s.list}>
-                    {translations.map(translation => (
+                    {translationsSorted.map(translation => (
                         <TranslationItem
                             key={translation.id}
                             term={term}
@@ -183,4 +186,13 @@ function AddTranslationButton({ termId }: { termId: string }) {
             </LoginHint>
         </div>
     );
+}
+
+function averageRatings(ratings: number[] = []) {
+    const sumOfAllRatings = ratings.reduce((accumulator, current, index) => {
+        return accumulator + current * (index + 1);
+    }, 0);
+    const countOfAllRatings = ratings.reduce((a, b) => a + b, 0);
+
+    return sumOfAllRatings / countOfAllRatings;
 }
