@@ -101,13 +101,14 @@ function RatingDisplay({
     const [globalLang] = useLang();
     const [domIdInput] = useState('idInput_' + Math.random());
     const sumOfAllRatings = ratings.reduce((a, b) => a + b, 0);
+    const ratingTranslations = t('rating.values', { returnObjects: true });
 
     const distributionLabel = [
         t('rating.ratingDistribution'),
         ...ratings.map((rating, index) => {
             return t('rating.ratingDistributionTimes', {
                 times: rating,
-                value: t('rating.values', { returnObjects: true })[index],
+                value: ratingTranslations[index],
             });
         }),
     ].join(' ');
@@ -117,7 +118,7 @@ function RatingDisplay({
         ...ratings.map((rating, index) => {
             return t('rating.scaleDescription', {
                 number: index + 1,
-                value: t('rating.values', { returnObjects: true })[index],
+                value: ratingTranslations[index],
             });
         }),
     ].join(' ');
@@ -147,6 +148,12 @@ function RatingDisplay({
                     </div>
                 ))}
             </div>
+            {size === 'large' && (
+                <div aria-hidden="true" className={s.permanentSliderLabel}>
+                    <div>{ratingTranslations[0]}</div>
+                    <div>{ratingTranslations[ratingTranslations.length - 1]}</div>
+                </div>
+            )}
             {rangeInputProps && (
                 <>
                     <label htmlFor={domIdInput} lang={globalLang} className={s.hiddenLabel}>
@@ -171,7 +178,7 @@ function RatingDisplay({
                         <div className={s.userUsageDisplay} lang={globalLang}>
                             {rangeInputProps.value ? (
                                 <>
-                                    {t('rating.yourRating')}
+                                    {size !== 'large' && t('rating.yourRating')}
                                     {
                                         t('rating.values', { returnObjects: true })[
                                             Math.round(rangeInputProps.value as number) - 1
@@ -226,7 +233,6 @@ function RatingWidgetLoggedIn({
     size?: Sizes;
 }) {
     const rating = useRating(user?.id, translation.id);
-    console.log(term, translation);
 
     const rangeInputProps = user && {
         value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,
