@@ -145,3 +145,7 @@
 .container:hover .userUsageDisplay {
     visibility: visible;
 }
+
+.initialSetButton {
+    font-size: var(--fontSizeM);
+}

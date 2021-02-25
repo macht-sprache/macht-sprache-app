@@ -3,15 +3,18 @@ import { Lang, Term, Translation, User } from '../../types';
 import s from './style.module.css';
 import Tooltip from 'rc-tooltip';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useLang } from '../../useLang';
 import { RATING_STEPS } from '../../constants';
 import { setRating, useRating } from '../../hooks/data';
 import { useUser } from '../../hooks/auth';
+import { useButton } from '@react-aria/button';
+import { ModalDialog } from '../../ModalDialog';
+import Button from '../../Form/Button';
 
 type Sizes = 'small' | 'medium';
 
-type RatingWidgetProps = {
+type RatingDisplayProps = {
     ratings?: number[];
     lang: Lang;
     termValue: string;
@@ -19,13 +22,61 @@ type RatingWidgetProps = {
     size?: Sizes;
 };
 
-export function RatingWidget({
+export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
+    const [overlayOpen, setOverlayOpen] = useState(false);
+    let openButtonRef = useRef<HTMLElement>(null);
+    let closeButtonRef = useRef<HTMLButtonElement>(null);
+
+    // useButton ensures that focus management is handled correctly,
+    // across all browsers. Focus is restored to the button once the
+    // dialog closes.
+    let { buttonProps: openButtonProps } = useButton(
+        {
+            onPress: () => setOverlayOpen(true),
+        },
+        openButtonRef
+    );
+
+    let { buttonProps: closeButtonProps } = useButton(
+        {
+            onPress: () => setOverlayOpen(false),
+        },
+        closeButtonRef
+    );
+
+    const unset = !ratingDisplayProps?.rangeInputProps?.value;
+
+    return (
+        <>
+            <RatingDisplay {...ratingDisplayProps} />
+            <div className={s.initialSetButton}>
+                {unset && <button {...openButtonProps}>click to add your usage</button>}
+            </div>
+            {overlayOpen && (
+                <ModalDialog
+                    title="How often would you use this word?"
+                    isOpen
+                    onClose={() => setOverlayOpen(false)}
+                    isDismissable
+                >
+                    <RatingDisplay {...ratingDisplayProps} />
+
+                    <Button {...closeButtonProps} ref={closeButtonRef} style={{ marginTop: 10 }}>
+                        close
+                    </Button>
+                </ModalDialog>
+            )}
+        </>
+    );
+}
+
+function RatingDisplay({
     ratings = new Array(RATING_STEPS).fill(0),
     lang,
     termValue,
     rangeInputProps,
     size = 'medium',
-}: RatingWidgetProps) {
+}: RatingDisplayProps) {
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();
@@ -133,7 +184,7 @@ export function RatingWidgetContainer({ translation, term, size }: RatingWidgetC
         return <RatingWidgetLoggedIn size={size} term={term} translation={translation} user={user} />;
     }
 
-    return <RatingWidget size={size} ratings={translation.ratings} lang={translation.lang} termValue={term.value} />;
+    return <RatingDisplay size={size} ratings={translation.ratings} lang={translation.lang} termValue={term.value} />;
 }
 
 function RatingWidgetLoggedIn({
