@@ -1,11 +1,9 @@
-import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BookCoverIcon } from '../../BookCoverIcon';
-import Button from '../../Form/Button';
 import { findBooks } from '../../functions';
-import MediaSearch, { SelectedItemProps } from '../MediaSearch';
 import { Book, Lang } from '../../types';
-import s from './style.module.css';
+import MediaSearch, { SelectedItemProps } from '../MediaSearch';
+import SelectedItem from '../SelectedItem';
 
 type Props = {
     label: string;
@@ -28,45 +26,24 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     );
 }
 
-function SelectedBook({ item: selectedBook, onCancel }: SelectedItemProps<Book>) {
+function SelectedBook(props: SelectedItemProps<Book>) {
+    const { item: book } = props;
     const { t } = useTranslation();
-    const cancelButtonRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        if (selectedBook) {
-            cancelButtonRef.current?.focus();
-        }
-    }, [selectedBook]);
 
     return (
-        <div className={s.selected}>
-            <BookCoverIcon item={selectedBook} />
-            <div className={s.selectedMeta}>
-                <div>{selectedBook.authors.join(', ')}</div>
-                <h3 lang={selectedBook.lang} className={s.selectedHeading}>
-                    {selectedBook.title}
-                </h3>
-                <div className={s.selectedMetaBottom}>
-                    {selectedBook.publisher &&
-                        t('translationExample.publishedBy', { publisher: selectedBook.publisher })}{' '}
-                    in {selectedBook.year}
+        <SelectedItem
+            {...props}
+            coverComponent={BookCoverIcon}
+            surTitle={book.authors.join(', ')}
+            metaInfo={
+                <>
+                    {book.publisher && t('translationExample.publishedBy', { publisher: book.publisher })} in{' '}
+                    {book.year}
                     <br />
-                    ISBN: {selectedBook.isbn}
-                    <br />
-                    <div className={s.selectedCancelButtonInline}>
-                        <Button onClick={onCancel} size="small" ref={cancelButtonRef}>
-                            {t('mediaSearch.books.cancelSelection')}
-                        </Button>
-                    </div>
-                </div>
-            </div>
-            <button
-                className={s.selectedCancelButton}
-                onClick={onCancel}
-                title={t('mediaSearch.books.cancelSelection')}
-                aria-hidden="true"
-                tabIndex={-1}
-            ></button>
-        </div>
+                    ISBN: {book.isbn}
+                </>
+            }
+            cancelLabel={t('mediaSearch.books.cancelSelection')}
+        />
     );
 }
