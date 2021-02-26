@@ -1,15 +1,16 @@
+import { OverlayProvider } from '@react-aria/overlays';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import s from './style.module.css';
-import Logo from './logo.svg';
+import LinkButton from '../LinkButton';
+import { ABOUT, CODE_OF_CONDUCT, IMPRINT } from '../routes';
 import { Terms } from '../Terms';
 import { TopMenu } from '../TopMenu';
-import { ABOUT, IMPRINT, CODE_OF_CONDUCT } from '../routes';
-import LinkButton from '../LinkButton';
-import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
-import { OverlayProvider } from '@react-aria/overlays';
+import Logo from './logo.svg';
+import s from './style.module.css';
 
 type Props = {
     children: React.ReactNode;
@@ -17,7 +18,7 @@ type Props = {
 
 function Layout({ children }: Props) {
     const { t } = useTranslation();
-    const [domIdMenu] = useState('idMenu_' + Math.random());
+    const id = useDomId();
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
     const [loggedInOrLaunched] = useLaunched();
@@ -40,12 +41,12 @@ function Layout({ children }: Props) {
                     <LinkButton
                         onClick={() => setMenuOpen(!menuOpen)}
                         aria-expanded={menuOpen}
-                        aria-controls={domIdMenu}
+                        aria-controls={id('menu')}
                     >
                         Menu
                     </LinkButton>
                 </div>
-                <div id={domIdMenu} className={clsx(s.sidebar, { [s.open]: menuOpen })}>
+                <div id={id('menu')} className={clsx(s.sidebar, { [s.open]: menuOpen })}>
                     <div className={s.header}>
                         <Link className={s.logo} to="/">
                             <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />

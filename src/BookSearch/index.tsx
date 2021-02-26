@@ -7,6 +7,7 @@ import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { findBooks } from '../functions';
 import { Book, Lang } from '../types';
+import { useDomId } from '../useDomId';
 import s from './style.module.css';
 
 type Props = {
@@ -20,8 +21,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<Book[]>([]);
     const [searching, setSearching] = useState<boolean>();
-    const [domIdInput] = useState('idInput_' + Math.random());
-    const [domIdList] = useState('idList_' + Math.random());
+    const id = useDomId();
     const [domIdDescription] = useState('idDescription_' + Math.random());
     const [ariaSelectedIndex, setAriaSelectedIndex] = useState<number>(0);
     const cancelButtonRef = useRef<HTMLButtonElement>(null);
@@ -123,16 +123,15 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
         <div>
             <InputContainer>
                 <Input
-                    id={domIdInput}
                     label={label}
                     value={query}
                     onChange={event => setQuery(event.target.value)}
                     busy={searching}
                     aria-describedby={domIdDescription}
-                    aria-owns={domIdList}
+                    aria-owns={id('resultList')}
                     aria-expanded={!!results.length}
                     aria-autocomplete="both"
-                    aria-activedescendant={domIdList + '_' + ariaSelectedIndex}
+                    aria-activedescendant={id('result-' + ariaSelectedIndex)}
                     onKeyDown={onKeyDown}
                 />
             </InputContainer>
@@ -141,7 +140,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                 {t('translationExample.bookSearch.ariaDescription')}
             </div>
             {!!results.length && (
-                <ul className={s.resultList} id={domIdList} role="listbox">
+                <ul className={s.resultList} id={id('resultList')} role="listbox">
                     {results.map((book, index) => (
                         <li
                             key={book.id}
@@ -156,7 +155,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                                 lang={lang}
                                 role="option"
                                 aria-selected={ariaSelectedIndex === index}
-                                id={domIdList + '_' + index}
+                                id={id('result-' + index)}
                             >
                                 <BookCoverIcon book={book} className={s.resultButtonIcon} />
                             </button>

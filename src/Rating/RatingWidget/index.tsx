@@ -11,6 +11,7 @@ import { WrappedInLangColor } from '../../TermWithLang';
 import { Lang, Term, Translation, User } from '../../types';
 import { useLang } from '../../useLang';
 import s from './style.module.css';
+import { useDomId } from '../../useDomId';
 
 type Sizes = 'small' | 'medium' | 'large';
 
@@ -80,7 +81,7 @@ function RatingDisplay({
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();
-    const [domIdInput] = useState('idInput_' + Math.random());
+    const id = useDomId();
     const sumOfAllRatings = ratings.reduce((a, b) => a + b, 0);
     const ratingTranslations = t('rating.values', { returnObjects: true });
 
@@ -146,12 +147,12 @@ function RatingDisplay({
             )}
             {rangeInputProps && (
                 <>
-                    <label htmlFor={domIdInput} lang={globalLang} className={s.hiddenLabel}>
+                    <label htmlFor={id('ratingSlider')} lang={globalLang} className={s.hiddenLabel}>
                         {sliderLabel}
                     </label>
                     <input
                         type="range"
-                        list={domIdInput}
+                        list={id('ratingSlider')}
                         min={1}
                         max={ratings.length}
                         step={0.1}
