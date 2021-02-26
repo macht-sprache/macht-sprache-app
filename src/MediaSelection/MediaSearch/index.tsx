@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Input } from '../Form/Input';
-import InputContainer from '../Form/InputContainer';
-import { Lang } from '../types';
-import { useDomId } from '../useDomId';
+import { Input } from '../../Form/Input';
+import InputContainer from '../../Form/InputContainer';
+import { Lang } from '../../types';
+import { useDomId } from '../../useDomId';
 import s from './style.module.css';
 
 type Props<T> = {

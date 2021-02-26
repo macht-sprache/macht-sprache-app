@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BookCoverIcon } from '../BookCoverIcon';
-import Button from '../Form/Button';
-import { findBooks } from '../functions';
+import { BookCoverIcon } from '../../BookCoverIcon';
+import Button from '../../Form/Button';
+import { findBooks } from '../../functions';
 import MediaSearch, { SelectedItemProps } from '../MediaSearch';
-import { Book, Lang } from '../types';
+import { Book, Lang } from '../../types';
 import s from './style.module.css';
 
 type Props = {

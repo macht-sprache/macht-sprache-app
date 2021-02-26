@@ -8,7 +8,7 @@ import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicato
 import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import s from './style.module.css';
-import BookSearch from '../BookSearch';
+import BookSearch from '../MediaSelection/BookSearch';
 import { Book } from '../types';
 import { Columns } from '../Layout/Columns';
 import InputContainer from '../Form/InputContainer';

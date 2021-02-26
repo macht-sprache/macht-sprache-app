@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import { useState } from 'react';
-import BookSearch from './BookSearch';
+import BookSearch from './MediaSelection/BookSearch';
 import { CommentCreate } from './Comments/CommentCreate';
 import { CommentList } from './Comments/CommentList';
 import { CommentWrapper } from './Comments/CommentWrapper';
