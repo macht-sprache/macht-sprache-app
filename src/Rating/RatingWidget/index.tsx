@@ -1,17 +1,16 @@
 import clsx from 'clsx';
-import { Lang, Term, Translation, User } from '../../types';
-import s from './style.module.css';
 import Tooltip from 'rc-tooltip';
+import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useRef, useState } from 'react';
-import { useLang } from '../../useLang';
 import { RATING_STEPS } from '../../constants';
-import { setRating, useRating } from '../../hooks/data';
-import { useUser } from '../../hooks/auth';
-import { useButton } from '@react-aria/button';
-import { ModalDialog } from '../../ModalDialog';
 import Button, { ButtonContainer } from '../../Form/Button';
+import { useUser } from '../../hooks/auth';
+import { setRating, useRating } from '../../hooks/data';
+import { ModalDialog } from '../../ModalDialog';
 import { WrappedInLangColor } from '../../TermWithLang';
+import { Lang, Term, Translation, User } from '../../types';
+import { useLang } from '../../useLang';
+import s from './style.module.css';
 
 type Sizes = 'small' | 'medium' | 'large';
 
@@ -28,30 +27,13 @@ type RatingDisplayProps = {
 export function RatingWidget(ratingDisplayProps: RatingDisplayProps) {
     const { t } = useTranslation();
     const [overlayOpen, setOverlayOpen] = useState(false);
-
-    const openButtonRef = useRef<HTMLButtonElement>(null);
-    const closeButtonRef = useRef<HTMLButtonElement>(null);
-    const { buttonProps: openButtonProps } = useButton(
-        {
-            onPress: () => setOverlayOpen(true),
-        },
-        openButtonRef
-    );
-
-    const { buttonProps: closeButtonProps } = useButton(
-        {
-            onPress: () => setOverlayOpen(false),
-        },
-        closeButtonRef
-    );
-
     const unset = !ratingDisplayProps?.rangeInputProps?.value;
 
     return (
         <div className={s.unsetButtonContainer}>
             <RatingDisplay {...ratingDisplayProps} />
             {unset && ratingDisplayProps.size !== 'small' && (
-                <button {...openButtonProps} className={s.unsetButton}>
+                <button onClick={() => setOverlayOpen(true)} className={s.unsetButton}>
                     {t('rating.clickToSet')}
                 </button>
             )}
@@ -78,7 +60,7 @@ export function RatingWidget(ratingDisplayProps: RatingDisplayProps) {
                     <p>{t('rating.dragToSet')}</p>
                     <RatingDisplay {...ratingDisplayProps} size="large" />
                     <ButtonContainer>
-                        <Button {...closeButtonProps} ref={closeButtonRef} style={{ marginTop: 10 }}>
+                        <Button onClick={() => setOverlayOpen(false)} style={{ marginTop: 10 }}>
                             {t('common.formNav.close')}
                         </Button>
                     </ButtonContainer>
