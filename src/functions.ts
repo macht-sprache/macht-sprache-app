@@ -4,7 +4,8 @@ import { Book, Lang } from './types';
 
 const _findBooks = functions.httpsCallable('handlers-findBooks');
 
-export const findBooks = (query: string, lang: Lang): Promise<{ data: Book[] }> => _findBooks({ query, lang });
+export const findBooks = (query: string, lang: Lang): Promise<Book[]> =>
+    _findBooks({ query, lang }).then(({ data }) => data);
 
 const _addTranslationExample = functions.httpsCallable('handlers-addTranslationExample');
 

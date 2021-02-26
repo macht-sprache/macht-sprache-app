@@ -1,16 +1,15 @@
 import clsx from 'clsx';
-import { Book, Lang } from '../types';
+import { Book } from '../types';
 import s from './style.module.css';
 
 type BookCoverIconProps = {
-    book: Book;
-    lang?: Lang;
+    item: Book;
     className?: string;
 };
 
-export function BookCoverIcon({ book, className, lang }: BookCoverIconProps) {
+export function BookCoverIcon({ item: book, className }: BookCoverIconProps) {
     return (
-        <div className={clsx(s.container, className)} lang={lang}>
+        <div className={clsx(s.container, className)} lang={book.lang}>
             {book.coverUrl ? (
                 <img src={book.coverUrl} alt={book.title} className={s.cover} />
             ) : (

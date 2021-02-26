@@ -94,7 +94,7 @@ function Book({ source, isOriginal = false }: { source: BookSource; isOriginal?:
     return (
         <div className={clsx(s.bookContainer, { [s.original]: isOriginal, [s.translated]: !isOriginal })}>
             <div className={s.bookIconContainer}>
-                <BookCoverIcon book={source} className={s.bookIcon} />
+                <BookCoverIcon item={source} className={s.bookIcon} />
             </div>
             <div className={s.meta}>
                 <h3 className={s.heading}>{source.title}</h3>

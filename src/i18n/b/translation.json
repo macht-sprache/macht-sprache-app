@@ -92,6 +92,13 @@
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>.",
         "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu:"
     },
+    "mediaSearch": {
+        "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
+        "ariaNoResults": "Keine Ergebnisse.",
+        "books": {
+            "cancelSelection": "Suche ein anderes Buch aus"
+        }
+    },
     "translationExample": {
         "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>.",
         "add": "Füge eine Beispielübersetzung hinzu für: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
@@ -123,11 +130,6 @@
             "NEWSPAPER": "Zeitung",
             "OTHER": "Anderes",
             "WEBSITE": "Website"
-        },
-        "bookSearch": {
-            "cancelSelection": "Suche ein anderes Buch aus",
-            "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
-            "ariaNoResults": "Keine Ergebnisse. "
         },
         "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "publishedBy": "Veröffentlicht bei {{publisher}}",

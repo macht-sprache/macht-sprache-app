@@ -1,37 +1,3 @@
-.resultList {
-    list-style: none;
-    padding: 0;
-    overflow: scroll;
-    display: flex;
-    margin: 1rem 0 0;
-}
-
-.resultItem {
-    margin-right: 1rem;
-    flex: 0 0;
-    display: inline-block;
-}
-
-.ariaSelected .resultButtonIcon {
-    --pageColor: var(--orange);
-}
-
-.resultButton {
-    padding: 0;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.resultButton .resultButtonIcon {
-    --height: 8rem;
-}
-
-.resultButton:hover .resultButtonIcon {
-    --borderColor: var(--orange);
-    --pageColor: var(--white);
-}
-
 .selected {
     position: relative;
     margin-top: 1rem;
@@ -85,17 +51,4 @@
 
 .selectedCancelButtonInline {
     margin-top: 0.5rem;
-}
-
-.noResults {
-    margin-top: 1rem;
-    font-weight: bold;
-}
-
-.ariaInputDescription {
-    position: absolute;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-    clip: rect(1px, 1px, 1px, 1px);
 }
