@@ -82,10 +82,10 @@ const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
         const data = snapshot.data(defaultSnapshotOptions);
         const { title, terms, translations, lang, authors, directors, year, isbn, coverUrl, url, refs } = data;
         const type: SourceType = data.type;
-        const base = { id, title, terms, translations, refs };
+        const base = { id, lang, title, terms, translations, refs };
         switch (type) {
             case 'BOOK':
-                return { ...base, type, lang, coverUrl, authors, year, isbn };
+                return { ...base, type, coverUrl, authors, year, isbn };
             case 'MOVIE':
                 return { ...base, type, coverUrl, directors, year };
             case 'WEBPAGE':

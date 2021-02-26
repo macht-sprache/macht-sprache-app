@@ -6,7 +6,11 @@ const app = admin.initializeApp();
 const db = admin.firestore(app);
 db.settings({ ignoreUndefinedProperties: true });
 
-const functions = firebaseFunctions.region('europe-west3');
+if (!process.env.FIREBASE_FUNCTION_REGION) {
+    throw new Error('Env FIREBASE_FUNCTION_REGION is not defined.');
+}
+
+const functions = firebaseFunctions.region(process.env.FIREBASE_FUNCTION_REGION);
 const { logger } = firebaseFunctions;
 
 export { db, functions, logger };

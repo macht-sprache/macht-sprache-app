@@ -108,15 +108,16 @@ export interface Book {
 
 export interface Movie {
     id: string;
+    lang: Lang;
     title: string;
-    directors: string[];
-    studio?: string;
+    directors?: string[];
     year: number;
     coverUrl?: string;
 }
 
 export interface WebPage {
     id: string;
+    lang: Lang;
     title: string;
     authors: string[];
     publisher?: string;
