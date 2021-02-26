@@ -25,23 +25,20 @@ type RatingDisplayProps = {
     size?: Sizes;
 };
 
-export function RatingWidget({ ...ratingDisplayProps }: RatingDisplayProps) {
+export function RatingWidget(ratingDisplayProps: RatingDisplayProps) {
     const { t } = useTranslation();
     const [overlayOpen, setOverlayOpen] = useState(false);
-    let openButtonRef = useRef<HTMLElement>(null);
-    let closeButtonRef = useRef<HTMLButtonElement>(null);
 
-    // useButton ensures that focus management is handled correctly,
-    // across all browsers. Focus is restored to the button once the
-    // dialog closes.
-    let { buttonProps: openButtonProps } = useButton(
+    const openButtonRef = useRef<HTMLButtonElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+    const { buttonProps: openButtonProps } = useButton(
         {
             onPress: () => setOverlayOpen(true),
         },
         openButtonRef
     );
 
-    let { buttonProps: closeButtonProps } = useButton(
+    const { buttonProps: closeButtonProps } = useButton(
         {
             onPress: () => setOverlayOpen(false),
         },
