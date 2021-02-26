@@ -8,11 +8,11 @@ import SelectedItem from '../SelectedItem';
 type Props = {
     label: string;
     lang: Lang;
-    onSelect?: (book: Book | undefined) => void;
+    onSelect: (book: Book | undefined) => void;
     selectedBook?: Book;
 };
 
-export default function BookSearch({ label, lang, onSelect = () => {}, selectedBook }: Props) {
+export default function BookSearch({ label, lang, onSelect, selectedBook }: Props) {
     return (
         <MediaSearch
             label={label}

@@ -11,7 +11,8 @@ import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
 import { RatingWidget } from './Rating/RatingWidget';
-import { Book, Comment } from './types';
+import { Book, Comment, Movie } from './types';
+import MovieSearch from './MediaSelection/MovieSearch';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -25,7 +26,10 @@ export default function ElementTestPage() {
     const [selectValue, setSelectValue] = useState('');
     const [anotherSelectValue, setAnotherSelectValue] = useState('2');
     const [textAreaValue, setTextAreaValue] = useState('');
-    const [book, setBook] = useState<Book>();
+    const [enBook, setEnBook] = useState<Book>();
+    const [deBook, setDeBook] = useState<Book>();
+    const [enMovie, setEnMovie] = useState<Movie>();
+    const [deMovie, setDeMovie] = useState<Movie>();
     const [rating, setRating] = useState(2);
 
     const [comments, setComments] = useState<Comment[]>([
@@ -194,9 +198,14 @@ export default function ElementTestPage() {
             </MultiStepIndicator>
 
             <Heading>Book Search</Heading>
-            <BookSearch label="Find German Books" lang="de" selectedBook={book} onSelect={setBook} />
+            <BookSearch label="Find German Books" lang="de" selectedBook={deBook} onSelect={setDeBook} />
             <p />
-            <BookSearch label="Find English Books" lang="en" />
+            <BookSearch label="Find English Books" lang="en" selectedBook={enBook} onSelect={setEnBook} />
+
+            <Heading>Movie Search</Heading>
+            <MovieSearch label="Find German Movies" lang="de" selectedMovie={deMovie} onSelect={setDeMovie} />
+            <p />
+            <MovieSearch label="Find English Movies" lang="en" selectedMovie={enMovie} onSelect={setEnMovie} />
         </>
     );
 }

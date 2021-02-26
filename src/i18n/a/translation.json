@@ -97,6 +97,9 @@
         "ariaNoResults": "No results.",
         "books": {
             "cancelSelection": "Select a different book"
+        },
+        "movies": {
+            "cancelSelection": "Select a different movie"
         }
     },
     "translationExample": {
