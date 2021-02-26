@@ -22,7 +22,6 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
     const [results, setResults] = useState<Book[]>([]);
     const [searching, setSearching] = useState<boolean>();
     const id = useDomId();
-    const [domIdDescription] = useState('idDescription_' + Math.random());
     const [ariaSelectedIndex, setAriaSelectedIndex] = useState<number>(0);
     const cancelButtonRef = useRef<HTMLButtonElement>(null);
     const { t } = useTranslation();
@@ -127,7 +126,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                     value={query}
                     onChange={event => setQuery(event.target.value)}
                     busy={searching}
-                    aria-describedby={domIdDescription}
+                    aria-describedby={id('resultListDescription')}
                     aria-owns={id('resultList')}
                     aria-expanded={!!results.length}
                     aria-autocomplete="both"
@@ -135,7 +134,7 @@ export default function BookSearch({ label, lang, onSelect = () => {}, selectedB
                     onKeyDown={onKeyDown}
                 />
             </InputContainer>
-            <div id={domIdDescription} className={s.ariaInputDescription}>
+            <div id={id('resultListDescription')} className={s.ariaInputDescription}>
                 {!results.length && <>{t('translationExample.bookSearch.ariaNoResults')}</>}
                 {t('translationExample.bookSearch.ariaDescription')}
             </div>
