@@ -15,6 +15,7 @@ import {
 import { convertRef, db, functions, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
 import { findTermMatches } from './language';
+import { searchMovies } from './movies';
 
 const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
@@ -25,6 +26,11 @@ const verifyUser = (context: CallableContext) => {
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);
     return searchBooks(query, lang);
+});
+
+export const findMovies = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
+    verifyUser(context);
+    return searchMovies(query, lang);
 });
 
 export const addTranslationExample = functions.https.onCall(async (model: TranslationExampleModel, context) => {
