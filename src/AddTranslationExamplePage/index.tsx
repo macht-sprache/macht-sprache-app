@@ -53,12 +53,12 @@ export function AddTranslationExamplePage() {
                 original: {
                     text: snippets.original,
                     pageNumber: snippets.originalPageNo,
-                    bookId: originalBook.id,
+                    sourceId: originalBook.id,
                 },
                 translated: {
                     text: snippets.translated,
                     pageNumber: snippets.translatedPageNo,
-                    bookId: translatedBook.id,
+                    sourceId: translatedBook.id,
                 },
             }).then(translationExample => {
                 setSubmitting(false);

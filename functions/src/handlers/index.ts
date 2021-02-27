@@ -15,12 +15,13 @@ import {
 import { convertRef, db, functions, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
 import { findTermMatches } from './language';
-import { searchMovies } from './movies';
+import { getMovie, searchMovies } from './movies';
 
 const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
         throw new Error('User is not verified.');
     }
+    return context.auth.uid;
 };
 
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
@@ -34,10 +35,16 @@ export const findMovies = functions.https.onCall(async ({ query, lang }: { query
 });
 
 export const addTranslationExample = functions.https.onCall(async (model: TranslationExampleModel, context) => {
-    verifyUser(context);
+    const userId = verifyUser(context);
+    const translationExampleRef = db.collection('translationExamples').doc();
+    await translationExampleRef.set(await getTranslationExample(model, userId));
+    return { translationExampleId: translationExampleRef.id };
+});
 
-    const userId = context.auth?.uid!;
-
+async function getTranslationExample(
+    model: TranslationExampleModel,
+    userId: string
+): Promise<WithoutId<TranslationExample>> {
     const [termSnap, translationSnap, userSnap] = await Promise.all([
         db.collection('terms').doc(model.termId).get(),
         db.collection('translations').doc(model.translationId).get(),
@@ -48,7 +55,7 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
     const user = userSnap.data() as WithoutId<User>;
 
     if (!term || !translation || !user) {
-        throw Error('Term or translation or user missing.');
+        throw new Error('Term or translation or user missing.');
     }
 
     const [originalMatches, translatedMatches] = await Promise.all([
@@ -56,40 +63,61 @@ export const addTranslationExample = functions.https.onCall(async (model: Transl
         findTermMatches(translation.value, model.translated.text, translation.lang),
     ]);
 
-    const [originalBookRef, translatedBookRef] = await Promise.all([
-        writeSource(model.original.bookId, model.type, getBook, termSnap.ref, translationSnap.ref),
-        writeSource(model.translated.bookId, model.type, getBook, termSnap.ref, translationSnap.ref),
-    ]);
-
-    const translationExampleRef = db.collection('translationExamples').doc();
-
-    const translationExample: WithoutId<TranslationExample> = {
+    const baseExample = {
         createdAt: firestore.Timestamp.now(),
         creator: {
             id: userId,
             displayName: user.displayName,
         },
-        translation: convertRef(translationSnap.ref),
-        type: model.type,
-        original: {
-            text: model.original.text,
-            pageNumber: model.original.pageNumber,
-            matches: originalMatches,
-            source: convertRef<BookSource>(originalBookRef),
-        },
-        translated: {
-            text: model.translated.text,
-            pageNumber: model.translated.pageNumber,
-            matches: translatedMatches,
-            source: convertRef<BookSource>(translatedBookRef),
-        },
+        translation: convertRef<Translation>(translationSnap.ref),
         commentCount: 0,
     };
 
-    await translationExampleRef.set(translationExample);
-
-    return { translationExampleId: translationExampleRef.id };
-});
+    switch (model.type) {
+        case 'BOOK':
+            const [originalBookRef, translatedBookRef] = await Promise.all([
+                writeSource(model.original.sourceId, model.type, getBook, termSnap.ref, translationSnap.ref),
+                writeSource(model.translated.sourceId, model.type, getBook, termSnap.ref, translationSnap.ref),
+            ]);
+            return {
+                ...baseExample,
+                type: model.type,
+                original: {
+                    text: model.original.text,
+                    pageNumber: model.original.pageNumber,
+                    matches: originalMatches,
+                    source: convertRef<BookSource>(originalBookRef),
+                },
+                translated: {
+                    text: model.translated.text,
+                    pageNumber: model.translated.pageNumber,
+                    matches: translatedMatches,
+                    source: convertRef<BookSource>(translatedBookRef),
+                },
+            };
+        case 'MOVIE':
+            const [originalMovieRef, translatedMovieRef] = await Promise.all([
+                writeSource(model.original.sourceId, model.type, getMovie, termSnap.ref, translationSnap.ref),
+                writeSource(model.translated.sourceId, model.type, getMovie, termSnap.ref, translationSnap.ref),
+            ]);
+            return {
+                ...baseExample,
+                type: model.type,
+                original: {
+                    text: model.original.text,
+                    matches: originalMatches,
+                    source: convertRef<BookSource>(originalMovieRef),
+                },
+                translated: {
+                    text: model.translated.text,
+                    matches: translatedMatches,
+                    source: convertRef<BookSource>(translatedMovieRef),
+                },
+            };
+        default:
+            throw new Error(`Type ${model.type} is not supported.`);
+    }
+}
 
 async function writeSource<T extends SourceType>(
     sourceId: string,

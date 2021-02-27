@@ -10,14 +10,18 @@ interface BaseTranslationExampleModel<T extends SourceType, U extends BaseSnippe
 
 interface BaseSnippetModel {
     text: string;
+    sourceId: string;
 }
 
 interface BookSnippetModel extends BaseSnippetModel {
-    text: string;
     pageNumber?: string;
-    bookId: string;
 }
 
 type BookTranslationExampleModel = BaseTranslationExampleModel<'BOOK', BookSnippetModel>;
+type MovieTranslationExampleModel = BaseTranslationExampleModel<'MOVIE', BaseSnippetModel>;
+type WebPageTranslationExampleModel = BaseTranslationExampleModel<'WEBPAGE', BaseSnippetModel>;
 
-export type TranslationExampleModel = BookTranslationExampleModel;
+export type TranslationExampleModel =
+    | BookTranslationExampleModel
+    | MovieTranslationExampleModel
+    | WebPageTranslationExampleModel;
