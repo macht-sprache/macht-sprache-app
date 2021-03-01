@@ -11,7 +11,7 @@ export function BookCoverIcon({ item: book, className }: BookCoverIconProps) {
     return (
         <div className={clsx(s.container, className)} lang={book.lang}>
             {book.coverUrl ? (
-                <img src={book.coverUrl} alt={book.title} className={s.cover} />
+                <img src={book.coverUrl} alt={book.title} title={book.title} className={s.cover} />
             ) : (
                 <span className={s.fallback}>{book.title}</span>
             )}
