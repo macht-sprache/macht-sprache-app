@@ -1,213 +1,252 @@
-import { useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { TFunction, Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
+import { SNIPPET_MAX_LENGTH } from '../constants';
 import Button, { ButtonContainer } from '../Form/Button';
+import { ErrorBox } from '../Form/ErrorBox';
+import { Input, Textarea } from '../Form/Input';
+import InputContainer from '../Form/InputContainer';
+import { addTranslationExample } from '../functions';
 import Header from '../Header';
 import { useTerm, useTranslationEntity } from '../hooks/data';
+import { Columns } from '../Layout/Columns';
+import BookSearch from '../MediaSelection/BookSearch';
+import { TranslationExampleModel } from '../modelTypes';
 import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
 import { TERM, TRANSLATION_EXAMPLE } from '../routes';
-import { TermWithLang } from '../TermWithLang';
-import s from './style.module.css';
-import BookSearch from '../MediaSelection/BookSearch';
-import { Book, SourceType } from '../types';
-import { Columns } from '../Layout/Columns';
-import InputContainer from '../Form/InputContainer';
-import { Input, Textarea } from '../Form/Input';
-import { addTranslationExample } from '../functions';
 import SavingState from '../SavingState';
+import { TermWithLang } from '../TermWithLang';
+import { SourceMediaForType, SourceType, Term, Translation } from '../types';
+import s from './style.module.css';
 import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
-const SNIPPET_MAX_LENGTH = 350; // SHOULD MAYBE BE DECLARED SOMEWHERE ELSE?
+type SnippetModel<T extends SourceType = SourceType> = Partial<{
+    sourceMedium: SourceMediaForType<T>;
+    text: string;
+    pageNumber: string;
+}>;
 
-export function AddTranslationExamplePage() {
-    const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
-    const term = useTerm(termId);
-    const history = useHistory();
-    const translation = useTranslationEntity(translationId);
-    const { t } = useTranslation();
-    const [step, setStep] = useState<number>(0);
-    const [submitting, setSubmitting] = useState<boolean>(false);
-    const [type, setType] = useState<SourceType>();
-    const [originalBook, setOriginalBook] = useState<Book | undefined>();
-    const [translatedBook, setTranslatedBook] = useState<Book | undefined>();
+type Model<T extends SourceType = SourceType> = {
+    type?: T;
+    original: SnippetModel<T>;
+    translated: SnippetModel<T>;
+};
 
-    const [snippets, setSnippets] = useState<{
-        original: string;
-        originalPageNo?: string;
-        translated: string;
-        translatedPageNo?: string;
-    }>({ original: '', originalPageNo: '', translated: '', translatedPageNo: '' });
+type StepProps<T extends SourceType = SourceType> = {
+    t: TFunction;
+    model: Model<T>;
+    term: Term;
+    translation: Translation;
+    onChange: Dispatch<SetStateAction<Model<T>>>;
+};
 
-    const incrementStep = () => {
-        setStep(step + 1);
+type Step = {
+    label: (t: TFunction) => React.ReactNode;
+    body: (props: StepProps) => React.ReactNode;
+    valid: (model: Model) => boolean;
+};
+
+const steps: Step[] = [
+    {
+        label: t => t('translationExample.steps.type.label'),
+        body: ({ t, model, onChange }) => (
+            <Section>
+                <p>{t('translationExample.steps.type.description')}</p>
+                <TypeSelectorContainer
+                    name="type"
+                    value={model.type}
+                    onChange={type => onChange(prev => ({ ...prev, type }))}
+                >
+                    <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
+                    <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} disabled />
+                    <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} disabled />
+                    <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
+                </TypeSelectorContainer>
+            </Section>
+        ),
+        valid: model => !!model.type,
+    },
+    {
+        label: t => t('translationExample.steps.source.label'),
+        body: props => {
+            switch (props.model.type) {
+                case 'BOOK':
+                    return <BookSelection {...(props as StepProps<'BOOK'>)} />;
+            }
+        },
+        valid: model => !!(model.original.sourceMedium && model.translated.sourceMedium),
+    },
+    {
+        label: t => t('translationExample.steps.example.label'),
+        body: ({ term, translation, model, onChange }) => (
+            <Section>
+                <Columns>
+                    <SnippetSelection
+                        term={term}
+                        showPageNumber={model.type === 'BOOK'}
+                        snippet={model.original}
+                        onChange={updater => onChange(prev => ({ ...prev, original: updater(prev.original) }))}
+                    />
+                    <SnippetSelection
+                        term={translation}
+                        showPageNumber={model.type === 'BOOK'}
+                        snippet={model.translated}
+                        onChange={updater => onChange(prev => ({ ...prev, translated: updater(prev.translated) }))}
+                    />
+                </Columns>
+            </Section>
+        ),
+        valid: model => !!(model.original.text && model.translated.text),
+    },
+];
+
+const getNextStep = (step: Step) => steps[steps.indexOf(step) + 1];
+
+const toTranslationExampleModel = (
+    term: Term,
+    translation: Translation,
+    model: Model
+): TranslationExampleModel | undefined => {
+    if (
+        !model.type ||
+        !model.original.text ||
+        !model.original.sourceMedium ||
+        !model.translated.text ||
+        !model.translated.sourceMedium
+    ) {
+        return;
+    }
+
+    return {
+        termId: term.id,
+        translationId: translation.id,
+        type: model.type,
+        original: {
+            sourceId: model.original.sourceMedium.id,
+            text: model.original.text,
+            pageNumber: model.original.pageNumber,
+        },
+        translated: {
+            sourceId: model.translated.sourceMedium.id,
+            text: model.translated.text,
+            pageNumber: model.translated.pageNumber,
+        },
     };
+};
+
+function BookSelection({ t, term, translation, model, onChange }: StepProps<'BOOK'>) {
+    return (
+        <>
+            <p>{t('translationExample.steps.source.description')}</p>
+            <Section>
+                <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookOriginalTitle')}</h3>
+                <BookSearch
+                    label={t('translationExample.steps.source.bookSearchOriginal')}
+                    lang={term.lang}
+                    selectedBook={model.original.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
+                    }
+                />
+            </Section>
+            <Section>
+                <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookTranslatedTitle')}</h3>
+                <BookSearch
+                    label={t('translationExample.steps.source.bookSearchTranslation')}
+                    lang={translation.lang}
+                    selectedBook={model.translated.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
+                    }
+                />
+            </Section>
+        </>
+    );
+}
+
+function SnippetSelection({
+    term,
+    showPageNumber,
+    snippet,
+    onChange,
+}: {
+    term: Term | Translation;
+    showPageNumber?: boolean;
+    snippet: SnippetModel;
+    onChange: (updater: (prev: SnippetModel) => SnippetModel) => void;
+}) {
+    const { t } = useTranslation();
+    return (
+        <div>
+            <p>
+                <Trans
+                    i18nKey="translationExample.snippet.description"
+                    values={{ title: snippet.sourceMedium?.title }}
+                    components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
+                />
+            </p>
+            <InputContainer>
+                <Textarea
+                    label={t('translationExample.snippet.label')}
+                    value={snippet.text || ''}
+                    maxLength={SNIPPET_MAX_LENGTH}
+                    onChange={e => onChange(prev => ({ ...prev, text: e.target.value }))}
+                    minHeight="15rem"
+                />
+                {showPageNumber && (
+                    <Input
+                        type="text"
+                        label={t('translationExample.snippet.pageNumber')}
+                        value={snippet.pageNumber || ''}
+                        onChange={e =>
+                            onChange(prev => ({
+                                ...prev,
+                                pageNumber: e.target.value,
+                            }))
+                        }
+                    />
+                )}
+            </InputContainer>
+        </div>
+    );
+}
+
+function AddTranslationExample({ term, translation }: { term: Term; translation: Translation }) {
+    const { t } = useTranslation();
+    const history = useHistory();
+    const [step, setStep] = useState(steps[0]);
+    const [model, onChange] = useState<Model>({ original: {}, translated: {} });
+    const [{ saving, error }, setSaveState] = useState({ saving: false, error: false });
 
     const save = () => {
-        if (originalBook && translatedBook) {
-            setSubmitting(true);
+        const translationExampleModel = toTranslationExampleModel(term, translation, model);
 
-            addTranslationExample({
-                termId,
-                translationId,
-                type: 'BOOK',
-                original: {
-                    text: snippets.original,
-                    pageNumber: snippets.originalPageNo,
-                    sourceId: originalBook.id,
-                },
-                translated: {
-                    text: snippets.translated,
-                    pageNumber: snippets.translatedPageNo,
-                    sourceId: translatedBook.id,
-                },
-            }).then(translationExample => {
-                setSubmitting(false);
+        if (!translationExampleModel) {
+            console.error('Incomplete TranslationExampleModel', model);
+            return;
+        }
+
+        setSaveState({ saving: true, error: false });
+
+        addTranslationExample(translationExampleModel).then(
+            ({ data }) => {
+                setSaveState({ saving: false, error: false });
                 history.push(
                     generatePath(TRANSLATION_EXAMPLE, {
-                        termId,
-                        translationId,
-                        translationExampleId: translationExample.data.translationExampleId,
+                        termId: term.id,
+                        translationId: translation.id,
+                        translationExampleId: data.translationExampleId,
                     })
                 );
-            });
-        } else {
-            console.log("books aren't set. should not be possible. what happened?!");
-        }
+            },
+            error => {
+                console.error(error);
+                setSaveState({ saving: false, error: true });
+            }
+        );
     };
-
-    const steps = [
-        {
-            label: t('translationExample.steps.type.label'),
-            body: (
-                <>
-                    <Section>
-                        <p>{t('translationExample.steps.type.description')}</p>
-                        <TypeSelectorContainer name="type" value={type} onChange={setType}>
-                            <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
-                            <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} />
-                            <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} />
-                            <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
-                        </TypeSelectorContainer>
-                    </Section>
-                    <ButtonContainer>
-                        <Button primary onClick={incrementStep} disabled={!type}>
-                            {t('common.formNav.next')}
-                        </Button>
-                    </ButtonContainer>
-                </>
-            ),
-        },
-        {
-            label: t('translationExample.steps.source.label'),
-            body: (
-                <>
-                    <p>{t('translationExample.steps.source.description')}</p>
-                    <Section>
-                        <h3 className={s.bookSearchHeading}>
-                            {t('translationExample.steps.source.bookOriginalTitle')}
-                        </h3>
-                        <BookSearch
-                            label={t('translationExample.steps.source.bookSearchOriginal')}
-                            lang={term.lang}
-                            selectedBook={originalBook}
-                            onSelect={setOriginalBook}
-                        />
-                    </Section>
-                    <Section>
-                        <h3 className={s.bookSearchHeading}>
-                            {t('translationExample.steps.source.bookTranslatedTitle')}
-                        </h3>
-                        <BookSearch
-                            label={t('translationExample.steps.source.bookSearchTranslation')}
-                            lang={translation.lang}
-                            selectedBook={translatedBook}
-                            onSelect={setTranslatedBook}
-                        />
-                    </Section>
-                    <ButtonContainer>
-                        <Button primary onClick={incrementStep} disabled={!(originalBook && translatedBook)}>
-                            {t('common.formNav.next')}
-                        </Button>
-                    </ButtonContainer>
-                </>
-            ),
-        },
-        {
-            label: t('translationExample.steps.example.label'),
-            body: (
-                <>
-                    <Section>
-                        <Columns>
-                            <div>
-                                <p>
-                                    <Trans
-                                        i18nKey="translationExample.snippet.description"
-                                        values={{ book: originalBook?.title }}
-                                        components={{ Term: <TermWithLang term={term} />, Book: <em /> }}
-                                    />
-                                </p>
-                                <InputContainer>
-                                    <Textarea
-                                        label={t('translationExample.snippet.label')}
-                                        value={snippets?.original}
-                                        maxLength={SNIPPET_MAX_LENGTH}
-                                        onChange={e =>
-                                            setSnippets(prevProps => ({ ...prevProps, original: e.target.value }))
-                                        }
-                                        minHeight="15rem"
-                                    />
-                                    <Input
-                                        type="text"
-                                        label={t('translationExample.snippet.pageNumber')}
-                                        value={snippets?.originalPageNo}
-                                        onChange={e =>
-                                            setSnippets(prevProps => ({ ...prevProps, originalPageNo: e.target.value }))
-                                        }
-                                    />
-                                </InputContainer>
-                            </div>
-                            <div>
-                                <p>
-                                    <Trans
-                                        i18nKey="translationExample.snippet.description"
-                                        values={{ book: translatedBook?.title }}
-                                        components={{ Term: <TermWithLang term={translation} />, Book: <em /> }}
-                                    />
-                                </p>
-                                <InputContainer>
-                                    <Textarea
-                                        label={t('translationExample.snippet.label')}
-                                        value={snippets?.translated}
-                                        maxLength={SNIPPET_MAX_LENGTH}
-                                        onChange={e =>
-                                            setSnippets(prevProps => ({ ...prevProps, translated: e.target.value }))
-                                        }
-                                        minHeight="15rem"
-                                    />
-                                    <Input
-                                        type="text"
-                                        label={t('translationExample.snippet.pageNumber')}
-                                        value={snippets?.translatedPageNo}
-                                        onChange={e =>
-                                            setSnippets(prevProps => ({
-                                                ...prevProps,
-                                                translatedPageNo: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </InputContainer>
-                            </div>
-                        </Columns>
-                    </Section>
-                    <ButtonContainer>
-                        <Button primary onClick={save}>
-                            {t('common.formNav.save')}
-                        </Button>
-                    </ButtonContainer>
-                </>
-            ),
-        },
-    ];
+    const goToNext = () => setStep(getNextStep);
+    const isLastStep = steps.indexOf(step) === steps.length - 1;
 
     return (
         <>
@@ -233,22 +272,39 @@ export function AddTranslationExamplePage() {
                     }}
                 />
             </p>
-            {submitting ? (
+
+            {saving ? (
                 <SavingState />
             ) : (
                 <>
                     <MultiStepIndicator>
-                        {steps.map(({ label }, index) => (
-                            <MultiStepIndicatorStep key={index} active={index === step}>
-                                {label}
+                        {steps.map((currentStep, index) => (
+                            <MultiStepIndicatorStep key={index} active={currentStep === step}>
+                                {currentStep.label(t)}
                             </MultiStepIndicatorStep>
                         ))}
                     </MultiStepIndicator>
-                    <div className={s.steps}>{steps[step].body}</div>
+                    <div className={s.steps}>
+                        {step.body({ t, term, translation, model, onChange })}
+                        {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
+                        <ButtonContainer>
+                            <Button primary onClick={isLastStep ? save : goToNext} disabled={!step.valid(model)}>
+                                {isLastStep ? t('common.formNav.save') : t('common.formNav.next')}
+                            </Button>
+                        </ButtonContainer>
+                    </div>
                 </>
             )}
         </>
     );
+}
+
+export function AddTranslationExamplePage() {
+    const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
+    const term = useTerm(termId);
+    const translation = useTranslationEntity(translationId);
+
+    return <AddTranslationExample term={term} translation={translation} />;
 }
 
 const Section = ({ children }: { children: React.ReactNode }) => <div className={s.section}>{children}</div>;

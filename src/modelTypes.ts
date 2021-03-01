@@ -1,27 +1,15 @@
 import { SourceType } from './types';
 
-interface BaseTranslationExampleModel<T extends SourceType, U extends BaseSnippetModel> {
+export type TranslationExampleModel = {
     termId: string;
     translationId: string;
-    type: T;
-    original: U;
-    translated: U;
-}
+    type: SourceType;
+    original: SnippetModel;
+    translated: SnippetModel;
+};
 
-interface BaseSnippetModel {
+type SnippetModel = {
     text: string;
     sourceId: string;
-}
-
-interface BookSnippetModel extends BaseSnippetModel {
     pageNumber?: string;
-}
-
-type BookTranslationExampleModel = BaseTranslationExampleModel<'BOOK', BookSnippetModel>;
-type MovieTranslationExampleModel = BaseTranslationExampleModel<'MOVIE', BaseSnippetModel>;
-type WebPageTranslationExampleModel = BaseTranslationExampleModel<'WEBPAGE', BaseSnippetModel>;
-
-export type TranslationExampleModel =
-    | BookTranslationExampleModel
-    | MovieTranslationExampleModel
-    | WebPageTranslationExampleModel;
+};
