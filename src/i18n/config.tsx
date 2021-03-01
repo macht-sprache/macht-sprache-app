@@ -26,6 +26,9 @@ i18n.use(initReactI18next)
         react: {
             useSuspense: false,
         },
+        interpolation: {
+            escapeValue: false,
+        },
     });
 
 export const TranslationProvider: React.FC = ({ children }) => (
