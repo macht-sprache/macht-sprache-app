@@ -4,6 +4,7 @@ import { TranslationExampleModel } from '../../../src/modelTypes';
 import {
     BookSource,
     Lang,
+    MovieSource,
     Source,
     SourceMediaForType,
     SourceType,
@@ -11,11 +12,13 @@ import {
     Translation,
     TranslationExample,
     User,
+    WebPageSource,
 } from '../../../src/types';
 import { convertRef, db, functions, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
 import { findTermMatches } from './language';
 import { getMovie, searchMovies } from './movies';
+import { getWebPage, searchWebPage } from './webpages';
 
 const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
@@ -32,6 +35,11 @@ export const findBooks = functions.https.onCall(async ({ query, lang }: { query:
 export const findMovies = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);
     return searchMovies(query, lang);
+});
+
+export const findWebPage = functions.https.onCall(async ({ url, lang }: { url: string; lang: Lang }, context) => {
+    verifyUser(context);
+    return searchWebPage(url, lang);
 });
 
 export const addTranslationExample = functions.https.onCall(async (model: TranslationExampleModel, context) => {
@@ -106,16 +114,33 @@ async function getTranslationExample(
                 original: {
                     text: model.original.text,
                     matches: originalMatches,
-                    source: convertRef<BookSource>(originalMovieRef),
+                    source: convertRef<MovieSource>(originalMovieRef),
                 },
                 translated: {
                     text: model.translated.text,
                     matches: translatedMatches,
-                    source: convertRef<BookSource>(translatedMovieRef),
+                    source: convertRef<MovieSource>(translatedMovieRef),
                 },
             };
-        default:
-            throw new Error(`Type ${model.type} is not supported.`);
+        case 'WEBPAGE':
+            const [originalWebPageRef, translatedWebPageRef] = await Promise.all([
+                writeSource(model.original.sourceId, model.type, getWebPage, termSnap.ref, translationSnap.ref),
+                writeSource(model.translated.sourceId, model.type, getWebPage, termSnap.ref, translationSnap.ref),
+            ]);
+            return {
+                ...baseExample,
+                type: model.type,
+                original: {
+                    text: model.original.text,
+                    matches: originalMatches,
+                    source: convertRef<WebPageSource>(originalWebPageRef),
+                },
+                translated: {
+                    text: model.translated.text,
+                    matches: translatedMatches,
+                    source: convertRef<WebPageSource>(translatedWebPageRef),
+                },
+            };
     }
 }
 

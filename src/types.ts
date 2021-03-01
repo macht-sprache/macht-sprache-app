@@ -119,11 +119,12 @@ export interface WebPage {
     id: string;
     lang: Lang;
     title: string;
-    authors: string[];
+    description?: string;
+    author?: string;
     publisher?: string;
-    year?: number;
-    logo?: string;
-    image?: string;
+    date?: string;
+    logoUrl?: string;
+    imageUrl?: string;
     url: string;
 }
 
