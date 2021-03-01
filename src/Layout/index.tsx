@@ -21,7 +21,7 @@ function Layout({ children }: Props) {
     const id = useDomId();
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
-    const [loggedInOrLaunched] = useLaunched();
+    const loggedInOrLaunched = useLaunched();
 
     useEffect(() => {
         document.body.classList.toggle(s.bodyMenuOpen, menuOpen);
@@ -78,7 +78,7 @@ export default Layout;
 
 function Footer() {
     const { t } = useTranslation();
-    const [launched] = useLaunched();
+    const launched = useLaunched();
 
     let footerLinks = [
         {

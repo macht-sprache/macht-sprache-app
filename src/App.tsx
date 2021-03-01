@@ -29,7 +29,7 @@ import { useLaunched } from './useLaunched';
 function App() {
     useLangCssVars();
     const user = useEnsureUserEntity();
-    const [launched] = useLaunched();
+    const launched = useLaunched();
 
     return (
         <FirebaseAppProvider firebaseApp={app} suspense>

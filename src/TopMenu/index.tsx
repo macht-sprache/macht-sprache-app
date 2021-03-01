@@ -13,7 +13,7 @@ import { useLaunched } from '../useLaunched';
 export function TopMenu() {
     const user = useUser();
     const { t } = useTranslation();
-    const [launched] = useLaunched();
+    const launched = useLaunched();
     const addContinueParam = useAddContinueParam();
     const logout = useCallback(() => {
         auth.signOut();
