@@ -61,7 +61,7 @@ export function Textarea({
     ...props
 }: TextareaProps) {
     const { t } = useTranslation();
-    const testareaProps = { value, disabled, maxLength, ...props };
+    const textareaProps = { value, disabled, maxLength, ...props };
     const charLeft = typeof value === 'string' && maxLength ? maxLength - value.length : 0;
     const displayCharLimitWarning = typeof value === 'string' && maxLength && charLeft < 20;
 
@@ -75,7 +75,7 @@ export function Textarea({
             empty={!value}
             warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
         >
-            <textarea className={s.textarea} aria-invalid={!!error} {...testareaProps} style={{ minHeight }} />
+            <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} style={{ minHeight }} />
         </Container>
     );
 }
