@@ -11,8 +11,9 @@ import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
 import { RatingWidget } from './Rating/RatingWidget';
-import { Book, Comment, Movie } from './types';
+import { Book, Comment, Movie, WebPage } from './types';
 import MovieSearch from './MediaSelection/MovieSearch';
+import WebPageSearch from './MediaSelection/WebPageSearch';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -30,6 +31,7 @@ export default function ElementTestPage() {
     const [deBook, setDeBook] = useState<Book>();
     const [enMovie, setEnMovie] = useState<Movie>();
     const [deMovie, setDeMovie] = useState<Movie>();
+    const [page, setPage] = useState<WebPage>();
     const [rating, setRating] = useState(2);
 
     const [comments, setComments] = useState<Comment[]>([
@@ -206,6 +208,9 @@ export default function ElementTestPage() {
             <MovieSearch label="Find German Movies" lang="de" selectedMovie={deMovie} onSelect={setDeMovie} />
             <p />
             <MovieSearch label="Find English Movies" lang="en" selectedMovie={enMovie} onSelect={setEnMovie} />
+
+            <Heading>WebPage Search</Heading>
+            <WebPageSearch label="Paste URL" lang="en" selectedPage={page} onSelect={setPage} />
         </>
     );
 }

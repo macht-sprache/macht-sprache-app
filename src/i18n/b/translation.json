@@ -100,6 +100,9 @@
         },
         "movies": {
             "cancelSelection": "Suche einen anderen Film aus"
+        },
+        "webpage": {
+            "cancelSelection": "Suche eine andere Webseite aus"
         }
     },
     "translationExample": {

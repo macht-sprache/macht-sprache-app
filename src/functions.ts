@@ -1,6 +1,6 @@
 import { functions } from './firebase';
 import { TranslationExampleModel } from './modelTypes';
-import { Book, Lang, Movie } from './types';
+import { Book, Lang, Movie, WebPage } from './types';
 
 const _findBooks = functions.httpsCallable('handlers-findBooks');
 
@@ -14,7 +14,7 @@ export const findMovies = (query: string, lang: Lang): Promise<Movie[]> =>
 
 const _findWebPage = functions.httpsCallable('handlers-findWebPage');
 
-export const findWebPage = (url: string, lang: Lang): Promise<Movie[]> =>
+export const findWebPage = (url: string, lang: Lang): Promise<WebPage> =>
     _findWebPage({ url, lang }).then(({ data }) => data);
 
 const _addTranslationExample = functions.httpsCallable('handlers-addTranslationExample');
