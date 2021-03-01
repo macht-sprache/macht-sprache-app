@@ -114,15 +114,33 @@
                 "description": "Select the type of source you want to add:"
             },
             "source": {
-                "label": "Source",
-                "description": "Select the books you want to add:",
-                "bookSearchOriginal": "Search by the title of the original book",
-                "bookSearchTranslation": "Search by the title of the translated book",
-                "bookOriginalTitle": "Original Book",
-                "bookTranslatedTitle": "Translated Book"
+                "label": "Source"
             },
             "example": {
                 "label": "Example"
+            }
+        },
+        "source": {
+            "BOOK": {
+                "description": "Select the books you want to add:",
+                "searchOriginal": "Search by the title of the original book",
+                "searchTranslation": "Search by the title of the translated book",
+                "titleOriginal": "Original Book",
+                "titleTranslated": "Translated Book"
+            },
+            "MOVIE": {
+                "description": "Select the movies you want to add:",
+                "searchOriginal": "Search by the title of the original movie",
+                "searchTranslation": "Search by the title of the translated movie",
+                "titleOriginal": "Original Movie",
+                "titleTranslated": "Translated Movie"
+            },
+            "WEBPAGE": {
+                "description": "Select the websites you want to add:",
+                "searchOriginal": "Paste the URL of the original website",
+                "searchTranslation": "Paste the URL of the translated website",
+                "titleOriginal": "Original Website",
+                "titleTranslated": "Translated Website"
             }
         },
         "snippet": {

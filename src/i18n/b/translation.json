@@ -114,15 +114,33 @@
                 "description": "Wähle die Art des Mediums aus, welches du hinzufügen möchtest:"
             },
             "source": {
-                "label": "Quelle",
-                "description": "Suche nach den Büchern, die du hinzufügen möchtest:",
-                "bookSearchOriginal": "Originalen Buchtitel suchen",
-                "bookSearchTranslation": "Übersetzten Buchtitel suchen",
-                "bookOriginalTitle": "Unübersetztes Buch in originaler Fassung",
-                "bookTranslatedTitle": "Übersetzte Version"
+                "label": "Quelle"
             },
             "example": {
                 "label": "Beispiel"
+            }
+        },
+        "source": {
+            "BOOK": {
+                "description": "Suche nach den Büchern, die du hinzufügen möchtest:",
+                "searchOriginal": "Originalen Buchtitel suchen",
+                "searchTranslation": "Übersetzten Buchtitel suchen",
+                "titleOriginal": "Unübersetztes Buch in originaler Fassung",
+                "titleTranslated": "Übersetzte Version"
+            },
+            "MOVIE": {
+                "description": "Suche nach den Filmen, die du hinzufügen möchtest:",
+                "searchOriginal": "Search by the title of the original movie",
+                "searchTranslation": "Search by the title of the translated movie",
+                "titleOriginal": "Unübersetzter Film in originaler Fassung",
+                "titleTranslated": "Übersetzte Version"
+            },
+            "WEBPAGE": {
+                "description": "Wähle nach den Webseiten, die du hinzufügen möchtest:",
+                "searchOriginal": "URL der unübersetzten Webseite",
+                "searchTranslation": "URL der übersetzten Webseite",
+                "titleOriginal": "Unübersetzte Webseite",
+                "titleTranslated": "Übersetzte Webseite"
             }
         },
         "snippet": {

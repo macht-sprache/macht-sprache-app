@@ -11,6 +11,8 @@ import Header from '../Header';
 import { useTerm, useTranslationEntity } from '../hooks/data';
 import { Columns } from '../Layout/Columns';
 import BookSearch from '../MediaSelection/BookSearch';
+import MovieSearch from '../MediaSelection/MovieSearch';
+import WebPageSearch from '../MediaSelection/WebPageSearch';
 import { TranslationExampleModel } from '../modelTypes';
 import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
 import { TERM, TRANSLATION_EXAMPLE } from '../routes';
@@ -58,8 +60,8 @@ const steps: Step[] = [
                     onChange={type => onChange(prev => ({ ...prev, type }))}
                 >
                     <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
-                    <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} disabled />
-                    <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} disabled />
+                    <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} />
+                    <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} />
                     <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
                 </TypeSelectorContainer>
             </Section>
@@ -72,6 +74,10 @@ const steps: Step[] = [
             switch (props.model.type) {
                 case 'BOOK':
                     return <BookSelection {...(props as StepProps<'BOOK'>)} />;
+                case 'MOVIE':
+                    return <MovieSelection {...(props as StepProps<'MOVIE'>)} />;
+                case 'WEBPAGE':
+                    return <WebPageSelection {...(props as StepProps<'WEBPAGE'>)} />;
             }
         },
         valid: model => !!(model.original.sourceMedium && model.translated.sourceMedium),
@@ -137,11 +143,11 @@ const toTranslationExampleModel = (
 function BookSelection({ t, term, translation, model, onChange }: StepProps<'BOOK'>) {
     return (
         <>
-            <p>{t('translationExample.steps.source.description')}</p>
+            <p>{t('translationExample.source.BOOK.description')}</p>
             <Section>
-                <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookOriginalTitle')}</h3>
+                <h3 className={s.mediaSearchHeading}>{t('translationExample.source.BOOK.titleOriginal')}</h3>
                 <BookSearch
-                    label={t('translationExample.steps.source.bookSearchOriginal')}
+                    label={t('translationExample.source.BOOK.searchOriginal')}
                     lang={term.lang}
                     selectedBook={model.original.sourceMedium}
                     onSelect={sourceMedium =>
@@ -150,11 +156,71 @@ function BookSelection({ t, term, translation, model, onChange }: StepProps<'BOO
                 />
             </Section>
             <Section>
-                <h3 className={s.bookSearchHeading}>{t('translationExample.steps.source.bookTranslatedTitle')}</h3>
+                <h3 className={s.mediaSearchHeading}>{t('translationExample.source.BOOK.titleTranslated')}</h3>
                 <BookSearch
-                    label={t('translationExample.steps.source.bookSearchTranslation')}
+                    label={t('translationExample.source.BOOK.searchTranslation')}
                     lang={translation.lang}
                     selectedBook={model.translated.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
+                    }
+                />
+            </Section>
+        </>
+    );
+}
+
+function MovieSelection({ t, term, translation, model, onChange }: StepProps<'MOVIE'>) {
+    return (
+        <>
+            <p>{t('translationExample.source.MOVIE.description')}</p>
+            <Section>
+                <h3 className={s.mediaSearchHeading}>{t('translationExample.source.MOVIE.titleOriginal')}</h3>
+                <MovieSearch
+                    label={t('translationExample.source.MOVIE.searchOriginal')}
+                    lang={term.lang}
+                    selectedMovie={model.original.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
+                    }
+                />
+            </Section>
+            <Section>
+                <h3 className={s.mediaSearchHeading}>{t('translationExample.source.MOVIE.titleTranslated')}</h3>
+                <MovieSearch
+                    label={t('translationExample.source.MOVIE.searchTranslation')}
+                    lang={translation.lang}
+                    selectedMovie={model.translated.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
+                    }
+                />
+            </Section>
+        </>
+    );
+}
+
+function WebPageSelection({ t, term, translation, model, onChange }: StepProps<'WEBPAGE'>) {
+    return (
+        <>
+            <p>{t('translationExample.source.WEBPAGE.description')}</p>
+            <Section>
+                <h3 className={s.mediaSearchHeading}>{t('translationExample.source.WEBPAGE.titleOriginal')}</h3>
+                <WebPageSearch
+                    label={t('translationExample.source.WEBPAGE.searchOriginal')}
+                    lang={term.lang}
+                    selectedPage={model.original.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
+                    }
+                />
+            </Section>
+            <Section>
+                <h3 className={s.mediaSearchHeading}>{t('translationExample.source.WEBPAGE.titleTranslated')}</h3>
+                <WebPageSearch
+                    label={t('translationExample.source.WEBPAGE.searchTranslation')}
+                    lang={translation.lang}
+                    selectedPage={model.translated.sourceMedium}
                     onSelect={sourceMedium =>
                         onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
                     }
