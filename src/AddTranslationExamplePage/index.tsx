@@ -9,7 +9,7 @@ import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import s from './style.module.css';
 import BookSearch from '../MediaSelection/BookSearch';
-import { Book } from '../types';
+import { Book, SourceType } from '../types';
 import { Columns } from '../Layout/Columns';
 import InputContainer from '../Form/InputContainer';
 import { Input, Textarea } from '../Form/Input';
@@ -27,7 +27,7 @@ export function AddTranslationExamplePage() {
     const { t } = useTranslation();
     const [step, setStep] = useState<number>(0);
     const [submitting, setSubmitting] = useState<boolean>(false);
-    const [type, setType] = useState<'BOOK'>();
+    const [type, setType] = useState<SourceType>();
     const [originalBook, setOriginalBook] = useState<Book | undefined>();
     const [translatedBook, setTranslatedBook] = useState<Book | undefined>();
 
@@ -82,39 +82,11 @@ export function AddTranslationExamplePage() {
                 <>
                     <Section>
                         <p>{t('translationExample.steps.type.description')}</p>
-                        <TypeSelectorContainer>
-                            <TypeSelector
-                                name="type"
-                                value="BOOK"
-                                onChange={el => {
-                                    setType(el.target.value as 'BOOK');
-                                }}
-                                label={t('translationExample.types.BOOK')}
-                            />
-                            <TypeSelector
-                                name="type"
-                                value="WEBSITE"
-                                label={t('translationExample.types.WEBSITE')}
-                                disabled
-                            />
-                            <TypeSelector
-                                name="type"
-                                value="NEWSPAPER"
-                                label={t('translationExample.types.NEWSPAPER')}
-                                disabled
-                            />
-                            <TypeSelector
-                                name="type"
-                                value="MOVIE"
-                                label={t('translationExample.types.MOVIE')}
-                                disabled
-                            />
-                            <TypeSelector
-                                name="type"
-                                value="OTHER"
-                                label={t('translationExample.types.OTHER')}
-                                disabled
-                            />
+                        <TypeSelectorContainer name="type" value={type} onChange={setType}>
+                            <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
+                            <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} />
+                            <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} />
+                            <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
                         </TypeSelectorContainer>
                     </Section>
                     <ButtonContainer>
