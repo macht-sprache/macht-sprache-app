@@ -94,8 +94,8 @@ const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
             url,
             description,
             date,
-            logo,
-            image,
+            logoUrl,
+            imageUrl,
             refs,
         } = data;
         const type: SourceType = data.type;
@@ -106,7 +106,7 @@ const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
             case 'MOVIE':
                 return { ...base, type, coverUrl, directors, year };
             case 'WEBPAGE':
-                return { ...base, type, author, url, description, date, logo, image };
+                return { ...base, type, author, url, description, date, logoUrl, imageUrl };
         }
     },
 };
