@@ -31,7 +31,7 @@ const fromSourceId = (sourceId: string) => {
 };
 
 const fetchPage = async (url: string) => {
-    const response = await fetch(url, { headers: { 'user-agent': 'curl/7.72.0' } });
+    const response = await fetch(url, { headers: { 'user-agent': 'MachtSprache/Bot Googlebot' } });
 
     if (!response.ok) {
         throw new Error('Response not ok.');
