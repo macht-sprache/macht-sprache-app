@@ -4,7 +4,10 @@ import { ColumnHeading, Columns } from '../Layout/Columns';
 import { NewsFeed } from '../NewsFeed';
 import { useWpPage } from '../useWpHooks';
 
-const ABOUT_SLUGS = { en: 'about-case-sensitive', de: 'ueber-macht-sprache' };
+const ABOUT_SLUGS = {
+    en: 'about-macht-sprache-short-version-landing-page',
+    de: 'ueber-macht-sprache-kurzversion-startseite',
+};
 
 export function HomePagePreLaunch() {
     const { t } = useTranslation();
