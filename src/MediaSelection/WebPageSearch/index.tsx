@@ -25,12 +25,18 @@ const isValidUrl = (url: string) => {
 type State = {
     url: string;
     searching: boolean;
+    result: WebPage | null;
     error: null | unknown;
 };
 
 export default function WebPageSearch({ label, lang, selectedPage, onSelect }: Props) {
     const { t } = useTranslation();
-    const [{ url, searching }, setState] = useState<State>({ url: '', searching: false, error: null });
+    const [{ url, searching, result }, setState] = useState<State>({
+        url: '',
+        searching: false,
+        error: null,
+        result: null,
+    });
     const isValid = !url || isValidUrl(url);
 
     useEffect(() => {
@@ -38,13 +44,19 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
             setState(prev => ({ ...prev, searching: true, error: null }));
             findWebPage(url, lang).then(
                 page => {
-                    setState(prev => ({ ...prev, error: null, searching: false }));
-                    onSelect(page);
+                    setState(prev => ({ ...prev, error: null, result: page }));
                 },
                 error => setState(prev => ({ ...prev, searching: false, error }))
             );
         }
-    }, [lang, onSelect, url]);
+    }, [lang, url]);
+
+    useEffect(() => {
+        if (result) {
+            setState(prev => ({ ...prev, searching: false, result: null }));
+            onSelect(result);
+        }
+    }, [onSelect, result]);
 
     if (selectedPage) {
         return (
