@@ -226,18 +226,23 @@ export function useTranslationExamples(translationId: string) {
 
 export function useSources(ref: DocReference<Term | Translation>) {
     const sources = useFirestoreCollectionData<Source>(collections.sources.where('refs', 'array-contains', ref)).data;
-    const grouped = useMemo(() => {
-        return sources.reduce<{ [refId: string]: Source[] }>((acc, cur) => {
-            cur.refs.forEach(({ id }) => {
-                if (acc[id]) {
-                    acc[id].push(cur);
-                } else {
-                    acc[id] = [cur];
-                }
-            });
-            return acc;
-        }, {});
-    }, [sources]);
+
+    const grouped = useMemo(
+        () =>
+            sources.reduce<{ [refId: string]: Source[] }>((acc, cur) => {
+                cur.refs.forEach(({ id }) => {
+                    if (acc[id]) {
+                        if (!acc[id].includes(cur)) {
+                            acc[id].push(cur);
+                        }
+                    } else {
+                        acc[id] = [cur];
+                    }
+                });
+                return acc;
+            }, {}),
+        [sources]
+    );
 
     return grouped;
 }
