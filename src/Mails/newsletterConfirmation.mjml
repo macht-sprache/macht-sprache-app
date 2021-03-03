@@ -1,0 +1,39 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-class name="black" color="black" />
+            <mj-class name="big" font-size="20px" />
+            <mj-all font-family="Courier New, Courier" />
+
+            <mj-style> .button { color: red !important; text-decoration: underline !important; } </mj-style>
+        </mj-attributes>
+    </mj-head>
+    <mj-body>
+        <mj-section>
+            <mj-column>
+                <mj-image
+                    width="100px"
+                    src="https://pocolit.com/wp-content/themes/pocolit/images/logo_farbe.svg"
+                ></mj-image>
+
+                <mj-text
+                    >Thanks for your interest in macht.sprache. and poco.lit. To hear from us and the launch, sign up for the newsletter:</mj-text
+                >
+                <mj-button
+                    css-class="button"
+                    href="[URL]"
+                    background-color="white"
+                    color="black"
+                    border-radius="0"
+                    border="solid black 2px"
+                >
+                    Click here to confirm the newsletter
+                </mj-button>
+                <mj-text
+                    >If you are having troubles with the button, copy/paste the following URL in your browser:
+                    [URL]</mj-text
+                >
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>
