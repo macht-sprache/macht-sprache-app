@@ -1,0 +1,70 @@
+.container {
+    position: relative;
+    border: var(--thickBorder) solid var(--black);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1rem 1fr;
+    --height: 10rem;
+    height: var(--height);
+    background: var(--white);
+}
+
+.image {
+    height: calc(var(--height) - 1rem - var(--thickBorder) * 2);
+    max-width: var(--height);
+    display: block;
+    object-fit: cover;
+}
+
+.topBar {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    justify-content: space-between;
+    padding: 0.2rem;
+}
+
+.dots {
+    display: flex;
+}
+
+.dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--black);
+    margin-right: 0.1rem;
+}
+
+.addressBar {
+    background: var(--black);
+    font-size: 0.5rem;
+    text-align: center;
+    border-width: 0 0.1rem;
+    border-color: var(--black);
+    border-style: solid;
+    color: var(--white);
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.noImageLabel {
+    background: var(--disabledGreyBackground);
+    color: var(--disabledGrey);
+    font-size: italic;
+    font-size: var(--fontSizeS);
+    width: calc(var(--height) * 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.logo {
+    position: absolute;
+    height: 1.5rem;
+    width: 1.5rem;
+    object-fit: contain;
+    top: 1.2rem;
+    left: 0.2rem;
+    background: var(--white);
+}

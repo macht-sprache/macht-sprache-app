@@ -5,6 +5,7 @@ import InputContainer from '../../Form/InputContainer';
 import { FormatDate } from '../../FormatDate';
 import { findWebPage } from '../../functions';
 import { Lang, WebPage } from '../../types';
+import { WebsiteCoverIcon } from '../../WebsiteCoverIcon';
 import SelectedItem from '../SelectedItem';
 
 type Props = {
@@ -63,7 +64,7 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
             <SelectedItem
                 item={selectedPage}
                 onCancel={() => onSelect(undefined)}
-                coverComponent={CoverComponent}
+                coverComponent={WebsiteCoverIcon}
                 metaInfo={getMeta(selectedPage)}
                 cancelLabel={t('mediaSearch.webpage.cancelSelection')}
             />
@@ -82,11 +83,6 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
             />
         </InputContainer>
     );
-}
-
-// TODO!
-function CoverComponent({ item, className }: { item: WebPage; className?: string }) {
-    return item.imageUrl ? <img style={{ maxWidth: '200px' }} src={item.imageUrl} alt={item.title} /> : null;
 }
 
 function getMeta(page: WebPage) {
