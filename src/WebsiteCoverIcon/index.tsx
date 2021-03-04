@@ -8,7 +8,6 @@ type WebsiteCoverIconProps = {
 };
 
 export function WebsiteCoverIcon({ item, className }: WebsiteCoverIconProps) {
-    console.log(item.logoUrl);
     return (
         <div
             className={clsx(s.container, className)}
@@ -27,7 +26,7 @@ export function WebsiteCoverIcon({ item, className }: WebsiteCoverIconProps) {
             {item.imageUrl ? (
                 <img className={s.image} src={item.imageUrl} alt={item.title} />
             ) : (
-                <div className={s.noImageLabel}>{item.publisher}</div>
+                <div className={s.noImageLabel}>{item.publisher ?? item.title}</div>
             )}
             {item.logoUrl && <img src={item.logoUrl} alt="" className={s.logo} />}
         </div>
