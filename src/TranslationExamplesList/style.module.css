@@ -36,19 +36,12 @@
     hyphens: auto;
 }
 
-.headingImg {
-    height: 5rem;
-    min-width: 3rem;
-    max-width: 6rem;
-    object-fit: cover;
-    margin-right: 0.5rem;
-    margin-left: calc(var(--thickBorder) * -1);
-    border: var(--thickBorder) solid var(--white);
-    background: var(--white);
+.cover {
+    --height: 5rem;
 }
 
-.headingImgContainer {
-    flex: 0 0;
+.coverContainer {
+    margin-right: 0.5rem;
 }
 
 .exampleTextOriginal {

@@ -1,15 +1,18 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
+import { BookCoverIcon } from '../CoverIcon/BookCoverIcon';
 import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ExampleText } from '../ExampleText';
 import { ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useSources, collections } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
+import { MovieCoverIcon } from '../CoverIcon/MovieCoverIcon';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { Term, Translation, TranslationExample, Lang, Source } from '../types';
 import { extractRootDomain, trimString } from '../utils';
+import { WebsiteCoverIcon } from '../CoverIcon/WebsiteCoverIcon';
 import s from './style.module.css';
 
 type Props = {
@@ -87,17 +90,17 @@ function TranslationExampleArticle({
     };
 
     if (originalSource?.type === 'BOOK') {
-        headerProps.coverUrl = originalSource.coverUrl;
+        headerProps.cover = <BookCoverIcon item={originalSource} className={s.cover} />;
         headerProps.surTitle = originalSource.authors.join(', ');
     }
 
     if (originalSource?.type === 'WEBPAGE') {
-        headerProps.coverUrl = originalSource.imageUrl;
+        headerProps.cover = <WebsiteCoverIcon item={originalSource} className={s.cover} />;
         headerProps.surTitle = extractRootDomain(originalSource.url);
     }
 
     if (originalSource?.type === 'MOVIE') {
-        headerProps.coverUrl = originalSource.coverUrl;
+        headerProps.cover = <MovieCoverIcon item={originalSource} className={s.cover} />;
         headerProps.surTitle = originalSource.directors && originalSource.directors.join(', ');
     }
 
@@ -123,7 +126,7 @@ function TranslationExampleArticle({
 }
 
 type HeaderProps = {
-    coverUrl?: string;
+    cover?: React.ReactNode;
     surTitle?: string;
     titleOriginal?: string;
     titleTranslated?: string;
@@ -131,14 +134,10 @@ type HeaderProps = {
     langTranslated: Lang;
 };
 
-function Header({ coverUrl, surTitle, titleOriginal, titleTranslated, langOriginal, langTranslated }: HeaderProps) {
+function Header({ cover, surTitle, titleOriginal, titleTranslated, langOriginal, langTranslated }: HeaderProps) {
     return (
         <header className={s.header}>
-            {coverUrl && (
-                <div className={s.headingImgContainer}>
-                    <img className={s.headingImg} alt="" src={coverUrl} />
-                </div>
-            )}
+            {cover && <div className={s.coverContainer}>{cover}</div>}
             <div>
                 {surTitle}
                 <h1 className={s.headingOriginal} lang={langOriginal}>
