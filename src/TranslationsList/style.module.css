@@ -127,3 +127,7 @@
 .translationExampleListItem {
     margin: 0.25rem;
 }
+
+.exampleIcon {
+    --height: 5rem;
+}
