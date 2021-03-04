@@ -14,6 +14,7 @@ import clsx from 'clsx';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { WebsiteCoverIcon } from '../WebsiteCoverIcon';
 import { MovieCoverIcon } from '../MovieCoverIcon';
+import { BookCoverIcon } from '../BookCoverIcon';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -121,18 +122,7 @@ function TranslationItem({
                             return (
                                 <li key={example.id} className={s.translationExampleListItem}>
                                     {example.type === 'BOOK' && (
-                                        <>
-                                            {example.coverUrl ? (
-                                                <img
-                                                    src={example.coverUrl}
-                                                    alt={example.title}
-                                                    title={example.title}
-                                                    className={s.translationExampleListImage}
-                                                />
-                                            ) : (
-                                                example.title
-                                            )}
-                                        </>
+                                        <BookCoverIcon className={s.exampleIcon} item={example} />
                                     )}
                                     {example.type === 'WEBPAGE' && (
                                         <WebsiteCoverIcon className={s.exampleIcon} item={example} />

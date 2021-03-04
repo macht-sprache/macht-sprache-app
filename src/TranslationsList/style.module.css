@@ -117,13 +117,6 @@
     flex-wrap: wrap;
 }
 
-.translationExampleListImage {
-    display: block;
-    height: 5rem;
-    min-width: 2rem;
-    object-fit: cover;
-}
-
 .translationExampleListItem {
     margin: 0.25rem;
 }
