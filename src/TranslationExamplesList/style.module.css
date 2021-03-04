@@ -7,8 +7,9 @@
     text-decoration: none;
 }
 
-.example + .example {
+.link + .link {
     margin-top: 2rem;
+    display: block;
 }
 
 .header {
