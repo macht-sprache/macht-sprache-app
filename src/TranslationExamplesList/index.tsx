@@ -96,6 +96,11 @@ function TranslationExampleArticle({
         headerProps.aboveHeading = extractRootDomain(originalSource.url);
     }
 
+    if (originalSource?.type === 'MOVIE') {
+        headerProps.coverUrl = originalSource.coverUrl;
+        headerProps.aboveHeading = originalSource.directors && originalSource.directors.join(', ');
+    }
+
     return (
         <Link
             to={generatePath(TRANSLATION_EXAMPLE, {
