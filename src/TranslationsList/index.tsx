@@ -12,9 +12,7 @@ import { generatePath, Link, useHistory } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import clsx from 'clsx';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
-import { WebsiteCoverIcon } from '../CoverIcon/WebsiteCoverIcon';
-import { MovieCoverIcon } from '../CoverIcon/MovieCoverIcon';
-import { BookCoverIcon } from '../CoverIcon/BookCoverIcon';
+import { CoverIcon } from '../CoverIcon';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -121,15 +119,7 @@ function TranslationItem({
                         {sources.map(example => {
                             return (
                                 <li key={example.id} className={s.translationExampleListItem}>
-                                    {example.type === 'BOOK' && (
-                                        <BookCoverIcon className={s.exampleIcon} item={example} />
-                                    )}
-                                    {example.type === 'WEBPAGE' && (
-                                        <WebsiteCoverIcon className={s.exampleIcon} item={example} />
-                                    )}
-                                    {example.type === 'MOVIE' && (
-                                        <MovieCoverIcon className={s.exampleIcon} item={example} />
-                                    )}
+                                    <CoverIcon className={s.exampleIcon} item={example} />
                                 </li>
                             );
                         })}

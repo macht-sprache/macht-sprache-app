@@ -1,19 +1,17 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { BookCoverIcon } from '../CoverIcon/BookCoverIcon';
 import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ExampleText } from '../ExampleText';
 import { ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useSources, collections } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
-import { MovieCoverIcon } from '../CoverIcon/MovieCoverIcon';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { Term, Translation, TranslationExample, Lang, Source } from '../types';
 import { extractRootDomain, trimString } from '../utils';
-import { WebsiteCoverIcon } from '../CoverIcon/WebsiteCoverIcon';
 import s from './style.module.css';
+import { CoverIcon } from '../CoverIcon';
 
 type Props = {
     term: Term;
@@ -87,20 +85,18 @@ function TranslationExampleArticle({
         langTranslated: translation.lang,
         titleOriginal: originalSource?.title,
         titleTranslated: translatedSource?.title,
+        cover: <CoverIcon item={originalSource} className={s.cover} />,
     };
 
     if (originalSource?.type === 'BOOK') {
-        headerProps.cover = <BookCoverIcon item={originalSource} className={s.cover} />;
         headerProps.surTitle = originalSource.authors.join(', ');
     }
 
     if (originalSource?.type === 'WEBPAGE') {
-        headerProps.cover = <WebsiteCoverIcon item={originalSource} className={s.cover} />;
         headerProps.surTitle = extractRootDomain(originalSource.url);
     }
 
     if (originalSource?.type === 'MOVIE') {
-        headerProps.cover = <MovieCoverIcon item={originalSource} className={s.cover} />;
         headerProps.surTitle = originalSource.directors && originalSource.directors.join(', ');
     }
 
