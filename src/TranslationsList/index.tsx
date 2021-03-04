@@ -13,6 +13,7 @@ import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes
 import clsx from 'clsx';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { WebsiteCoverIcon } from '../WebsiteCoverIcon';
+import { MovieCoverIcon } from '../MovieCoverIcon';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -117,31 +118,30 @@ function TranslationItem({
                 ) : (
                     <ul className={s.translationExampleList}>
                         {sources.map(example => {
-                            if (example.type === 'BOOK') {
-                                return (
-                                    <li key={example.id} className={s.translationExampleListItem}>
-                                        {example.coverUrl ? (
-                                            <img
-                                                src={example.coverUrl}
-                                                alt={example.title}
-                                                title={example.title}
-                                                className={s.translationExampleListImage}
-                                            />
-                                        ) : (
-                                            example.title
-                                        )}
-                                    </li>
-                                );
-                            }
-                            if (example.type === 'WEBPAGE') {
-                                return (
-                                    <li key={example.id} className={s.translationExampleListItem}>
+                            return (
+                                <li key={example.id} className={s.translationExampleListItem}>
+                                    {example.type === 'BOOK' && (
+                                        <>
+                                            {example.coverUrl ? (
+                                                <img
+                                                    src={example.coverUrl}
+                                                    alt={example.title}
+                                                    title={example.title}
+                                                    className={s.translationExampleListImage}
+                                                />
+                                            ) : (
+                                                example.title
+                                            )}
+                                        </>
+                                    )}
+                                    {example.type === 'WEBPAGE' && (
                                         <WebsiteCoverIcon className={s.exampleIcon} item={example} />
-                                    </li>
-                                );
-                            }
-
-                            return null;
+                                    )}
+                                    {example.type === 'MOVIE' && (
+                                        <MovieCoverIcon className={s.exampleIcon} item={example} />
+                                    )}
+                                </li>
+                            );
                         })}
                         <li className={s.translationExampleListItem}>
                             <AddExampleButton to={addExampleLink} />
