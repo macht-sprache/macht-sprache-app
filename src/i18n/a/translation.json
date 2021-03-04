@@ -174,8 +174,8 @@
         "yourRating": "Your Usage: ",
         "dragToSet": "Drag to set your usage.",
         "clickToSet": "Click to set your usage",
-        "overlayHeading": "How often would you translate <Term>{{term}}</Term> to <Translation>{{translation}}</Translation>",
-        "noData": "No data yet."
+        "overlayHeading": "How often would you translate <Term>{{term}}</Term> as <Translation>{{translation}}</Translation>?",
+        "noData": "No ratings yet."
     },
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
