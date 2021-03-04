@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { WebPage } from '../types';
+import { extractRootDomain } from '../utils';
 import s from './style.module.css';
 
 type WebsiteCoverIconProps = {
@@ -31,12 +32,4 @@ export function WebsiteCoverIcon({ item, className }: WebsiteCoverIconProps) {
             {item.logoUrl && <img src={item.logoUrl} alt="" className={s.logo} />}
         </div>
     );
-}
-
-function extractRootDomain(url: string) {
-    try {
-        return new URL(url).hostname.replace(/^www\./, '');
-    } catch {
-        return '';
-    }
 }
