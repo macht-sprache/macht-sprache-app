@@ -8,7 +8,8 @@ import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import { Term, Translation, TranslationExample, BookSnippet, Lang } from '../types';
+import { Term, Translation, TranslationExample, BookSnippet, WebPageSnippet, Lang } from '../types';
+import { extractRootDomain, trimString } from '../utils';
 import s from './style.module.css';
 
 type Props = {
@@ -80,7 +81,15 @@ function TranslationExampleArticle({
         >
             <article className={s.example}>
                 {example.type === 'BOOK' && (
-                    <Header
+                    <HeaderWrapperBook
+                        langOriginal={term.lang}
+                        langTranslated={translation.lang}
+                        snippetOriginal={example.original}
+                        snippetTranslated={example.translated}
+                    />
+                )}
+                {example.type === 'WEBPAGE' && (
+                    <HeaderWrapperWebsite
                         langOriginal={term.lang}
                         langTranslated={translation.lang}
                         snippetOriginal={example.original}
@@ -97,7 +106,33 @@ function TranslationExampleArticle({
     );
 }
 
-function Header({
+function HeaderWrapperWebsite({
+    snippetOriginal,
+    snippetTranslated,
+    langOriginal,
+    langTranslated,
+}: {
+    snippetOriginal: WebPageSnippet;
+    snippetTranslated: WebPageSnippet;
+    langOriginal: Lang;
+    langTranslated: Lang;
+}) {
+    const original = useDocument(snippetOriginal.source);
+    const translated = useDocument(snippetTranslated.source);
+
+    return (
+        <Header
+            coverUrl={original.imageUrl}
+            aboveHeading={extractRootDomain(original.url)}
+            titleOriginal={original.title}
+            titleTranslated={translated.title}
+            langOriginal={langOriginal}
+            langTranslated={langTranslated}
+        />
+    );
+}
+
+function HeaderWrapperBook({
     snippetOriginal,
     snippetTranslated,
     langOriginal,
@@ -108,23 +143,50 @@ function Header({
     langOriginal: Lang;
     langTranslated: Lang;
 }) {
-    const bookOriginal = useDocument(snippetOriginal.source);
-    const bookTranslated = useDocument(snippetTranslated.source);
+    const original = useDocument(snippetOriginal.source);
+    const translated = useDocument(snippetTranslated.source);
 
     return (
+        <Header
+            coverUrl={original.coverUrl}
+            aboveHeading={original.authors.join(', ')}
+            titleOriginal={original.title}
+            titleTranslated={translated.title}
+            langOriginal={langOriginal}
+            langTranslated={langTranslated}
+        />
+    );
+}
+
+function Header({
+    coverUrl,
+    aboveHeading,
+    titleOriginal,
+    titleTranslated,
+    langOriginal,
+    langTranslated,
+}: {
+    coverUrl?: string;
+    aboveHeading?: string;
+    titleOriginal: string;
+    titleTranslated: string;
+    langOriginal: Lang;
+    langTranslated: Lang;
+}) {
+    return (
         <header className={s.header}>
-            {bookOriginal.coverUrl && (
+            {coverUrl && (
                 <div className={s.headingImgContainer}>
-                    <img className={s.headingImg} alt="" src={bookOriginal.coverUrl} />
+                    <img className={s.headingImg} alt="" src={coverUrl} />
                 </div>
             )}
             <div>
-                {bookOriginal.authors.join(', ')}
+                {aboveHeading}
                 <h1 className={s.headingOriginal} lang={langOriginal}>
-                    {bookOriginal.title}
+                    {trimString(titleTranslated)}
                 </h1>
                 <h1 className={s.headingTranslated} lang={langTranslated}>
-                    {bookTranslated.title}
+                    {trimString(titleOriginal)}
                 </h1>
             </div>
         </header>

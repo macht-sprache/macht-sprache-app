@@ -31,9 +31,15 @@
     margin-left: 0.5rem;
 }
 
+.headingOriginal[lang='de'],
+.headingTranslated[lang='de'] {
+    hyphens: auto;
+}
+
 .headingImg {
     height: 5rem;
     min-width: 3rem;
+    max-width: 6rem;
     object-fit: cover;
     margin-right: 0.5rem;
     margin-left: calc(var(--thickBorder) * -1);

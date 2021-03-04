@@ -65,11 +65,11 @@ export interface BookSnippet extends BaseSnippet {
     pageNumber?: string;
 }
 
-interface MovieSnippet extends BaseSnippet {
+export interface MovieSnippet extends BaseSnippet {
     source: DocReference<MovieSource>;
 }
 
-interface WebPageSnippet extends BaseSnippet {
+export interface WebPageSnippet extends BaseSnippet {
     source: DocReference<WebPageSource>;
 }
 
