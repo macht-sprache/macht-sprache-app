@@ -3,12 +3,12 @@ import { generatePath, Link } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ExampleText } from '../ExampleText';
 import { ButtonLink } from '../Form/Button';
-import { useTranslationExamples, useDocument } from '../hooks/data';
+import { useTranslationExamples, useSources, collections } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import { Term, Translation, TranslationExample, BookSnippet, WebPageSnippet, Lang } from '../types';
+import { Term, Translation, TranslationExample, Lang, Source } from '../types';
 import { extractRootDomain, trimString } from '../utils';
 import s from './style.module.css';
 
@@ -20,6 +20,7 @@ type Props = {
 export default function TranslationExamplesList({ term, translation }: Props) {
     const { t } = useTranslation();
     const translationExamples = useTranslationExamples(translation.id);
+    const sources = useSources(collections.translations.doc(translation.id))[translation.id];
 
     return (
         <CommentWrapper>
@@ -42,6 +43,10 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                             term={term}
                             translation={translation}
                             example={translationExample}
+                            originalSource={sources.find(source => source.id === translationExample.original.source.id)}
+                            translatedSource={sources.find(
+                                source => source.id === translationExample.translated.source.id
+                            )}
                         />
                     ))}
                 </div>
@@ -61,14 +66,35 @@ export default function TranslationExamplesList({ term, translation }: Props) {
 
 function TranslationExampleArticle({
     example,
+    originalSource,
+    translatedSource,
     term,
     translation,
 }: {
     example: TranslationExample;
+    originalSource?: Source;
+    translatedSource?: Source;
     term: Term;
     translation: Translation;
 }) {
     const { t } = useTranslation();
+
+    const headerProps: HeaderProps = {
+        langOriginal: term.lang,
+        langTranslated: translation.lang,
+        titleOriginal: originalSource?.title,
+        titleTranslated: translatedSource?.title,
+    };
+
+    if (originalSource?.type === 'BOOK') {
+        headerProps.coverUrl = originalSource.coverUrl;
+        headerProps.aboveHeading = originalSource.authors.join(', ');
+    }
+
+    if (originalSource?.type === 'WEBPAGE') {
+        headerProps.coverUrl = originalSource.imageUrl;
+        headerProps.aboveHeading = extractRootDomain(originalSource.url);
+    }
 
     return (
         <Link
@@ -80,22 +106,7 @@ function TranslationExampleArticle({
             className={s.link}
         >
             <article className={s.example}>
-                {example.type === 'BOOK' && (
-                    <HeaderWrapperBook
-                        langOriginal={term.lang}
-                        langTranslated={translation.lang}
-                        snippetOriginal={example.original}
-                        snippetTranslated={example.translated}
-                    />
-                )}
-                {example.type === 'WEBPAGE' && (
-                    <HeaderWrapperWebsite
-                        langOriginal={term.lang}
-                        langTranslated={translation.lang}
-                        snippetOriginal={example.original}
-                        snippetTranslated={example.translated}
-                    />
-                )}
+                <Header {...headerProps} />
                 <ExampleText lang={term.lang} snippet={example.original} className={s.exampleTextOriginal} />
                 <ExampleText lang={translation.lang} snippet={example.translated} className={s.exampleTextTranslated} />
                 <footer className={s.footer}>
@@ -106,73 +117,16 @@ function TranslationExampleArticle({
     );
 }
 
-function HeaderWrapperWebsite({
-    snippetOriginal,
-    snippetTranslated,
-    langOriginal,
-    langTranslated,
-}: {
-    snippetOriginal: WebPageSnippet;
-    snippetTranslated: WebPageSnippet;
-    langOriginal: Lang;
-    langTranslated: Lang;
-}) {
-    const original = useDocument(snippetOriginal.source);
-    const translated = useDocument(snippetTranslated.source);
-
-    return (
-        <Header
-            coverUrl={original.imageUrl}
-            aboveHeading={extractRootDomain(original.url)}
-            titleOriginal={original.title}
-            titleTranslated={translated.title}
-            langOriginal={langOriginal}
-            langTranslated={langTranslated}
-        />
-    );
-}
-
-function HeaderWrapperBook({
-    snippetOriginal,
-    snippetTranslated,
-    langOriginal,
-    langTranslated,
-}: {
-    snippetOriginal: BookSnippet;
-    snippetTranslated: BookSnippet;
-    langOriginal: Lang;
-    langTranslated: Lang;
-}) {
-    const original = useDocument(snippetOriginal.source);
-    const translated = useDocument(snippetTranslated.source);
-
-    return (
-        <Header
-            coverUrl={original.coverUrl}
-            aboveHeading={original.authors.join(', ')}
-            titleOriginal={original.title}
-            titleTranslated={translated.title}
-            langOriginal={langOriginal}
-            langTranslated={langTranslated}
-        />
-    );
-}
-
-function Header({
-    coverUrl,
-    aboveHeading,
-    titleOriginal,
-    titleTranslated,
-    langOriginal,
-    langTranslated,
-}: {
+type HeaderProps = {
     coverUrl?: string;
     aboveHeading?: string;
-    titleOriginal: string;
-    titleTranslated: string;
+    titleOriginal?: string;
+    titleTranslated?: string;
     langOriginal: Lang;
     langTranslated: Lang;
-}) {
+};
+
+function Header({ coverUrl, aboveHeading, titleOriginal, titleTranslated, langOriginal, langTranslated }: HeaderProps) {
     return (
         <header className={s.header}>
             {coverUrl && (
