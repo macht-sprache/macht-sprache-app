@@ -17,38 +17,6 @@
     margin: 0;
 }
 
-.selectedCancelButton {
-    position: absolute;
-    top: -0.5rem;
-    left: -0.5rem;
-    background: var(--red);
-    border-radius: 50%;
-    height: 2rem;
-    width: 2rem;
-    border: var(--black) solid var(--thickBorder);
-    cursor: pointer;
-}
-
-.selectedCancelButton:hover {
-    border-color: var(--orange);
-}
-
-.selectedCancelButton:before,
-.selectedCancelButton:after {
-    content: '';
-    position: absolute;
-    height: var(--thickBorder);
-    width: 1.2rem;
-    background: var(--black);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.selectedCancelButton:after {
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-
 .selectedCancelButtonInline {
     margin-top: 0.5rem;
 }

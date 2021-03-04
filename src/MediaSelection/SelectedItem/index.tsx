@@ -45,13 +45,6 @@ export default function SelectedItem<T extends { title: string; lang: Lang }>({
                     </div>
                 </div>
             </div>
-            <button
-                className={s.selectedCancelButton}
-                onClick={onCancel}
-                title={cancelLabel}
-                aria-hidden="true"
-                tabIndex={-1}
-            ></button>
         </div>
     );
 }
