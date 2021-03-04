@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { Lang } from '../types';
 import { useLang } from '../useLang';
@@ -13,9 +14,10 @@ type Props = {
         inner: React.ReactNode;
     }[];
     rating?: React.ReactNode;
+    capitalize?: boolean;
 };
 
-export default function Header({ children, subLine, mainLang, topHeading, rating }: Props) {
+export default function Header({ children, subLine, mainLang, topHeading, rating, capitalize = true }: Props) {
     const [lang] = useLang();
 
     return (
@@ -23,7 +25,11 @@ export default function Header({ children, subLine, mainLang, topHeading, rating
             {topHeading &&
                 topHeading.map((heading, index) => {
                     return (
-                        <h2 className={s.topHeading} key={index} lang={heading.lang}>
+                        <h2
+                            className={clsx(s.topHeading, { [s.capitalize]: capitalize })}
+                            key={index}
+                            lang={heading.lang}
+                        >
                             <Link to={heading.to} className={s.topHeadingLink}>
                                 {heading.inner}
                             </Link>
@@ -31,7 +37,7 @@ export default function Header({ children, subLine, mainLang, topHeading, rating
                     );
                 })}
             <h1 className={s.heading} lang={mainLang}>
-                <span className={s.headingInner}>{children}</span>
+                <span className={clsx(s.headingInner, { [s.capitalize]: capitalize })}>{children}</span>
                 {rating && (
                     <div lang={lang} className={s.rating}>
                         {rating}
