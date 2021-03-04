@@ -88,17 +88,17 @@ function TranslationExampleArticle({
 
     if (originalSource?.type === 'BOOK') {
         headerProps.coverUrl = originalSource.coverUrl;
-        headerProps.aboveHeading = originalSource.authors.join(', ');
+        headerProps.surTitle = originalSource.authors.join(', ');
     }
 
     if (originalSource?.type === 'WEBPAGE') {
         headerProps.coverUrl = originalSource.imageUrl;
-        headerProps.aboveHeading = extractRootDomain(originalSource.url);
+        headerProps.surTitle = extractRootDomain(originalSource.url);
     }
 
     if (originalSource?.type === 'MOVIE') {
         headerProps.coverUrl = originalSource.coverUrl;
-        headerProps.aboveHeading = originalSource.directors && originalSource.directors.join(', ');
+        headerProps.surTitle = originalSource.directors && originalSource.directors.join(', ');
     }
 
     return (
@@ -124,14 +124,14 @@ function TranslationExampleArticle({
 
 type HeaderProps = {
     coverUrl?: string;
-    aboveHeading?: string;
+    surTitle?: string;
     titleOriginal?: string;
     titleTranslated?: string;
     langOriginal: Lang;
     langTranslated: Lang;
 };
 
-function Header({ coverUrl, aboveHeading, titleOriginal, titleTranslated, langOriginal, langTranslated }: HeaderProps) {
+function Header({ coverUrl, surTitle, titleOriginal, titleTranslated, langOriginal, langTranslated }: HeaderProps) {
     return (
         <header className={s.header}>
             {coverUrl && (
@@ -140,7 +140,7 @@ function Header({ coverUrl, aboveHeading, titleOriginal, titleTranslated, langOr
                 </div>
             )}
             <div>
-                {aboveHeading}
+                {surTitle}
                 <h1 className={s.headingOriginal} lang={langOriginal}>
                     {trimString(titleTranslated)}
                 </h1>
