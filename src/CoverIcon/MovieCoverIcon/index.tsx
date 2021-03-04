@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Movie } from '../types';
+import { Movie } from '../../types';
 import s from './style.module.css';
 
 type Props = {

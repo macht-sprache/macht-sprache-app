@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import { WebPage } from '../types';
-import { extractRootDomain } from '../utils';
+import { WebPage } from '../../types';
+import { extractRootDomain } from '../../utils';
 import s from './style.module.css';
 
 type WebsiteCoverIconProps = {

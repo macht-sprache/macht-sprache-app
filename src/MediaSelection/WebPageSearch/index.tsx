@@ -5,7 +5,7 @@ import InputContainer from '../../Form/InputContainer';
 import { FormatDate } from '../../FormatDate';
 import { findWebPage } from '../../functions';
 import { Lang, WebPage } from '../../types';
-import { WebsiteCoverIcon } from '../../WebsiteCoverIcon';
+import { WebsiteCoverIcon } from '../../CoverIcon/WebsiteCoverIcon';
 import SelectedItem from '../SelectedItem';
 
 type Props = {

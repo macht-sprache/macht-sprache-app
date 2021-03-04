@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { Book } from '../types';
+import { Book } from '../../types';
 import s from './style.module.css';
 
 type BookCoverIconProps = {

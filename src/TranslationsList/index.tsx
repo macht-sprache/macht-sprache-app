@@ -12,9 +12,9 @@ import { generatePath, Link, useHistory } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import clsx from 'clsx';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
-import { WebsiteCoverIcon } from '../WebsiteCoverIcon';
-import { MovieCoverIcon } from '../MovieCoverIcon';
-import { BookCoverIcon } from '../BookCoverIcon';
+import { WebsiteCoverIcon } from '../CoverIcon/WebsiteCoverIcon';
+import { MovieCoverIcon } from '../CoverIcon/MovieCoverIcon';
+import { BookCoverIcon } from '../CoverIcon/BookCoverIcon';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);

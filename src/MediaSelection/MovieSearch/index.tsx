@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { findMovies } from '../../functions';
-import { MovieCoverIcon } from '../../MovieCoverIcon';
+import { MovieCoverIcon } from '../../CoverIcon/MovieCoverIcon';
 import { Lang, Movie } from '../../types';
 import MediaSearch, { SelectedItemProps } from '../MediaSearch';
 import SelectedItem from '../SelectedItem';

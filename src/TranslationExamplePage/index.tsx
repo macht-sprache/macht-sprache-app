@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
-import { BookCoverIcon } from '../BookCoverIcon';
+import { BookCoverIcon } from '../CoverIcon/BookCoverIcon';
 import Comments from '../Comments';
 import { ExampleText } from '../ExampleText';
 import Header from '../Header';

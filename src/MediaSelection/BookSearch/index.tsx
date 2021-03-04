@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { BookCoverIcon } from '../../BookCoverIcon';
+import { BookCoverIcon } from '../../CoverIcon/BookCoverIcon';
 import { findBooks } from '../../functions';
 import { Book, Lang } from '../../types';
 import MediaSearch, { SelectedItemProps } from '../MediaSearch';
