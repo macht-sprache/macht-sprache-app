@@ -1,16 +1,19 @@
 import clsx from 'clsx';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
-import { BookCoverIcon } from '../CoverIcon/BookCoverIcon';
 import Comments from '../Comments';
 import { ExampleText } from '../ExampleText';
 import Header from '../Header';
 import { collections, useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
 import { TERM, TRANSLATION } from '../routes';
-import { BookSource, BookTranslationExample, Term, Translation } from '../types';
+import { DocReference, Source } from '../types';
 import s from './style.module.css';
+import { CoverIcon } from '../CoverIcon';
+import { extractRootDomain, trimString } from '../utils';
+import { FormatDate } from '../FormatDate';
 
 export function TranslationExamplePage() {
+    const { t } = useTranslation();
     const { termId, translationId, translationExampleId } = useParams<{
         termId: string;
         translationId: string;
@@ -19,26 +22,8 @@ export function TranslationExamplePage() {
     const term = useTerm(termId);
     const translation = useTranslationEntity(translationId);
     const translationExample = useTranslationExample(translationExampleId);
-
-    if (translationExample.type === 'BOOK') {
-        return <BookPage term={term} translation={translation} translationExample={translationExample} />;
-    }
-
-    return <>no book! it's a {translationExample.type}</>;
-}
-
-function BookPage({
-    term,
-    translation,
-    translationExample,
-}: {
-    term: Term;
-    translation: Translation;
-    translationExample: BookTranslationExample;
-}) {
-    const bookOriginal = useDocument(translationExample.original.source);
-    const bookTranslated = useDocument(translationExample.translated.source);
-    const { t } = useTranslation();
+    const bookOriginal = useDocument(translationExample.original.source as DocReference<Source>);
+    const translatedSource = useDocument(translationExample.translated.source as DocReference<Source>);
 
     return (
         <>
@@ -57,11 +42,7 @@ function BookPage({
                 ]}
                 subLine={
                     <p>
-                        {t('translationExample.page.subLine', {
-                            author: bookOriginal.authors.join(', '),
-                            year: bookOriginal.year,
-                            publisher: bookOriginal.publisher,
-                        })}
+                        <ExampleSubLine source={bookOriginal} />
                     </p>
                 }
             >
@@ -70,8 +51,8 @@ function BookPage({
             </Header>
 
             <div className={s.body}>
-                <Book source={bookOriginal} isOriginal={true} />
-                <Book source={bookTranslated} />
+                <MediaSummary source={bookOriginal} isOriginal={true} />
+                <MediaSummary source={translatedSource} />
 
                 <ExampleText lang={term.lang} snippet={translationExample.original} className={s.snippetOriginal} />
                 <ExampleText
@@ -88,26 +69,95 @@ function BookPage({
     );
 }
 
-function Book({ source, isOriginal = false }: { source: BookSource; isOriginal?: boolean }) {
+function ExampleSubLine({ source }: { source: Source }) {
     const { t } = useTranslation();
 
+    switch (source.type) {
+        case 'BOOK':
+            return (
+                <>
+                    {t('translationExample.page.subLine.BOOK', {
+                        author: source.authors.join(', '),
+                        year: source.year,
+                        publisher: source.publisher,
+                    })}
+                </>
+            );
+        case 'MOVIE':
+            return (
+                <>
+                    {t('translationExample.page.subLine.MOVIE', {
+                        director: source.directors?.join(', '),
+                        year: source.year,
+                    })}
+                </>
+            );
+        case 'WEBPAGE':
+            return (
+                <Trans
+                    t={t}
+                    i18nKey="translationExample.page.subLine.WEBPAGE"
+                    values={{ domain: extractRootDomain(source.url) }}
+                    components={{ Date: source.date && <FormatDate date={new Date(source.date)} /> }}
+                />
+            );
+    }
+}
+
+function MediaSummary({ source, isOriginal = false }: { source: Source; isOriginal?: boolean }) {
     return (
         <div className={clsx(s.bookContainer, { [s.original]: isOriginal, [s.translated]: !isOriginal })}>
             <div className={s.bookIconContainer}>
-                <BookCoverIcon item={source} className={s.bookIcon} />
+                <CoverIcon item={source} className={s.bookIcon} />
             </div>
             <div className={s.meta}>
-                <h3 className={s.heading}>{source.title}</h3>
+                <h3 className={s.heading} lang={source.lang}>
+                    {trimString(source.title)}
+                </h3>
                 <dl className={s.definitionList}>
+                    <MediaMetaData source={source} />
+                </dl>
+            </div>
+        </div>
+    );
+}
+
+function MediaMetaData({ source }: { source: Source }) {
+    const { t } = useTranslation();
+
+    switch (source.type) {
+        case 'BOOK':
+            return (
+                <>
                     <DefintionListItem definition={t('translationExample.publisher')}>
                         {source.publisher}
                     </DefintionListItem>
                     <DefintionListItem definition={t('translationExample.year')}>{source.year}</DefintionListItem>
                     <DefintionListItem definition="ISBN">{source.isbn}</DefintionListItem>
-                </dl>
-            </div>
-        </div>
-    );
+                </>
+            );
+        case 'MOVIE':
+            return (
+                <>
+                    <DefintionListItem definition={t('translationExample.year')}>{source.year}</DefintionListItem>
+                </>
+            );
+        case 'WEBPAGE':
+            return (
+                <>
+                    {source.date && (
+                        <DefintionListItem definition={t('translationExample.published')}>
+                            <FormatDate date={new Date(source.date)} />
+                        </DefintionListItem>
+                    )}
+                    <DefintionListItem definition={t('translationExample.link')}>
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                            {trimString(source.url, 40)}
+                        </a>
+                    </DefintionListItem>
+                </>
+            );
+    }
 }
 
 const DefintionListItem = ({ definition, children }: { definition: React.ReactNode; children: React.ReactNode }) => (

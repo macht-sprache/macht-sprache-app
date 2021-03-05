@@ -159,9 +159,15 @@
         "publishedBy": "Published by {{publisher}}",
         "publisher": "Publisher",
         "year": "Year",
+        "published": "Published",
+        "link": "Link",
         "page": {
             "heading": "Example: ",
-            "subLine": "Original by {{author}}, published by {{publisher}} in {{year}}."
+            "subLine": {
+                "BOOK": "Book by {{author}}. Published by {{publisher}} in {{year}}.",
+                "MOVIE": "Film directed by {{director}}. Released {{year}}.",
+                "WEBPAGE": "Website on {{domain}}. Published <Date />."
+            }
         },
         "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one."
     },
