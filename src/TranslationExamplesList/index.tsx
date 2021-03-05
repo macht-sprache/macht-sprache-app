@@ -118,7 +118,7 @@ function Header({ term, translation, originalSource, translatedSource }: HeaderP
 
     return (
         <header className={s.header}>
-            {cover && <div className={s.coverContainer}></div>}
+            {cover && <div className={s.coverContainer}>{cover}</div>}
             <div>
                 {originalSource && getSurtitle(originalSource)}
                 <h1 className={s.headingOriginal} lang={term.lang}>
