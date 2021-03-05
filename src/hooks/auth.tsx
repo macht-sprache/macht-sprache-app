@@ -70,6 +70,7 @@ function useEnsureUserEntity() {
         );
 
         return () => {
+            setState(prev => ({ ...prev, user: undefined }));
             unsubscribe();
         };
     }, [authUser, loadingAuthUser]);
