@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import { FirebaseAppProvider } from 'reactfire';
 import AddTermPage from './AddTermPage';
 import { AddTranslationExamplePage } from './AddTranslationExamplePage';
@@ -9,7 +9,8 @@ import ErrorBoundary from './ErrorBoundary';
 import { app } from './firebase';
 import HomePage from './HomePage';
 import { HomePagePreLaunch } from './HomePagePreLaunch';
-import { AppContextProvider } from './hooks/auth';
+import { AppContextProvider, useUser } from './hooks/auth';
+import { useAddContinueParam } from './hooks/location';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
 import LoginPage from './LoginPage';
@@ -63,24 +64,24 @@ function AppRouter() {
                             <Route path={routes.LOGIN} exact>
                                 <LoginPage />
                             </Route>
-                            <Route path={routes.TERM_ADD} exact>
+                            <LoggedInRoute path={routes.TERM_ADD} exact>
                                 <AddTermPage />
-                            </Route>
-                            <Route path={routes.TERM} exact>
+                            </LoggedInRoute>
+                            <LaunchedRoute path={routes.TERM} exact>
                                 <TermPage />
-                            </Route>
-                            <Route path={routes.TRANSLATION_ADD} exact>
+                            </LaunchedRoute>
+                            <LoggedInRoute path={routes.TRANSLATION_ADD} exact>
                                 <AddTranslationPage />
-                            </Route>
-                            <Route path={routes.TRANSLATION} exact>
+                            </LoggedInRoute>
+                            <LaunchedRoute path={routes.TRANSLATION} exact>
                                 <TranslationPage />
-                            </Route>
-                            <Route path={routes.TRANSLATION_EXAMPLE_ADD} exact>
+                            </LaunchedRoute>
+                            <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD} exact>
                                 <AddTranslationExamplePage />
-                            </Route>
-                            <Route path={routes.TRANSLATION_EXAMPLE} exact>
+                            </LoggedInRoute>
+                            <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
                                 <TranslationExamplePage />
-                            </Route>
+                            </LaunchedRoute>
                             <Route path={routes.ABOUT} exact>
                                 <StaticContentPage slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }} />
                             </Route>
@@ -106,6 +107,31 @@ function AppRouter() {
             </Layout>
         </Router>
     );
+}
+
+function LoggedInRoute(props: RouteProps) {
+    const user = useUser();
+
+    if (user) {
+        return <Route {...props} />;
+    }
+
+    return <RedirectToLogin />;
+}
+
+function LaunchedRoute(props: RouteProps) {
+    const launched = useLaunched();
+
+    if (launched) {
+        return <Route {...props} />;
+    }
+
+    return <RedirectToLogin />;
+}
+
+function RedirectToLogin() {
+    const addContinueParam = useAddContinueParam();
+    return <Redirect to={addContinueParam(routes.LOGIN)} />;
 }
 
 export default App;
