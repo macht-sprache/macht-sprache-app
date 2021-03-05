@@ -116,13 +116,13 @@ function TranslationItem({
                     </div>
                 ) : (
                     <ul className={s.translationExampleList}>
-                        {sources.map(example => {
-                            return (
-                                <li key={example.id} className={s.translationExampleListItem}>
-                                    <CoverIcon className={s.exampleIcon} item={example} />
+                        {sources
+                            .filter(source => source.lang === translation.lang)
+                            .map(source => (
+                                <li key={source.id} className={s.translationExampleListItem}>
+                                    <CoverIcon className={s.exampleIcon} item={source} />
                                 </li>
-                            );
-                        })}
+                            ))}
                         <li className={s.translationExampleListItem}>
                             <AddExampleButton to={addExampleLink} />
                         </li>
