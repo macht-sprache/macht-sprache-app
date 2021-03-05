@@ -1,16 +1,13 @@
 import * as admin from 'firebase-admin';
 import * as firebaseFunctions from 'firebase-functions';
 import { DocReference } from '../../src/types';
+import config from './config';
 
 const app = admin.initializeApp();
 const db = admin.firestore(app);
 db.settings({ ignoreUndefinedProperties: true });
 
-if (!process.env.FIREBASE_FUNCTION_REGION) {
-    throw new Error('Env FIREBASE_FUNCTION_REGION is not defined.');
-}
-
-const functions = firebaseFunctions.region(process.env.FIREBASE_FUNCTION_REGION);
+const functions = firebaseFunctions.region(config.functions.region);
 const { logger } = firebaseFunctions;
 
 export { db, functions, logger };

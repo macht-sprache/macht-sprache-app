@@ -12,4 +12,4 @@ typings/
 node_modules/
 
 /gcloud-dev-service-account.json
-.env
+.runtimeconfig.json

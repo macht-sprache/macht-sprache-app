@@ -3,12 +3,9 @@ import fetch from 'node-fetch';
 import { isValid } from 'rambdax';
 import { langA, langB } from '../../../src/languages';
 import { Lang, Movie } from '../../../src/types';
+import config from '../config';
 
-if (!process.env.TMDB_API_KEY) {
-    throw new Error('Env TMDB_API_KEY is not defined.');
-}
-
-const apiKey = process.env.TMDB_API_KEY;
+const apiKey = config.tmdb.key;
 const baseUrl = 'https://api.themoviedb.org/3';
 const baseUrlImages = 'https://image.tmdb.org/t/p/w500';
 const serviceName = 'tmdb';
