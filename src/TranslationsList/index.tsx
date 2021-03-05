@@ -55,6 +55,8 @@ export function TranslationsList({ term }: { term: Term }) {
     );
 }
 
+const stopPropagation = (event: React.MouseEvent) => event.stopPropagation();
+
 function TranslationItem({
     translation,
     term,
@@ -71,21 +73,9 @@ function TranslationItem({
     const addExampleLink = generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id });
 
     return (
-        <article
-            className={s.item}
-            lang={translation.lang}
-            onClick={() => {
-                history.push(link);
-            }}
-        >
+        <article className={s.item} lang={translation.lang} onClick={() => history.push(link)}>
             <header className={s.header}>
-                <Link
-                    to={link}
-                    onClick={e => {
-                        e.stopPropagation();
-                    }}
-                    className={s.link}
-                >
+                <Link to={link} onClick={stopPropagation} className={s.link}>
                     <h1 className={s.value}>{translation.value}</h1>
                 </Link>
                 <div className={s.rating}>
@@ -149,9 +139,7 @@ function AddExampleButton({ to, className }: { to: string; className?: string })
         <Link
             to={to}
             className={clsx(s.addExampleButton, className)}
-            onClick={e => {
-                e.stopPropagation();
-            }}
+            onClick={stopPropagation}
             aria-label={t('common.entities.translatioExample.add')}
             title={t('common.entities.translatioExample.add')}
         >
