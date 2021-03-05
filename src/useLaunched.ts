@@ -1,7 +1,7 @@
-import { useEnsureUserEntity } from './hooks/auth';
+import { useUser } from './hooks/auth';
 
 export function useLaunched() {
-    const user = useEnsureUserEntity();
+    const user = useUser();
 
     return !!user || process.env.REACT_APP_LAUNCHED === 'true';
 }

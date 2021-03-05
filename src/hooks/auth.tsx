@@ -7,16 +7,24 @@ import { i18n } from '../i18n/config';
 import { User } from '../types';
 import { toLanguageOrDefault } from '../useLang';
 
-const userContext = createContext<User | undefined>(undefined);
-
-export const UserProvider = userContext.Provider;
+const appContext = createContext<{ user?: User }>({});
 
 export const useUser = () => {
-    return useContext(userContext);
+    return useContext(appContext).user;
 };
 
 export const useAuthState = (): [firebase.User | undefined, boolean, firebase.auth.Error | undefined] =>
     _useAuthState(auth);
+
+export const AppContextProvider: React.FC = ({ children }) => {
+    const { user, loading } = useEnsureUserEntity();
+
+    if (loading) {
+        return null;
+    }
+
+    return <appContext.Provider value={{ user }}>{children}</appContext.Provider>;
+};
 
 const ensureUserEntity = (authUser: firebase.User) =>
     authUser
@@ -30,14 +38,19 @@ const ensureUserEntity = (authUser: firebase.User) =>
             })
         );
 
-export function useEnsureUserEntity() {
-    const [user, setUser] = useState<User>();
-    const [authUser] = useAuthState();
+function useEnsureUserEntity() {
+    const [state, setState] = useState<{ user?: User; loading: boolean; error?: firebase.firestore.FirestoreError }>({
+        loading: true,
+    });
+    const [authUser, loadingAuthUser] = useAuthState();
 
     useEffect(() => {
         let initialFetch = true;
 
         if (!authUser) {
+            if (!loadingAuthUser) {
+                setState(prev => ({ ...prev, loading: false }));
+            }
             return;
         }
 
@@ -48,16 +61,18 @@ export function useEnsureUserEntity() {
                     ensureUserEntity(authUser).catch(error => console.error(error));
                 }
                 initialFetch = false;
-                setUser(snapshot.data());
+                setState({ user: snapshot.data(), loading: false, error: undefined });
             },
-            error => console.error(error)
+            error => {
+                setState({ user: undefined, loading: false, error });
+                console.error(error);
+            }
         );
 
         return () => {
-            setUser(undefined);
             unsubscribe();
         };
-    }, [authUser]);
+    }, [authUser, loadingAuthUser]);
 
-    return user;
+    return state;
 }
