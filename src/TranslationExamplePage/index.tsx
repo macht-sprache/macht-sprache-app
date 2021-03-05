@@ -22,7 +22,7 @@ export function TranslationExamplePage() {
     const term = useTerm(termId);
     const translation = useTranslationEntity(translationId);
     const translationExample = useTranslationExample(translationExampleId);
-    const bookOriginal = useDocument(translationExample.original.source as DocReference<Source>);
+    const originalSource = useDocument(translationExample.original.source as DocReference<Source>);
     const translatedSource = useDocument(translationExample.translated.source as DocReference<Source>);
 
     return (
@@ -42,16 +42,16 @@ export function TranslationExamplePage() {
                 ]}
                 subLine={
                     <p>
-                        <ExampleSubLine source={bookOriginal} />
+                        <ExampleSubLine source={originalSource} />
                     </p>
                 }
             >
                 {t('translationExample.page.heading')}
-                {bookOriginal.title}
+                {originalSource.title}
             </Header>
 
             <div className={s.body}>
-                <MediaSummary source={bookOriginal} isOriginal={true} />
+                <MediaSummary source={originalSource} isOriginal={true} />
                 <MediaSummary source={translatedSource} />
 
                 <ExampleText lang={term.lang} snippet={translationExample.original} className={s.snippetOriginal} />
@@ -151,7 +151,7 @@ function MediaMetaData({ source }: { source: Source }) {
                         </DefintionListItem>
                     )}
                     <DefintionListItem definition={t('translationExample.link')}>
-                        <a href={source.url} target="_blank" rel="noreferrer">
+                        <a href={source.url} target="_blank" rel="noreferrer" className={s.sourceLink}>
                             {trimString(source.url, 40)}
                         </a>
                     </DefintionListItem>
