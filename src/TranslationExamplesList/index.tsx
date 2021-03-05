@@ -80,26 +80,6 @@ function TranslationExampleArticle({
 }) {
     const { t } = useTranslation();
 
-    const headerProps: HeaderProps = {
-        langOriginal: term.lang,
-        langTranslated: translation.lang,
-        titleOriginal: originalSource?.title,
-        titleTranslated: translatedSource?.title,
-        cover: <CoverIcon item={originalSource} className={s.cover} />,
-    };
-
-    if (originalSource?.type === 'BOOK') {
-        headerProps.surTitle = originalSource.authors.join(', ');
-    }
-
-    if (originalSource?.type === 'WEBPAGE') {
-        headerProps.surTitle = extractRootDomain(originalSource.url);
-    }
-
-    if (originalSource?.type === 'MOVIE') {
-        headerProps.surTitle = originalSource.directors && originalSource.directors.join(', ');
-    }
-
     return (
         <Link
             to={generatePath(TRANSLATION_EXAMPLE, {
@@ -110,7 +90,12 @@ function TranslationExampleArticle({
             className={s.link}
         >
             <article className={s.example}>
-                <Header {...headerProps} />
+                <Header
+                    term={term}
+                    translation={translation}
+                    originalSource={originalSource}
+                    translatedSource={translatedSource}
+                />
                 <ExampleText lang={term.lang} snippet={example.original} className={s.exampleTextOriginal} />
                 <ExampleText lang={translation.lang} snippet={example.translated} className={s.exampleTextTranslated} />
                 <footer className={s.footer}>
@@ -122,27 +107,38 @@ function TranslationExampleArticle({
 }
 
 type HeaderProps = {
-    cover?: React.ReactNode;
-    surTitle?: string;
-    titleOriginal?: string;
-    titleTranslated?: string;
-    langOriginal: Lang;
-    langTranslated: Lang;
+    term: Term;
+    translation: Translation;
+    originalSource?: Source;
+    translatedSource?: Source;
 };
 
-function Header({ cover, surTitle, titleOriginal, titleTranslated, langOriginal, langTranslated }: HeaderProps) {
+function Header({ term, translation, originalSource, translatedSource }: HeaderProps) {
+    const cover = <CoverIcon item={originalSource} className={s.cover} />;
+
     return (
         <header className={s.header}>
-            {cover && <div className={s.coverContainer}>{cover}</div>}
+            {cover && <div className={s.coverContainer}></div>}
             <div>
-                {surTitle}
-                <h1 className={s.headingOriginal} lang={langOriginal}>
-                    {trimString(titleTranslated)}
+                {originalSource && getSurtitle(originalSource)}
+                <h1 className={s.headingOriginal} lang={term.lang}>
+                    {trimString(originalSource?.title)}
                 </h1>
-                <h1 className={s.headingTranslated} lang={langTranslated}>
-                    {trimString(titleOriginal)}
+                <h1 className={s.headingTranslated} lang={translation.lang}>
+                    {trimString(translatedSource?.title)}
                 </h1>
             </div>
         </header>
     );
+}
+
+function getSurtitle(source: Source) {
+    switch (source.type) {
+        case 'BOOK':
+            return source.authors.join(', ');
+        case 'WEBPAGE':
+            return extractRootDomain(source.url);
+        case 'MOVIE':
+            return source.directors?.join(', ');
+    }
 }
