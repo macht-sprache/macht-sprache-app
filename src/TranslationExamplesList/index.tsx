@@ -8,7 +8,7 @@ import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import { Term, Translation, TranslationExample, Lang, Source } from '../types';
+import { Term, Translation, TranslationExample, Source } from '../types';
 import { extractRootDomain, trimString } from '../utils';
 import s from './style.module.css';
 import { CoverIcon } from '../CoverIcon';
