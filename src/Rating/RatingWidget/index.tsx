@@ -7,11 +7,12 @@ import Button, { ButtonContainer } from '../../Form/Button';
 import { useUser } from '../../hooks/auth';
 import { setRating, useRating } from '../../hooks/data';
 import { ModalDialog } from '../../ModalDialog';
+import { useRedacted } from '../../RedactSensitiveTerms';
 import { WrappedInLangColor } from '../../TermWithLang';
 import { Lang, Term, Translation, User } from '../../types';
+import { useDomId } from '../../useDomId';
 import { useLang } from '../../useLang';
 import s from './style.module.css';
-import { useDomId } from '../../useDomId';
 
 type Sizes = 'small' | 'medium' | 'large';
 
@@ -25,15 +26,15 @@ type RatingDisplayProps = {
     size?: Sizes;
 };
 
-export function RatingWidget(ratingDisplayProps: RatingDisplayProps) {
+export function RatingWidget(props: RatingDisplayProps) {
     const { t } = useTranslation();
     const [overlayOpen, setOverlayOpen] = useState(false);
-    const unset = !ratingDisplayProps?.rangeInputProps?.value;
+    const unset = !props.rangeInputProps?.value;
 
     return (
         <div className={s.unsetButtonContainer}>
-            <RatingDisplay {...ratingDisplayProps} />
-            {unset && ratingDisplayProps.size !== 'small' && (
+            <RatingDisplay {...props} />
+            {unset && props.size !== 'small' && (
                 <button onClick={() => setOverlayOpen(true)} className={s.unsetButton}>
                     {t('rating.clickToSet')}
                 </button>
@@ -45,12 +46,12 @@ export function RatingWidget(ratingDisplayProps: RatingDisplayProps) {
                             t={t}
                             i18nKey="rating.overlayHeading"
                             values={{
-                                translation: ratingDisplayProps.translationValue,
-                                term: ratingDisplayProps.termValue,
+                                translation: props.translationValue,
+                                term: props.termValue,
                             }}
                             components={{
-                                Term: <WrappedInLangColor lang={ratingDisplayProps.termLang} />,
-                                Translation: <WrappedInLangColor lang={ratingDisplayProps.translationLang} />,
+                                Term: <WrappedInLangColor lang={props.termLang} />,
+                                Translation: <WrappedInLangColor lang={props.translationLang} />,
                             }}
                         />
                     }
@@ -59,7 +60,7 @@ export function RatingWidget(ratingDisplayProps: RatingDisplayProps) {
                     isDismissable
                 >
                     <p>{t('rating.dragToSet')}</p>
-                    <RatingDisplay {...ratingDisplayProps} size="large" />
+                    <RatingDisplay {...props} size="large" />
                     <ButtonContainer>
                         <Button onClick={() => setOverlayOpen(false)} style={{ marginTop: 10 }}>
                             {t('common.formNav.close')}
@@ -194,9 +195,20 @@ type RatingWidgetContainerProps = {
 
 export function RatingWidgetContainer({ translation, term, size }: RatingWidgetContainerProps) {
     const user = useUser();
+    const translationValue = useRedacted(translation.value);
+    const termValue = useRedacted(term.value);
 
     if (user) {
-        return <RatingWidgetLoggedIn size={size} term={term} translation={translation} user={user} />;
+        return (
+            <RatingWidgetLoggedIn
+                size={size}
+                translationValue={translationValue}
+                termValue={termValue}
+                term={term}
+                translation={translation}
+                user={user}
+            />
+        );
     }
 
     return (
@@ -204,20 +216,24 @@ export function RatingWidgetContainer({ translation, term, size }: RatingWidgetC
             size={size}
             ratings={translation.ratings}
             translationLang={translation.lang}
-            translationValue={translation.value}
-            termValue={term.value}
+            translationValue={translationValue}
+            termValue={termValue}
             termLang={term.lang}
         />
     );
 }
 
 function RatingWidgetLoggedIn({
+    translationValue,
     translation,
+    termValue,
     term,
     user,
     size,
 }: {
+    translationValue: string;
     translation: Translation;
+    termValue: string;
     term: Term;
     user: User;
     size?: Sizes;
@@ -235,9 +251,9 @@ function RatingWidgetLoggedIn({
     return (
         <RatingWidget
             ratings={translation.ratings}
-            termValue={term.value}
+            termValue={termValue}
             termLang={term.lang}
-            translationValue={translation.value}
+            translationValue={translationValue}
             translationLang={translation.lang}
             rangeInputProps={rangeInputProps}
             size={size}

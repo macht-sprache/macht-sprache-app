@@ -1,10 +1,11 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
-import { collections, useTerm } from '../hooks/data';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
+import { collections, useTerm } from '../hooks/data';
 import { Columns } from '../Layout/Columns';
+import { Redact } from '../RedactSensitiveTerms';
 import { TranslationsList } from '../TranslationsList';
 
 export default function TermPage() {
@@ -27,7 +28,7 @@ export default function TermPage() {
                 }
                 mainLang={term.lang}
             >
-                {term.value}
+                <Redact>{term.value}</Redact>
             </Header>
             <Columns>
                 <TranslationsList term={term} />

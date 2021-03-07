@@ -15,6 +15,7 @@ import MovieSearch from '../MediaSelection/MovieSearch';
 import WebPageSearch from '../MediaSelection/WebPageSearch';
 import { TranslationExampleModel } from '../modelTypes';
 import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
+import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import SavingState from '../SavingState';
 import { TermWithLang } from '../TermWithLang';
@@ -321,12 +322,12 @@ function AddTranslationExample({ term, translation }: { term: Term; translation:
                 topHeading={[
                     {
                         to: generatePath(TERM, { termId: term.id }),
-                        inner: term.value,
+                        inner: <Redact>{term.value}</Redact>,
                         lang: term.lang,
                     },
                 ]}
             >
-                {translation.value}
+                <Redact>{translation.value}</Redact>
             </Header>
             <p>
                 <Trans

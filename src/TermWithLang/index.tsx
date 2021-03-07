@@ -1,3 +1,4 @@
+import { Redact } from '../RedactSensitiveTerms';
 import { Lang, Term, Translation } from '../types';
 import s from './style.module.css';
 
@@ -6,7 +7,11 @@ type TermWithLangProps = {
 };
 
 export function TermWithLang({ term }: TermWithLangProps) {
-    return <WrappedInLangColor lang={term.lang}>{term.value}</WrappedInLangColor>;
+    return (
+        <WrappedInLangColor lang={term.lang}>
+            <Redact>{term.value}</Redact>
+        </WrappedInLangColor>
+    );
 }
 
 type WrappedInLangColorProps = {

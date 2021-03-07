@@ -1,11 +1,12 @@
 import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../Comments';
-import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import Header from '../Header';
+import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import { Columns } from '../Layout/Columns';
+import { RatingWidgetContainer } from '../Rating/RatingWidget';
+import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
-import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import s from './style.module.css';
 
 export function TranslationPage() {
@@ -20,7 +21,7 @@ export function TranslationPage() {
                 topHeading={[
                     {
                         to: generatePath(TERM, { termId: term.id }),
-                        inner: term.value,
+                        inner: <Redact>{term.value}</Redact>,
                         lang: term.lang,
                     },
                 ]}
@@ -30,7 +31,7 @@ export function TranslationPage() {
                     </div>
                 }
             >
-                {translation.value}
+                <Redact>{translation.value}</Redact>
             </Header>
             <Columns>
                 <TranslationExamplesList term={term} translation={translation} />

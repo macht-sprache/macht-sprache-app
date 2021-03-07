@@ -9,6 +9,7 @@ import {
     DocReference,
     Lang,
     Rating,
+    SensitiveTerms,
     Source,
     SourceType,
     Term,
@@ -122,6 +123,14 @@ const RatingConverter: firebase.firestore.FirestoreDataConverter<Rating> = {
     },
 };
 
+const SensitiveTermsConverter: firebase.firestore.FirestoreDataConverter<SensitiveTerms> = {
+    toFirestore: (sensitiveTerms: SensitiveTerms) => sensitiveTerms,
+    fromFirestore: (snapshot): SensitiveTerms => {
+        const { terms } = snapshot.data(defaultSnapshotOptions);
+        return { terms };
+    },
+};
+
 const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
     toFirestore: (comment: Comment) => {
         const { id, ...data } = comment;
@@ -139,6 +148,7 @@ export const collections = {
     translations: db.collection('translations').withConverter(TranslationConverter),
     translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),
     sources: db.collection('sources').withConverter(SourceConverter),
+    sensitiveTerms: db.collection('sensitiveTerms').withConverter(SensitiveTermsConverter),
     comments: db.collection('comments').withConverter(CommentConverter),
 };
 

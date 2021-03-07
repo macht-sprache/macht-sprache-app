@@ -1,5 +1,6 @@
 import escapeRegExp from 'lodash.escaperegexp';
-import { Fragment, memo } from 'react';
+import { memo } from 'react';
+import { Redact } from '../RedactSensitiveTerms';
 
 type Props = {
     text: string;
@@ -10,11 +11,15 @@ function TextWithHighlights({ text, highlighted }: Props) {
     const regExp = new RegExp(`\\b(${highlighted.map(escapeRegExp).join('|')})\\b`);
     return (
         <>
-            {text
-                .split(regExp)
-                .map((part, i) =>
-                    regExp.test(part) ? <strong key={i}>{part}</strong> : <Fragment key={i}>{part}</Fragment>
-                )}
+            {text.split(regExp).map((part, i) =>
+                regExp.test(part) ? (
+                    <strong key={i}>
+                        <Redact>{part}</Redact>
+                    </strong>
+                ) : (
+                    <Redact key={i}>{part}</Redact>
+                )
+            )}
         </>
     );
 }

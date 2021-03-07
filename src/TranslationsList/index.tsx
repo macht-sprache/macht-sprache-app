@@ -13,6 +13,7 @@ import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes
 import clsx from 'clsx';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { CoverIcon } from '../CoverIcon';
+import { Redact } from '../RedactSensitiveTerms';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -76,7 +77,9 @@ function TranslationItem({
         <article className={s.item} lang={translation.lang} onClick={() => history.push(link)}>
             <header className={s.header}>
                 <Link to={link} onClick={stopPropagation} className={s.link}>
-                    <h1 className={s.value}>{translation.value}</h1>
+                    <h1 className={s.value}>
+                        <Redact>{translation.value}</Redact>
+                    </h1>
                 </Link>
                 <div className={s.rating}>
                     <RatingWidgetContainer term={term} translation={translation} size="small" />
@@ -100,7 +103,6 @@ function TranslationItem({
                                         />
                                     ),
                                 }}
-                                values={{ term: term.value }}
                             />
                         </span>
                     </div>

@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, NavLink } from 'react-router-dom';
-import { useTerms } from '../hooks/data';
+import { ButtonLink } from '../Form/Button';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
+import { useTerms } from '../hooks/data';
 import { langA, langB } from '../languages';
 import { LoginHint } from '../LoginHint';
+import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TERM_ADD } from '../routes';
 import { Lang } from '../types';
-import s from './style.module.css';
 import { useLang } from '../useLang';
-import { ButtonLink } from '../Form/Button';
+import s from './style.module.css';
 
 type TermsProps = {
     classNames: {
@@ -80,7 +81,7 @@ export function Terms({ classNames }: TermsProps) {
                                         activeClassName={s.termLinkActive}
                                         lang={term.lang}
                                     >
-                                        {term.value}
+                                        <Redact>{term.value}</Redact>
                                     </NavLink>
                                 </li>
                             );

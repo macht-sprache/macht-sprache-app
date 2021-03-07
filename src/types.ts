@@ -150,3 +150,7 @@ interface UserMini {
 export interface User extends UserMini {
     lang: Lang;
 }
+
+export interface SensitiveTerms {
+    terms: string[];
+}
