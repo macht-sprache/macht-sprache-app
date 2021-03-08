@@ -3,7 +3,20 @@
 
     display: grid;
     height: 100%;
-    grid-template-columns: 1fr var(--sidebarWidth) minmax(auto, 50rem) 1fr;
+    grid-template-columns: 1fr var(--sidebarWidth) minmax(auto, 65rem) 1fr;
+    grid-gap: 4rem;
+}
+
+@media (max-width: 1400px) {
+    .container {
+        grid-gap: 3rem;
+    }
+}
+
+@media (max-width: 1300px) {
+    .container {
+        grid-gap: 2rem;
+    }
 }
 
 @media (max-width: 499px) {
@@ -150,7 +163,7 @@
 @media (min-width: 500px) {
     .main {
         grid-column: 3;
-        padding: 1rem 1rem 4rem;
+        padding: 1rem 0 4rem;
         min-width: 0;
     }
 }

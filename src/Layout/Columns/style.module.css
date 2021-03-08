@@ -1,7 +1,19 @@
 .columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 2rem;
+    grid-gap: 4rem;
+}
+
+@media (max-width: 1400px) {
+    .columns {
+        grid-gap: 3rem;
+    }
+}
+
+@media (max-width: 1300px) {
+    .columns {
+        grid-gap: 2rem;
+    }
 }
 
 @media (max-width: 700px) {
