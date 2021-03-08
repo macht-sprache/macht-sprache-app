@@ -179,7 +179,7 @@
     width: 100vw;
     overflow: hidden;
 
-    --backgroundDekoSize: 50vw;
+    --backgroundDekoSize: 40vw;
     --backgroundDekoStripeWidth: calc(var(--backgroundDekoSize) / 9);
 }
 
@@ -187,13 +187,14 @@
 .background:after {
     position: absolute;
     content: '';
-    height: var(--backgroundDekoSize);
+    height: calc(var(--backgroundDekoSize) * 2);
     width: var(--backgroundDekoSize);
     z-index: -1;
 }
 
 .background:before {
-    top: 5rem;
+    top: 15vw;
+    left: 2vw;
     transform: rotate(45deg);
     transform-origin: top left;
     background-image: repeating-linear-gradient(
@@ -206,8 +207,8 @@
 }
 
 .background:after {
-    bottom: -20vw;
-    right: 0;
+    bottom: -50vw;
+    right: -15vw;
     transform: translateX(40%) rotate(-45deg);
     transform-origin: center;
     background-image: repeating-linear-gradient(
