@@ -8,6 +8,10 @@ type Props = {
 };
 
 function TextWithHighlights({ text, highlighted }: Props) {
+    if (!highlighted.length) {
+        return <>{text}</>;
+    }
+
     const regExp = new RegExp(`\\b(${highlighted.map(escapeRegExp).join('|')})\\b`);
     return (
         <>
