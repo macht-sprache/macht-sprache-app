@@ -79,11 +79,18 @@
     text-decoration: none;
     grid-column: 2;
 }
+
 .logoImg {
     width: 100%;
-    height: 8rem;
+    height: 10rem;
     object-fit: contain;
     object-position: left;
+}
+
+@media (max-height: 850px) {
+    .logoImg {
+        height: 8rem;
+    }
 }
 
 @media (max-width: 599px) {
