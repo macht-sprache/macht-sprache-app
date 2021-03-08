@@ -8,7 +8,7 @@
 
 .container {
     display: inline-flex;
-    border: var(--thickBorder) solid var(--pink);
+    border: var(--thickBorder) solid var(--black);
 }
 
 .container:focus-within {
@@ -32,11 +32,16 @@
 }
 
 .radioWrapper + .radioWrapper .label {
-    border-left: var(--thickBorder) solid var(--pink);
+    border-left: var(--thickBorder) solid var(--black);
+}
+
+.container:focus-within .radioWrapper + .radioWrapper .label {
+    border-left: var(--thickBorder) solid var(--orange);
 }
 
 .radio:checked + .label {
     font-weight: bold;
+    color: var(--fontColorOnColor);
     background: var(--green);
 }
 
