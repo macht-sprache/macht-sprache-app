@@ -6,7 +6,7 @@ import { useUser } from '../hooks/appContext';
 import { useAddContinueParam } from '../hooks/location';
 import { langA, langB } from '../languages';
 import LinkButton from '../LinkButton';
-import { LOGIN, REGISTER } from '../routes';
+import { LOGIN, REGISTER, USER } from '../routes';
 import { useLang } from '../useLang';
 import { useLaunched } from '../useLaunched';
 
@@ -24,7 +24,8 @@ export function TopMenu() {
             <LanguageSwitcher />{' '}
             {user ? (
                 <>
-                    {user.displayName} <LinkButton onClick={logout}>{t('auth.logout')}</LinkButton>
+                    <Link to={USER}>{user.displayName}</Link>{' '}
+                    <LinkButton onClick={logout}>{t('auth.logout')}</LinkButton>
                 </>
             ) : (
                 <>

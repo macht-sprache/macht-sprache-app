@@ -26,6 +26,7 @@ import { TranslationPage } from './TranslationPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
+import UserPage from './UserPage';
 
 function App() {
     useLangCssVars();
@@ -82,6 +83,9 @@ function AppRouter() {
                             <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
                                 <TranslationExamplePage />
                             </LaunchedRoute>
+                            <LoggedInRoute path={routes.USER} exact>
+                                <UserPage />
+                            </LoggedInRoute>
                             <Route path={routes.ABOUT} exact>
                                 <StaticContentPage slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }} />
                             </Route>
