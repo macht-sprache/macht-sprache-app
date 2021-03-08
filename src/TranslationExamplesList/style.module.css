@@ -45,10 +45,12 @@
 }
 
 .exampleTextOriginal {
+    line-height: var(--lineHeightParagraph);
     margin: 0 1rem 0 calc(var(--thickBorder) * -1);
 }
 
 .exampleTextTranslated {
+    line-height: var(--lineHeightParagraph);
     margin: calc(var(--thickBorder) * -1) calc(var(--thickBorder) * -1) 0 1rem;
 }
 
