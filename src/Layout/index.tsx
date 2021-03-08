@@ -10,6 +10,7 @@ import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
 import Logo from './logo.svg';
+import LogoWithoutText from './logo_without_text.svg';
 import s from './style.module.css';
 
 type Props = {
@@ -36,7 +37,11 @@ function Layout({ children }: Props) {
             <div className={s.container}>
                 <div className={s.mobileHeaderBar}>
                     <Link className={s.mobileHeaderBarLogo} to="/">
-                        <img className={s.mobileHeaderBarLogoImage} src={Logo} alt={t('nav.logoAlt')} />
+                        <img className={s.mobileHeaderBarLogoImage} src={LogoWithoutText} alt={t('nav.logoAlt')} />
+                        <div>
+                            <div className={s.macht}>macht.</div>
+                            <div className={s.sprache}>sprache.</div>
+                        </div>
                     </Link>
                     <LinkButton
                         onClick={() => setMenuOpen(!menuOpen)}
