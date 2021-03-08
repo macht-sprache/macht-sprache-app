@@ -11,6 +11,7 @@ import s from './style.module.css';
 import { CoverIcon } from '../CoverIcon';
 import { extractRootDomain, trimString } from '../utils';
 import { FormatDate } from '../FormatDate';
+import { Redact } from '../RedactSensitiveTerms';
 
 export function TranslationExamplePage() {
     const { t } = useTranslation();
@@ -31,12 +32,12 @@ export function TranslationExamplePage() {
                 topHeading={[
                     {
                         to: generatePath(TERM, { termId: term.id }),
-                        inner: term.value,
+                        inner: <Redact>{term.value}</Redact>,
                         lang: term.lang,
                     },
                     {
                         to: generatePath(TRANSLATION, { termId: term.id, translationId: translation.id }),
-                        inner: translation.value,
+                        inner: <Redact>{translation.value}</Redact>,
                         lang: translation.lang,
                     },
                 ]}
