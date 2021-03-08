@@ -1,10 +1,17 @@
 .container {
-    padding: 0.5rem;
+    padding: 1rem;
     background: var(--lang-color);
     border: var(--thickBorder) solid var(--white);
     font-style: italic;
     font-family: var(--paragraphFont);
     font-weight: 200;
+    color: var(--fontColorOnColor);
+}
+
+@media (max-width: 1200px) {
+    .container {
+        padding: 0.5rem;
+    }
 }
 
 .container strong {

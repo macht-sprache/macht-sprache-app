@@ -9,6 +9,9 @@
 .headingInner {
     background: var(--lang-color);
     box-shadow: 0.5rem 0 0 var(--lang-color), -0.5rem 0 0 var(--lang-color);
+}
+
+.headingInner.hasBackground {
     color: var(--fontColorOnColor);
 }
 

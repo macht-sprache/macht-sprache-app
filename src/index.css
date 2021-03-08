@@ -30,8 +30,6 @@ body {
     --fontSizeM: 1rem;
     --fontSizeS: 0.8rem;
 
-    --sidebarWidth: 15rem;
-
     --colorLangA: var(--green);
     --colorLangB: var(--pink);
 

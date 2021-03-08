@@ -1,5 +1,6 @@
 .container {
     --headerBarHeight: 4rem;
+    --sidebarWidth: 15rem;
 
     display: grid;
     height: 100%;
@@ -16,23 +17,22 @@
 @media (max-width: 1300px) {
     .container {
         grid-gap: 2rem;
+        --sidebarWidth: 12rem;
     }
 }
 
-@media (max-width: 499px) {
+@media (max-width: 599px) {
     body.bodyMenuOpen {
         overflow: hidden;
     }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
     .header,
     .footer,
     .terms,
     .termsControl {
         grid-gap: 1rem;
-        display: grid;
-        grid-template-columns: 1fr calc(var(--sidebarWidth) - 1rem);
     }
 }
 
@@ -49,7 +49,7 @@
     height: var(--headerBarHeight);
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
     .mobileHeaderBar {
         display: none;
     }
@@ -68,7 +68,7 @@
     padding: 2rem 0;
 }
 
-@media (max-width: 499px) {
+@media (max-width: 599px) {
     .header {
         display: none;
     }
@@ -86,7 +86,7 @@
     object-position: left;
 }
 
-@media (max-width: 499px) {
+@media (max-width: 599px) {
     .sidebar {
         display: none;
         position: fixed;
@@ -105,12 +105,12 @@
     }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
     .sidebar {
         position: sticky;
         display: block;
         top: 0;
-        grid-column: 1 / 3;
+        grid-column: 2 / 3;
         display: flex;
         flex-direction: column;
         height: 100vh;
@@ -160,7 +160,7 @@
     padding: 4rem 0.5rem 4rem;
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
     .main {
         grid-column: 3;
         padding: 1rem 0 4rem;
@@ -168,13 +168,13 @@
     }
 }
 
-@media (max-width: 499px) {
+@media (max-width: 599px) {
     .topRightMenu {
         margin-bottom: 1rem;
     }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
     .topRightMenu {
         position: fixed;
         top: 1rem;

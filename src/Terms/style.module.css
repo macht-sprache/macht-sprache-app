@@ -17,6 +17,7 @@
     border: var(--thickBorder) solid var(--white);
     margin-bottom: calc(var(--thickBorder) * -1);
     color: var(--fontColorOnColor);
+    hyphens: auto;
 }
 
 .termLinkActive {

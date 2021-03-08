@@ -37,7 +37,9 @@ export default function Header({ children, subLine, mainLang, topHeading, rating
                     );
                 })}
             <h1 className={s.heading} lang={mainLang}>
-                <span className={clsx(s.headingInner, { [s.capitalize]: capitalize })}>{children}</span>
+                <span className={clsx(s.headingInner, { [s.hasBackground]: !!mainLang, [s.capitalize]: capitalize })}>
+                    {children}
+                </span>
                 {rating && (
                     <div lang={lang} className={s.rating}>
                         {rating}
