@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../Comments';
 import Header from '../Header';
@@ -7,6 +8,7 @@ import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
+import { getDominantLanguageClass } from '../useLangCssVars';
 import s from './style.module.css';
 
 export function TranslationPage() {
@@ -26,7 +28,7 @@ export function TranslationPage() {
                     },
                 ]}
                 rating={
-                    <div className={s.rating}>
+                    <div className={clsx(s.rating, getDominantLanguageClass(translation.lang))}>
                         <RatingWidgetContainer term={term} translation={translation} />
                     </div>
                 }

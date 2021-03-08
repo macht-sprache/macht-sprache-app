@@ -4,7 +4,7 @@
 }
 
 .item {
-    --mainColor: var(--lang-color);
+    --mainColor: var(--dominantLanguageColor);
 
     background: var(--white);
     border: var(--thickBorder) solid var(--mainColor);
@@ -52,6 +52,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: var(--fontColorOnColor);
 }
 
 .noExample {

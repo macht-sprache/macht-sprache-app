@@ -36,6 +36,12 @@ body {
     --lineHeightParagraph: 1.6;
 
     color: var(--black);
+
+    /*
+        dominantLanguageColor: to color things according to the language of the page
+        set here is just the default if there's no page color
+    */
+    --dominantLanguageColor: var(--black);
 }
 
 h2 {

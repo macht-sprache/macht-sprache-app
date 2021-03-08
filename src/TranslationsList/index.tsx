@@ -7,13 +7,13 @@ import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { FormatDate } from '../FormatDate';
-import { useLang } from '../useLang';
 import { generatePath, Link, useHistory } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import clsx from 'clsx';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { CoverIcon } from '../CoverIcon';
 import { Redact } from '../RedactSensitiveTerms';
+import { getDominantLanguageClass } from '../useLangCssVars';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -67,16 +67,18 @@ function TranslationItem({
     term: Term;
     sources: Source[];
 }) {
-    const [lang] = useLang();
     const { t } = useTranslation();
     const history = useHistory();
     const link = generatePath(TRANSLATION, { termId: term.id, translationId: translation.id });
     const addExampleLink = generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id });
 
     return (
-        <article className={s.item} lang={translation.lang} onClick={() => history.push(link)}>
+        <article
+            className={clsx(getDominantLanguageClass(translation.lang), s.item)}
+            onClick={() => history.push(link)}
+        >
             <header className={s.header}>
-                <Link to={link} onClick={stopPropagation} className={s.link}>
+                <Link to={link} onClick={stopPropagation} className={s.link} lang={translation.lang}>
                     <h1 className={s.value}>
                         <Redact>{translation.value}</Redact>
                     </h1>
@@ -120,7 +122,7 @@ function TranslationItem({
                         </li>
                     </ul>
                 )}
-                <footer className={s.footer} lang={lang}>
+                <footer className={s.footer}>
                     <div className={s.comments}>
                         {t('common.entities.comment.withCount', { count: translation.commentCount })}
                     </div>

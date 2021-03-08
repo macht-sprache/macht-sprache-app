@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 import { langA, langB } from './languages';
+import { Lang } from './types';
+
+const DOMINANT_LANG_CLASS_NAME = 'dominantLanguageColor';
 
 const style = `
 [lang=${langA}] {
@@ -7,6 +10,12 @@ const style = `
 }
 [lang=${langB}] {
     --lang-color: var(--colorLangB);
+}
+.${DOMINANT_LANG_CLASS_NAME}-${langA} {
+    --dominantLanguageColor: var(--colorLangA);
+}
+.${DOMINANT_LANG_CLASS_NAME}-${langB} {
+    --dominantLanguageColor: var(--colorLangB);
 }
 `;
 
@@ -19,4 +28,8 @@ export function useLangCssVars() {
             document.head.removeChild(styleEl);
         };
     }, []);
+}
+
+export function getDominantLanguageClass(lang: Lang) {
+    return `${DOMINANT_LANG_CLASS_NAME}-${lang}`;
 }

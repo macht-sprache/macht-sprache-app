@@ -12,6 +12,7 @@ import { WrappedInLangColor } from '../../TermWithLang';
 import { Lang, Term, Translation, User } from '../../types';
 import { useDomId } from '../../useDomId';
 import { useLang } from '../../useLang';
+import { getDominantLanguageClass } from '../../useLangCssVars';
 import s from './style.module.css';
 
 type Sizes = 'small' | 'medium' | 'large';
@@ -60,7 +61,9 @@ export function RatingWidget(props: RatingDisplayProps) {
                     isDismissable
                 >
                     <p>{t('rating.dragToSet')}</p>
-                    <RatingDisplay {...props} size="large" />
+                    <div className={getDominantLanguageClass(props.translationLang)}>
+                        <RatingDisplay {...props} size="large" />
+                    </div>
                     <ButtonContainer>
                         <Button onClick={() => setOverlayOpen(false)} style={{ marginTop: 10 }}>
                             {t('common.formNav.close')}
@@ -75,7 +78,6 @@ export function RatingWidget(props: RatingDisplayProps) {
 function RatingDisplay({
     ratings = new Array(RATING_STEPS).fill(0),
     termValue,
-    translationLang,
     rangeInputProps,
     size = 'medium',
 }: RatingDisplayProps) {
@@ -115,25 +117,17 @@ function RatingDisplay({
             className={clsx(s.container, s[size])}
             title={size === 'small' ? distributionLabel : undefined}
             aria-label={size === 'small' ? distributionLabel : undefined}
-            lang={translationLang}
         >
             <div className={s.ratings} aria-label={distributionLabel}>
                 {ratings.map((rating, index) => (
                     <div key={index} style={{ height: `${(rating / max) * 100}%` }} className={s.rating}>
                         {size !== 'small' && (
                             <Tooltip
-                                overlay={
-                                    <span lang={globalLang}>{t('rating.values', { returnObjects: true })[index]}</span>
-                                }
+                                overlay={<span>{t('rating.values', { returnObjects: true })[index]}</span>}
                                 placement="top"
                                 mouseLeaveDelay={0}
                             >
-                                <div
-                                    lang={globalLang}
-                                    className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}
-                                >
-                                    {rating}
-                                </div>
+                                <div className={clsx(s.ratingInner, { [s.inside]: rating / max > 0.5 })}>{rating}</div>
                             </Tooltip>
                         )}
                     </div>

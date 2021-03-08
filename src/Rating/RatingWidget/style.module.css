@@ -42,7 +42,7 @@
     bottom: 0;
     width: 100%;
     height: var(--thickBorder);
-    background: var(--lang-color);
+    background: var(--dominantLanguageColor);
     box-shadow: 0 0 0 var(--thickBorder) var(--white);
 }
 
@@ -79,7 +79,7 @@
 
 .rating {
     position: relative;
-    background: var(--lang-color);
+    background: var(--dominantLanguageColor);
     flex: 1;
     box-shadow: 0 0 0 var(--thickBorder) var(--white);
 }
