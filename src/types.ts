@@ -147,8 +147,11 @@ interface UserMini {
     displayName: string;
 }
 
-export interface User extends UserMini {
+export interface User extends UserMini {}
+
+export interface UserSettings {
     lang: Lang;
+    showRedacted: boolean;
 }
 
 export interface SensitiveTerms {

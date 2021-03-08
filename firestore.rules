@@ -23,15 +23,25 @@ service cloud.firestore {
 
     function isValidUser() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['displayName', 'lang']) &&
-        data.displayName is string &&
-        data.lang is string;
+      return data.keys().hasOnly(['displayName']) &&
+        data.displayName is string
     }
 
     match /users/{user} {
       allow read: if isUser(user);
-      allow create: if isValidatedUser() && isUser(user) && isValidUser();
-      allow update: if isValidatedUser() && isUser(user) && isValidUser();
+      allow create, update: if isValidatedUser() && isUser(user) && isValidUser();
+    }
+
+    function isValidUserSettings() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['lang', 'showRedacted']) &&
+        data.lang is string &&
+        data.showRedacted is bool;
+    }
+
+    match /userSettings/{user} {
+      allow read: if isUser(user);
+      allow create, update: if isValidatedUser() && isUser(user) && isValidUserSettings();
     }
 
     function isValidTerm() {

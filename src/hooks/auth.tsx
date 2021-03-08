@@ -1,16 +1,26 @@
 import type firebase from 'firebase';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useAuthState as _useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { i18n } from '../i18n/config';
-import { User } from '../types';
+import { DocReference, User, UserSettings } from '../types';
 import { toLanguageOrDefault } from '../useLang';
 import { collections } from './data';
 
-const appContext = createContext<{ user?: User; sensitiveTerms: Set<string> }>({ sensitiveTerms: new Set() });
+const appContext = createContext<{ user?: User; userSettings?: UserSettings; sensitiveTerms: Set<string> }>({
+    sensitiveTerms: new Set(),
+});
+
+export const useAppContext = () => {
+    return useContext(appContext);
+};
 
 export const useUser = () => {
     return useContext(appContext).user;
+};
+
+export const useUserSettings = () => {
+    return useContext(appContext).userSettings;
 };
 
 export const useSensitiveTerms = () => {
@@ -21,14 +31,16 @@ export const useAuthState = (): [firebase.User | undefined, boolean, firebase.au
     _useAuthState(auth);
 
 export const AppContextProvider: React.FC = ({ children }) => {
-    const [user, loadingUser] = useEnsureUserEntity();
+    const [authUser, loadingAuthUser] = useAuthState();
+    const [user, loadingUser] = useEnsureUserEntity(authUser, loadingAuthUser);
     const [sensitiveTerms] = useLoadSensitiveTerms();
+    const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid);
 
-    if (loadingUser || !sensitiveTerms) {
+    if (loadingUser || loadingUserSettings || !sensitiveTerms) {
         return null;
     }
 
-    return <appContext.Provider value={{ user, sensitiveTerms }}>{children}</appContext.Provider>;
+    return <appContext.Provider value={{ user, userSettings, sensitiveTerms }}>{children}</appContext.Provider>;
 };
 
 const ensureUserEntity = (authUser: firebase.User) =>
@@ -39,11 +51,10 @@ const ensureUserEntity = (authUser: firebase.User) =>
             collections.users.doc(authUser.uid).set({
                 id: authUser.uid,
                 displayName: authUser.displayName || authUser.email || '',
-                lang: toLanguageOrDefault(i18n.language),
             })
         );
 
-function useEnsureUserEntity() {
+function useEnsureUserEntity(authUser: firebase.User | undefined, loadingAuthUser: boolean) {
     const [{ user, loading, error }, setState] = useState<{
         user?: User;
         loading: boolean;
@@ -51,7 +62,6 @@ function useEnsureUserEntity() {
     }>({
         loading: true,
     });
-    const [authUser, loadingAuthUser] = useAuthState();
 
     useEffect(() => {
         let initialFetch = true;
@@ -87,28 +97,71 @@ function useEnsureUserEntity() {
     return [user, loading, error] as const;
 }
 
+const getSenstiveTermsRef = (id: string) => collections.sensitiveTerms.doc(id);
+
 function useLoadSensitiveTerms() {
-    const [{ sensitiveTerms, loading, error }, setState] = useState<{
-        sensitiveTerms?: Set<string>;
+    const [value, loading, error] = useSnapshot(getSenstiveTermsRef, 'global');
+
+    const sensitiveTerms = useMemo(() => {
+        if (loading || error) {
+            return;
+        }
+        return new Set((value?.terms ?? []).map(term => term.toLowerCase()));
+    }, [error, loading, value?.terms]);
+
+    return [sensitiveTerms, loading, error] as const;
+}
+
+const getUserSettingsRef = (uid: string) => collections.userSettings.doc(uid);
+
+function useLoadUserSettings(uid?: string) {
+    const [value, loading, error] = useSnapshot(getUserSettingsRef, uid);
+
+    const userSettings = useMemo<UserSettings | undefined>(() => {
+        if (loading || error || !uid) {
+            return undefined;
+        }
+        return (
+            value || {
+                lang: toLanguageOrDefault(i18n.language),
+                showRedacted: false,
+            }
+        );
+    }, [error, loading, uid, value]);
+
+    return [userSettings, loading, error] as const;
+}
+
+function useSnapshot<T>(getRef: (docPath: string) => DocReference<T>, docPath: string | undefined) {
+    const [{ value, loading, error }, setState] = useState<{
+        value?: T;
         loading: boolean;
         error?: firebase.firestore.FirestoreError;
-    }>({ loading: false });
+    }>({ loading: true });
 
     useEffect(() => {
-        const unsubscribe = collections.sensitiveTerms.doc('global').onSnapshot(
+        if (!docPath) {
+            return;
+        }
+
+        const unsubscribe = getRef(docPath).onSnapshot(
             snapshot => {
                 setState({
                     loading: false,
-                    sensitiveTerms: new Set((snapshot.data()?.terms ?? []).map(term => term.toLowerCase())),
+                    value: snapshot.data(),
                 });
             },
             error => {
-                setState({ sensitiveTerms: undefined, loading: false, error });
+                setState({ loading: false, error });
                 console.error(error);
             }
         );
-        return () => unsubscribe();
-    }, []);
 
-    return [sensitiveTerms, loading, error] as const;
+        return () => {
+            unsubscribe();
+            setState({ loading: false });
+        };
+    }, [docPath, getRef]);
+
+    return [value, loading, error] as const;
 }

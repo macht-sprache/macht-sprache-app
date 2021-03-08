@@ -16,6 +16,7 @@ import {
     Translation,
     TranslationExample,
     User,
+    UserSettings,
 } from '../types';
 
 const defaultSnapshotOptions: firebase.firestore.SnapshotOptions = { serverTimestamps: 'estimate' };
@@ -29,8 +30,16 @@ const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
         return data;
     },
     fromFirestore: (snapshot): User => {
-        const { displayName, lang } = snapshot.data(defaultSnapshotOptions);
-        return { id: snapshot.id, displayName, lang };
+        const { displayName } = snapshot.data(defaultSnapshotOptions);
+        return { id: snapshot.id, displayName };
+    },
+};
+
+const UserSettingsConverter: firebase.firestore.FirestoreDataConverter<UserSettings> = {
+    toFirestore: (data: UserSettings) => data,
+    fromFirestore: (snapshot): UserSettings => {
+        const { lang, showRedacted } = snapshot.data(defaultSnapshotOptions);
+        return { lang, showRedacted };
     },
 };
 
@@ -144,6 +153,7 @@ const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
 
 export const collections = {
     users: db.collection('users').withConverter(UserConverter),
+    userSettings: db.collection('userSettings').withConverter(UserSettingsConverter),
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
     translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),
