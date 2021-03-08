@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { auth } from './firebase';
-import { useAppContext } from './hooks/auth';
+import { useAppContext } from './hooks/appContext';
 import { collections } from './hooks/data';
 import { langA, langB } from './languages';
 import { Lang } from './types';

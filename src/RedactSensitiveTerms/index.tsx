@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useSensitiveTerms } from '../hooks/auth';
+import { useSensitiveTerms } from '../hooks/appContext';
 
 const redactWord = (word: string) =>
     word.replace(/^(.)(.*)(.)$/, (m, p1, p2, p3) => p1 + Array(p2.length).fill('*').join('') + p3);

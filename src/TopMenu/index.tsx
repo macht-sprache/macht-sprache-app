@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { auth } from '../firebase';
-import { useUser } from '../hooks/auth';
+import { useUser } from '../hooks/appContext';
 import { useAddContinueParam } from '../hooks/location';
 import { langA, langB } from '../languages';
 import LinkButton from '../LinkButton';

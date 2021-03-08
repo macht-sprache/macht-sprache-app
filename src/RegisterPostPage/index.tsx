@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, useLocation } from 'react-router-dom';
-import { useAuthState, useUser } from '../hooks/auth';
+import { useAuthState, useUser } from '../hooks/appContext';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
 import { REGISTER_POST } from '../routes';

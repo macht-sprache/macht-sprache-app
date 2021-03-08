@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { RATING_STEPS } from '../../constants';
 import Button, { ButtonContainer } from '../../Form/Button';
-import { useUser } from '../../hooks/auth';
+import { useUser } from '../../hooks/appContext';
 import { setRating, useRating } from '../../hooks/data';
 import { ModalDialog } from '../../ModalDialog';
 import { useRedacted } from '../../RedactSensitiveTerms';

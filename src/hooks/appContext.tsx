@@ -33,8 +33,8 @@ export const useAuthState = (): [firebase.User | undefined, boolean, firebase.au
 export const AppContextProvider: React.FC = ({ children }) => {
     const [authUser, loadingAuthUser] = useAuthState();
     const [user, loadingUser] = useEnsureUserEntity(authUser, loadingAuthUser);
-    const [sensitiveTerms] = useLoadSensitiveTerms();
     const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid);
+    const [sensitiveTerms] = useLoadSensitiveTerms();
 
     if (loadingUser || loadingUserSettings || !sensitiveTerms) {
         return null;
@@ -141,6 +141,7 @@ function useSnapshot<T>(getRef: (docPath: string) => DocReference<T>, docPath: s
 
     useEffect(() => {
         if (!docPath) {
+            setState({ loading: false });
             return;
         }
 

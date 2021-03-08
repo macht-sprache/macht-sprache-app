@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useUser } from '../hooks/auth';
+import { useUser } from '../hooks/appContext';
 import { addComment, useComments } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { Comment } from '../types';

@@ -1,4 +1,4 @@
-import { useUser } from './hooks/auth';
+import { useUser } from './hooks/appContext';
 
 export function useLaunched() {
     const user = useUser();

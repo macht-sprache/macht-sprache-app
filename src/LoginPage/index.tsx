@@ -7,7 +7,7 @@ import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { useUser } from '../hooks/auth';
+import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { REGISTER_POST } from '../routes';
 
