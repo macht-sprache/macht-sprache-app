@@ -15,8 +15,10 @@ body {
     --red: #e70f0f;
 
     --white: #fff;
-    --black: #000;
+    --black: var(--blue);
+    --blackDark: #000;
 
+    --fontColorOnColor: var(--blackDark);
     --disabledGrey: rgb(128, 128, 128);
     --disabledGreyBackground: rgb(250, 248, 248);
     --backgroundColor: var(--white);
@@ -34,6 +36,8 @@ body {
     --colorLangB: var(--pink);
 
     --lineHeightParagraph: 1.6;
+
+    color: var(--black);
 }
 
 h2 {
