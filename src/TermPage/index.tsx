@@ -7,6 +7,7 @@ import { collections, useTerm } from '../hooks/data';
 import { Columns } from '../Layout/Columns';
 import { Redact } from '../RedactSensitiveTerms';
 import { TranslationsList } from '../TranslationsList';
+import { getDominantLanguageClass } from '../useLangCssVars';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
@@ -32,7 +33,9 @@ export default function TermPage() {
             </Header>
             <Columns>
                 <TranslationsList term={term} />
-                <Comments entityRef={collections.terms.doc(termId)} />
+                <div className={getDominantLanguageClass(term.lang)}>
+                    <Comments entityRef={collections.terms.doc(termId)} />
+                </div>
             </Columns>
         </>
     );

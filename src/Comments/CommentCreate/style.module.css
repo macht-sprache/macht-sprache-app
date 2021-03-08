@@ -2,7 +2,7 @@
     margin-top: 0.5rem;
     display: flex;
     justify-content: flex-end;
-    --borderFocusColor: var(--black);
+    --borderFocusColor: var(--dominantLanguageColor);
 }
 
 .buttonWrapper:before {

@@ -2,7 +2,7 @@
     composes: global(inputContainer);
     display: grid;
     gap: var(--thickBorder);
-    background: var(--black);
+    background: var(--dominantLanguageColor);
     grid-template-columns: repeat(4, 1fr);
     padding: var(--thickBorder);
 }

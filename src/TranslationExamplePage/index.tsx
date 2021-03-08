@@ -12,6 +12,7 @@ import { CoverIcon } from '../CoverIcon';
 import { extractRootDomain, trimString } from '../utils';
 import { FormatDate } from '../FormatDate';
 import { Redact } from '../RedactSensitiveTerms';
+import { getDominantLanguageClass } from '../useLangCssVars';
 
 export function TranslationExamplePage() {
     const { t } = useTranslation();
@@ -62,7 +63,7 @@ export function TranslationExamplePage() {
                     className={s.snippetTranslated}
                 />
 
-                <div className={s.comments}>
+                <div className={clsx(s.comments, getDominantLanguageClass(translation.lang))}>
                     <Comments entityRef={collections.translationExamples.doc(translationExample.id)} />
                 </div>
             </div>

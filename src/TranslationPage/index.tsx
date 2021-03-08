@@ -37,7 +37,9 @@ export function TranslationPage() {
             </Header>
             <Columns>
                 <TranslationExamplesList term={term} translation={translation} />
-                <Comments entityRef={collections.translations.doc(translation.id)} />
+                <div className={getDominantLanguageClass(translation.lang)}>
+                    <Comments entityRef={collections.translations.doc(translation.id)} />
+                </div>
             </Columns>
         </>
     );
