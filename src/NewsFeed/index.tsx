@@ -15,7 +15,7 @@ export function NewsFeed() {
             {response?.map(({ title, link, excerpt, date, featuredMedia }, index) => (
                 <article key={index} className={s.article}>
                     <a href={link} target="_blank" rel="noreferrer" className={s.link}>
-                        <h1 className={s.heading}>{title}</h1>
+                        <h1 className={s.heading} dangerouslySetInnerHTML={{ __html: title }} />
                         <div className={s.date}>
                             <FormatDate date={date} />
                         </div>
