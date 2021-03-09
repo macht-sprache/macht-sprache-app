@@ -84,6 +84,7 @@
     },
     "term": {
         "add": "Begriff hinzufügen",
+        "addTermDescription": "Füge einen sensiblen Begriff hinzu. Ein sensibler Begriff ist ein Begriff, dessen Übersetzung nach Deutsch bzw. Englisch problematisch ist. ",
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     },

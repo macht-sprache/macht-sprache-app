@@ -40,6 +40,7 @@ export default function AddTermPage() {
     return (
         <>
             <Header>{t('term.add')}</Header>
+            <p>{t('term.addTermDescription')}</p>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input

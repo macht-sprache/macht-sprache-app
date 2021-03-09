@@ -84,6 +84,7 @@
     },
     "term": {
         "add": "Add Term",
+        "addTermDescription": "Add a term / sensible word and select the according language. A sensible term is a term which you got problems in translating or examples of problems in translating it.",
         "addedOn": "Added by <User /> on <FormatDate />",
         "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     },
