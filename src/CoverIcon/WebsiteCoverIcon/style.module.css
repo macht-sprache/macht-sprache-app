@@ -1,6 +1,6 @@
 .container {
     position: relative;
-    border: var(--thickBorder) solid var(--black);
+    border: var(--thickBorder) solid var(--dominantLanguageColor);
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1rem 1fr;

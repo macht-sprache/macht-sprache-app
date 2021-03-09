@@ -1,16 +1,16 @@
 .container {
     --height: 10rem;
     --minWidth: calc(var(--height) / 2);
-    --borderColor: var(--black);
+    --borderColor: var(--dominantLanguageColor);
     --stripWidth: 0.5rem;
 
-    background: var(--black);
+    background: var(--dominantLanguageColor);
     border: solid var(--borderColor) var(--thickBorder);
     padding: 0 var(--stripWidth);
     background: repeating-linear-gradient(
         to bottom,
-        var(--black) 0rem,
-        var(--black) var(--stripWidth),
+        var(--dominantLanguageColor) 0rem,
+        var(--dominantLanguageColor) var(--stripWidth),
         var(--white) var(--stripWidth),
         var(--white) calc(var(--stripWidth) * 2)
     );
@@ -22,7 +22,7 @@
     min-width: var(--minWidth);
     object-fit: cover;
     border-width: 0 var(--thickBorder);
-    border-color: var(--black);
+    border-color: var(--dominantLanguageColor);
     border-style: solid;
 }
 

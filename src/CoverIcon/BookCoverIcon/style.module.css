@@ -1,7 +1,7 @@
 .container {
     --height: 10rem;
     --minWidth: calc(var(--height) / 2);
-    --borderColor: var(--black);
+    --borderColor: var(--dominantLanguageColor);
     --pageColor: var(--white);
 
     position: relative;
