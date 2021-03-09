@@ -12,6 +12,20 @@
     display: block;
 }
 
+.link:hover {
+    --dominantLanguageColor: var(--orange);
+}
+
+.link:hover .exampleTextOriginal,
+.link:hover .exampleTextTranslated {
+    --borderColor: var(--orange);
+}
+
+.link:hover .headingOriginal,
+.link:hover .headingTranslated {
+    text-decoration: underline;
+}
+
 .header {
     margin: 0 0 0.5rem;
     display: flex;

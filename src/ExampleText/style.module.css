@@ -1,7 +1,8 @@
 .container {
+    --borderColor: var(--white);
     padding: 1rem;
     background: var(--lang-color);
-    border: var(--thickBorder) solid var(--white);
+    border: var(--thickBorder) solid var(--borderColor);
     font-style: italic;
     font-family: var(--paragraphFont);
     font-weight: 200;
