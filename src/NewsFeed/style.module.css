@@ -8,6 +8,23 @@
     margin: 0;
 }
 
+.image {
+    width: 9rem;
+    height: auto;
+    margin-right: 0.5rem;
+}
+
+.body {
+    display: flex;
+    align-items: flex-start;
+}
+
+@media (max-width: 450px) {
+    .body {
+        display: block;
+    }
+}
+
 .excerpt p {
     margin: 0;
 }

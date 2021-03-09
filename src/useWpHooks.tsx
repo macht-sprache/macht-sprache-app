@@ -4,7 +4,18 @@ import { useLang } from './useLang';
 
 const WP_BASE_URL = 'https://pocolit.com/wp-json/wp/v2/';
 
-type WpResponse = { title: string; body: string; date: Date; excerpt: string; link: string };
+type WpMedia = { width: number; height: number; sizes: [{ width: number; height: number; source_url: string }] };
+
+type WpResponse = {
+    title: string;
+    body: string;
+    date: Date;
+    excerpt: string;
+    link: string;
+    featuredMedua?: any;
+    featuredMedia?: WpMedia | undefined;
+};
+
 type StateType = { response?: WpResponse; isLoading: boolean; error?: Error };
 
 export function useWpPage(slugs: { [langA]: string; [langB]: string }) {
@@ -57,7 +68,7 @@ export function useWpPosts(tags: { [langA]: string; [langB]: string }) {
 
         setState({ isLoading: true });
 
-        fetch(`${WP_BASE_URL}posts?lang=${lang}&tags=${tags[lang]}`, { signal })
+        fetch(`${WP_BASE_URL}posts?lang=${lang}&tags=${tags[lang]}&_embed`, { signal })
             .then(data => data.json())
             .then(data => {
                 if (data.length) {
@@ -89,12 +100,30 @@ function transformWpPost(post: {
     excerpt: { rendered: string };
     date: string;
     link: string;
+    _embedded?: any;
 }) {
+    const featuredMedia = post?._embedded?.['wp:featuredmedia']?.[0]?.media_details;
+
+    if (featuredMedia) {
+        featuredMedia.sizes = Object.values(featuredMedia.sizes);
+    }
+
     return {
         title: post.title.rendered,
         body: post.content.rendered,
         date: new Date(post.date),
         link: post.link,
         excerpt: post.excerpt.rendered,
+        featuredMedia: featuredMedia,
     };
+}
+
+interface WpImageProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
+    image: WpMedia;
+}
+
+export function WpImage({ image, ...props }: WpImageProps) {
+    const srcSet = image.sizes.map(size => `${size.source_url} ${size.width}w`).join(', ');
+
+    return <img width={image.width} height={image.height} alt="" srcSet={srcSet} {...props} />;
 }
