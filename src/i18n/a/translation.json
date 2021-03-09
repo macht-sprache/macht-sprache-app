@@ -91,7 +91,7 @@
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet.",
-        "addTranslation": "Add a translation for <Term>{{term}}</Term>:"
+        "addTranslation": "Add a translation for <Term>{{term}}</Term>. The translation does not need to be good or bad, it will be put in context later."
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",
