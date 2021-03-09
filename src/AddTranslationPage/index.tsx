@@ -7,7 +7,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { TRANSLATION } from '../routes';
+import { TERM, TRANSLATION } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 
 type Model = {
@@ -41,7 +41,9 @@ export default function AddTranslationPage() {
 
     return (
         <>
-            <Header>{t('common.entities.translation.add')}</Header>
+            <Header topHeading={[{ lang: term.lang, to: generatePath(TERM, { termId: term.id }), inner: term.value }]}>
+                {t('common.entities.translation.add')}
+            </Header>
             <p>
                 <Trans t={t} i18nKey="translation.addTranslation" components={{ Term: <TermWithLang term={term} /> }} />
             </p>
