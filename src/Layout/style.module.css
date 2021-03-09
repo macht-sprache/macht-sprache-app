@@ -138,7 +138,7 @@
 }
 
 .terms {
-    overflow: scroll;
+    overflow-y: scroll;
     flex: 1 0;
     margin-top: 1rem;
 }
