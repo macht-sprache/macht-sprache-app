@@ -1,11 +1,13 @@
+import clsx from 'clsx';
 import s from './style.module.css';
 
 type ColumnsProps = {
     children: React.ReactNode;
+    reverseOnMobile?: boolean;
 };
 
-export function Columns({ children }: ColumnsProps) {
-    return <div className={s.columns}>{children}</div>;
+export function Columns({ children, reverseOnMobile }: ColumnsProps) {
+    return <div className={clsx(s.columns, { [s.reverseOnMobile]: reverseOnMobile })}>{children}</div>;
 }
 
 type ColumnHeadingProps = {

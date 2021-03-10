@@ -20,6 +20,10 @@
     .columns {
         grid-template-columns: 1fr;
     }
+
+    .reverseOnMobile > :nth-child(2) {
+        grid-row: 1;
+    }
 }
 
 .columns > * {
