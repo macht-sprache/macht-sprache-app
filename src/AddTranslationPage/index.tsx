@@ -9,6 +9,7 @@ import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { TERM, TRANSLATION } from '../routes';
 import { TermWithLang } from '../TermWithLang';
+import { Redact } from '../RedactSensitiveTerms';
 
 type Model = {
     translation: string;
@@ -41,7 +42,15 @@ export default function AddTranslationPage() {
 
     return (
         <>
-            <Header topHeading={[{ lang: term.lang, to: generatePath(TERM, { termId: term.id }), inner: term.value }]}>
+            <Header
+                topHeading={[
+                    {
+                        lang: term.lang,
+                        to: generatePath(TERM, { termId: term.id }),
+                        inner: <Redact>{term.value}</Redact>,
+                    },
+                ]}
+            >
                 {t('common.entities.translation.add')}
             </Header>
             <p>
