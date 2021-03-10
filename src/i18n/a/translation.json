@@ -73,7 +73,8 @@
             "explanation": "Please click the link we sent you to {{email}}.",
             "resend": "Resend Verification Email",
             "resent": "Verification Email Sent",
-            "continue": "Continue"
+            "continue": "Continue",
+            "welcomeVerified": "Welcome at macht.sprache., your Email has been verified. Click continue to get to the main page."
         },
         "errors": {
             "email-already-in-use": "The email address is already in use by another account.",

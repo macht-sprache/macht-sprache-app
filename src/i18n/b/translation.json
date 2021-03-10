@@ -73,7 +73,8 @@
             "explanation": "Bitte klicke auf den Link den wir an {{email}} geschickt haben.",
             "resend": "Verifizierungsemail erneut senden",
             "resent": "Verifizierungsemail gesendet",
-            "continue": "Weiter"
+            "continue": "Weiter",
+            "welcomeVerified": "Willkommen bei macht.sprache., deine Mail-Adresse wurde verifiziert. Klick \"Weiter\" um zu Homepage zu gelangen."
         },
         "errors": {
             "email-already-in-use": "Die Adresse ist schon mit einem Account verknüpft.",

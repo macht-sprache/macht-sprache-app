@@ -6,6 +6,7 @@ import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
 import { REGISTER_POST } from '../routes';
 import { addContinueParam, useContinuePath } from '../hooks/location';
+import { Columns } from '../Layout/Columns';
 
 export default function RegisterPostPage() {
     const user = useUser();
@@ -58,9 +59,14 @@ function VerificationSuccess({ continuePath }: { continuePath: string }) {
     return (
         <>
             <Header>{t('auth.emailVerification.headingVerified')}</Header>
-            <ButtonContainer>
-                <ButtonLink to={continuePath}>{t('auth.emailVerification.continue')}</ButtonLink>
-            </ButtonContainer>
+            <Columns>
+                <div>
+                    <p>{t('auth.emailVerification.welcomeVerified')}</p>
+                    <ButtonContainer>
+                        <ButtonLink to={continuePath}>{t('auth.emailVerification.continue')}</ButtonLink>
+                    </ButtonContainer>
+                </div>
+            </Columns>
         </>
     );
 }
