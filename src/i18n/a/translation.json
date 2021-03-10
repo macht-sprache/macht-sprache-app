@@ -85,14 +85,14 @@
     },
     "term": {
         "add": "Add Term",
-        "addTermDescription": "Add a term / sensitive word and select the according language. A sensitive term is a term which you got problems in translating or examples of problems in translating it.",
+        "addTermDescription": "Add a term for which you would like to discuss possible translations. ",
         "addedOn": "Added by <User /> on <FormatDate />",
         "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet.",
-        "addTranslation": "Add a translation for <Term>{{term}}</Term>. The translation does not need to be good or bad, it will be put in context later."
+        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss."
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",

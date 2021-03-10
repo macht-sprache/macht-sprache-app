@@ -85,14 +85,14 @@
     },
     "term": {
         "add": "Begriff hinzufügen",
-        "addTermDescription": "Füge einen sensiblen Begriff hinzu. Ein sensibler Begriff ist ein Begriff, dessen Übersetzung nach Deutsch bzw. Englisch problematisch ist. ",
+        "addTermDescription": "Füge einen Begriff hinzu, dessen Übersetzung du gerne diskutieren würdest. ",
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>.",
-        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu. Die Übersetzung muss nicht gut oder schlecht sein, sie wird später in Kontext gesetzt."
+        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest."
     },
     "mediaSearch": {
         "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
