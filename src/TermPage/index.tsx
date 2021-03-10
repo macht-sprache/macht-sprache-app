@@ -32,10 +32,10 @@ export default function TermPage() {
                 <Redact>{term.value}</Redact>
             </Header>
             <Columns>
-                <TranslationsList term={term} />
                 <div className={getDominantLanguageClass(term.lang)}>
                     <Comments entityRef={collections.terms.doc(termId)} />
                 </div>
+                <TranslationsList term={term} />
             </Columns>
         </>
     );

@@ -2,7 +2,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
 import { ExampleText } from '../ExampleText';
-import { ButtonLink } from '../Form/Button';
+import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useSources, collections } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
@@ -52,15 +52,20 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                     ))}
                 </div>
             )}
-            <div className={s.addExampleButton}>
-                <LoginHint i18nKey="translationExample.registerToAdd">
-                    <ButtonLink
-                        to={generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id })}
-                    >
-                        {t('common.entities.translatioExample.add')}
-                    </ButtonLink>
-                </LoginHint>
-            </div>
+            <LoginHint i18nKey="translationExample.registerToAdd">
+                <div className={s.addExampleButton}>
+                    <ButtonContainer>
+                        <ButtonLink
+                            to={generatePath(TRANSLATION_EXAMPLE_ADD, {
+                                termId: term.id,
+                                translationId: translation.id,
+                            })}
+                        >
+                            {t('common.entities.translatioExample.add')}
+                        </ButtonLink>
+                    </ButtonContainer>
+                </div>
+            </LoginHint>
         </CommentWrapper>
     );
 }
