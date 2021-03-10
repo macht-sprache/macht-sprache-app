@@ -36,10 +36,10 @@ export function TranslationPage() {
                 <Redact>{translation.value}</Redact>
             </Header>
             <Columns>
-                <TranslationExamplesList term={term} translation={translation} />
                 <div className={getDominantLanguageClass(translation.lang)}>
                     <Comments entityRef={collections.translations.doc(translation.id)} />
                 </div>
+                <TranslationExamplesList term={term} translation={translation} />
             </Columns>
         </>
     );

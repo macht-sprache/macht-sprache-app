@@ -158,7 +158,7 @@ function AddTranslationButton({ termId }: { termId: string }) {
     return (
         <div className={s.addTranslationButtonContainer}>
             <LoginHint i18nKey="translation.registerToAdd">
-                <ButtonContainer align="left">
+                <ButtonContainer>
                     <ButtonLink to={generatePath(TRANSLATION_ADD, { termId: termId })}>
                         {t('common.entities.translation.add')}
                     </ButtonLink>
