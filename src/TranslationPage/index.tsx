@@ -35,7 +35,7 @@ export function TranslationPage() {
             >
                 <Redact>{translation.value}</Redact>
             </Header>
-            <Columns>
+            <Columns reverseOnMobile={true}>
                 <div className={getDominantLanguageClass(translation.lang)}>
                     <Comments entityRef={collections.translations.doc(translation.id)} />
                 </div>

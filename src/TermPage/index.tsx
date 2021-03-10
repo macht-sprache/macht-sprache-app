@@ -31,7 +31,7 @@ export default function TermPage() {
             >
                 <Redact>{term.value}</Redact>
             </Header>
-            <Columns>
+            <Columns reverseOnMobile={true}>
                 <div className={getDominantLanguageClass(term.lang)}>
                     <Comments entityRef={collections.terms.doc(termId)} />
                 </div>
