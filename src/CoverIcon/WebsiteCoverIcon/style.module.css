@@ -50,8 +50,8 @@
 .noImageLabel {
     background: var(--disabledGreyBackground);
     color: var(--disabledGrey);
-    font-size: italic;
-    font-size: var(--fontSizeS);
+    font-style: italic;
+    font-size: var(--fontSizeXS);
     width: calc(var(--height) * 1);
     display: flex;
     align-items: center;

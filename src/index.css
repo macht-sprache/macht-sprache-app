@@ -29,6 +29,7 @@ body {
     --fontSizeL: 1.5rem;
     --fontSizeM: 1rem;
     --fontSizeS: 0.8rem;
+    --fontSizeXS: 0.6rem;
 
     --colorLangA: var(--green);
     --colorLangB: var(--pink);

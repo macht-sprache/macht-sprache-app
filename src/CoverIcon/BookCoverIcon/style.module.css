@@ -34,13 +34,15 @@
 }
 
 .fallback {
-    width: var(--minWidth);
+    width: calc(var(--height) * 0.7);
     height: var(--height);
-    padding: 0.5rem;
+    padding: 0.1rem;
+    font-size: var(--fontSizeXS);
     background: var(--disabledGreyBackground);
     text-align: center;
     display: flex;
     align-items: center;
     font-style: italic;
     font-family: var(--monospaceFont);
+    hyphens: auto;
 }

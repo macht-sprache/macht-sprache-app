@@ -27,13 +27,16 @@
 }
 
 .fallback {
-    width: var(--minWidth);
+    width: calc(var(--height) * 0.7);
+    line-height: 1;
     height: var(--height);
-    padding: 0.5rem;
+    padding: 0.1rem;
     background: var(--disabledGreyBackground);
     text-align: center;
     display: flex;
     align-items: center;
     font-style: italic;
+    font-size: var(--fontSizeXS);
     font-family: var(--monospaceFont);
+    hyphens: auto;
 }
