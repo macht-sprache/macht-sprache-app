@@ -3,7 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
 import { collections } from '../hooks/data';
-import { ColumnHeading, Columns, SingleColumn } from '../Layout/Columns';
+import { ColumnHeading, SingleColumn } from '../Layout/Columns';
 import { UserSettings } from '../types';
 
 export default function UserPage() {
