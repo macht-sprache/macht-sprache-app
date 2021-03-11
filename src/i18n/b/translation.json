@@ -40,7 +40,8 @@
             "cancel": "Abbrechen",
             "close": "Schließen",
             "save": "Speichern"
-        }
+        },
+        "addedOn": "Hinzugefügt von <User /> am <FormatDate />"
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",
@@ -89,7 +90,6 @@
     "term": {
         "add": "Begriff hinzufügen",
         "addTermDescription": "Füge einen Begriff hinzu, dessen Übersetzung du gerne diskutieren würdest. ",
-        "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
     },
     "translation": {

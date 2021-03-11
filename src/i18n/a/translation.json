@@ -40,7 +40,8 @@
             "cancel": "Cancel",
             "close": "Close",
             "save": "Save"
-        }
+        },
+        "addedOn": "Added by <User /> on <FormatDate />"
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
@@ -89,7 +90,6 @@
     "term": {
         "add": "Add Term",
         "addTermDescription": "Add a term for which you would like to discuss possible translations. ",
-        "addedOn": "Added by <User /> on <FormatDate />",
         "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>."
     },
     "translation": {

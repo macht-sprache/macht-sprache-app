@@ -20,7 +20,7 @@ export default function TermPage() {
                 subLine={
                     <Trans
                         t={t}
-                        i18nKey="term.addedOn"
+                        i18nKey="common.addedOn"
                         components={{
                             User: term.creator.displayName,
                             FormatDate: <FormatDate date={term.createdAt && term.createdAt.toDate()} />,

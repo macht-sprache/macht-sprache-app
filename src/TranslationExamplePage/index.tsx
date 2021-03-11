@@ -44,6 +44,15 @@ export function TranslationExamplePage() {
                 ]}
                 subLine={
                     <p>
+                        <Trans
+                            t={t}
+                            i18nKey="common.addedOn"
+                            components={{
+                                User: translationExample.creator.displayName,
+                                FormatDate: <FormatDate date={translationExample.createdAt.toDate()} />,
+                            }}
+                        />
+                        <br />
                         <ExampleSubLine source={originalSource} />
                     </p>
                 }
