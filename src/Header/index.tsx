@@ -10,7 +10,7 @@ type Props = {
     mainLang?: Lang;
     topHeading?: {
         lang?: Lang;
-        to: string;
+        to?: string;
         inner: React.ReactNode;
     }[];
     rating?: React.ReactNode;
@@ -30,9 +30,13 @@ export default function Header({ children, subLine, mainLang, topHeading, rating
                             key={index}
                             lang={heading.lang}
                         >
-                            <Link to={heading.to} className={s.topHeadingLink}>
-                                {heading.inner}
-                            </Link>
+                            {heading.to ? (
+                                <Link to={heading.to} className={s.topHeadingLink}>
+                                    {heading.inner}
+                                </Link>
+                            ) : (
+                                <>{heading.inner}</>
+                            )}
                         </h2>
                     );
                 })}
