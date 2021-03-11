@@ -6,7 +6,7 @@ import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
 import { REGISTER_POST } from '../routes';
 import { addContinueParam, useContinuePath } from '../hooks/location';
-import { Columns } from '../Layout/Columns';
+import { SingleColumn } from '../Layout/Columns';
 
 export default function RegisterPostPage() {
     const user = useUser();
@@ -44,12 +44,16 @@ export default function RegisterPostPage() {
     return (
         <>
             <Header>{t('auth.emailVerification.headingVerification')}</Header>
-            <p>{t('auth.emailVerification.explanation', { email: authUser?.email })}</p>
-            <ButtonContainer>
-                <Button onClick={resendVerification} primary disabled={resendState !== 'INIT'}>
-                    {resendState === 'SENT' ? t('auth.emailVerification.resent') : t('auth.emailVerification.resend')}
-                </Button>
-            </ButtonContainer>
+            <SingleColumn>
+                <p>{t('auth.emailVerification.explanation', { email: authUser?.email })}</p>
+                <ButtonContainer>
+                    <Button onClick={resendVerification} primary disabled={resendState !== 'INIT'}>
+                        {resendState === 'SENT'
+                            ? t('auth.emailVerification.resent')
+                            : t('auth.emailVerification.resend')}
+                    </Button>
+                </ButtonContainer>
+            </SingleColumn>
         </>
     );
 }
@@ -59,14 +63,12 @@ function VerificationSuccess({ continuePath }: { continuePath: string }) {
     return (
         <>
             <Header>{t('auth.emailVerification.headingVerified')}</Header>
-            <Columns>
-                <div>
-                    <p>{t('auth.emailVerification.welcomeVerified')}</p>
-                    <ButtonContainer>
-                        <ButtonLink to={continuePath}>{t('auth.emailVerification.continue')}</ButtonLink>
-                    </ButtonContainer>
-                </div>
-            </Columns>
+            <SingleColumn>
+                <p>{t('auth.emailVerification.welcomeVerified')}</p>
+                <ButtonContainer>
+                    <ButtonLink to={continuePath}>{t('auth.emailVerification.continue')}</ButtonLink>
+                </ButtonContainer>
+            </SingleColumn>
         </>
     );
 }

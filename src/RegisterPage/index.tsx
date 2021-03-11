@@ -9,6 +9,7 @@ import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
+import { SingleColumn } from '../Layout/Columns';
 import { REGISTER_POST } from '../routes';
 
 type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE' | 'ERROR';
@@ -65,57 +66,59 @@ export default function RegisterPage() {
     return (
         <>
             <Header>{t('auth.register.title')}</Header>
-            <p>{t('auth.register.intro')}</p>
-            <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
-                <InputContainer>
-                    <Input
-                        label={t('auth.displayName')}
-                        value={displayName}
-                        autoComplete="nickname"
-                        disabled={registrationState === 'IN_PROGRESS'}
-                        onChange={event => {
-                            setUserName(event.target.value);
-                        }}
-                    />
-                    <Input
-                        label={t('auth.email')}
-                        value={email}
-                        type="email"
-                        autoComplete="username"
-                        onChange={event => {
-                            setEmail(event.target.value);
-                        }}
-                        disabled={registrationState === 'IN_PROGRESS'}
-                        error={
-                            registrationError?.code === 'auth/email-already-in-use' &&
-                            t('auth.errors.email-already-in-use')
-                        }
-                    />
-                    <Input
-                        label={t('auth.password')}
-                        value={password}
-                        autoComplete="new-password"
-                        type="password"
-                        onChange={event => {
-                            setSetPassword(event.target.value);
-                        }}
-                        disabled={registrationState === 'IN_PROGRESS'}
-                        error={registrationError?.code === 'auth/weak-password' && t('auth.errors.weak-password')}
-                    />
-                </InputContainer>
-                {registrationError &&
-                    registrationError.code &&
-                    registrationError.code !== 'auth/weak-password' &&
-                    registrationError.code !== 'auth/email-already-in-use' && (
-                        <ErrorBox>{registrationError.message}</ErrorBox>
-                    )}
-                <ButtonContainer>
-                    <Button type="button">{t('common.formNav.cancel')}</Button>
-                    <Button primary disabled={disabled} type="submit">
-                        {t('auth.register.title')}
-                    </Button>
-                </ButtonContainer>
-            </form>
+            <SingleColumn>
+                <p>{t('auth.register.intro')}</p>
+                <form onSubmit={onSubmit}>
+                    <InputContainer>
+                        <Input
+                            label={t('auth.displayName')}
+                            value={displayName}
+                            autoComplete="nickname"
+                            disabled={registrationState === 'IN_PROGRESS'}
+                            onChange={event => {
+                                setUserName(event.target.value);
+                            }}
+                        />
+                        <Input
+                            label={t('auth.email')}
+                            value={email}
+                            type="email"
+                            autoComplete="username"
+                            onChange={event => {
+                                setEmail(event.target.value);
+                            }}
+                            disabled={registrationState === 'IN_PROGRESS'}
+                            error={
+                                registrationError?.code === 'auth/email-already-in-use' &&
+                                t('auth.errors.email-already-in-use')
+                            }
+                        />
+                        <Input
+                            label={t('auth.password')}
+                            value={password}
+                            autoComplete="new-password"
+                            type="password"
+                            onChange={event => {
+                                setSetPassword(event.target.value);
+                            }}
+                            disabled={registrationState === 'IN_PROGRESS'}
+                            error={registrationError?.code === 'auth/weak-password' && t('auth.errors.weak-password')}
+                        />
+                    </InputContainer>
+                    {registrationError &&
+                        registrationError.code &&
+                        registrationError.code !== 'auth/weak-password' &&
+                        registrationError.code !== 'auth/email-already-in-use' && (
+                            <ErrorBox>{registrationError.message}</ErrorBox>
+                        )}
+                    <ButtonContainer>
+                        <Button type="button">{t('common.formNav.cancel')}</Button>
+                        <Button primary disabled={disabled} type="submit">
+                            {t('auth.register.title')}
+                        </Button>
+                    </ButtonContainer>
+                </form>
+            </SingleColumn>
         </>
     );
 }

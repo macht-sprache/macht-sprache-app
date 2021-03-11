@@ -9,6 +9,7 @@ import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
+import { SingleColumn } from '../Layout/Columns';
 import { REGISTER_POST } from '../routes';
 
 export default function LoginPage() {
@@ -47,42 +48,44 @@ export default function LoginPage() {
     return (
         <>
             <Header>{t('auth.login')}</Header>
-            <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
-                <InputContainer>
-                    <Input
-                        label={t('auth.email')}
-                        value={email}
-                        autoComplete="email"
-                        disabled={loggingIn}
-                        onChange={value => {
-                            setEmail(value.target.value);
-                        }}
-                        error={loginError?.code === 'auth/user-not-found' && t('auth.errors.user-not-found')}
-                    />
-                    <Input
-                        label={t('auth.password')}
-                        value={password}
-                        autoComplete="current-password"
-                        type="password"
-                        disabled={loggingIn}
-                        onChange={value => {
-                            setSetPassword(value.target.value);
-                        }}
-                        error={loginError?.code === 'auth/wrong-password' && t('auth.errors.wrong-password')}
-                    />
-                </InputContainer>
+            <SingleColumn>
+                <form onSubmit={onSubmit}>
+                    <InputContainer>
+                        <Input
+                            label={t('auth.email')}
+                            value={email}
+                            autoComplete="email"
+                            disabled={loggingIn}
+                            onChange={value => {
+                                setEmail(value.target.value);
+                            }}
+                            error={loginError?.code === 'auth/user-not-found' && t('auth.errors.user-not-found')}
+                        />
+                        <Input
+                            label={t('auth.password')}
+                            value={password}
+                            autoComplete="current-password"
+                            type="password"
+                            disabled={loggingIn}
+                            onChange={value => {
+                                setSetPassword(value.target.value);
+                            }}
+                            error={loginError?.code === 'auth/wrong-password' && t('auth.errors.wrong-password')}
+                        />
+                    </InputContainer>
 
-                {loginError &&
-                    loginError.code &&
-                    loginError.code !== 'auth/user-not-found' &&
-                    loginError.code !== 'auth/wrong-password' && <ErrorBox>{loginError.message}</ErrorBox>}
-                <ButtonContainer>
-                    <Button type="button">{t('common.formNav.cancel')}</Button>
-                    <Button primary type="submit" disabled={disabled}>
-                        {t('auth.login')}
-                    </Button>
-                </ButtonContainer>
-            </form>
+                    {loginError &&
+                        loginError.code &&
+                        loginError.code !== 'auth/user-not-found' &&
+                        loginError.code !== 'auth/wrong-password' && <ErrorBox>{loginError.message}</ErrorBox>}
+                    <ButtonContainer>
+                        <Button type="button">{t('common.formNav.cancel')}</Button>
+                        <Button primary type="submit" disabled={disabled}>
+                            {t('auth.login')}
+                        </Button>
+                    </ButtonContainer>
+                </form>
+            </SingleColumn>
         </>
     );
 }
