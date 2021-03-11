@@ -61,10 +61,9 @@
         "coc": "code of conduct"
     },
     "auth": {
-        "displayName": "Benutzer:innenname",
+        "displayName": "Nutzer:innenname",
         "email": "Email Adresse",
         "password": "Passwort",
-        "register": "Registrieren",
         "login": "Anmelden",
         "logout": "Abmelden",
         "emailVerification": {
@@ -81,6 +80,10 @@
             "weak-password": "Passwort zu kurz.",
             "user-not-found": "Benutzer:in nicht gefunden.",
             "wrong-password": "Passwort falsch."
+        },
+        "register": {
+            "title": "Registrieren",
+            "intro": "Der Nutzer:innenname ist öffentlich. Du kannst dir einen ausdenken oder deinen echten Namen verwenden – je nach dem, wie du identifiziert werden möchtest."
         }
     },
     "term": {

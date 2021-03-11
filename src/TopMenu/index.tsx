@@ -31,7 +31,7 @@ export function TopMenu() {
                 <>
                     {launched && (
                         <>
-                            <Link to={addContinueParam(generatePath(REGISTER))}>{t('auth.register')}</Link>{' '}
+                            <Link to={addContinueParam(generatePath(REGISTER))}>{t('auth.register.title')}</Link>{' '}
                         </>
                     )}
                     <Link to={addContinueParam(generatePath(LOGIN))}>{t('auth.login')}</Link>

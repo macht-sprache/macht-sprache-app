@@ -64,7 +64,8 @@ export default function RegisterPage() {
 
     return (
         <>
-            <Header>{t('auth.register')}</Header>
+            <Header>{t('auth.register.title')}</Header>
+            <p>{t('auth.register.intro')}</p>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
@@ -111,7 +112,7 @@ export default function RegisterPage() {
                 <ButtonContainer>
                     <Button type="button">{t('common.formNav.cancel')}</Button>
                     <Button primary disabled={disabled} type="submit">
-                        {t('auth.register')}
+                        {t('auth.register.title')}
                     </Button>
                 </ButtonContainer>
             </form>

@@ -64,7 +64,6 @@
         "displayName": "User Name",
         "email": "Email Address",
         "password": "Password",
-        "register": "Sign Up",
         "login": "Login",
         "logout": "Logout",
         "emailVerification": {
@@ -81,6 +80,10 @@
             "weak-password": "Password should be at least 6 characters.",
             "user-not-found": "User not found",
             "wrong-password": "Wrong Password"
+        },
+        "register": {
+            "title": "Sign Up",
+            "intro": "The User Name will be public. You can make one up or use your real name – however you want to be identified."
         }
     },
     "term": {
