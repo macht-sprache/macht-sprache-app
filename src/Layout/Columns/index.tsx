@@ -17,3 +17,14 @@ type ColumnHeadingProps = {
 export function ColumnHeading({ children }: ColumnHeadingProps) {
     return <h2 className={s.columnHeading}>{children}</h2>;
 }
+
+type SingleColumnProps = {
+    children: React.ReactNode;
+};
+
+/**
+ * For pages with only one column that shouldn't spread out too much
+ */
+export function SingleColumn({ children }: SingleColumnProps) {
+    return <div className={clsx(s.singleColumn)}>{children}</div>;
+}
