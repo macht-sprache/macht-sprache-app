@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
+import { SingleColumn } from '../Layout/Columns';
 import PageLoadingState from '../PageLoadingState';
 import { useWpPage } from '../useWpHooks';
 import s from './style.module.css';
@@ -28,7 +29,9 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
     return (
         <>
             <Header>{response.title}</Header>
-            <div className={s.body} dangerouslySetInnerHTML={{ __html: response.body }} />
+            <SingleColumn>
+                <div className={s.body} dangerouslySetInnerHTML={{ __html: response.body }} />
+            </SingleColumn>
         </>
     );
 }
