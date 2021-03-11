@@ -41,7 +41,8 @@
             "close": "Schließen",
             "save": "Speichern"
         },
-        "addedOn": "Hinzugefügt von <User /> am <FormatDate />"
+        "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
+        "settings": "Einstellungen"
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",
@@ -201,5 +202,10 @@
     },
     "newsFeed": {
         "clickForMore": "Hier klicken für mehr..."
+    },
+    "userPage": {
+        "title": "Nutzer:innenseite von",
+        "hideRedactedDescription": "<strong>Sensible Begriffe</strong>: Standardmäßig versteckt <i>macht.sprache.</i> sensible Begriffe (z.B. n***r). Wenn du diese Begriffe trotzdem ausgeschrieben sehen möchtest, kannst du sie hier anzeigen lassen. ",
+        "hideRedacted": "Diskrimminierende Begriffe verstecken"
     }
 }

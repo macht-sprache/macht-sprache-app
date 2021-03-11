@@ -41,7 +41,8 @@
             "close": "Close",
             "save": "Save"
         },
-        "addedOn": "Added by <User /> on <FormatDate />"
+        "addedOn": "Added by <User /> on <FormatDate />",
+        "settings": "Settings"
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
@@ -201,5 +202,10 @@
     },
     "newsFeed": {
         "clickForMore": "Click for more..."
+    },
+    "userPage": {
+        "title": "User profile of",
+        "hideRedactedDescription": "<strong>Sensitive terms</strong>: By default, <i>macht.sprache.</i> hides sensitive terms like the n-word (e.g. n***o). If you would prefer to see them for the sake of clarity, you can disable this feature here.",
+        "hideRedacted": "Hide offensive terms"
     }
 }
