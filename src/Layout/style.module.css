@@ -145,19 +145,33 @@
 
 .footerInner {
     display: flex;
-    flex-wrap: wrap;
-    margin: -0.25rem -0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: -0.5rem;
 }
 
 .footerLink {
     text-decoration: none;
     display: inline-block;
-    margin: 0.25rem 0.5rem;
+    margin: 0.5rem;
+    position: relative;
+}
+
+.footerLink:before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    box-shadow: 0 0 0 0.3rem var(--white);
+    z-index: -1;
 }
 
 .footerLink:hover,
 .footerLinkActive {
-    box-shadow: 0 var(--thickBorder) var(--black);
+    box-shadow: inset 0 calc(var(--thickBorder) * -1) calc(var(--thickBorder) * -1) var(--black);
 }
 
 .footerLinkActive {

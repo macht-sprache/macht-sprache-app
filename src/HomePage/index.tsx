@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import { NewsFeed } from '../NewsFeed';
+import { Terms } from '../Terms';
 import { useWpPage } from '../useWpHooks';
 
 const ABOUT_SLUGS = {
@@ -18,13 +19,17 @@ export default function Home() {
             <Header>macht.sprache.</Header>
             <Columns>
                 <div>
+                    <ColumnHeading>{t('common.entities.term.value_plural')}</ColumnHeading>
+                    <Terms />
+                </div>
+                <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
                     <div dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }} />
                 </div>
-                <div>
+                {/* <div>
                     <ColumnHeading>{t('home.news')}</ColumnHeading>
                     <NewsFeed />
-                </div>
+                </div> */}
             </Columns>
         </>
     );

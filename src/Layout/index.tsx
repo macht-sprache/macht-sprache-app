@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import LinkButton from '../LinkButton';
 import { ABOUT, CODE_OF_CONDUCT, IMPRINT } from '../routes';
-import { Terms } from '../Terms';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -22,7 +21,6 @@ function Layout({ children }: Props) {
     const id = useDomId();
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
-    const loggedInOrLaunched = useLaunched();
 
     useEffect(() => {
         document.body.classList.toggle(s.bodyMenuOpen, menuOpen);
@@ -56,16 +54,6 @@ function Layout({ children }: Props) {
                     <div className={s.topRightMenu}>
                         <TopMenu />
                     </div>
-                    {loggedInOrLaunched && (
-                        <Terms
-                            classNames={{
-                                terms: s.terms,
-                                termsInner: s.termsInner,
-                                termsControl: s.termsControl,
-                                termsControlInner: s.termsControlInner,
-                            }}
-                        />
-                    )}
                     <Footer />
                 </div>
                 <main className={s.main}>{children}</main>
@@ -83,22 +71,22 @@ function Footer() {
 
     let footerLinks = [
         {
-            to: IMPRINT,
-            label: t('nav.imprint'),
-        },
-        {
             to: CODE_OF_CONDUCT,
             label: t('nav.coc'),
+        },
+        {
+            to: IMPRINT,
+            label: t('nav.imprint'),
         },
     ];
 
     if (launched) {
         footerLinks = [
-            ...footerLinks,
             {
                 to: ABOUT,
                 label: t('nav.about'),
             },
+            ...footerLinks,
         ];
     }
 
