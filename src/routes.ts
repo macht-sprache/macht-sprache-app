@@ -11,4 +11,5 @@ export const HOME = '/',
     USER = '/user',
     ABOUT = '/about',
     CODE_OF_CONDUCT = '/code-of-conduct',
+    NEWS = '/news',
     IMPRINT = '/imprint';

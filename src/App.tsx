@@ -14,6 +14,7 @@ import { useAddContinueParam } from './hooks/location';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
 import LoginPage from './LoginPage';
+import { NewsPage } from './NewsPage';
 import { NotFoundPage } from './NotFoundPage';
 import PageLoadingState from './PageLoadingState';
 import RegisterPage from './RegisterPage';
@@ -85,6 +86,9 @@ function AppRouter() {
                             </LaunchedRoute>
                             <LoggedInRoute path={routes.USER} exact>
                                 <UserPage />
+                            </LoggedInRoute>
+                            <LoggedInRoute path={routes.NEWS} exact>
+                                <NewsPage />
                             </LoggedInRoute>
                             <Route path={routes.ABOUT} exact>
                                 <StaticContentPage slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }} />
