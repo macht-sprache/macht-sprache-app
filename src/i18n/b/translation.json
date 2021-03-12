@@ -200,7 +200,8 @@
     },
     "home": {
         "news": "Neuigkeiten",
-        "about": "Über das Projekt"
+        "about": "Über das Projekt",
+        "termDescription": "Dies sind die Begriffe, dessen Übersetzungen diskutiert werden. [more context?]"
     },
     "newsFeed": {
         "clickForMore": "Hier klicken für mehr..."
