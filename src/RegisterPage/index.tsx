@@ -12,10 +12,12 @@ import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
 import { REGISTER_POST } from '../routes';
+import { Lang } from '../types';
+import { useLang } from '../useLang';
 
 type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE' | 'ERROR';
 
-const signUp = async (displayName: string, email: string, password: string, continuePath: string) => {
+const signUp = async (lang: Lang, displayName: string, email: string, password: string, continuePath: string) => {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
 
     if (!user) {
@@ -25,12 +27,13 @@ const signUp = async (displayName: string, email: string, password: string, cont
     await user.updateProfile({ displayName });
 
     if (!user.emailVerified) {
-        await sendEmailVerification(window.location.origin, REGISTER_POST, continuePath);
+        await sendEmailVerification(lang, window.location.origin, REGISTER_POST, continuePath);
     }
 };
 
 export default function RegisterPage() {
     const user = useUser();
+    const [lang] = useLang();
     const { t } = useTranslation();
     const continuePath = useContinuePath();
 
@@ -54,7 +57,7 @@ export default function RegisterPage() {
         event.preventDefault();
         setRegistrationState('IN_PROGRESS');
         setRegistrationError(undefined);
-        signUp(displayName, email, password, continuePath)
+        signUp(lang, displayName, email, password, continuePath)
             .then(() => setRegistrationState('DONE'))
             .catch(error => {
                 setRegistrationError(error);

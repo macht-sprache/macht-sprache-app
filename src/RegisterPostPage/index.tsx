@@ -11,6 +11,7 @@ import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
 import { HOME, LOGIN, REGISTER_POST } from '../routes';
 import { User } from '../types';
+import { useLang } from '../useLang';
 
 export default function RegisterPostPage() {
     const user = useUser();
@@ -100,11 +101,12 @@ function VerifyEmail({
 
 function VerificationRequired({ continuePath, authUser }: { continuePath: string; authUser?: firebase.User }) {
     const { t } = useTranslation();
+    const [lang] = useLang();
     const [resendState, setResendState] = useState<'INIT' | 'SENDING' | 'SENT'>('INIT');
 
     const resendVerification = () => {
         setResendState('SENDING');
-        sendEmailVerification(window.location.origin, REGISTER_POST, continuePath)
+        sendEmailVerification(lang, window.location.origin, REGISTER_POST, continuePath)
             .then(() => setResendState('SENT'))
             .catch(error => {
                 console.error(error);

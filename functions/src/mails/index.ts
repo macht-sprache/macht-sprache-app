@@ -1,12 +1,18 @@
 import mjml2html from 'mjml';
 import nodemailer from 'nodemailer';
+import { Lang } from '../../../src/types';
 import config from '../config';
 import { auth, functions } from '../firebase';
 import { getVerifyEmailTemplate } from './templates';
 
 export const sendEmailVerification = functions.https.onCall(
     async (
-        { origin, verifyPath, continuePath }: { origin: string; verifyPath: string; continuePath: string },
+        {
+            origin,
+            verifyPath,
+            continuePath,
+            lang,
+        }: { origin: string; verifyPath: string; continuePath: string; lang: Lang },
         context
     ) => {
         const userId = context.auth?.uid;
@@ -27,7 +33,7 @@ export const sendEmailVerification = functions.https.onCall(
         const url = new URL(origin + verifyPath);
         url.search = params.toString();
 
-        const { html } = mjml2html(getVerifyEmailTemplate(url.toString()));
+        const { html } = mjml2html(getVerifyEmailTemplate(lang, url.toString()));
 
         const transport = nodemailer.createTransport({
             host: config.smtp.host,

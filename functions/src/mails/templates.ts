@@ -1,4 +1,6 @@
 import type { MJMLJsonObject } from 'mjml-core';
+import { Lang } from '../../../src/types';
+import { translate } from './i18n';
 
 const head: MJMLJsonObject = {
     tagName: 'mj-head',
@@ -86,12 +88,14 @@ const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
     ],
 });
 
-export const getVerifyEmailTemplate = (url: string) =>
-    withBaseTemplate([
+export const getVerifyEmailTemplate = (lang: Lang, url: string) => {
+    const t = translate(lang);
+    return withBaseTemplate([
         {
             tagName: 'mj-text',
             attributes: {},
-            content: 'Thanks for your interest in macht.sprache.',
+            content: t('verify.message'),
         },
-        getButton('Click here to confirm your email address', url),
+        getButton(t('verify.button'), url),
     ]);
+};

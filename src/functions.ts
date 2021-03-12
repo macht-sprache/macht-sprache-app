@@ -25,5 +25,5 @@ export const addTranslationExample = (
 
 const _sendEmailVerification = functions.httpsCallable('mails-sendEmailVerification');
 
-export const sendEmailVerification = (origin: string, verifyPath: string, continuePath: string) =>
-    _sendEmailVerification({ origin, verifyPath, continuePath });
+export const sendEmailVerification = (lang: Lang, origin: string, verifyPath: string, continuePath: string) =>
+    _sendEmailVerification({ lang, origin, verifyPath, continuePath });
