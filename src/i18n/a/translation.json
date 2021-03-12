@@ -8,6 +8,7 @@
         "entities": {
             "term": {
                 "value": "Term",
+                "value_plural": "Terms",
                 "add": "Add Term"
             },
             "translation": {

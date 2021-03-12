@@ -8,6 +8,7 @@
         "entities": {
             "term": {
                 "value": "Begriff",
+                "value_plural": "Begriffe",
                 "add": "Begriff hinzufügen"
             },
             "translation": {
