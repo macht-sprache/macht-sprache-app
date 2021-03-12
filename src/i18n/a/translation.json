@@ -200,7 +200,8 @@
     },
     "home": {
         "news": "News",
-        "about": "About the project"
+        "about": "About the project",
+        "termDescription": "These are the terms the translations are beeing discussed. [more context?]"
     },
     "newsFeed": {
         "clickForMore": "Click for more..."

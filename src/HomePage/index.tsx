@@ -19,6 +19,7 @@ export default function Home() {
             <Columns>
                 <div>
                     <ColumnHeading>{t('common.entities.term.value_plural')}</ColumnHeading>
+                    <p>{t('home.termDescription')}</p>
                     <Terms />
                 </div>
                 <div>
