@@ -13,7 +13,7 @@ import { useLang } from '../useLang';
 import s from './style.module.css';
 
 type TermsProps = {
-    classNames: {
+    classNames?: {
         terms?: string;
         termsInner?: string;
         termsControl?: string;
