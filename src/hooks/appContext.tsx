@@ -43,16 +43,16 @@ export const AppContextProvider: React.FC = ({ children }) => {
     return <appContext.Provider value={{ user, userSettings, sensitiveTerms }}>{children}</appContext.Provider>;
 };
 
-const ensureUserEntity = (authUser: firebase.User) =>
-    authUser
-        .getIdTokenResult()
-        .then(token => (token.claims.email_verified ? token : authUser.getIdTokenResult(true)))
-        .then(() =>
-            collections.users.doc(authUser.uid).set({
-                id: authUser.uid,
-                displayName: authUser.displayName || authUser.email || '',
-            })
-        );
+const ensureUpdatedToken = (authUser: firebase.User) =>
+    authUser.getIdTokenResult().then(token => (token.claims.email_verified ? token : authUser.getIdTokenResult(true)));
+
+export const ensureUserEntity = (authUser: firebase.User) =>
+    ensureUpdatedToken(authUser).then(() =>
+        collections.users.doc(authUser.uid).set({
+            id: authUser.uid,
+            displayName: authUser.displayName || authUser.email || '',
+        })
+    );
 
 function useEnsureUserEntity(authUser: firebase.User | undefined, loadingAuthUser: boolean) {
     const [{ user, loading, error }, setState] = useState<{
@@ -93,6 +93,12 @@ function useEnsureUserEntity(authUser: firebase.User | undefined, loadingAuthUse
             unsubscribe();
         };
     }, [authUser, loadingAuthUser]);
+
+    useEffect(() => {
+        if (authUser && user) {
+            ensureUpdatedToken(authUser);
+        }
+    }, [authUser, user]);
 
     return [user, loading, error] as const;
 }

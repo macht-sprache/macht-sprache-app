@@ -30,11 +30,15 @@
         "metascraper-publisher": "^5.18.12",
         "metascraper-title": "^5.18.12",
         "metascraper-url": "^5.18.12",
+        "mjml": "^4.9.0",
         "node-fetch": "^2.6.1",
+        "nodemailer": "^6.5.0",
         "rambdax": "^7.2.0"
     },
     "devDependencies": {
+        "@types/mjml": "^4.7.0",
         "@types/node-fetch": "^2.5.8",
+        "@types/nodemailer": "^6.4.0",
         "firebase-functions-test": "^0.2.0"
     },
     "private": true

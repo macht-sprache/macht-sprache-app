@@ -1,39 +1,110 @@
-import { useState } from 'react';
+import type firebase from 'firebase';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, useLocation } from 'react-router-dom';
-import { useAuthState, useUser } from '../hooks/appContext';
+import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
+import { sendEmailVerification } from '../functions';
 import Header from '../Header';
-import { REGISTER_POST } from '../routes';
+import { ensureUserEntity, useAuthState, useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
+import { HOME, LOGIN, REGISTER_POST } from '../routes';
+import { User } from '../types';
 
 export default function RegisterPostPage() {
     const user = useUser();
-    const { t } = useTranslation();
-    const [authUser, authLoading] = useAuthState();
+    const [authUser] = useAuthState();
     const continuePath = useContinuePath();
-
-    const [resendState, setResendState] = useState<'INIT' | 'SENDING' | 'SENT'>('INIT');
     const location = useLocation();
 
-    const params = new URLSearchParams(location.search);
-    const success = params.has('success');
+    const verifyParams = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const mode = params.get('mode');
+        const actionCode = params.get('oobCode');
+        const continueUrl = params.get('continueUrl');
 
-    if (success) {
-        return <VerificationSuccess continuePath={continuePath} />;
+        if (mode !== 'verifyEmail' || !actionCode) {
+            return;
+        }
+
+        return { actionCode, continueUrl };
+    }, [location.search]);
+
+    if (verifyParams) {
+        return <VerifyEmail authUser={authUser} {...verifyParams} />;
     }
 
-    if (user || (!authLoading && !authUser)) {
+    if (user || !authUser) {
         return <Redirect to={continuePath} />;
     }
 
+    return <VerificationRequired continuePath={continuePath} authUser={authUser} />;
+}
+
+function VerifyEmail({
+    user,
+    authUser,
+    actionCode,
+    continueUrl,
+}: {
+    user?: User;
+    authUser?: firebase.User;
+    actionCode: string;
+    continueUrl: string | null;
+}) {
+    const { t } = useTranslation();
+    const [verifyState, setVerifyState] = useState<'VERIFYING' | 'VERIFIED' | 'ERROR'>('VERIFYING');
+
+    useEffect(() => {
+        auth.applyActionCode(actionCode).then(
+            () => {
+                setVerifyState('VERIFIED');
+                auth.currentUser?.reload();
+            },
+            error => {
+                setVerifyState('ERROR');
+                console.error(error);
+            }
+        );
+    }, [actionCode]);
+
+    useEffect(() => {
+        if (verifyState === 'VERIFIED' && authUser) {
+            ensureUserEntity(authUser);
+        }
+    }, [authUser, verifyState]);
+
+    const continuePath = continueUrl?.replace(window.location.origin, '') || HOME;
+    const linkTo = user ? continuePath : addContinueParam(LOGIN, continuePath);
+
+    switch (verifyState) {
+        case 'VERIFYING':
+            return <Header>Verifying Email…</Header>;
+        case 'VERIFIED':
+            return (
+                <>
+                    <Header>{t('auth.emailVerification.headingVerified')}</Header>
+                    <SingleColumn>
+                        <p>{t('auth.emailVerification.welcomeVerified')}</p>
+                        <ButtonContainer>
+                            <ButtonLink to={linkTo}>{t('auth.emailVerification.continue')}</ButtonLink>
+                        </ButtonContainer>
+                    </SingleColumn>
+                </>
+            );
+        case 'ERROR':
+            return <Header>{t('common.error.general')}</Header>;
+    }
+}
+
+function VerificationRequired({ continuePath, authUser }: { continuePath: string; authUser?: firebase.User }) {
+    const { t } = useTranslation();
+    const [resendState, setResendState] = useState<'INIT' | 'SENDING' | 'SENT'>('INIT');
+
     const resendVerification = () => {
         setResendState('SENDING');
-        authUser
-            ?.sendEmailVerification({
-                url: window.location.origin + addContinueParam(REGISTER_POST + '?success', continuePath),
-            })
+        sendEmailVerification(window.location.origin, REGISTER_POST, continuePath)
             .then(() => setResendState('SENT'))
             .catch(error => {
                 console.error(error);
@@ -52,21 +123,6 @@ export default function RegisterPostPage() {
                             ? t('auth.emailVerification.resent')
                             : t('auth.emailVerification.resend')}
                     </Button>
-                </ButtonContainer>
-            </SingleColumn>
-        </>
-    );
-}
-
-function VerificationSuccess({ continuePath }: { continuePath: string }) {
-    const { t } = useTranslation();
-    return (
-        <>
-            <Header>{t('auth.emailVerification.headingVerified')}</Header>
-            <SingleColumn>
-                <p>{t('auth.emailVerification.welcomeVerified')}</p>
-                <ButtonContainer>
-                    <ButtonLink to={continuePath}>{t('auth.emailVerification.continue')}</ButtonLink>
                 </ButtonContainer>
             </SingleColumn>
         </>

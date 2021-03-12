@@ -1,5 +1,4 @@
 import { firestore } from 'firebase-admin';
-import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { TranslationExampleModel } from '../../../src/modelTypes';
 import {
     BookSource,
@@ -14,18 +13,11 @@ import {
     User,
     WebPageSource,
 } from '../../../src/types';
-import { convertRef, db, functions, WithoutId } from '../firebase';
+import { convertRef, db, functions, verifyUser, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
 import { findTermMatches } from './language';
 import { getMovie, searchMovies } from './movies';
 import { getWebPage, searchWebPage } from './webpages';
-
-const verifyUser = (context: CallableContext) => {
-    if (!context.auth?.uid || !context.auth?.token.email_verified) {
-        throw new Error('User is not verified.');
-    }
-    return context.auth.uid;
-};
 
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);

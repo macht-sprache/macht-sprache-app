@@ -22,3 +22,8 @@ const _addTranslationExample = functions.httpsCallable('handlers-addTranslationE
 export const addTranslationExample = (
     model: TranslationExampleModel
 ): Promise<{ data: { translationExampleId: string } }> => _addTranslationExample(model);
+
+const _sendEmailVerification = functions.httpsCallable('mails-sendEmailVerification');
+
+export const sendEmailVerification = (origin: string, verifyPath: string, continuePath: string) =>
+    _sendEmailVerification({ origin, verifyPath, continuePath });

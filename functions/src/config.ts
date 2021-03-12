@@ -1,5 +1,20 @@
 import * as firebaseFunctions from 'firebase-functions';
 
+type Config = {
+    functions: {
+        region: string;
+    };
+    tmdb: {
+        key: string;
+    };
+    smtp: {
+        user: string;
+        password: string;
+        host: string;
+        port?: number;
+    };
+};
+
 const functionsRegion = firebaseFunctions.config().functions?.region;
 
 if (typeof functionsRegion !== 'string') {
@@ -12,13 +27,14 @@ if (typeof tmdbApikey !== 'string') {
     throw new Error('Tmdb api key is not defined.');
 }
 
-const config = {
+const config: Config = {
     functions: {
         region: functionsRegion,
     },
     tmdb: {
         key: tmdbApikey,
     },
+    smtp: firebaseFunctions.config().smtp,
 };
 
 export default config;
