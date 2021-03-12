@@ -4,6 +4,9 @@
     padding: 0;
     margin: 0 0 1rem;
     text-transform: capitalize;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem calc(var(--thickBorder) * -1) calc(var(--thickBorder) * -1);
 }
 
 .termLink {
@@ -15,7 +18,7 @@
     padding: 0.5rem;
     font-style: italic;
     border: var(--thickBorder) solid var(--white);
-    margin-bottom: calc(var(--thickBorder) * -1);
+    margin: calc(var(--thickBorder) * -0.5);
     color: var(--fontColorOnColor);
     hyphens: auto;
 }
@@ -36,5 +39,6 @@
 }
 
 .addTermButtonContainer {
+    margin-top: 2rem;
     display: flex;
 }
