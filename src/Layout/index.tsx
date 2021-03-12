@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import LinkButton from '../LinkButton';
-import { ABOUT, CODE_OF_CONDUCT, IMPRINT } from '../routes';
+import { ABOUT, CODE_OF_CONDUCT, IMPRINT, NEWS } from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -85,6 +85,10 @@ function Footer() {
             {
                 to: ABOUT,
                 label: t('nav.about'),
+            },
+            {
+                to: NEWS,
+                label: t('nav.news'),
             },
             ...footerLinks,
         ];

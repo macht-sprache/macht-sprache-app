@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
-import { NewsFeed } from '../NewsFeed';
 import { Terms } from '../Terms';
 import { useWpPage } from '../useWpHooks';
 
