@@ -88,6 +88,7 @@ const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
                                     attributes: {
                                         width: '100px',
                                         src: 'https://storage.googleapis.com/macht-sprache-static-assets/logo.png',
+                                        alt: 'macht.sprache.',
                                     },
                                 },
                                 ...children,
