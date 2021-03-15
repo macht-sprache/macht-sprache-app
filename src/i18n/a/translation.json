@@ -201,7 +201,7 @@
     "home": {
         "news": "News",
         "about": "About the project",
-        "termDescription": "These are the terms the translations are beeing discussed. [more context?]"
+        "termDescription": "These are the terms the translations are beeing discussed. "
     },
     "newsFeed": {
         "clickForMore": "Click for more..."
