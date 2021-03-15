@@ -4,6 +4,7 @@ import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import { TERMS } from '../routes';
 import { useWpPage } from '../useWpHooks';
+import s from './style.module.css';
 
 const ABOUT_SLUGS = {
     en: 'about-macht-sprache-short-version-landing-page',
@@ -18,7 +19,7 @@ export default function Home() {
         <>
             <Header>macht.sprache.</Header>
             <Columns>
-                <div>
+                <div className={s.introText}>
                     <ColumnHeading>{t('common.entities.term.value_plural')}</ColumnHeading>
                     <p>{t('home.termDescription')}</p>
                     [here there will be the terms of the week]
@@ -28,7 +29,10 @@ export default function Home() {
                 </div>
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <div dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }} />
+                    <div
+                        className={s.introText}
+                        dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }}
+                    />
                 </div>
             </Columns>
         </>

@@ -27,6 +27,7 @@
 
 .excerpt p {
     margin: 0;
+    font-family: var(--paragraphFont);
 }
 
 .article {
@@ -51,4 +52,5 @@
 .clickForMore {
     margin-top: 0.5rem;
     font-style: italic;
+    font-family: var(--paragraphFont);
 }
