@@ -5,24 +5,18 @@
 .heading {
     font-size: inherit;
     line-height: var(--lineHeightParagraph);
-    margin: 0;
+    margin: 0 0 0.5rem;
 }
 
 .image {
-    width: 9rem;
+    width: 13rem;
     height: auto;
-    margin-right: 0.5rem;
+    margin-right: 1rem;
 }
 
 .body {
     display: flex;
     align-items: flex-start;
-}
-
-@media (max-width: 450px) {
-    .body {
-        display: block;
-    }
 }
 
 .excerpt p {
@@ -32,7 +26,7 @@
 
 .article {
     background: var(--white);
-    padding: 0.5rem;
+    padding: 1rem;
     box-shadow: 0 0 0 var(--thickBorder) var(--orange);
 }
 
@@ -45,7 +39,7 @@
 }
 
 .date {
-    margin: 0.5rem 0;
+    margin: 0 0 0.5rem;
     font-style: italic;
 }
 
@@ -53,4 +47,21 @@
     margin-top: 0.5rem;
     font-style: italic;
     font-family: var(--paragraphFont);
+}
+
+@media (max-width: 450px) {
+    .body {
+        display: block;
+    }
+
+    .article {
+        padding: 0.5rem;
+    }
+
+    .image {
+        width: 100%;
+        max-height: 100vw;
+        object-fit: contain;
+        margin-bottom: 0.5rem;
+    }
 }

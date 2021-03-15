@@ -16,12 +16,12 @@ export function NewsFeed() {
                 <article key={index} className={s.article}>
                     <a href={link} target="_blank" rel="noreferrer" className={s.link}>
                         <h1 className={s.heading} dangerouslySetInnerHTML={{ __html: title }} />
-                        <div className={s.date}>
-                            <FormatDate date={date} />
-                        </div>
                         <div className={s.body}>
                             {featuredMedia && <WpImage sizes="300px" className={s.image} image={featuredMedia} />}
                             <div>
+                                <div className={s.date}>
+                                    <FormatDate date={date} />
+                                </div>
                                 <div className={s.excerpt} dangerouslySetInnerHTML={{ __html: excerpt }} />
                                 <div className={s.clickForMore}>{t('newsFeed.clickForMore')}</div>
                             </div>
