@@ -1,10 +1,11 @@
+import clsx from 'clsx';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { collections, useTerm } from '../hooks/data';
-import { Columns } from '../Layout/Columns';
+import { SingleColumn } from '../Layout/Columns';
 import { Redact } from '../RedactSensitiveTerms';
 import { TranslationsList } from '../TranslationsList';
 import { getDominantLanguageClass } from '../useLangCssVars';
@@ -31,12 +32,15 @@ export default function TermPage() {
             >
                 <Redact>{term.value}</Redact>
             </Header>
-            <Columns reverseOnMobile={true}>
-                <div className={getDominantLanguageClass(term.lang)}>
-                    <Comments entityRef={collections.terms.doc(termId)} />
-                </div>
+            <div>
                 <TranslationsList term={term} />
-            </Columns>
+
+                <SingleColumn>
+                    <div className={clsx(getDominantLanguageClass(term.lang))}>
+                        <Comments entityRef={collections.terms.doc(termId)} />
+                    </div>
+                </SingleColumn>
+            </div>
         </>
     );
 }
