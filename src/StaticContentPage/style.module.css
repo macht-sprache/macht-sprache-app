@@ -9,4 +9,5 @@
 
 .body h2 {
     margin-top: 2rem;
+    font-family: var(--monospaceFont);
 }
