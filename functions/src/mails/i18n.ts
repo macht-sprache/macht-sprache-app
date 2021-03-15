@@ -24,4 +24,5 @@ i18next.init({
     resources,
 });
 
-export const translate = (lang: Lang) => (key: TransKey) => i18next.t(key, { lng: lang });
+export const translate = (lang: Lang) => (key: TransKey, interpolationMap: Record<string, string> = {}) =>
+    i18next.t(key, { lng: lang, ...interpolationMap });

@@ -1,6 +1,8 @@
 {
     "verify": {
-        "message": "Danke für das Interesse an macht.sprache.",
+        "subject": "Bestätige deine E-Mail Adresse für macht.sprache.",
+        "greeting": "Hallo {{recipientName}},",
+        "message": "danke für das Interesse an macht.sprache.",
         "button": "Klicke hier um deine E-Mail Adresse zu bestätigen"
     }
 }

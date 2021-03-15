@@ -8,6 +8,7 @@ type Config = {
         key: string;
     };
     smtp: {
+        from: string;
         user: string;
         password: string;
         host: string;

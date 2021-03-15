@@ -1,6 +1,18 @@
+import mjml2html from 'mjml';
 import type { MJMLJsonObject } from 'mjml-core';
 import { Lang } from '../../../src/types';
 import { translate } from './i18n';
+
+type TemplateOptions = {
+    recipientName: string;
+    link: string;
+    lang: Lang;
+};
+
+type RenderedMailTemplate = {
+    subject: string;
+    html: string;
+};
 
 const head: MJMLJsonObject = {
     tagName: 'mj-head',
@@ -75,7 +87,7 @@ const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
                                     tagName: 'mj-image',
                                     attributes: {
                                         width: '100px',
-                                        src: 'https://pocolit.com/wp-content/themes/pocolit/images/logo_farbe.svg',
+                                        src: 'https://storage.googleapis.com/macht-sprache-static-assets/logo.png',
                                     },
                                 },
                                 ...children,
@@ -88,14 +100,22 @@ const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
     ],
 });
 
-export const getVerifyEmailTemplate = (lang: Lang, url: string) => {
+export const getVerifyEmailTemplate = ({ recipientName, link, lang }: TemplateOptions): RenderedMailTemplate => {
     const t = translate(lang);
-    return withBaseTemplate([
-        {
-            tagName: 'mj-text',
-            attributes: {},
-            content: t('verify.message'),
-        },
-        getButton(t('verify.button'), url),
-    ]);
+    const { html } = mjml2html(
+        withBaseTemplate([
+            {
+                tagName: 'mj-text',
+                attributes: {},
+                content: t('verify.greeting', { recipientName }),
+            },
+            {
+                tagName: 'mj-text',
+                attributes: {},
+                content: t('verify.message'),
+            },
+            getButton(t('verify.button'), link),
+        ])
+    );
+    return { html, subject: t('verify.subject') };
 };

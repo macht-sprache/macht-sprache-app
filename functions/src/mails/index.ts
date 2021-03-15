@@ -1,9 +1,34 @@
-import mjml2html from 'mjml';
+import { htmlToText } from 'html-to-text';
 import nodemailer from 'nodemailer';
 import { Lang } from '../../../src/types';
 import config from '../config';
 import { auth, functions } from '../firebase';
 import { getVerifyEmailTemplate } from './templates';
+
+type MailOptions = {
+    html: string;
+    subject: string;
+    to: string;
+};
+
+const sendMail = async ({ html, subject, to }: MailOptions) => {
+    const transport = nodemailer.createTransport({
+        host: config.smtp.host,
+        port: config.smtp.port,
+        auth: {
+            user: config.smtp.user,
+            pass: config.smtp.password,
+        },
+    });
+
+    await transport.sendMail({
+        from: config.smtp.from,
+        subject,
+        to,
+        html,
+        text: htmlToText(html),
+    });
+};
 
 export const sendEmailVerification = functions.https.onCall(
     async (
@@ -33,22 +58,12 @@ export const sendEmailVerification = functions.https.onCall(
         const url = new URL(origin + verifyPath);
         url.search = params.toString();
 
-        const { html } = mjml2html(getVerifyEmailTemplate(lang, url.toString()));
-
-        const transport = nodemailer.createTransport({
-            host: config.smtp.host,
-            port: config.smtp.port,
-            auth: {
-                user: config.smtp.user,
-                pass: config.smtp.password,
-            },
+        const { html, subject } = getVerifyEmailTemplate({
+            recipientName: user.displayName || user.email,
+            lang,
+            link: url.toString(),
         });
 
-        await transport.sendMail({
-            from: 'noreply@macht-sprache.de',
-            subject: 'Verify your email',
-            to: user.email,
-            html,
-        });
+        await sendMail({ html, subject, to: user.email });
     }
 );

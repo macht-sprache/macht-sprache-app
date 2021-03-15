@@ -19,6 +19,7 @@
         "firebase-admin": "^9.2.0",
         "firebase-functions": "^3.11.0",
         "googleapis": "^67.0.0",
+        "html-to-text": "^7.0.0",
         "i18next": "^19.9.2",
         "metascraper": "^5.18.12",
         "metascraper-author": "^5.18.12",
@@ -37,6 +38,7 @@
         "rambdax": "^7.2.0"
     },
     "devDependencies": {
+        "@types/html-to-text": "^6.0.0",
         "@types/mjml": "^4.7.0",
         "@types/node-fetch": "^2.5.8",
         "@types/nodemailer": "^6.4.0",
