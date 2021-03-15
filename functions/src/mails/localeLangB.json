@@ -3,6 +3,7 @@
         "subject": "Bestätige deine E-Mail Adresse für macht.sprache.",
         "greeting": "Hallo {{recipientName}},",
         "message": "danke für das Interesse an macht.sprache.",
+        "urlManual": "Falls der Button nicht funktioniert, benutze bitte diesen Link: <a href=\"{{url}}\">{{url}}</a>",
         "button": "Klicke hier um deine E-Mail Adresse zu bestätigen"
     }
 }

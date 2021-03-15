@@ -115,6 +115,11 @@ export const getVerifyEmailTemplate = ({ recipientName, link, lang }: TemplateOp
                 content: t('verify.message'),
             },
             getButton(t('verify.button'), link),
+            {
+                tagName: 'mj-text',
+                attributes: {},
+                content: t('verify.urlManual', { url: link }),
+            },
         ])
     );
     return { html, subject: t('verify.subject') };
