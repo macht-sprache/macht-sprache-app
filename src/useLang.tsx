@@ -18,7 +18,7 @@ const useLangContext = (): LangContextValue => {
     const { i18n } = useTranslation();
     const [i18nLang, set18nLang] = useState(i18n.language);
     const { user, userSettings } = useAppContext();
-    const userLang = userSettings?.lang;
+    const userLang = user && userSettings?.lang;
     const lang = userLang ?? toLanguageOrDefault(i18nLang);
 
     useEffect(() => {
