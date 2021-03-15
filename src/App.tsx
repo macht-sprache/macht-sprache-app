@@ -22,6 +22,7 @@ import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
 import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
+import { TermsPage } from './TermsPage';
 import { TranslationExamplePage } from './TranslationExamplePage';
 import { TranslationPage } from './TranslationPage';
 import { LangProvider } from './useLang';
@@ -69,6 +70,9 @@ function AppRouter() {
                             <LoggedInRoute path={routes.TERM_ADD} exact>
                                 <AddTermPage />
                             </LoggedInRoute>
+                            <LaunchedRoute path={routes.TERMS} exact>
+                                <TermsPage />
+                            </LaunchedRoute>
                             <LaunchedRoute path={routes.TERM} exact>
                                 <TermPage />
                             </LaunchedRoute>
