@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import LinkButton from '../LinkButton';
-import { ModalDialog } from '../ModalDialog';
-import { ABOUT, CODE_OF_CONDUCT, IMPRINT, NEWS } from '../routes';
-import { Terms } from '../Terms';
+import { ABOUT, CODE_OF_CONDUCT, IMPRINT, NEWS, TERMS } from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -69,9 +67,7 @@ export default Layout;
 
 function Footer() {
     const { t } = useTranslation();
-    const [overlayOpen, setOverlayOpen] = useState(false);
     const launched = useLaunched();
-    const location = useLocation();
 
     let footerLinks = [
         {
@@ -87,6 +83,10 @@ function Footer() {
     if (launched) {
         footerLinks = [
             {
+                to: TERMS,
+                label: t('common.entities.term.value_plural'),
+            },
+            {
                 to: ABOUT,
                 label: t('nav.about'),
             },
@@ -98,37 +98,15 @@ function Footer() {
         ];
     }
 
-    useEffect(() => {
-        setOverlayOpen(false);
-    }, [location]);
-
     return (
         <footer className={s.footer}>
             <div className={s.footerInner}>
-                {launched && (
-                    <LinkButton onClick={() => setOverlayOpen(true)} className={s.footerLink}>
-                        {t('common.entities.term.value_plural')}
-                    </LinkButton>
-                )}
                 {footerLinks.map(({ to, label }, index) => (
                     <NavLink key={index} className={s.footerLink} activeClassName={s.footerLinkActive} to={to}>
                         {label}
                     </NavLink>
                 ))}
             </div>
-            {overlayOpen && (
-                <ModalDialog
-                    title={t('common.entities.term.value_plural')}
-                    isOpen
-                    onClose={() => setOverlayOpen(false)}
-                    isDismissable
-                >
-                    <div style={{ maxWidth: '600px' }}>
-                        <p>{t('home.termDescription')}</p>
-                        <Terms />
-                    </div>
-                </ModalDialog>
-            )}
         </footer>
     );
 }
