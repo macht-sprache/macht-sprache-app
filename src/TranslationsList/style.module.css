@@ -1,23 +1,27 @@
+.container {
+    margin-bottom: 4rem;
+}
+
 .list {
     list-style: none;
     padding: 0;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .item {
     --mainColor: var(--dominantLanguageColor);
 
+    display: flex;
+    flex-direction: column;
     background: var(--white);
     border: var(--thickBorder) solid var(--mainColor);
-    display: block;
     cursor: pointer;
 }
 
 .item:hover {
     --mainColor: var(--orange);
-}
-
-.item + .item {
-    margin-top: 1rem;
 }
 
 .link {
@@ -42,6 +46,10 @@
 
 .body {
     padding: 0.5rem;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .value {
@@ -104,10 +112,7 @@
     justify-content: space-between;
     font-size: var(--fontSizeS);
     font-style: italic;
-}
-
-.addTranslationButtonContainer {
-    margin-top: 2rem;
+    margin-top: 0.5rem;
 }
 
 .translationExampleList {
@@ -115,7 +120,7 @@
     padding: 0 0 0.5rem;
     list-style: none;
     display: flex;
-    flex-wrap: wrap;
+    overflow-x: auto;
 }
 
 .translationExampleListItem {
@@ -124,4 +129,23 @@
 
 .exampleIcon {
     --height: 5rem;
+}
+
+.addTranslationButton {
+    background: var(--disabledGreyBackground);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 1rem;
+    line-height: var(--lineHeightParagraph);
+    border: solid var(--black) var(--thinBorder);
+    min-height: 7rem;
+}
+
+.addTranslationButton:hover,
+.addTranslationButton:focus {
+    border-color: var(--orange);
 }

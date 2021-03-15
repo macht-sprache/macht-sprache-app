@@ -3,8 +3,6 @@ import { collections, useSources, useTranslations } from '../hooks/data';
 import { Trans, useTranslation } from 'react-i18next';
 import { TermWithLang } from '../TermWithLang';
 import { Source, Term, Translation } from '../types';
-import { ButtonContainer, ButtonLink } from '../Form/Button';
-import { ColumnHeading } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { FormatDate } from '../FormatDate';
 import { generatePath, Link, useHistory } from 'react-router-dom';
@@ -25,10 +23,10 @@ export function TranslationsList({ term }: { term: Term }) {
     });
 
     return (
-        <div>
-            <ColumnHeading>
+        <div className={s.container}>
+            <h2>
                 {commentCount} {t('common.entities.translation.value', { count: commentCount })}
-            </ColumnHeading>
+            </h2>
             {!translations.length && (
                 <p>
                     <Trans
@@ -39,19 +37,17 @@ export function TranslationsList({ term }: { term: Term }) {
                     />
                 </p>
             )}
-            {!!translations.length && (
-                <div className={s.list}>
-                    {translationsSorted.map(translation => (
-                        <TranslationItem
-                            key={translation.id}
-                            term={term}
-                            translation={translation}
-                            sources={sources[translation.id]}
-                        />
-                    ))}
-                </div>
-            )}
-            <AddTranslationButton termId={term.id} />
+            <div className={s.list}>
+                {translationsSorted.map(translation => (
+                    <TranslationItem
+                        key={translation.id}
+                        term={term}
+                        translation={translation}
+                        sources={sources[translation.id]}
+                    />
+                ))}
+                <AddTranslationButton term={term} />
+            </div>
         </div>
     );
 }
@@ -110,6 +106,9 @@ function TranslationItem({
                     </div>
                 ) : (
                     <ul className={s.translationExampleList}>
+                        <li className={s.translationExampleListItem}>
+                            <AddExampleButton to={addExampleLink} />
+                        </li>
                         {sources
                             .filter(source => source.lang === translation.lang)
                             .map(source => (
@@ -117,9 +116,6 @@ function TranslationItem({
                                     <CoverIcon className={s.exampleIcon} item={source} />
                                 </li>
                             ))}
-                        <li className={s.translationExampleListItem}>
-                            <AddExampleButton to={addExampleLink} />
-                        </li>
                     </ul>
                 )}
                 <footer className={s.footer}>
@@ -152,19 +148,15 @@ function AddExampleButton({ to, className }: { to: string; className?: string })
     );
 }
 
-function AddTranslationButton({ termId }: { termId: string }) {
+function AddTranslationButton({ term }: { term: Term }) {
     const { t } = useTranslation();
 
     return (
-        <div className={s.addTranslationButtonContainer}>
-            <LoginHint i18nKey="translation.registerToAdd">
-                <ButtonContainer>
-                    <ButtonLink to={generatePath(TRANSLATION_ADD, { termId: termId })}>
-                        {t('common.entities.translation.add')}
-                    </ButtonLink>
-                </ButtonContainer>
-            </LoginHint>
-        </div>
+        <LoginHint i18nKey="translation.registerToAdd">
+            <Link className={s.addTranslationButton} to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
+                <Trans i18nKey="term.addTranslation" t={t} components={{ Term: <TermWithLang term={term} /> }} />
+            </Link>
+        </LoginHint>
     );
 }
 
