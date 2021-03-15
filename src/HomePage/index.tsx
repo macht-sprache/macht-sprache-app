@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
-import { Terms } from '../Terms';
+import { TERMS } from '../routes';
 import { useWpPage } from '../useWpHooks';
 
 const ABOUT_SLUGS = {
@@ -20,16 +21,15 @@ export default function Home() {
                 <div>
                     <ColumnHeading>{t('common.entities.term.value_plural')}</ColumnHeading>
                     <p>{t('home.termDescription')}</p>
-                    <Terms />
+                    [here there will be the terms of the week]
+                    <p>
+                        <Link to={TERMS}>to the terms</Link>
+                    </p>
                 </div>
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
                     <div dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }} />
                 </div>
-                {/* <div>
-                    <ColumnHeading>{t('home.news')}</ColumnHeading>
-                    <NewsFeed />
-                </div> */}
             </Columns>
         </>
     );
