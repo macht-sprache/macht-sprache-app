@@ -1,22 +1,22 @@
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Redirect, useHistory } from 'react-router-dom';
-import { auth } from '../firebase';
-import Button, { ButtonContainer } from '../Form/Button';
+import { Redirect } from 'react-router-dom';
+import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser } from '../hooks/appContext';
+import { useLogin } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
-import { REGISTER_POST } from '../routes';
+import { FORGOT_PASSWORD } from '../routes';
 
 export default function LoginPage() {
     const user = useUser();
     const { t } = useTranslation();
-    const history = useHistory();
     const continuePath = useContinuePath();
+    const login = useLogin();
 
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
@@ -33,16 +33,10 @@ export default function LoginPage() {
         event.preventDefault();
         setLoggingIn(true);
         setLoginError(undefined);
-        auth.signInWithEmailAndPassword(email, password)
-            .then(auth => {
-                if (!auth.user?.emailVerified) {
-                    history.push(addContinueParam(REGISTER_POST, continuePath));
-                }
-            })
-            .catch(error => {
-                setLoginError(error);
-                setLoggingIn(false);
-            });
+        login(email, password, continuePath).catch(error => {
+            setLoginError(error);
+            setLoggingIn(false);
+        });
     };
 
     return (
@@ -80,6 +74,9 @@ export default function LoginPage() {
                         loginError.code !== 'auth/wrong-password' && <ErrorBox>{loginError.message}</ErrorBox>}
                     <ButtonContainer>
                         <Button type="button">{t('common.formNav.cancel')}</Button>
+                        <ButtonLink to={addContinueParam(FORGOT_PASSWORD, continuePath)}>
+                            {t('auth.passwordReset.requestLabel')}
+                        </ButtonLink>
                         <Button primary type="submit" disabled={disabled}>
                             {t('auth.login')}
                         </Button>

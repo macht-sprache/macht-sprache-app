@@ -10,7 +10,7 @@ export const useContinuePath = () => {
     return continueParam ? decodeURIComponent(continueParam) : HOME;
 };
 
-export const addContinueParam = (url: string, continuePath: string) => {
+export const addContinueParam = (url: string, continuePath?: string) => {
     if (!continuePath || continuePath === url || continuePath === HOME) {
         return url;
     }

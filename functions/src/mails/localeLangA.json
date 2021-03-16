@@ -1,9 +1,15 @@
 {
+    "greeting": "Hello {{recipientName}},",
+    "urlManual": "If the button above doesn't work, please use this link: <a href=\"{{url}}\">{{url}}</a>",
     "verify": {
         "subject": "Confirm your email address for macht.sprache.",
-        "greeting": "Hello {{recipientName}},",
         "message": "Thanks for your interest in macht.sprache.",
-        "urlManual": "If the button above doesn't work, please use this link: <a href=\"{{url}}\">{{url}}</a>",
         "button": "Click here to confirm your email address"
+    },
+    "resetPassword": {
+        "subject": "Reset your macht.sprache. password",
+        "message": "You requested to reset your password for macht.sprache.",
+        "button": "Click here to create a new password",
+        "ignoreHint": "If you have not requested to reset your password you can ignore this email."
     }
 }

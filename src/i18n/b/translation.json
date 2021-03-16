@@ -88,6 +88,18 @@
         "register": {
             "title": "Registrieren",
             "intro": "Der Nutzer:innenname ist öffentlich. Du kannst dir einen ausdenken oder deinen echten Namen verwenden – je nach dem, wie du identifiziert werden möchtest."
+        },
+        "passwordReset": {
+            "heading": "Wähle ein neues Passwort",
+            "newPassword": "Neues Passwort",
+            "saveButton": "Passwort speichern & einloggen",
+            "requestLabel": "Passwort vergessen?",
+            "requestExplanation": "Gib die Email-Adresse mit der du dich angemeldet hast ein und wir schicken dir einen Link zur Passwortwiederherstellung.",
+            "requestButton": "Senden",
+            "requestSuccessHeader": "Prüfe deinen Posteingang",
+            "requestSuccessExplanation": "Wenn du ein Konto für {{email}} hast haben wir dir einen Link zur Passwortwiederherstellung geschickt.",
+            "expiredHeading": "Link zur Passwortwiederherstellung abgelaufen",
+            "expiredExplanation": "Bitte versuche dein <Link>Passwort erneut zurückzusetzen</Link>."
         }
     },
     "term": {

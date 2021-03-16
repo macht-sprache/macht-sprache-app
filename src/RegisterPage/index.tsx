@@ -10,12 +10,11 @@ import { sendEmailVerification } from '../functions';
 import Header from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
+import { useRequestState } from '../hooks/useRequestState';
 import { SingleColumn } from '../Layout/Columns';
 import { REGISTER_POST } from '../routes';
 import { Lang } from '../types';
 import { useLang } from '../useLang';
-
-type RegistrationState = 'INIT' | 'IN_PROGRESS' | 'DONE' | 'ERROR';
 
 const signUp = async (lang: Lang, displayName: string, email: string, password: string, continuePath: string) => {
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
@@ -27,7 +26,7 @@ const signUp = async (lang: Lang, displayName: string, email: string, password: 
     await user.updateProfile({ displayName });
 
     if (!user.emailVerified) {
-        await sendEmailVerification(lang, window.location.origin, REGISTER_POST, continuePath);
+        await sendEmailVerification(lang, window.location.origin, continuePath);
     }
 };
 
@@ -40,8 +39,7 @@ export default function RegisterPage() {
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
-    const [registrationState, setRegistrationState] = useState<RegistrationState>('INIT');
-    const [registrationError, setRegistrationError] = useState<any>();
+    const [registrationState, setRegistrationState, registrationError] = useRequestState();
     const loadingRegistration = registrationState === 'IN_PROGRESS';
     const disabled = loadingRegistration || !displayName || !email || !password;
 
@@ -56,12 +54,10 @@ export default function RegisterPage() {
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setRegistrationState('IN_PROGRESS');
-        setRegistrationError(undefined);
         signUp(lang, displayName, email, password, continuePath)
             .then(() => setRegistrationState('DONE'))
             .catch(error => {
-                setRegistrationError(error);
-                setRegistrationState('ERROR');
+                setRegistrationState('ERROR', error);
             });
     };
 

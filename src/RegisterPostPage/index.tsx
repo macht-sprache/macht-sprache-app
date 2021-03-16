@@ -1,15 +1,16 @@
 import type firebase from 'firebase';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Redirect, useLocation } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import { sendEmailVerification } from '../functions';
 import Header from '../Header';
 import { ensureUserEntity, useAuthState, useUser } from '../hooks/appContext';
+import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
-import { HOME, LOGIN, REGISTER_POST } from '../routes';
+import { HOME, LOGIN } from '../routes';
 import { User } from '../types';
 import { useLang } from '../useLang';
 
@@ -17,20 +18,7 @@ export default function RegisterPostPage() {
     const user = useUser();
     const [authUser] = useAuthState();
     const continuePath = useContinuePath();
-    const location = useLocation();
-
-    const verifyParams = useMemo(() => {
-        const params = new URLSearchParams(location.search);
-        const mode = params.get('mode');
-        const actionCode = params.get('oobCode');
-        const continueUrl = params.get('continueUrl');
-
-        if (mode !== 'verifyEmail' || !actionCode) {
-            return;
-        }
-
-        return { actionCode, continueUrl };
-    }, [location.search]);
+    const verifyParams = useAuthHandlerParams('verifyEmail');
 
     if (verifyParams) {
         return <VerifyEmail authUser={authUser} {...verifyParams} />;
@@ -106,7 +94,7 @@ function VerificationRequired({ continuePath, authUser }: { continuePath: string
 
     const resendVerification = () => {
         setResendState('SENDING');
-        sendEmailVerification(lang, window.location.origin, REGISTER_POST, continuePath)
+        sendEmailVerification(lang, window.location.origin, continuePath)
             .then(() => setResendState('SENT'))
             .catch(error => {
                 console.error(error);

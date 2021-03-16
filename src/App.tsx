@@ -7,6 +7,7 @@ import AddTranslationPage from './AddTranslationPage';
 import ElementTestPage from './ElementTestPage';
 import ErrorBoundary from './ErrorBoundary';
 import { app } from './firebase';
+import ForgotPasswordPage from './ForgotPasswordPage';
 import HomePage from './HomePage';
 import { HomePagePreLaunch } from './HomePagePreLaunch';
 import { AppContextProvider, useUser } from './hooks/appContext';
@@ -66,6 +67,9 @@ function AppRouter() {
                             </Route>
                             <Route path={routes.LOGIN} exact>
                                 <LoginPage />
+                            </Route>
+                            <Route path={routes.FORGOT_PASSWORD} exact>
+                                <ForgotPasswordPage />
                             </Route>
                             <LoggedInRoute path={routes.TERM_ADD} exact>
                                 <AddTermPage />

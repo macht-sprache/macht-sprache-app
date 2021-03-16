@@ -88,6 +88,18 @@
         "register": {
             "title": "Sign Up",
             "intro": "The User Name will be public. You can make one up or use your real name, depending on how you would prefer to be identified."
+        },
+        "passwordReset": {
+            "heading": "Choose a new password",
+            "newPassword": "New Password",
+            "saveButton": "Save Password & Login",
+            "requestLabel": "Forgot your password?",
+            "requestExplanation": "Enter the email address you used to sign up and we'll send you a link to reset your password.",
+            "requestButton": "Request Password Reset",
+            "requestSuccessHeader": "Check your inbox",
+            "requestSuccessExplanation": "If you had an account for {{email}} we sent you a link to reset your password.",
+            "expiredHeading": "Password Reset Link Expired",
+            "expiredExplanation": "Please try <Link>resetting your password</Link> again."
         }
     },
     "term": {

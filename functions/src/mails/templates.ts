@@ -66,6 +66,12 @@ const getButton = (content: string, href: string): MJMLJsonObject => ({
     content,
 });
 
+const getText = (content: string): MJMLJsonObject => ({
+    tagName: 'mj-text',
+    attributes: {},
+    content,
+});
+
 const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
     tagName: 'mjml',
     attributes: {},
@@ -105,23 +111,25 @@ export const getVerifyEmailTemplate = ({ recipientName, link, lang }: TemplateOp
     const t = translate(lang);
     const { html } = mjml2html(
         withBaseTemplate([
-            {
-                tagName: 'mj-text',
-                attributes: {},
-                content: t('verify.greeting', { recipientName }),
-            },
-            {
-                tagName: 'mj-text',
-                attributes: {},
-                content: t('verify.message'),
-            },
+            getText(t('greeting', { recipientName })),
+            getText(t('verify.message')),
             getButton(t('verify.button'), link),
-            {
-                tagName: 'mj-text',
-                attributes: {},
-                content: t('verify.urlManual', { url: link }),
-            },
+            getText(t('urlManual', { url: link })),
         ])
     );
     return { html, subject: t('verify.subject') };
+};
+
+export const getResetEmail = ({ recipientName, link, lang }: TemplateOptions): RenderedMailTemplate => {
+    const t = translate(lang);
+    const { html } = mjml2html(
+        withBaseTemplate([
+            getText(t('greeting', { recipientName })),
+            getText(t('resetPassword.message')),
+            getButton(t('resetPassword.button'), link),
+            getText(t('urlManual', { url: link })),
+            getText(t('resetPassword.ignoreHint')),
+        ])
+    );
+    return { html, subject: t('resetPassword.subject') };
 };
