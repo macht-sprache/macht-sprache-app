@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { Lang } from '../types';
-import { useLang } from '../useLang';
 import s from './style.module.css';
 
 type Props = {
@@ -18,38 +17,41 @@ type Props = {
 };
 
 export default function Header({ children, subLine, mainLang, topHeading, rating, capitalize = true }: Props) {
-    const [lang] = useLang();
-
     return (
         <header className={s.header}>
-            {topHeading &&
-                topHeading.map((heading, index) => {
-                    return (
-                        <h2
-                            className={clsx(s.topHeading, { [s.capitalize]: capitalize })}
-                            key={index}
-                            lang={heading.lang}
+            <div className={s.headingWrapper}>
+                <div>
+                    {topHeading &&
+                        topHeading.map((heading, index) => {
+                            return (
+                                <h2
+                                    className={clsx(s.topHeading, { [s.capitalize]: capitalize })}
+                                    key={index}
+                                    lang={heading.lang}
+                                >
+                                    {heading.to ? (
+                                        <Link to={heading.to} className={s.topHeadingLink}>
+                                            {heading.inner}
+                                        </Link>
+                                    ) : (
+                                        <>{heading.inner}</>
+                                    )}
+                                </h2>
+                            );
+                        })}
+                    <h1 className={s.heading} lang={mainLang}>
+                        <span
+                            className={clsx(s.headingInner, {
+                                [s.hasBackground]: !!mainLang,
+                                [s.capitalize]: capitalize,
+                            })}
                         >
-                            {heading.to ? (
-                                <Link to={heading.to} className={s.topHeadingLink}>
-                                    {heading.inner}
-                                </Link>
-                            ) : (
-                                <>{heading.inner}</>
-                            )}
-                        </h2>
-                    );
-                })}
-            <h1 className={s.heading} lang={mainLang}>
-                <span className={clsx(s.headingInner, { [s.hasBackground]: !!mainLang, [s.capitalize]: capitalize })}>
-                    {children}
-                </span>
-                {rating && (
-                    <div lang={lang} className={s.rating}>
-                        {rating}
-                    </div>
-                )}
-            </h1>
+                            {children}
+                        </span>
+                    </h1>
+                </div>
+                {rating && <div className={s.rating}>{rating}</div>}
+            </div>
             {subLine}
         </header>
     );
