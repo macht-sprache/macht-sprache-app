@@ -1,7 +1,7 @@
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Redirect } from 'react-router-dom';
-import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
+import { Link, Redirect } from 'react-router-dom';
+import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
@@ -72,11 +72,13 @@ export default function LoginPage() {
                         loginError.code &&
                         loginError.code !== 'auth/user-not-found' &&
                         loginError.code !== 'auth/wrong-password' && <ErrorBox>{loginError.message}</ErrorBox>}
+                    <p>
+                        <Link to={addContinueParam(FORGOT_PASSWORD, continuePath)}>
+                            {t('auth.passwordReset.requestLabel')}
+                        </Link>
+                    </p>
                     <ButtonContainer>
                         <Button type="button">{t('common.formNav.cancel')}</Button>
-                        <ButtonLink to={addContinueParam(FORGOT_PASSWORD, continuePath)}>
-                            {t('auth.passwordReset.requestLabel')}
-                        </ButtonLink>
                         <Button primary type="submit" disabled={disabled}>
                             {t('auth.login')}
                         </Button>

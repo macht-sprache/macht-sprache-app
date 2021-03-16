@@ -93,7 +93,7 @@
             "heading": "Choose a new password",
             "newPassword": "New Password",
             "saveButton": "Save Password & Login",
-            "requestLabel": "Forgot your password?",
+            "requestLabel": "Forgot password?",
             "requestExplanation": "Enter the email address you used to sign up and we'll send you a link to reset your password.",
             "requestButton": "Request Password Reset",
             "requestSuccessHeader": "Check your inbox",
