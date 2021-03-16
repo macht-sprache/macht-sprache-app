@@ -4,6 +4,7 @@
     --borderColor: var(--dominantLanguageColor);
     --stripWidth: 0.5rem;
 
+    display: inline-block;
     background: var(--dominantLanguageColor);
     border: solid var(--borderColor) var(--thickBorder);
     padding: 0 var(--stripWidth);
