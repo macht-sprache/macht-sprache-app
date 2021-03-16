@@ -5,7 +5,7 @@ import { FormatDate } from '../FormatDate';
 import Comments from '../Comments';
 import Header from '../Header';
 import { collections, useTerm, useTranslationEntity } from '../hooks/data';
-import { Columns } from '../Layout/Columns';
+import { SingleColumn } from '../Layout/Columns';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
@@ -48,12 +48,12 @@ export function TranslationPage() {
             >
                 <Redact>{translation.value}</Redact>
             </Header>
-            <Columns reverseOnMobile={true}>
+            <TranslationExamplesList term={term} translation={translation} />
+            <SingleColumn>
                 <div className={getDominantLanguageClass(translation.lang)}>
                     <Comments entityRef={collections.translations.doc(translation.id)} />
                 </div>
-                <TranslationExamplesList term={term} translation={translation} />
-            </Columns>
+            </SingleColumn>
         </>
     );
 }

@@ -1,17 +1,18 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { CommentWrapper } from '../Comments/CommentWrapper';
-import { ExampleText } from '../ExampleText';
-import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { useTranslationExamples, useSources, collections } from '../hooks/data';
 import { ColumnHeading } from '../Layout/Columns';
-import { LoginHint } from '../LoginHint';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { Term, Translation, TranslationExample, Source } from '../types';
 import { extractRootDomain, trimString } from '../utils';
 import s from './style.module.css';
 import { CoverIcon } from '../CoverIcon';
+import clsx from 'clsx';
+import { getDominantLanguageClass } from '../useLangCssVars';
+import { FormatDate } from '../FormatDate';
+import { AddEntityButton } from '../AddEntityButton';
 
 type Props = {
     term: Term;
@@ -31,41 +32,33 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                     <Trans
                         t={t}
                         i18nKey={'translationExample.empty'}
-                        components={{ Term: <TermWithLang term={term} /> }}
-                        values={{ term: term.value }}
+                        components={{
+                            Term: <TermWithLang term={term} />,
+                            Translation: <TermWithLang term={translation} />,
+                        }}
                     />
                 </p>
             )}
-            {!!translationExamples.length && (
-                <div>
-                    {translationExamples.map(translationExample => (
-                        <TranslationExampleArticle
-                            key={translationExample.id}
-                            term={term}
-                            translation={translation}
-                            example={translationExample}
-                            originalSource={sources.find(source => source.id === translationExample.original.source.id)}
-                            translatedSource={sources.find(
-                                source => source.id === translationExample.translated.source.id
-                            )}
-                        />
-                    ))}
-                </div>
-            )}
-            <LoginHint i18nKey="translationExample.registerToAdd">
-                <div className={s.addExampleButton}>
-                    <ButtonContainer>
-                        <ButtonLink
-                            to={generatePath(TRANSLATION_EXAMPLE_ADD, {
-                                termId: term.id,
-                                translationId: translation.id,
-                            })}
-                        >
-                            {t('common.entities.translatioExample.add')}
-                        </ButtonLink>
-                    </ButtonContainer>
-                </div>
-            </LoginHint>
+            <div className={s.list}>
+                {translationExamples.map(translationExample => (
+                    <TranslationExampleArticle
+                        key={translationExample.id}
+                        term={term}
+                        translation={translation}
+                        example={translationExample}
+                        originalSource={sources.find(source => source.id === translationExample.original.source.id)}
+                    />
+                ))}
+                <AddEntityButton
+                    to={generatePath(TRANSLATION_EXAMPLE_ADD, {
+                        termId: term.id,
+                        translationId: translation.id,
+                    })}
+                >
+                    {t('common.entities.translatioExample.add')}
+                    <div className={s.buttonExample}>{t('translationExample.example')}</div>
+                </AddEntityButton>
+            </div>
         </CommentWrapper>
     );
 }
@@ -73,17 +66,16 @@ export default function TranslationExamplesList({ term, translation }: Props) {
 function TranslationExampleArticle({
     example,
     originalSource,
-    translatedSource,
     term,
     translation,
 }: {
     example: TranslationExample;
     originalSource?: Source;
-    translatedSource?: Source;
     term: Term;
     translation: Translation;
 }) {
     const { t } = useTranslation();
+    const cover = <CoverIcon item={originalSource} className={s.cover} />;
 
     return (
         <Link
@@ -92,48 +84,23 @@ function TranslationExampleArticle({
                 translationId: translation.id,
                 translationExampleId: example.id,
             })}
-            className={s.link}
+            className={clsx(s.link, getDominantLanguageClass(translation.lang))}
         >
             <article className={s.example}>
-                <Header
-                    term={term}
-                    translation={translation}
-                    originalSource={originalSource}
-                    translatedSource={translatedSource}
-                />
-                <ExampleText lang={term.lang} snippet={example.original} className={s.exampleTextOriginal} />
-                <ExampleText lang={translation.lang} snippet={example.translated} className={s.exampleTextTranslated} />
-                <footer className={s.footer}>
-                    {t('common.entities.comment.withCount', { count: example.commentCount })}
-                </footer>
-            </article>
-        </Link>
-    );
-}
-
-type HeaderProps = {
-    term: Term;
-    translation: Translation;
-    originalSource?: Source;
-    translatedSource?: Source;
-};
-
-function Header({ term, translation, originalSource, translatedSource }: HeaderProps) {
-    const cover = <CoverIcon item={originalSource} className={s.cover} />;
-
-    return (
-        <header className={s.header}>
-            {cover && <div className={s.coverContainer}>{cover}</div>}
-            <div>
                 {originalSource && getSurtitle(originalSource)}
                 <h1 className={s.headingOriginal} lang={term.lang}>
                     {trimString(originalSource?.title)}
                 </h1>
-                <h1 className={s.headingTranslated} lang={translation.lang}>
-                    {trimString(translatedSource?.title)}
-                </h1>
-            </div>
-        </header>
+                {cover && <div className={s.coverContainer}>{cover}</div>}
+
+                <footer className={s.footer}>
+                    <div>{t('common.entities.comment.withCount', { count: example.commentCount })}</div>
+                    <div>
+                        <FormatDate date={translation.createdAt.toDate()} />
+                    </div>
+                </footer>
+            </article>
+        </Link>
     );
 }
 
