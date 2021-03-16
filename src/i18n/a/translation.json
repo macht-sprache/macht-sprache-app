@@ -128,7 +128,8 @@
         }
     },
     "translationExample": {
-        "empty": "There are no translation examples for <Term>{{term}}</Term> yet.",
+        "empty": "There are no examples for <Term /> translated as <Translation /> yet.",
+        "example": "e.g. a book, a website, or a movie",
         "add": "Add an example for this translation: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
         "steps": {
             "type": {
@@ -194,6 +195,7 @@
         "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one."
     },
     "rating": {
+        "heading": "Usage",
         "values": ["Never", "Rarely", "Sometimes", "Regularly", "Always"],
         "rangeInputLabel": "How often would you use \"{{term}}\"? On a scale of {{from}} to {{to}}.",
         "ratingDistribution": "Usage statistics of all users: ",

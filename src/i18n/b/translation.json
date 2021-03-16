@@ -128,7 +128,7 @@
         }
     },
     "translationExample": {
-        "empty": "Es gibt noch keine Beispielübersetzungen für <Term>{{term}}</Term>.",
+        "empty": "Es gibt noch keine Bespiele, in denen <Term /> mit <Translation /> übersetzt wurde.",
         "add": "Füge eine Beispielübersetzung hinzu für: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
         "steps": {
             "type": {
@@ -194,6 +194,7 @@
         "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen."
     },
     "rating": {
+        "heading": "Benutzung",
         "values": ["Niemals", "Selten", "Manchmal", "Regelmäßig", "Ständig"],
         "rangeInputLabel": "Wie oft würdest du \"{{term}}\" benutzen? Auf einer Skala von {{from}} bis {{to}}.",
         "ratingDistribution": "Benutzungsstatistiken aller Benutzer:innen: ",
