@@ -92,7 +92,7 @@
         "passwordReset": {
             "heading": "Wähle ein neues Passwort",
             "newPassword": "Neues Passwort",
-            "saveButton": "Passwort speichern & einloggen",
+            "saveButton": "Passwort speichern",
             "requestLabel": "Passwort vergessen?",
             "requestExplanation": "Gib die Email-Adresse mit der du dich angemeldet hast ein und wir schicken dir einen Link zur Passwortwiederherstellung.",
             "requestButton": "Senden",
