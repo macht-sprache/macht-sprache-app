@@ -3,7 +3,6 @@ import { collections, useSources, useTranslations } from '../hooks/data';
 import { Trans, useTranslation } from 'react-i18next';
 import { TermWithLang } from '../TermWithLang';
 import { Source, Term, Translation } from '../types';
-import { LoginHint } from '../LoginHint';
 import { FormatDate } from '../FormatDate';
 import { generatePath, Link, useHistory } from 'react-router-dom';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
@@ -12,6 +11,7 @@ import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { CoverIcon } from '../CoverIcon';
 import { Redact } from '../RedactSensitiveTerms';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import { AddEntityButton } from '../AddEntityButton';
 
 export function TranslationsList({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
@@ -46,7 +46,9 @@ export function TranslationsList({ term }: { term: Term }) {
                         sources={sources[translation.id]}
                     />
                 ))}
-                <AddTranslationButton term={term} />
+                <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
+                    <Trans i18nKey="term.addTranslation" t={t} components={{ Term: <TermWithLang term={term} /> }} />
+                </AddEntityButton>
             </div>
         </div>
     );
@@ -145,18 +147,6 @@ function AddExampleButton({ to, className }: { to: string; className?: string })
         >
             +
         </Link>
-    );
-}
-
-function AddTranslationButton({ term }: { term: Term }) {
-    const { t } = useTranslation();
-
-    return (
-        <LoginHint i18nKey="translation.registerToAdd">
-            <Link className={s.addTranslationButton} to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
-                <Trans i18nKey="term.addTranslation" t={t} components={{ Term: <TermWithLang term={term} /> }} />
-            </Link>
-        </LoginHint>
     );
 }
 
