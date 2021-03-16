@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import { Lang } from '../../../src/types';
 import { REGISTER_POST, FORGOT_PASSWORD } from '../../../src/routes';
 import config from '../config';
-import { auth, functions, HttpsError } from '../firebase';
+import { auth, functions } from '../firebase';
 import { getResetEmail, getVerifyEmailTemplate } from './templates';
 
 type MailOptions = {
