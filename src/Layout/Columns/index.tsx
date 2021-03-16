@@ -7,7 +7,7 @@ type ColumnsProps = {
 };
 
 export function Columns({ children, reverseOnMobile }: ColumnsProps) {
-    return <div className={clsx(s.columns, { [s.reverseOnMobile]: reverseOnMobile })}>{children}</div>;
+    return <div className={clsx(s.columnSection, s.columns, { [s.reverseOnMobile]: reverseOnMobile })}>{children}</div>;
 }
 
 type ColumnHeadingProps = {
@@ -26,5 +26,5 @@ type SingleColumnProps = {
  * For pages with only one column that shouldn't spread out too much
  */
 export function SingleColumn({ children }: SingleColumnProps) {
-    return <div className={clsx(s.singleColumn)}>{children}</div>;
+    return <div className={clsx(s.columnSection, s.singleColumn)}>{children}</div>;
 }

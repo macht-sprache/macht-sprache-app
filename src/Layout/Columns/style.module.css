@@ -38,3 +38,7 @@
 .singleColumn {
     max-width: 600px;
 }
+
+.columnSection + .columnSection {
+    margin-top: 4rem;
+}
