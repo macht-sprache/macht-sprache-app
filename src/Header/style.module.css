@@ -58,9 +58,22 @@
 }
 
 .rating {
-    margin: 1rem 0 0 -0.5rem;
+    margin: 1rem 0 0 1rem;
+}
+
+@media (max-width: 800px) {
+    .rating {
+        margin: 1rem 0 0;
+    }
 }
 
 .capitalize {
     text-transform: capitalize;
+}
+
+@media (min-width: 800px) {
+    .headingWrapper {
+        display: flex;
+        justify-content: space-between;
+    }
 }
