@@ -130,22 +130,3 @@
 .exampleIcon {
     --height: 5rem;
 }
-
-.addTranslationButton {
-    background: var(--disabledGreyBackground);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    padding: 1rem;
-    line-height: var(--lineHeightParagraph);
-    border: solid var(--black) var(--thinBorder);
-    min-height: 7rem;
-}
-
-.addTranslationButton:hover,
-.addTranslationButton:focus {
-    border-color: var(--orange);
-}
