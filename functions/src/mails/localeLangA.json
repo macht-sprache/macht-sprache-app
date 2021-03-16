@@ -3,7 +3,7 @@
     "urlManual": "If the button above doesn't work, please use this link: <a href=\"{{url}}\">{{url}}</a>",
     "verify": {
         "subject": "Confirm your email address for macht.sprache.",
-        "message": "Thanks for your interest in macht.sprache.",
+        "message": "Thank you for your interest in macht.sprache. If you care about politically sensitive communication, this platform is for you. Please participate in the discussion; you don’t have to be an expert!",
         "button": "Click here to confirm your email address"
     },
     "resetPassword": {
