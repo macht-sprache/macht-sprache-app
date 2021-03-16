@@ -12,6 +12,7 @@
         var(--d2) var(--d2) 0 0px var(--borderColor);
     border: solid var(--borderColor) var(--thickBorder);
     margin: 0 calc(var(--thickBorder) * 6) calc(var(--thickBorder) * 6) 0;
+    display: inline-block;
 }
 
 .container:before {
