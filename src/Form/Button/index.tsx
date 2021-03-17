@@ -33,9 +33,9 @@ export function ButtonLink({ primary = false, size, ...props }: ButtonLinkProps)
 
 type ButtonContainerProps = {
     children: React.ReactNode;
-    align?: 'left' | 'right';
+    align?: 'left' | 'right' | 'center';
 };
 
 export function ButtonContainer({ children, align = 'right' }: ButtonContainerProps) {
-    return <div className={align === 'right' ? s.buttonContainer : s.buttonContainerLeftAligned}>{children}</div>;
+    return <div className={clsx(s.buttonContainer, s[align])}>{children}</div>;
 }

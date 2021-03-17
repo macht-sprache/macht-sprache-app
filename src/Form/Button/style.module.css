@@ -62,9 +62,12 @@
     margin: -0.25rem;
 }
 
-.buttonContainerLeftAligned {
-    composes: buttonContainer;
+.buttonContainer.left {
     justify-content: flex-start;
+}
+
+.buttonContainer.center {
+    justify-content: center;
 }
 
 .buttonContainer .button {
