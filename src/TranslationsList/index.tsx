@@ -12,8 +12,11 @@ import { CoverIcon } from '../CoverIcon';
 import { Redact } from '../RedactSensitiveTerms';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { AddEntityButton } from '../AddEntityButton';
+import { stopPropagation } from '../utils';
 
-export function TranslationsList({ term }: { term: Term }) {
+type TranslationsListProps = { term: Term; size?: 'small' | 'medium' };
+
+export function TranslationsList({ term, size = 'medium' }: TranslationsListProps) {
     const translations = useTranslations(term.id);
     const { t } = useTranslation();
     const commentCount = translations.length;
@@ -23,10 +26,12 @@ export function TranslationsList({ term }: { term: Term }) {
     });
 
     return (
-        <div className={s.container}>
-            <h2>
-                {commentCount} {t('common.entities.translation.value', { count: commentCount })}
-            </h2>
+        <div className={clsx(s.container, s[size])}>
+            {size === 'medium' && (
+                <h2>
+                    {commentCount} {t('common.entities.translation.value', { count: commentCount })}
+                </h2>
+            )}
             {!translations.length && (
                 <p>
                     <Trans
@@ -44,11 +49,18 @@ export function TranslationsList({ term }: { term: Term }) {
                         term={term}
                         translation={translation}
                         sources={sources[translation.id]}
+                        size={size}
                     />
                 ))}
-                <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
-                    <Trans i18nKey="term.addTranslation" t={t} components={{ Term: <TermWithLang term={term} /> }} />
-                </AddEntityButton>
+                {size === 'medium' && (
+                    <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
+                        <Trans
+                            i18nKey="term.addTranslation"
+                            t={t}
+                            components={{ Term: <TermWithLang term={term} /> }}
+                        />
+                    </AddEntityButton>
+                )}
             </div>
         </div>
     );
@@ -57,10 +69,12 @@ export function TranslationsList({ term }: { term: Term }) {
 function TranslationItem({
     translation,
     term,
+    size,
     sources = [],
 }: {
     translation: Translation;
     term: Term;
+    size: 'small' | 'medium';
     sources: Source[];
 }) {
     const { t } = useTranslation();
@@ -83,51 +97,53 @@ function TranslationItem({
                     <RatingWidgetContainer term={term} translation={translation} size="small" />
                 </div>
             </header>
-            <div className={s.body}>
-                {!sources.length ? (
-                    <div className={s.noExample}>
-                        <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
-                        <span className={s.noExampleText}>
-                            <Trans
-                                t={t}
-                                i18nKey={'translationExample.translationListNoExample'}
-                                components={{
-                                    Link: (
-                                        <Link
-                                            onClick={e => {
-                                                e.stopPropagation();
-                                            }}
-                                            to={addExampleLink}
-                                        />
-                                    ),
-                                }}
-                            />
-                        </span>
-                    </div>
-                ) : (
-                    <ul className={s.translationExampleList}>
-                        <li className={s.translationExampleListItem}>
-                            <AddExampleButton to={addExampleLink} />
-                        </li>
-                        {sources
-                            .filter(source => source.lang === translation.lang)
-                            .map(source => (
-                                <li key={source.id} className={s.translationExampleListItem}>
-                                    <CoverIcon className={s.exampleIcon} item={source} />
-                                </li>
-                            ))}
-                    </ul>
-                )}
-                <footer className={s.footer}>
-                    <div className={s.comments}>
-                        {t('common.entities.comment.withCount', { count: translation.commentCount })}
-                    </div>
+            {size === 'medium' && (
+                <div className={s.body}>
+                    {!sources.length ? (
+                        <div className={s.noExample}>
+                            <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
+                            <span className={s.noExampleText}>
+                                <Trans
+                                    t={t}
+                                    i18nKey={'translationExample.translationListNoExample'}
+                                    components={{
+                                        Link: (
+                                            <Link
+                                                onClick={e => {
+                                                    e.stopPropagation();
+                                                }}
+                                                to={addExampleLink}
+                                            />
+                                        ),
+                                    }}
+                                />
+                            </span>
+                        </div>
+                    ) : (
+                        <ul className={s.translationExampleList}>
+                            <li className={s.translationExampleListItem}>
+                                <AddExampleButton to={addExampleLink} />
+                            </li>
+                            {sources
+                                .filter(source => source.lang === translation.lang)
+                                .map(source => (
+                                    <li key={source.id} className={s.translationExampleListItem}>
+                                        <CoverIcon className={s.exampleIcon} item={source} />
+                                    </li>
+                                ))}
+                        </ul>
+                    )}
+                    <footer className={s.footer}>
+                        <div className={s.comments}>
+                            {t('common.entities.comment.withCount', { count: translation.commentCount })}
+                        </div>
 
-                    <div className={s.date}>
-                        <FormatDate date={translation.createdAt.toDate()} />
-                    </div>
-                </footer>
-            </div>
+                        <div className={s.date}>
+                            <FormatDate date={translation.createdAt.toDate()} />
+                        </div>
+                    </footer>
+                </div>
+            )}
         </article>
     );
 }
