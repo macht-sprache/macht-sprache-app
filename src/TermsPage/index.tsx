@@ -21,8 +21,15 @@ export function TermsPage() {
             >
                 {t('common.entities.term.value_plural')}
             </Header>
+
             <SingleColumn>
                 <TermsBig />
+            </SingleColumn>
+
+            <SingleColumn>
+                <ButtonContainer align="left">
+                    <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
+                </ButtonContainer>
             </SingleColumn>
         </>
     );

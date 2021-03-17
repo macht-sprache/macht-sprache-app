@@ -20,13 +20,11 @@ export function TermsBig() {
     return (
         <>
             <LangFilter langFilter={langFilter} setLangFilter={setLangFilter} />
-            <div>
-                <ul className={s.terms}>
-                    {sortedTerms.map(term => (
-                        <TermItem key={term.id} term={term} />
-                    ))}
-                </ul>
-            </div>
+            <ul className={s.terms}>
+                {sortedTerms.map(term => (
+                    <TermItem key={term.id} term={term} />
+                ))}
+            </ul>
         </>
     );
 }
