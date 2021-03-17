@@ -13,6 +13,7 @@ import { Redact } from '../RedactSensitiveTerms';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { AddEntityButton } from '../AddEntityButton';
 import { stopPropagation } from '../utils';
+import { langA, langB } from '../languages';
 
 type TranslationsListProps = { term: Term; size?: 'small' | 'medium' };
 
@@ -54,11 +55,21 @@ export function TranslationsList({ term, size = 'medium' }: TranslationsListProp
                 ))}
                 {size === 'medium' && (
                     <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
-                        <Trans
-                            i18nKey="term.addTranslation"
-                            t={t}
-                            components={{ Term: <TermWithLang term={term} /> }}
-                        />
+                        {/* TODO: string template not working with typescript so some reason.
+                        should be something like `term.addTranslation.${term.lang}` */}
+                        {term.lang === 'de' ? (
+                            <Trans
+                                i18nKey={`term.addTranslation.en`}
+                                t={t}
+                                components={{ Term: <TermWithLang term={term} /> }}
+                            />
+                        ) : (
+                            <Trans
+                                i18nKey={`term.addTranslation.de`}
+                                t={t}
+                                components={{ Term: <TermWithLang term={term} /> }}
+                            />
+                        )}
                     </AddEntityButton>
                 )}
             </div>

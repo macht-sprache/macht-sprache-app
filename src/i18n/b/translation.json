@@ -108,8 +108,10 @@
         "add": "Begriff hinzufügen",
         "addTermDescription": "Füge einen Begriff hinzu, dessen Übersetzung du gerne diskutieren würdest. ",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
-        "addAnotherTranslation": "Füge eine weitere Übersetzung hinzu für: <Term>{{term}}</Term> ",
-        "addTranslation": "Füge eine Übersetzung hinzu für: <Term>{{term}}</Term> "
+        "addTranslation": {
+            "de": "Füge eine deutsche Übersetzung hinzu für: <Term>{{term}}</Term> ",
+            "en": "Füge eine englische Übersetzung hinzu für: <Term>{{term}}</Term> "
+        }
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
@@ -131,6 +133,7 @@
     },
     "translationExample": {
         "empty": "Es gibt noch keine Bespiele, in denen <Term /> mit <Translation /> übersetzt wurde.",
+        "example": "z.B. ein Buch, eine Website oder ein Film",
         "add": "Füge eine Beispielübersetzung hinzu für: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
         "steps": {
             "type": {
