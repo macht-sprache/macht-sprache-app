@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, NavLink } from 'react-router-dom';
 import { ButtonLink } from '../Form/Button';
-import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { useTerms } from '../hooks/data';
-import { langA, langB } from '../languages';
 import { LoginHint } from '../LoginHint';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TERM_ADD } from '../routes';
 import { Lang } from '../types';
 import { useLang } from '../useLang';
+import { LangFilter } from './LangFilter';
 import s from './style.module.css';
 
 type TermsProps = {
@@ -30,43 +29,11 @@ export function Terms({ classNames }: TermsProps) {
         .filter(term => !langFilter || langFilter === term.lang)
         .sort(({ value: valueA }, { value: valueB }) => valueA.localeCompare(valueB, lang));
 
-    const langFilters: { value?: Lang; label: string; longLabel: string }[] = [
-        {
-            label: t('nav.filter.all.label'),
-            longLabel: t('nav.filter.all.longLabel'),
-        },
-        {
-            value: langB,
-            label: langB.toUpperCase(),
-            longLabel: t(`nav.filter.${langB}.longLabel` as const),
-        },
-        {
-            value: langA,
-            label: langA.toUpperCase(),
-            longLabel: t(`nav.filter.${langA}.longLabel` as const),
-        },
-    ];
-
     return (
         <>
             <div className={classNames?.termsControl}>
                 <div className={classNames?.termsControlInner}>
-                    <HorizontalRadioContainer>
-                        {langFilters.map(({ value, label, longLabel }) => (
-                            <HorizontalRadio
-                                key={value ?? ''}
-                                value={value ?? ''}
-                                label={label}
-                                name="language_nav_main"
-                                checked={value === langFilter}
-                                aria-label={longLabel}
-                                onChange={() => {
-                                    setLangFilter(value);
-                                }}
-                                background={value || 'striped'}
-                            />
-                        ))}
-                    </HorizontalRadioContainer>
+                    <LangFilter langFilter={langFilter} setLangFilter={setLangFilter} />
                 </div>
             </div>
             <div className={classNames?.terms}>
