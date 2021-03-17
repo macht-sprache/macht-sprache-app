@@ -43,7 +43,8 @@
             "save": "Speichern"
         },
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "viewAll": "alle anzeigen"
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",
@@ -216,7 +217,9 @@
     "home": {
         "news": "Neuigkeiten",
         "about": "Über das Projekt",
-        "termDescription": "Dies sind die Begriffe, dessen Übersetzungen diskutiert werden. "
+        "termsOfTheWeek": "Begriffe der Woche",
+        "termsOfTheWeekDescription": "Jede Woche suchen wir uns ein paar Begriffe heraus, auf welche wir einen Fokus legen. Diese Woche:",
+        "viewAllTerms": "Zu allen Begriffen"
     },
     "newsFeed": {
         "clickForMore": "Hier klicken für mehr..."

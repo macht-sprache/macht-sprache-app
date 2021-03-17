@@ -1,3 +1,7 @@
 .introText {
     font-family: var(--paragraphFont);
 }
+
+.button {
+    margin-top: 1rem;
+}

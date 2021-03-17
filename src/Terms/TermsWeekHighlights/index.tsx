@@ -64,7 +64,9 @@ function TermItem({ term }: { term: Term }) {
                                 <div className={s.commentFooter}>
                                     {term.commentCount}{' '}
                                     {t('common.entities.comment.value', { count: term.commentCount })}{' '}
-                                    <Link to={pathToTerm}>view all</Link>
+                                    <Link onClick={stopPropagation} to={pathToTerm}>
+                                        {t('common.viewAll')}
+                                    </Link>
                                 </div>
                             </div>
                         </section>

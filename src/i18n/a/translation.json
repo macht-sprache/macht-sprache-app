@@ -43,7 +43,8 @@
             "save": "Save"
         },
         "addedOn": "Added by <User /> on <FormatDate />",
-        "settings": "Settings"
+        "settings": "Settings",
+        "viewAll": "show all"
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
@@ -217,7 +218,9 @@
     "home": {
         "news": "News",
         "about": "About the project",
-        "termDescription": "These are the terms the translations are beeing discussed. "
+        "termsOfTheWeek": "Terms of the week",
+        "termsOfTheWeekDescription": "Every week we pick some terms that we are focussing on. This week:",
+        "viewAllTerms": "View all terms"
     },
     "newsFeed": {
         "clickForMore": "Click for more..."

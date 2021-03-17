@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import { TERMS } from '../routes';
@@ -21,12 +21,14 @@ export default function Home() {
             <Header>macht.sprache.</Header>
             <Columns>
                 <div>
-                    <ColumnHeading>{t('common.entities.term.value_plural')}</ColumnHeading>
-                    <p className={s.introText}>{t('home.termDescription')}</p>
+                    <ColumnHeading>{t('home.termsOfTheWeek')}</ColumnHeading>
+                    <p className={s.introText}>{t('home.termsOfTheWeekDescription')}</p>
                     <TermsWeekHighlights />
-                    <p>
-                        <Link to={TERMS}>to the terms</Link>
-                    </p>
+                    <div className={s.button}>
+                        <ButtonContainer align="center">
+                            <ButtonLink to={TERMS}>{t('home.viewAllTerms')}</ButtonLink>
+                        </ButtonContainer>
+                    </div>
                 </div>
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
