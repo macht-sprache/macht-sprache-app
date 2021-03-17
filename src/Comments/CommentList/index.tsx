@@ -1,5 +1,5 @@
-import { FormatDate } from '../../FormatDate';
 import { Comment } from '../../types';
+import { CommentItem } from '../CommentItem';
 import s from './style.module.css';
 
 type CommentListProps = {
@@ -8,22 +8,10 @@ type CommentListProps = {
 
 export function CommentList({ comments }: CommentListProps) {
     return (
-        <ul className={s.container}>
-            {comments.map(({ id, comment, createdAt, creator }) => {
-                return (
-                    <li key={id} className={s.comment}>
-                        <div className={s.body}>{comment}</div>
-                        <div className={s.footer}>
-                            <span className={s.date}>
-                                <FormatDate date={createdAt.toDate()} />
-                            </span>
-                            <span className={s.creator}>
-                                <span className={s.creatorInner}>{creator.displayName}</span>
-                            </span>
-                        </div>
-                    </li>
-                );
+        <div className={s.container}>
+            {comments.map(comment => {
+                return <CommentItem key={comment.id} comment={comment} />;
             })}
-        </ul>
+        </div>
     );
 }

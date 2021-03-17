@@ -1,0 +1,75 @@
+.comment {
+    line-height: var(--lineHeightParagraph);
+}
+
+.comment + .comment {
+    margin-top: 1rem;
+}
+
+.body {
+    border: var(--thickBorder) solid var(--dominantLanguageColor);
+    padding: 0.5rem;
+    background: var(--backgroundColor);
+    white-space: pre-wrap;
+    font-family: var(--paragraphFont);
+}
+
+.footer {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.date {
+    flex: 0 0 auto;
+    margin-right: 2rem;
+}
+
+.creator {
+    position: relative;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+
+.creatorInner {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.creator:after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    right: 100%;
+    top: 0;
+    display: block;
+    height: 2rem;
+    width: 2rem;
+    margin-top: calc(-0.5rem - var(--thickBorder));
+    margin-right: 0.5rem;
+    background-image: linear-gradient(
+            to right,
+            transparent 0,
+            transparent calc(100% - var(--thickBorder)),
+            var(--dominantLanguageColor) calc(100% - var(--thickBorder)),
+            var(--dominantLanguageColor) calc(100%)
+        ),
+        linear-gradient(
+            45deg,
+            transparent 0,
+            transparent calc(50% - var(--thickBorder) / 2),
+            var(--dominantLanguageColor) calc(50% - var(--thickBorder) / 2),
+            var(--dominantLanguageColor) calc(50% + var(--thickBorder) / 2),
+            var(--backgroundColor) calc(50% + var(--thickBorder) / 2)
+        );
+}
+
+.small .footer {
+    font-size: var(--fontSizeS);
+}
+
+.small .body {
+    font-size: var(--fontSizeS);
+}
