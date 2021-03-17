@@ -7,13 +7,22 @@ interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<H
     error?: React.ReactNode;
     span?: number;
     busy?: boolean;
+    optional?: boolean;
 }
 
-export function Input({ label, value, disabled, span = 4, busy = false, error, ...props }: InputProps) {
+export function Input({ label, value, disabled, span = 4, busy = false, error, optional, ...props }: InputProps) {
     const inputProps = { value, disabled, ...props };
 
     return (
-        <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
+        <Container
+            busy={busy}
+            error={error}
+            disabled={disabled}
+            span={span}
+            label={label}
+            empty={!value}
+            optional={optional}
+        >
             <input className={s.input} aria-invalid={!!error} {...inputProps} />
         </Container>
     );
@@ -26,13 +35,22 @@ interface SelectProps
     span?: number;
     error?: React.ReactNode;
     busy?: boolean;
+    optional?: boolean;
 }
 
-export function Select({ label, span = 4, children, value, disabled, error, busy, ...props }: SelectProps) {
+export function Select({ label, span = 4, children, value, disabled, error, busy, optional, ...props }: SelectProps) {
     const selectProps = { value, disabled, ...props };
 
     return (
-        <Container busy={busy} error={error} disabled={disabled} span={span} label={label} empty={!value}>
+        <Container
+            busy={busy}
+            error={error}
+            disabled={disabled}
+            span={span}
+            label={label}
+            empty={!value}
+            optional={optional}
+        >
             <select className={s.select} aria-invalid={!!error} {...selectProps}>
                 {children}
             </select>
@@ -47,6 +65,7 @@ interface TextareaProps
     error?: React.ReactNode;
     busy?: boolean;
     minHeight?: string;
+    optional?: boolean;
 }
 
 export function Textarea({
@@ -58,6 +77,7 @@ export function Textarea({
     busy,
     maxLength,
     minHeight,
+    optional,
     ...props
 }: TextareaProps) {
     const { t } = useTranslation();
@@ -73,6 +93,7 @@ export function Textarea({
             span={span}
             label={label}
             empty={!value}
+            optional={optional}
             warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
         >
             <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} style={{ minHeight }} />
@@ -89,6 +110,7 @@ const Container = ({
     disabled,
     busy,
     warning,
+    optional,
 }: {
     children: React.ReactNode;
     error?: React.ReactNode;
@@ -98,7 +120,10 @@ const Container = ({
     disabled?: boolean;
     busy?: boolean;
     warning?: string;
+    optional?: boolean;
 }) => {
+    const { t } = useTranslation();
+
     return (
         <label
             className={clsx(s.container, {
@@ -108,7 +133,10 @@ const Container = ({
             })}
             style={{ gridColumn: `span ${span}` }}
         >
-            <div className={empty ? s.labelEmpty : s.label}>{label}</div>
+            <div className={empty ? s.labelEmpty : s.label}>
+                {label}
+                {optional && <> ({t('common.optional')})</>}
+            </div>
             {children}
             {error && (
                 <div aria-live="assertive" className={s.error}>

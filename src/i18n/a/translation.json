@@ -44,7 +44,8 @@
         },
         "addedOn": "Added by <User /> on <FormatDate />",
         "settings": "Settings",
-        "viewAll": "show all"
+        "viewAll": "show all",
+        "optional": "optional"
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",

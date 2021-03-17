@@ -66,6 +66,7 @@ export default function AddTranslationPage() {
                     <Textarea
                         label={t('common.entities.comment.value')}
                         value={model.comment}
+                        optional
                         onChange={event => setModel(prev => ({ ...prev, comment: event.target.value }))}
                     />
                 </InputContainer>

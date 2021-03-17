@@ -44,7 +44,8 @@
         },
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "settings": "Einstellungen",
-        "viewAll": "alle anzeigen"
+        "viewAll": "alle anzeigen",
+        "optional": "optional"
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",
