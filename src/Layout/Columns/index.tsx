@@ -28,3 +28,7 @@ type SingleColumnProps = {
 export function SingleColumn({ children }: SingleColumnProps) {
     return <div className={clsx(s.columnSection, s.singleColumn)}>{children}</div>;
 }
+
+export function FullWidthColumn({ children }: SingleColumnProps) {
+    return <div className={s.columnSection}>{children}</div>;
+}
