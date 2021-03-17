@@ -34,8 +34,6 @@ export function TermsBig() {
 function TermItem({ term }: { term: Term }) {
     const translations = useTranslations(term.id);
 
-    console.log(translations);
-
     return (
         <li className={s.term}>
             <NavLink
