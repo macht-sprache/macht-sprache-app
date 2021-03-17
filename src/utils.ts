@@ -10,3 +10,7 @@ export function trimString(string?: string, length = 50) {
     if (!string) return '';
     return string.length > length ? string.substring(0, length - 3) + '…' : string;
 }
+
+export function stopPropagation(event: React.MouseEvent) {
+    event.stopPropagation();
+}

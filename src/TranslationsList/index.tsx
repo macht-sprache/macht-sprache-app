@@ -54,8 +54,6 @@ export function TranslationsList({ term }: { term: Term }) {
     );
 }
 
-const stopPropagation = (event: React.MouseEvent) => event.stopPropagation();
-
 function TranslationItem({
     translation,
     term,
