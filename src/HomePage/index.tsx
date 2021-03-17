@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import { TERMS } from '../routes';
+import { TermsWeekHighlights } from '../Terms/TermsWeekHighlights';
 import { useWpPage } from '../useWpHooks';
 import s from './style.module.css';
 
@@ -19,10 +20,10 @@ export default function Home() {
         <>
             <Header>macht.sprache.</Header>
             <Columns>
-                <div className={s.introText}>
+                <div>
                     <ColumnHeading>{t('common.entities.term.value_plural')}</ColumnHeading>
-                    <p>{t('home.termDescription')}</p>
-                    [here there will be the terms of the week]
+                    <p className={s.introText}>{t('home.termDescription')}</p>
+                    <TermsWeekHighlights />
                     <p>
                         <Link to={TERMS}>to the terms</Link>
                     </p>

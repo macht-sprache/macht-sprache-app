@@ -49,10 +49,20 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
         return { ...data, createdAt: getCreatedAt(term) };
     },
     fromFirestore: (snapshot): Term => {
-        const { relatedTerms, creator, createdAt, value, variants, lang, commentCount } = snapshot.data(
+        const { relatedTerms, creator, createdAt, value, variants, lang, commentCount, weekHighlight } = snapshot.data(
             defaultSnapshotOptions
         );
-        return { id: snapshot.id, relatedTerms, creator, createdAt, value, variants, lang, commentCount };
+        return {
+            id: snapshot.id,
+            relatedTerms,
+            creator,
+            createdAt,
+            value,
+            variants,
+            lang,
+            commentCount,
+            weekHighlight,
+        };
     },
 };
 
@@ -193,6 +203,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
         lang,
         value,
         commentCount: 0,
+        weekHighlight: false,
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
     });

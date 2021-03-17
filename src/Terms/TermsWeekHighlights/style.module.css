@@ -1,0 +1,54 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+}
+
+.term {
+    border: solid var(--dominantLanguageColor) var(--thickBorder);
+    background: var(--dominantLanguageColor);
+    background: var(--white);
+    cursor: pointer;
+}
+
+.term:hover {
+    --dominantLanguageColor: var(--orange);
+}
+
+.body,
+.header {
+    padding: 0.5rem;
+}
+
+.header {
+    background: var(--dominantLanguageColor);
+}
+
+.heading {
+    margin: 0;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.headingLink {
+    color: var(--blackDark);
+    text-decoration: none;
+}
+
+.section + .section {
+    margin-top: 1rem;
+}
+
+.sectionBody {
+    padding-left: 1rem;
+}
+
+.bodyHeading {
+    font-weight: normal;
+    font-size: var(--fontSizeM);
+    margin: 0.5rem 0;
+}
+
+.commentFooter {
+    text-align: center;
+}
