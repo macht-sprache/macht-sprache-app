@@ -37,8 +37,3 @@
     background: var(--black);
     height: var(--thickBorder);
 }
-
-.addTermButtonContainer {
-    margin-top: 2rem;
-    display: flex;
-}

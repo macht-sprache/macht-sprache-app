@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { generatePath, NavLink } from 'react-router-dom';
-import { ButtonLink } from '../../Form/Button';
 import { useTerms } from '../../hooks/data';
-import { LoginHint } from '../../LoginHint';
 import { Redact } from '../../RedactSensitiveTerms';
-import { TERM, TERM_ADD } from '../../routes';
+import { TERM } from '../../routes';
 import { Lang } from '../../types';
 import { useLang } from '../../useLang';
 import { LangFilter } from '../LangFilter';
@@ -21,7 +18,6 @@ type TermsProps = {
 };
 
 export function Terms({ classNames }: TermsProps) {
-    const { t } = useTranslation();
     const terms = useTerms();
     const [langFilter, setLangFilter] = useState<Lang>();
     const [lang] = useLang();
@@ -54,11 +50,6 @@ export function Terms({ classNames }: TermsProps) {
                             );
                         })}
                     </ul>
-                    <LoginHint i18nKey="term.registerToAdd">
-                        <div className={s.addTermButtonContainer}>
-                            <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
-                        </div>
-                    </LoginHint>
                 </div>
             </div>
         </>
