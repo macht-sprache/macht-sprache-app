@@ -26,7 +26,9 @@ body {
     --thickBorder: 2px;
     --thinBorder: 1px;
 
-    --fontSizeL: 1.5rem;
+    --fontSizeXXL: 2rem;
+    --fontSizeXL: 1.5rem;
+    --fontSizeL: 1.3rem;
     --fontSizeM: 1rem;
     --fontSizeS: 0.8rem;
     --fontSizeXS: 0.6rem;
@@ -45,8 +47,12 @@ body {
     --dominantLanguageColor: var(--black);
 }
 
+h1 {
+    font-size: var(--fontSizeXXL);
+}
+
 h2 {
-    font-size: 1.3rem;
+    font-size: var(--fontSizeL);
 }
 
 a {

@@ -29,6 +29,7 @@
     margin: 0;
     font-weight: normal;
     font-style: italic;
+    font-size: var(--fontSizeXL);
     overflow: hidden;
     text-overflow: ellipsis;
 }
