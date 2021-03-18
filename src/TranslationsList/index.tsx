@@ -22,6 +22,7 @@ export function TranslationsList({ term, size = 'medium' }: TranslationsListProp
     const { t } = useTranslation();
     const commentCount = translations.length;
     const sources = useSources(collections.terms.doc(term.id));
+    const otherLang = term.lang === langA ? langB : langA;
     const translationsSorted = translations.sort((a, b) => {
         return averageRatings(a.ratings) < averageRatings(b.ratings) ? 1 : -1;
     });
@@ -55,21 +56,11 @@ export function TranslationsList({ term, size = 'medium' }: TranslationsListProp
                 ))}
                 {size === 'medium' && (
                     <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
-                        {/* TODO: string template not working with typescript so some reason.
-                        should be something like `term.addTranslation.${term.lang}` */}
-                        {term.lang === 'de' ? (
-                            <Trans
-                                i18nKey={`term.addTranslation.en`}
-                                t={t}
-                                components={{ Term: <TermWithLang term={term} /> }}
-                            />
-                        ) : (
-                            <Trans
-                                i18nKey={`term.addTranslation.de`}
-                                t={t}
-                                components={{ Term: <TermWithLang term={term} /> }}
-                            />
-                        )}
+                        <Trans
+                            i18nKey={`term.addTranslation.${otherLang}` as const}
+                            t={t}
+                            components={{ Term: <TermWithLang term={term} /> }}
+                        />
                     </AddEntityButton>
                 )}
             </div>
