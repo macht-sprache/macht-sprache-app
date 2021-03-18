@@ -1,9 +1,9 @@
 .heading {
-    margin-top: 0;
+    margin: 0 0 1rem;
 }
 
 .header {
-    margin: 2rem 0 4rem;
+    margin: 2.5rem 0 4rem;
 }
 
 .headingInner {
@@ -69,6 +69,10 @@
 
 .capitalize {
     text-transform: capitalize;
+}
+
+.subline {
+    line-height: var(--lineHeightParagraph);
 }
 
 @media (min-width: 800px) {

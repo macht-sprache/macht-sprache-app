@@ -52,7 +52,7 @@ export default function Header({ children, subLine, mainLang, topHeading, rating
                 </div>
                 {rating && <div className={s.rating}>{rating}</div>}
             </div>
-            {subLine}
+            <div className={s.subline}>{subLine}</div>
         </header>
     );
 }
