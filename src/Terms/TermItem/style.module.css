@@ -66,7 +66,7 @@
     left: 0;
     right: 0;
     height: 5rem;
-    background: linear-gradient(to bottom, transparent 0%, var(--white) 65%, var(--white) 100%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--white) 65%, var(--white) 100%);
 }
 
 .smallSummary {
