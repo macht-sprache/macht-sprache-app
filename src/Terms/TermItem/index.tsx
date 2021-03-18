@@ -54,13 +54,18 @@ export function TermItem({ term, size = 'medium' }: TermItemProps) {
                                         {t('common.entities.comment.value', { count: term.commentCount })}:
                                     </h2>
                                     <div className={s.sectionBody}>
-                                        <CommentItem size="small" comment={comments[comments.length - 1]} />
+                                        {comments.map(comment => (
+                                            <CommentItem key={comment.id} size="small" comment={comment} />
+                                        ))}
+
                                         <div className={s.commentFooter}>
-                                            {term.commentCount}{' '}
-                                            {t('common.entities.comment.value', { count: term.commentCount })}{' '}
-                                            <Link onClick={stopPropagation} to={pathToTerm}>
-                                                {t('common.viewAll')}
-                                            </Link>
+                                            <span>
+                                                {term.commentCount}{' '}
+                                                {t('common.entities.comment.value', { count: term.commentCount })}{' '}
+                                                <Link onClick={stopPropagation} to={pathToTerm}>
+                                                    {t('common.viewAll')}
+                                                </Link>
+                                            </span>
                                         </div>
                                     </div>
                                 </section>

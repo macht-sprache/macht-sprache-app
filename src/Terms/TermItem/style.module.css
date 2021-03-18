@@ -6,6 +6,11 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
+}
+
+.term.medium {
+    height: 25rem;
 }
 
 .term:hover {
@@ -50,7 +55,18 @@
 }
 
 .commentFooter {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 0.5rem;
     text-align: center;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5rem;
+    background: linear-gradient(to bottom, transparent 0%, var(--white) 65%, var(--white) 100%);
 }
 
 .smallSummary {
@@ -98,7 +114,8 @@
 
 @media (min-width: 1000px) {
     .medium .body,
-    .medium .header {
+    .medium .header,
+    .commentFooter {
         padding: 1rem;
     }
 }
