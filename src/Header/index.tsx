@@ -16,7 +16,7 @@ type Props = {
     capitalize?: boolean;
 };
 
-export default function Header({ children, subLine, mainLang, topHeading, rating, capitalize = true }: Props) {
+export default function Header({ children, subLine, mainLang, topHeading, rating, capitalize = false }: Props) {
     return (
         <header className={s.header}>
             <div className={s.headingWrapper}>

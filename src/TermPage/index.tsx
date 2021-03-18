@@ -17,6 +17,7 @@ export default function TermPage() {
     return (
         <>
             <Header
+                capitalize
                 subLine={
                     <Trans
                         t={t}

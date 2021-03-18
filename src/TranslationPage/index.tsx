@@ -22,6 +22,7 @@ export function TranslationPage() {
     return (
         <>
             <Header
+                capitalize
                 mainLang={translation.lang}
                 topHeading={[
                     {
