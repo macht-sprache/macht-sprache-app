@@ -17,7 +17,6 @@
 @media (max-width: 1300px) {
     .container {
         grid-gap: 2rem;
-        --sidebarWidth: 8rem;
     }
 }
 
