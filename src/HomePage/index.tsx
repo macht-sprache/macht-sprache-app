@@ -19,7 +19,10 @@ export default function Home() {
 
     return (
         <>
-            <Header>macht.sprache.</Header>
+            <Header>
+                <span className={s.headingMacht}>macht.</span>
+                <span className={s.headingSprache}>sprache.</span>
+            </Header>
             <p className={s.intro}>{t('home.termsOfTheWeekDescription')}</p>
             <Columns>
                 <TermsWeekHighlights />

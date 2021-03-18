@@ -12,3 +12,11 @@
 .button {
     margin-top: 1rem;
 }
+
+.headingMacht {
+    color: var(--green);
+}
+
+.headingSprache {
+    color: var(--pink);
+}
