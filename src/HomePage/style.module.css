@@ -15,8 +15,16 @@
 
 .headingMacht {
     color: var(--green);
+    font-weight: normal;
 }
 
 .headingSprache {
     color: var(--pink);
+    font-weight: normal;
+}
+
+.claim {
+    font-weight: bold;
+    font-size: var(--fontSizeL);
+    max-width: var(--singleColumnWidth);
 }

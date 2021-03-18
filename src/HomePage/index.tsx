@@ -19,7 +19,7 @@ export default function Home() {
 
     return (
         <>
-            <Header>
+            <Header subLine={<div className={s.claim}>{t('home.claim')}</div>}>
                 <span className={s.headingMacht}>macht.</span>
                 <span className={s.headingSprache}>sprache.</span>
             </Header>
