@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import { generatePath, NavLink } from 'react-router-dom';
-import { useTerms, useTranslations } from '../../hooks/data';
-import { Redact } from '../../RedactSensitiveTerms';
-import { TERM } from '../../routes';
-import { TermWithLang } from '../../TermWithLang';
-import { Lang, Term } from '../../types';
+import { useTerms } from '../../hooks/data';
+import { Lang } from '../../types';
 import { useLang } from '../../useLang';
 import { LangFilter } from '../LangFilter';
 import { TermItem } from '../TermItem';
