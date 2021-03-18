@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, NavLink } from 'react-router-dom';
-import { ButtonLink } from '../Form/Button';
-import { useTerms } from '../hooks/data';
-import { LoginHint } from '../LoginHint';
-import { Redact } from '../RedactSensitiveTerms';
-import { TERM, TERM_ADD } from '../routes';
-import { Lang } from '../types';
-import { useLang } from '../useLang';
-import { LangFilter } from './LangFilter';
+import { ButtonLink } from '../../Form/Button';
+import { useTerms } from '../../hooks/data';
+import { LoginHint } from '../../LoginHint';
+import { Redact } from '../../RedactSensitiveTerms';
+import { TERM, TERM_ADD } from '../../routes';
+import { Lang } from '../../types';
+import { useLang } from '../../useLang';
+import { LangFilter } from '../LangFilter';
 import s from './style.module.css';
 
 type TermsProps = {

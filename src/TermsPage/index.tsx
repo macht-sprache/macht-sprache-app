@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
-import { SingleColumn } from '../Layout/Columns';
+import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { LoginHint } from '../LoginHint';
 import { TERM_ADD } from '../routes';
 import { TermsBig } from '../Terms/TermsBig';
@@ -22,9 +22,9 @@ export function TermsPage() {
                 {t('common.entities.term.value_plural')}
             </Header>
 
-            <SingleColumn>
+            <FullWidthColumn>
                 <TermsBig />
-            </SingleColumn>
+            </FullWidthColumn>
 
             <SingleColumn>
                 <ButtonContainer align="left">

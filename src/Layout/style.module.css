@@ -1,6 +1,6 @@
 .container {
     --headerBarHeight: 4rem;
-    --sidebarWidth: 15rem;
+    --sidebarWidth: 10rem;
 
     display: grid;
     height: 100%;
@@ -17,7 +17,7 @@
 @media (max-width: 1300px) {
     .container {
         grid-gap: 2rem;
-        --sidebarWidth: 12rem;
+        --sidebarWidth: 8rem;
     }
 }
 

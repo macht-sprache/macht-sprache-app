@@ -1,0 +1,100 @@
+.term {
+    border: solid var(--dominantLanguageColor) var(--thickBorder);
+    background: var(--dominantLanguageColor);
+    background: var(--white);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.term:hover {
+    --dominantLanguageColor: var(--orange);
+}
+
+.body,
+.header {
+    padding: 0.5rem;
+}
+
+.body {
+    flex: 1;
+}
+
+.header {
+    background: var(--dominantLanguageColor);
+}
+
+.heading {
+    margin: 0;
+    font-weight: normal;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.headingLink {
+    color: var(--blackDark);
+    text-decoration: none;
+}
+
+.section + .section {
+    margin-top: 1rem;
+}
+
+.sectionBody {
+    padding-left: 1rem;
+}
+
+.bodyHeading {
+    font-weight: normal;
+    font-size: var(--fontSizeM);
+    margin: 0.5rem 0;
+}
+
+.commentFooter {
+    text-align: center;
+}
+
+.smallSummary {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.smallSummaryEmpty {
+    font-size: var(--fontSizeS);
+    color: var(--disabledGrey);
+    font-style: italic;
+}
+
+.smallSummaryTranslationList {
+    padding: 0;
+    margin: 0 0 0.5rem;
+    list-style: none;
+}
+
+.smallSummaryTranslationListItem {
+    display: inline-block;
+    margin-right: 0.8rem;
+}
+
+.footer {
+    flex: 0 0 auto;
+}
+
+@media (min-width: 700px) {
+    .term.small {
+        flex-direction: row;
+    }
+
+    .smallSummary {
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .smallSummaryTranslationList {
+        margin: 0;
+    }
+}

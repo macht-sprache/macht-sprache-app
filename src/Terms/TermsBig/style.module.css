@@ -1,52 +1,6 @@
 .terms {
-    font-family: var(--monospaceFont);
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1rem;
-    text-transform: capitalize;
-    margin: 1rem calc(var(--thickBorder) * -1) calc(var(--thickBorder) * -1);
-}
-
-.termLink {
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-    background-color: var(--lang-color);
-    padding: 0.5rem;
-    font-style: italic;
-    border: var(--thickBorder) solid var(--white);
-    margin: calc(var(--thickBorder) * -0.5);
-    color: var(--fontColorOnColor);
-    hyphens: auto;
-}
-
-.termLinkActive {
-    font-weight: bold;
-}
-
-.termLinkActive,
-.termLink:hover {
-    border-color: var(--orange);
-    z-index: 1;
-}
-
-.addTermButtonContainer {
-    margin-bottom: 2rem;
-    display: flex;
-}
-
-.termValue {
-    font-size: var(--fontSizeL);
-}
-
-.translations {
-    list-style: none;
-    padding: 0 0 0 0.5rem;
-    margin: 0.5rem 0 0;
-}
-
-.translation:before {
-    content: '→';
-    display: inline-block;
-    margin-right: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    margin-top: 2rem;
 }
