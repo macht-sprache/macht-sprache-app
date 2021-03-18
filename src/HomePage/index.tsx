@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import Header from '../Header';
 import { ColumnHeading, Columns } from '../Layout/Columns';
-import { TERMS } from '../routes';
+import { ABOUT, TERMS } from '../routes';
+import { Terms } from '../Terms/TermsSmall';
 import { TermsWeekHighlights } from '../Terms/TermsWeekHighlights';
 import { useWpPage } from '../useWpHooks';
 import s from './style.module.css';
@@ -19,13 +20,16 @@ export default function Home() {
     return (
         <>
             <Header>macht.sprache.</Header>
+            <p className={s.intro}>{t('home.termsOfTheWeekDescription')}</p>
+            <Columns>
+                <TermsWeekHighlights />
+            </Columns>
             <Columns>
                 <div>
-                    <ColumnHeading>{t('home.termsOfTheWeek')}</ColumnHeading>
-                    <p className={s.introText}>{t('home.termsOfTheWeekDescription')}</p>
-                    <TermsWeekHighlights />
+                    <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
+                    <Terms />
                     <div className={s.button}>
-                        <ButtonContainer align="center">
+                        <ButtonContainer align="left">
                             <ButtonLink to={TERMS}>{t('home.viewAllTerms')}</ButtonLink>
                         </ButtonContainer>
                     </div>
@@ -33,9 +37,12 @@ export default function Home() {
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
                     <div
-                        className={s.introText}
+                        className={s.text}
                         dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }}
                     />
+                    <ButtonContainer align="left">
+                        <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
+                    </ButtonContainer>
                 </div>
             </Columns>
         </>

@@ -9,7 +9,8 @@
             "term": {
                 "value": "Begriff",
                 "value_plural": "Begriffe",
-                "add": "Begriff hinzufügen"
+                "add": "Begriff hinzufügen",
+                "all": "Alle Begriffe"
             },
             "translation": {
                 "value": "Übersetzung",
@@ -224,7 +225,8 @@
         "about": "Über das Projekt",
         "termsOfTheWeek": "Begriffe der Woche",
         "termsOfTheWeekDescription": "Jede Woche suchen wir uns ein paar Begriffe heraus, auf welche wir einen Fokus legen. Diese Woche:",
-        "viewAllTerms": "Zu allen Begriffen"
+        "viewAllTerms": "Zu allen Begriffen",
+        "moreAbout": "mehr über macht.sprache."
     },
     "newsFeed": {
         "clickForMore": "Hier klicken für mehr..."

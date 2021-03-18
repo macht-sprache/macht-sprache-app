@@ -1,6 +1,5 @@
 import { useTerms } from '../../hooks/data';
 import { TermItem } from '../TermItem';
-import s from './style.module.css';
 
 export function TermsWeekHighlights() {
     const terms = useTerms();
@@ -10,10 +9,10 @@ export function TermsWeekHighlights() {
         .sort((termA, termB) => termA.value.localeCompare(termB.value, termA.lang));
 
     return (
-        <div className={s.container}>
+        <>
             {highlightedTerms.map(term => (
                 <TermItem key={term.id} term={term} />
             ))}
-        </div>
+        </>
     );
 }
