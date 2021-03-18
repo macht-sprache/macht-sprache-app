@@ -39,11 +39,7 @@
 }
 
 .section + .section {
-    margin-top: 1rem;
-}
-
-.sectionBody {
-    padding-left: 1rem;
+    margin-top: 2rem;
 }
 
 .bodyHeading {
@@ -96,5 +92,12 @@
 
     .smallSummaryTranslationList {
         margin: 0;
+    }
+}
+
+@media (min-width: 1000px) {
+    .medium .body,
+    .medium .header {
+        padding: 1rem;
     }
 }
