@@ -38,6 +38,8 @@ body {
 
     --lineHeightParagraph: 1.6;
 
+    --singleColumnWidth: 600px;
+
     color: var(--black);
 
     /*

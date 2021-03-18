@@ -11,3 +11,7 @@
     margin-top: 2rem;
     font-family: var(--monospaceFont);
 }
+
+.title {
+    max-width: var(--singleColumnWidth);
+}

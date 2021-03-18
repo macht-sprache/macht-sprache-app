@@ -28,7 +28,9 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
 
     return (
         <>
-            <Header>{response.title}</Header>
+            <Header>
+                <div className={s.title}>{response.title}</div>
+            </Header>
             <SingleColumn>
                 <div className={s.body} dangerouslySetInnerHTML={{ __html: response.body }} />
             </SingleColumn>

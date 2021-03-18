@@ -36,7 +36,7 @@
 }
 
 .singleColumn {
-    max-width: 600px;
+    max-width: var(--singleColumnWidth);
 }
 
 .columnSection + .columnSection {
