@@ -113,7 +113,8 @@
             "de": "Add a German translation for: <Term /",
             "en": "Add an English translation for: <Term />"
         },
-        "addCommentHeading": "on how translate <Term />"
+        "addCommentHeading": "on how translate <Term />",
+        "commentPlaceholder": "...on how translate “{{term}}”"
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",

@@ -5,7 +5,7 @@ import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { collections, useTerm } from '../hooks/data';
 import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
-import { Redact } from '../RedactSensitiveTerms';
+import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
 import { getDominantLanguageClass } from '../useLangCssVars';
@@ -14,6 +14,7 @@ export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
     const { t } = useTranslation();
     const term = useTerm(termId);
+    const termRedacted = useRedacted(term.value);
 
     return (
         <>
@@ -49,6 +50,7 @@ export default function TermPage() {
                                 components={{ Term: <TermWithLang term={term} /> }}
                             />
                         }
+                        placeholder={t('term.commentPlaceholder', { term: termRedacted })}
                     />
                 </div>
             </SingleColumn>
