@@ -13,7 +13,6 @@ import { extractRootDomain, trimString } from '../utils';
 import { FormatDate } from '../FormatDate';
 import { Redact } from '../RedactSensitiveTerms';
 import { getDominantLanguageClass } from '../useLangCssVars';
-import { TermWithLang } from '../TermWithLang';
 
 export function TranslationExamplePage() {
     const { t } = useTranslation();
