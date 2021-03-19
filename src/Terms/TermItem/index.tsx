@@ -11,6 +11,7 @@ import { Term } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import { stopPropagation } from '../../utils';
 import { TermWithLang } from '../../TermWithLang';
+import { Redact } from '../../RedactSensitiveTerms';
 
 type TermItemProps = { term: Term; size?: 'small' | 'medium' };
 
@@ -30,7 +31,7 @@ export function TermItem({ term, size = 'medium' }: TermItemProps) {
             <header className={s.header}>
                 <h1 lang={term.lang} className={s.heading}>
                     <Link onClick={stopPropagation} className={s.headingLink} to={pathToTerm}>
-                        {term.value}
+                        <Redact>{term.value}</Redact>
                     </Link>
                 </h1>
             </header>
