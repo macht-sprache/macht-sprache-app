@@ -12,6 +12,7 @@ import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import s from './style.module.css';
+import { TermWithLang } from '../TermWithLang';
 
 export function TranslationPage() {
     const { t } = useTranslation();
@@ -52,7 +53,19 @@ export function TranslationPage() {
             <TranslationExamplesList term={term} translation={translation} />
             <SingleColumn>
                 <div className={getDominantLanguageClass(translation.lang)}>
-                    <Comments entityRef={collections.translations.doc(translation.id)} />
+                    <Comments
+                        entityRef={collections.translations.doc(translation.id)}
+                        headingHint={
+                            <Trans
+                                t={t}
+                                i18nKey="translation.addCommentHeading"
+                                components={{
+                                    Term: <TermWithLang term={term} />,
+                                    Translation: <TermWithLang term={translation} />,
+                                }}
+                            />
+                        }
+                    />
                 </div>
             </SingleColumn>
         </>

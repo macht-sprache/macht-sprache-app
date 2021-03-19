@@ -6,12 +6,15 @@ import { Comment } from '../types';
 import { CommentCreate } from './CommentCreate';
 import { CommentList } from './CommentList';
 import { CommentWrapper } from './CommentWrapper';
+import s from './style.module.css';
 
 type Props = {
     entityRef: Comment['ref'];
+    headingHint?: React.ReactNode;
+    placeholder?: string;
 };
 
-export default function Comments({ entityRef: ref }: Props) {
+export default function Comments({ entityRef: ref, headingHint, placeholder }: Props) {
     const user = useUser();
     const comments = useComments(ref);
     const { t } = useTranslation();
@@ -22,9 +25,15 @@ export default function Comments({ entityRef: ref }: Props) {
         <CommentWrapper>
             <ColumnHeading>
                 {commentCount} {t('common.entities.comment.value', { count: commentCount })}
+                {headingHint && (
+                    <>
+                        {' '}
+                        <span className={s.headingHint}>{headingHint}</span>
+                    </>
+                )}
             </ColumnHeading>
             <CommentList comments={comments} />
-            <CommentCreate onCreate={onCreate} />
+            <CommentCreate placeholder={placeholder} onCreate={onCreate} />
         </CommentWrapper>
     );
 }

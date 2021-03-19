@@ -1,0 +1,5 @@
+.headingHint {
+    font-size: var(--fontSizeS);
+    font-style: italic;
+    color: var(--disabledGrey);
+}

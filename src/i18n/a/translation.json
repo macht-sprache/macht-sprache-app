@@ -110,15 +110,17 @@
         "addTermDescription": "Add a term for which you would like to discuss possible translations. ",
         "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "addTranslation": {
-            "de": "Add a German translation for: <Term>{{term}}</Term>",
-            "en": "Add an English translation for: <Term>{{term}}</Term>"
-        }
+            "de": "Add a German translation for: <Term /",
+            "en": "Add an English translation for: <Term />"
+        },
+        "addCommentHeading": "on how translate <Term />"
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet. Add one:",
         "emptyShort": "There are no translations yet",
-        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss."
+        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss.",
+        "addCommentHeading": "on <Translation /> as a translation for <Term />"
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",
@@ -198,7 +200,8 @@
                 "WEBPAGE": "Website on {{domain}}. Published <Date />."
             }
         },
-        "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one."
+        "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one.",
+        "addCommentHeading": "on the example above"
     },
     "rating": {
         "heading": "Usage",

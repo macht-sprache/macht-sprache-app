@@ -8,9 +8,10 @@ import s from './style.module.css';
 
 type CommentCreateProps = {
     onCreate: (newComment: string) => Promise<unknown>;
+    placeholder?: string;
 };
 
-export function CommentCreate({ onCreate }: CommentCreateProps) {
+export function CommentCreate({ onCreate, placeholder }: CommentCreateProps) {
     const [submitting, setSubmitting] = useState(false);
     const [comment, setComment] = useState('');
     const [hasFocus, setHasFocus] = useState(false);
@@ -55,6 +56,7 @@ export function CommentCreate({ onCreate }: CommentCreateProps) {
                             setHasFocus(false);
                         }}
                         onKeyDown={onKeyDown}
+                        placeholder={placeholder}
                     />
                 </InputContainer>
                 <div className={hasFocus ? s.buttonWrapperWithFocus : s.buttonWrapper}>

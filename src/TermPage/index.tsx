@@ -6,6 +6,7 @@ import Header from '../Header';
 import { collections, useTerm } from '../hooks/data';
 import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { Redact } from '../RedactSensitiveTerms';
+import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
 import { getDominantLanguageClass } from '../useLangCssVars';
 
@@ -39,7 +40,16 @@ export default function TermPage() {
 
             <SingleColumn>
                 <div className={getDominantLanguageClass(term.lang)}>
-                    <Comments entityRef={collections.terms.doc(termId)} />
+                    <Comments
+                        entityRef={collections.terms.doc(termId)}
+                        headingHint={
+                            <Trans
+                                t={t}
+                                i18nKey="term.addCommentHeading"
+                                components={{ Term: <TermWithLang term={term} /> }}
+                            />
+                        }
+                    />
                 </div>
             </SingleColumn>
         </>

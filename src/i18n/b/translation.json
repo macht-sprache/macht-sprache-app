@@ -110,15 +110,17 @@
         "addTermDescription": "Füge einen Begriff hinzu, dessen Übersetzung du gerne diskutieren würdest. ",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "addTranslation": {
-            "de": "Füge eine deutsche Übersetzung hinzu für: <Term>{{term}}</Term> ",
-            "en": "Füge eine englische Übersetzung hinzu für: <Term>{{term}}</Term> "
-        }
+            "de": "Füge eine deutsche Übersetzung hinzu für: <Term /> ",
+            "en": "Füge eine englische Übersetzung hinzu für: <Term /> "
+        },
+        "addCommentHeading": "dazu, wie <Term /> zu übersetzen ist"
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>. Füge eine hinzu:",
         "emptyShort": "Es gibt noch keine Übersetzung",
-        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest."
+        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest.",
+        "addCommentHeading": "zu <Translation /> als Übersetzung für <Term />"
     },
     "mediaSearch": {
         "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
@@ -198,7 +200,8 @@
                 "WEBPAGE": "Website: {{domain}}. Veröffentlicht: <Date />."
             }
         },
-        "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen."
+        "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen.",
+        "addCommentHeading": "zum obenstehenden Beispiel"
     },
     "rating": {
         "heading": "Benutzung",
