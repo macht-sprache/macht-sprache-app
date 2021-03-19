@@ -7,7 +7,7 @@ import Header from '../Header';
 import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import { SingleColumn } from '../Layout/Columns';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
-import { Redact } from '../RedactSensitiveTerms';
+import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { getDominantLanguageClass } from '../useLangCssVars';
@@ -19,6 +19,8 @@ export function TranslationPage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
     const term = useTerm(termId);
     const translation = useTranslationEntity(translationId);
+    const termRedacted = useRedacted(term.value);
+    const translationRedacted = useRedacted(translation.value);
 
     return (
         <>
@@ -65,6 +67,10 @@ export function TranslationPage() {
                                 }}
                             />
                         }
+                        placeholder={t('translation.commentPlaceholder', {
+                            term: termRedacted,
+                            translation: translationRedacted,
+                        })}
                     />
                 </div>
             </SingleColumn>

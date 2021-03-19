@@ -121,7 +121,9 @@
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet. Add one:",
         "emptyShort": "There are no translations yet",
         "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss.",
-        "addCommentHeading": "on <Translation /> as a translation for <Term />"
+        "addCommentHeading": "on <Translation /> as a translation for <Term />",
+
+        "commentPlaceholder": "...on “{{translation}}” as a translation for “{{term}}”"
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",

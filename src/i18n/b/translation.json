@@ -121,7 +121,8 @@
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>. Füge eine hinzu:",
         "emptyShort": "Es gibt noch keine Übersetzung",
         "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest.",
-        "addCommentHeading": "zu <Translation /> als Übersetzung für <Term />"
+        "addCommentHeading": "zu <Translation /> als Übersetzung für <Term />",
+        "commentPlaceholder": "...zu »{{term}}« als Übersetzung für »{{translation}}«"
     },
     "mediaSearch": {
         "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
