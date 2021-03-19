@@ -40,10 +40,19 @@ jobs:
               with:
                   name: app-build
                   path: build
-            - run: echo ::set-output name=short::${GITHUB_REF#refs/*/}
+            - name: Get Deploy Channel ID
+              run: echo ::set-output name=short::${GITHUB_REF#refs/*/}
               id: ref
-            - uses: FirebaseExtended/action-hosting-deploy@v0
+            - name: Deploy to Firebase Hosting
+              uses: FirebaseExtended/action-hosting-deploy@v0
+              id: deploy
               with:
                   repoToken: '${{ secrets.GITHUB_TOKEN }}'
                   firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
                   channelId: ${{ steps.ref.outputs.short }}
+            - name: Notify Slack
+              env:
+                  DETAILS_URL: '${{ steps.deploy.outputs.details_url }}'
+                  WEBHOOK_URL: '${{ secrets.SLACK_DEPLOY_WEBHOOK_URL }}'
+              run: |
+                  curl -X POST -H 'Content-type: application/json' --data '{"text":"Deployed to '"$DETAILS_URL"'"}' "$WEBHOOK_URL"
