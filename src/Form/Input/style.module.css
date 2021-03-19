@@ -123,6 +123,7 @@
 
 .textarea::placeholder {
     color: var(--placeholderGrey);
+    font-weight: normal;
 }
 
 .textarea:focus {
