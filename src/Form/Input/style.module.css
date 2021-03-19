@@ -86,7 +86,7 @@
     background: var(--orange);
 }
 
-.container:not(:focus-within) .labelEmpty {
+.container:not(:focus-within):not(.hasPlaceholder) .labelEmpty {
     transform: translateY(0.7rem);
 }
 
@@ -119,6 +119,10 @@
     font-size: inherit;
     resize: vertical;
     min-height: 100px;
+}
+
+.textarea::placeholder {
+    color: var(--placeholderGrey);
 }
 
 .textarea:focus {

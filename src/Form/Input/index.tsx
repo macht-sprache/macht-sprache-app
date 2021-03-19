@@ -95,6 +95,7 @@ export function Textarea({
             empty={!value}
             optional={optional}
             warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
+            placeholder={props.placeholder}
         >
             <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} style={{ minHeight }} />
         </Container>
@@ -111,6 +112,7 @@ const Container = ({
     busy,
     warning,
     optional,
+    placeholder,
 }: {
     children: React.ReactNode;
     error?: React.ReactNode;
@@ -121,6 +123,7 @@ const Container = ({
     busy?: boolean;
     warning?: string;
     optional?: boolean;
+    placeholder?: string;
 }) => {
     const { t } = useTranslation();
 
@@ -130,6 +133,7 @@ const Container = ({
                 [s.containerError]: error,
                 [s.containerDisabled]: disabled,
                 [s.containerBusy]: busy,
+                [s.hasPlaceholder]: !!placeholder,
             })}
             style={{ gridColumn: `span ${span}` }}
         >
