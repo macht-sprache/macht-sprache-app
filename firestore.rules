@@ -46,8 +46,9 @@ service cloud.firestore {
 
     function isValidTerm() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
+      return data.keys().hasOnly(['creator', 'createdAt', 'weekHighlight', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
         data.createdAt == request.time &&
+        data.weekHighlight == false &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&
