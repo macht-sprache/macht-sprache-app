@@ -7,6 +7,7 @@ import { langA, langB } from '../languages';
 import {
     Comment,
     DocReference,
+    Editable,
     Lang,
     Rating,
     SensitiveTerms,
@@ -156,8 +157,8 @@ const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
         return { ...data, createdAt: getCreatedAt(comment) };
     },
     fromFirestore: (snapshot): Comment => {
-        const { creator, ref, createdAt, comment } = snapshot.data(defaultSnapshotOptions);
-        return { id: snapshot.id, creator, ref, createdAt, comment };
+        const { creator, ref, createdAt, comment, edited } = snapshot.data(defaultSnapshotOptions);
+        return { id: snapshot.id, creator, ref, createdAt, comment, edited: edited ?? null };
     },
 };
 
@@ -306,7 +307,21 @@ export const addComment = (user: User, ref: Comment['ref'], comment: string) => 
             id: user.id,
             displayName: user.displayName,
         },
+        edited: null,
         createdAt: firebase.firestore.Timestamp.now(),
         comment,
+    });
+};
+
+export const updateComment = (user: User, id: string, comment: string) => {
+    return collections.comments.doc(id).update({
+        comment,
+        edited: {
+            by: {
+                id: user.id,
+                displayName: user.displayName,
+            },
+            at: firebase.firestore.FieldValue.serverTimestamp(),
+        },
     });
 };

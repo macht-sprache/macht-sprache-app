@@ -96,7 +96,7 @@ function TranslationExampleArticle({
                 <footer className={s.footer}>
                     <div>{t('common.entities.comment.withCount', { count: example.commentCount })}</div>
                     <div>
-                        <FormatDate date={translation.createdAt.toDate()} />
+                        <FormatDate date={translation.createdAt} />
                     </div>
                 </footer>
             </article>

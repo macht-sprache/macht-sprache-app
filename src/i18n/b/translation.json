@@ -22,7 +22,10 @@
                 "value_plural": "Kommentare",
                 "withCount": "{{count}} $t(common.entities.comment.value, {\"count\": {{count}} })",
                 "add": "Kommentar hinzufügen",
-                "action": "Kommentieren"
+                "action": "Kommentieren",
+                "edit": "Kommentar editieren",
+                "editAction": "Editieren",
+                "edited": "Editiert"
             },
             "translatioExample": {
                 "value": "Beispielübersetzung",

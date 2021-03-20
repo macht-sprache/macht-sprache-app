@@ -12,6 +12,13 @@ interface Commentable {
     commentCount: number;
 }
 
+export interface Editable {
+    edited: {
+        at: Timestamp;
+        by: UserMini;
+    } | null;
+}
+
 export interface Term extends Commentable {
     id: string;
     relatedTerms: DocReference<Term>[];
@@ -134,7 +141,7 @@ export interface Rating {
     updatedAt: Timestamp;
 }
 
-export interface Comment {
+export interface Comment extends Editable {
     id: string;
     creator: UserMini;
     ref: DocReference<Term | Translation | TranslationExample>;

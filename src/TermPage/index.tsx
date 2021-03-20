@@ -26,7 +26,7 @@ export default function TermPage() {
                         i18nKey="common.addedOn"
                         components={{
                             User: term.creator.displayName,
-                            FormatDate: <FormatDate date={term.createdAt && term.createdAt.toDate()} />,
+                            FormatDate: <FormatDate date={term.createdAt} />,
                         }}
                     />
                 }

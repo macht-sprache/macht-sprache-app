@@ -2,11 +2,21 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isEmbeddedUser(embeddedUser) {
+      return embeddedUser.keys().hasOnly(['id', 'displayName']) &&
+        request.auth.uid == embeddedUser.id &&
+        embeddedUser.displayName == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.displayName;
+    }
+
     function isCreator() {
-      let creator = request.resource.data.creator;
-      return creator.keys().hasOnly(['id', 'displayName']) &&
-        request.auth.uid == creator.id &&
-        creator.displayName == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.displayName;
+      return isEmbeddedUser(request.resource.data.creator);
+    }
+
+    function isEditor() {
+      let edited = request.resource.data.edited;
+      return edited != null &&
+        edited.at == request.time &&
+        isEmbeddedUser(edited.by);
     }
 
     function isValidatedUser() {
@@ -102,15 +112,28 @@ service cloud.firestore {
 
     function isValidComment() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'comment']) &&
+      return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'edited', 'comment']) &&
         data.ref is path &&
         data.createdAt == request.time &&
+        data.edited == null &&
         data.comment is string;
+    }
+
+    function isValidCommentUpdate() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['comment', 'edited']) &&
+        data.comment is string &&
+        isEditor();
     }
 
     match /comments/{comment} {
       allow read: if true;
-      allow create: if isValidatedUser() && isCreator() && isValidComment();
+      allow create: if isValidatedUser() &&
+        isCreator() &&
+        isValidComment();
+      allow update: if isValidatedUser() &&
+        isCreator() &&
+        isValidCommentUpdate();
     }
 
     match /sensitiveTerms/global {

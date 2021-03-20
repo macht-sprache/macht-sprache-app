@@ -141,7 +141,7 @@ function TranslationItem({
                         </div>
 
                         <div className={s.date}>
-                            <FormatDate date={translation.createdAt.toDate()} />
+                            <FormatDate date={translation.createdAt} />
                         </div>
                     </footer>
                 </div>

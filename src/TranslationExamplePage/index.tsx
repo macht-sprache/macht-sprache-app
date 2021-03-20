@@ -49,7 +49,7 @@ export function TranslationExamplePage() {
                             i18nKey="common.addedOn"
                             components={{
                                 User: translationExample.creator.displayName,
-                                FormatDate: <FormatDate date={translationExample.createdAt.toDate()} />,
+                                FormatDate: <FormatDate date={translationExample.createdAt} />,
                             }}
                         />
                         <br />
