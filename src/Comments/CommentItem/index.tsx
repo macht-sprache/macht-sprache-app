@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate, FormatDate } from '../../FormatDate';
-import { useAppContext, useUser } from '../../hooks/appContext';
+import { useAppContext } from '../../hooks/appContext';
 import { updateComment } from '../../hooks/data';
 import LinkButton from '../../LinkButton';
 import { Comment } from '../../types';
