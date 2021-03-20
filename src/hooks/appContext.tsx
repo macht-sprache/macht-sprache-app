@@ -3,11 +3,16 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useAuthState as _useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { i18n } from '../i18n/config';
-import { DocReference, User, UserSettings } from '../types';
+import { DocReference, User, UserProperties, UserSettings } from '../types';
 import { toLanguageOrDefault } from '../useLang';
 import { collections } from './data';
 
-const appContext = createContext<{ user?: User; userSettings?: UserSettings; sensitiveTerms: Set<string> }>({
+const appContext = createContext<{
+    user?: User;
+    userSettings?: UserSettings;
+    userProperties?: UserProperties;
+    sensitiveTerms: Set<string>;
+}>({
     sensitiveTerms: new Set(),
 });
 
@@ -34,13 +39,18 @@ export const AppContextProvider: React.FC = ({ children }) => {
     const [authUser, loadingAuthUser] = useAuthState();
     const [user, loadingUser] = useEnsureUserEntity(authUser, loadingAuthUser);
     const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid);
+    const [userProperties, loadingUserProperties] = useLoadUserProperties(authUser?.uid);
     const [sensitiveTerms] = useLoadSensitiveTerms();
 
-    if (loadingUser || loadingUserSettings || !sensitiveTerms) {
+    if (loadingUser || loadingUserSettings || loadingUserProperties || !sensitiveTerms) {
         return null;
     }
 
-    return <appContext.Provider value={{ user, userSettings, sensitiveTerms }}>{children}</appContext.Provider>;
+    return (
+        <appContext.Provider value={{ user, userSettings, userProperties, sensitiveTerms }}>
+            {children}
+        </appContext.Provider>
+    );
 };
 
 const ensureUpdatedToken = (authUser: firebase.User) =>
@@ -136,6 +146,25 @@ function useLoadUserSettings(uid?: string) {
     }, [error, loading, uid, value]);
 
     return [userSettings, loading, error] as const;
+}
+
+const getUserPropertiesRef = (uid: string) => collections.userProperties.doc(uid);
+
+function useLoadUserProperties(uid?: string) {
+    const [value, loading, error] = useSnapshot(getUserPropertiesRef, uid);
+
+    const userProperties = useMemo<UserProperties | undefined>(() => {
+        if (loading || error || !uid) {
+            return undefined;
+        }
+        return (
+            value || {
+                admin: false,
+            }
+        );
+    }, [error, loading, uid, value]);
+
+    return [userProperties, loading, error] as const;
 }
 
 function useSnapshot<T>(getRef: (docPath: string) => DocReference<T>, docPath: string | undefined) {

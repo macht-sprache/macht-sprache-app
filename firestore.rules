@@ -23,6 +23,11 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email_verified;
     }
 
+    function isAdmin() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/userProperties/$(request.auth.uid)).data.admin;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
@@ -52,6 +57,10 @@ service cloud.firestore {
     match /userSettings/{user} {
       allow read: if isUser(user);
       allow create, update: if isValidatedUser() && isUser(user) && isValidUserSettings();
+    }
+
+    match /userProperties/{user} {
+      allow read: if isUser(user);
     }
 
     function isValidTerm() {
@@ -132,7 +141,7 @@ service cloud.firestore {
         isCreator() &&
         isValidComment();
       allow update: if isValidatedUser() &&
-        isCreator() &&
+        (isCreator() || isAdmin()) &&
         isValidCommentUpdate();
     }
 

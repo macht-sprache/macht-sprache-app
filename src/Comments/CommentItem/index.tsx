@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate, FormatDate } from '../../FormatDate';
-import { useUser } from '../../hooks/appContext';
+import { useAppContext, useUser } from '../../hooks/appContext';
 import { updateComment } from '../../hooks/data';
 import LinkButton from '../../LinkButton';
 import { Comment } from '../../types';
@@ -22,9 +22,9 @@ export function CommentItem({
 }: CommentItemProps) {
     const { t } = useTranslation();
     const [lang] = useLang();
-    const user = useUser();
+    const { user, userProperties } = useAppContext();
     const [editOpen, setEditOpen] = useState(false);
-    const canEdit = creator.id === user?.id;
+    const canEdit = creator.id === user?.id || userProperties?.admin;
 
     if (user && editOpen) {
         const onSubmit = (newComment: string) => updateComment(user, id, newComment);

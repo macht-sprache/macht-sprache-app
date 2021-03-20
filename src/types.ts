@@ -162,6 +162,10 @@ export interface UserSettings {
     showRedacted: boolean;
 }
 
+export interface UserProperties {
+    admin: boolean;
+}
+
 export interface SensitiveTerms {
     terms: string[];
 }
