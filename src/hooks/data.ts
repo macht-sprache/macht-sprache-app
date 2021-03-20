@@ -7,7 +7,6 @@ import { langA, langB } from '../languages';
 import {
     Comment,
     DocReference,
-    Editable,
     Lang,
     Rating,
     SensitiveTerms,
