@@ -8,32 +8,21 @@ import { useRef } from 'react';
 type ModalDialogProps = {
     onClose: () => void;
     title: React.ReactNode;
-    isOpen: boolean;
-    isDismissable: boolean;
     children: React.ReactNode;
 };
 
-export function ModalDialog(props: ModalDialogProps) {
-    const { title, children } = props;
-
-    // Handle interacting outside the dialog and pressing
-    // the Escape key to close the modal.
-    const ref = useRef<HTMLElement>(null);
-    const { overlayProps } = useOverlay(props, ref);
-
-    // Prevent scrolling while the modal is open, and hide content
-    // outside the modal from screen readers.
+export function ModalDialog({ title, children, onClose }: ModalDialogProps) {
     usePreventScroll();
+    const ref = useRef<HTMLDivElement>(null);
+    const { overlayProps } = useOverlay({ onClose, isOpen: true, isDismissable: true }, ref);
     const { modalProps } = useModal();
-
-    // Get props for the dialog and its title
-    const { dialogProps, titleProps } = useDialog(props as any, ref);
+    const { dialogProps, titleProps } = useDialog({}, ref);
 
     return (
         <OverlayContainer>
             <div className={s.background}>
                 <FocusScope contain restoreFocus autoFocus>
-                    <div {...overlayProps} {...dialogProps} {...modalProps} ref={ref as any} className={s.overlay}>
+                    <div {...overlayProps} {...dialogProps} {...modalProps} ref={ref} className={s.overlay}>
                         <h3 {...titleProps} className={s.title}>
                             {title}
                         </h3>

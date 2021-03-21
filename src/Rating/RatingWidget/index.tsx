@@ -56,9 +56,7 @@ export function RatingWidget(props: RatingDisplayProps) {
                             }}
                         />
                     }
-                    isOpen
                     onClose={() => setOverlayOpen(false)}
-                    isDismissable
                 >
                     <p>{t('rating.dragToSet')}</p>
                     <div className={getDominantLanguageClass(props.translationLang)}>
