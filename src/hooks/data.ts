@@ -334,3 +334,5 @@ export const updateComment = (user: User, id: string, comment: string) => {
         },
     });
 };
+
+export const deleteComment = (id: string) => collections.comments.doc(id).delete();

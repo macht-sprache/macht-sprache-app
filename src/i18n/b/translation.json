@@ -44,7 +44,8 @@
             "next": "Weiter",
             "cancel": "Abbrechen",
             "close": "Schließen",
-            "save": "Speichern"
+            "save": "Speichern",
+            "delete": "Löschen"
         },
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "settings": "Einstellungen",
@@ -222,7 +223,9 @@
         "noData": "Bisher keine Bewertungen."
     },
     "comment": {
-        "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>."
+        "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
+        "deleteHeading": "Kommentar löschen?",
+        "deleteExplanation": "Bist du sicher, dass du diesen Kommentar löschen möchtest? Dies kann nicht rückgängig gemacht werden."
     },
     "notFound": {
         "heading": "Seite nicht gefunden",

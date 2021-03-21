@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import ConfirmModal from '../../ConfirmModal';
 import { formatDate, FormatDate } from '../../FormatDate';
 import { useAppContext } from '../../hooks/appContext';
-import { updateComment } from '../../hooks/data';
+import { deleteComment, updateComment } from '../../hooks/data';
 import LinkButton from '../../LinkButton';
 import { Comment } from '../../types';
 import { useLang } from '../../useLang';
@@ -25,6 +26,7 @@ export function CommentItem({
     const { user, userProperties } = useAppContext();
     const [editOpen, setEditOpen] = useState(false);
     const canEdit = creator.id === user?.id || userProperties?.admin;
+    const canDelete = userProperties?.admin;
 
     if (user && editOpen) {
         const onSubmit = (newComment: string) => updateComment(user, id, newComment);
@@ -57,10 +59,16 @@ export function CommentItem({
                             )}
                             {canEdit && (
                                 <>
-                                    {' '}
+                                    {' | '}
                                     <LinkButton onClick={() => setEditOpen(true)}>
                                         {t('common.entities.comment.editAction')}
                                     </LinkButton>
+                                </>
+                            )}
+                            {canDelete && (
+                                <>
+                                    {' | '}
+                                    <DeleteButton id={id} />
                                 </>
                             )}
                         </>
@@ -71,5 +79,19 @@ export function CommentItem({
                 </span>
             </div>
         </div>
+    );
+}
+
+function DeleteButton({ id }: { id: string }) {
+    const { t } = useTranslation();
+    return (
+        <ConfirmModal
+            title={t('comment.deleteHeading')}
+            body={<p>{t('comment.deleteExplanation')}</p>}
+            confirmLabel={t('common.formNav.delete')}
+            onConfirm={() => deleteComment(id)}
+        >
+            {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
+        </ConfirmModal>
     );
 }

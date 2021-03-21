@@ -143,6 +143,8 @@ service cloud.firestore {
       allow update: if isValidatedUser() &&
         (isCreator() || isAdmin()) &&
         isValidCommentUpdate();
+      allow delete: if isValidatedUser() &&
+        isAdmin();
     }
 
     match /sensitiveTerms/global {

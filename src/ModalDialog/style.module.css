@@ -1,7 +1,7 @@
 .background {
     z-index: 20;
     background: var(--white);
-    display: grid;
+    display: flex;
     overflow: scroll;
     align-items: center;
     justify-content: center;
