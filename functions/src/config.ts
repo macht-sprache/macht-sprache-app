@@ -1,6 +1,9 @@
 import * as firebaseFunctions from 'firebase-functions';
 
 type Config = {
+    backup: {
+        bucket: string;
+    };
     functions: {
         region: string;
     };
@@ -29,6 +32,9 @@ if (typeof tmdbApikey !== 'string') {
 }
 
 const config: Config = {
+    backup: {
+        bucket: firebaseFunctions.config().backup.bucket,
+    },
     functions: {
         region: functionsRegion,
     },
