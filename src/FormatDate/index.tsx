@@ -6,12 +6,18 @@ type formatDateProps = {
     date: Date | firebase.firestore.Timestamp;
 };
 
+const dateOptions: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+};
+
 export function FormatDate({ date }: formatDateProps) {
     const [lang] = useLang();
     return <>{formatDate(date, lang)}</>;
 }
 
 export const formatDate = (date: formatDateProps['date'], lang: Lang) =>
-    new Intl.DateTimeFormat(lang, { dateStyle: 'short', timeStyle: 'short' }).format(
-        date instanceof Date ? date : date.toDate()
-    );
+    new Intl.DateTimeFormat(lang, dateOptions).format(date instanceof Date ? date : date.toDate());
