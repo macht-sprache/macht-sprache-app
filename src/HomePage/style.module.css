@@ -15,12 +15,12 @@
 
 .headingMacht {
     color: var(--green);
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .headingSprache {
     color: var(--pink);
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .claim {
