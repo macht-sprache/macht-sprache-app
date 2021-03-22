@@ -87,12 +87,6 @@
     object-position: left;
 }
 
-@media (max-height: 850px) {
-    .logoImg {
-        height: 8rem;
-    }
-}
-
 @media (max-width: 599px) {
     .sidebar {
         display: none;
