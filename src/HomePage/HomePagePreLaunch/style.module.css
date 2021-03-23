@@ -5,4 +5,5 @@
 .signUpBox {
     border: var(--thickBorder) solid var(--orange);
     padding: 1rem;
+    background: var(--white);
 }
