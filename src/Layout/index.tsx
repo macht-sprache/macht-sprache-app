@@ -71,6 +71,10 @@ function Footer() {
 
     let footerLinks = [
         {
+            to: ABOUT,
+            label: t('nav.about'),
+        },
+        {
             to: CODE_OF_CONDUCT,
             label: t('nav.coc'),
         },
@@ -85,10 +89,6 @@ function Footer() {
             {
                 to: TERMS,
                 label: t('common.entities.term.value_plural'),
-            },
-            {
-                to: ABOUT,
-                label: t('nav.about'),
             },
             {
                 to: NEWS,
