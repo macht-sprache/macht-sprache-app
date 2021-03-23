@@ -2,21 +2,31 @@
     text-decoration: none;
 }
 
+.link:hover {
+    text-decoration: underline;
+}
+
 .heading {
     font-size: inherit;
     line-height: var(--lineHeightParagraph);
-    margin: 0 0 0.5rem;
+    margin: 0;
+    padding: 1rem;
+    background: var(--orange);
+    color: var(--blackDark);
 }
 
 .image {
-    width: 13rem;
+    width: 100%;
     height: auto;
     margin-right: 1rem;
+    display: block;
+    max-height: 22rem;
+    object-fit: cover;
+    background: var(--orange);
 }
 
 .body {
-    display: flex;
-    align-items: flex-start;
+    padding: 1rem;
 }
 
 .excerpt p {
@@ -26,8 +36,8 @@
 
 .article {
     background: var(--white);
-    padding: 1rem;
     box-shadow: 0 0 0 var(--thickBorder) var(--orange);
+    cursor: pointer;
 }
 
 .article:hover {
@@ -47,6 +57,7 @@
     margin-top: 0.5rem;
     font-style: italic;
     font-family: var(--paragraphFont);
+    display: inline-block;
 }
 
 @media (max-width: 450px) {
