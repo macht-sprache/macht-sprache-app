@@ -9,7 +9,7 @@ import ErrorBoundary from './ErrorBoundary';
 import { app } from './firebase';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import HomePage from './HomePage';
-import { HomePagePreLaunch } from './HomePagePreLaunch';
+import { HomePagePreLaunch } from './HomePage/HomePagePreLaunch';
 import { AppContextProvider, useUser } from './hooks/appContext';
 import { useAddContinueParam } from './hooks/location';
 import { TranslationProvider } from './i18n/config';

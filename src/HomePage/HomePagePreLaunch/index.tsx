@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import Header from '../Header';
-import { ColumnHeading, Columns } from '../Layout/Columns';
-import { NewsFeed } from '../NewsFeed';
-import { useWpPage } from '../useWpHooks';
+import { ColumnHeading, Columns } from '../../Layout/Columns';
+import { NewsFeed } from '../../NewsFeed';
+import { useWpPage } from '../../useWpHooks';
+import { HomePageHeader } from '../Header';
 
 const ABOUT_SLUGS = {
     en: 'about-macht-sprache-short-version-landing-page',
@@ -15,7 +15,7 @@ export function HomePagePreLaunch() {
 
     return (
         <>
-            <Header>macht.sprache.</Header>
+            <HomePageHeader />
             <Columns>
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>

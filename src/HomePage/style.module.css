@@ -12,19 +12,3 @@
 .button {
     margin-top: 1rem;
 }
-
-.headingMacht {
-    color: var(--green);
-    font-weight: bold;
-}
-
-.headingSprache {
-    color: var(--pink);
-    font-weight: bold;
-}
-
-.claim {
-    font-weight: bold;
-    font-size: var(--fontSizeL);
-    max-width: var(--singleColumnWidth);
-}
