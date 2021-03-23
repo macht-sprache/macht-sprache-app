@@ -18,12 +18,12 @@ export function HomePagePreLaunch() {
             <HomePageHeader />
             <Columns>
                 <div>
-                    <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <div dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }} />
-                </div>
-                <div>
                     <ColumnHeading>{t('home.news')}</ColumnHeading>
                     <NewsFeed />
+                </div>
+                <div>
+                    <ColumnHeading>{t('home.about')}</ColumnHeading>
+                    <div dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }} />
                 </div>
             </Columns>
         </>
