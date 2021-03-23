@@ -127,7 +127,7 @@ function TranslationItem({
                                 <AddExampleButton to={addExampleLink} />
                             </li>
                             {sources
-                                .filter(source => source.lang === translation.lang)
+                                .filter(source => source.lang === term.lang)
                                 .map(source => (
                                     <li key={source.id} className={s.translationExampleListItem}>
                                         <CoverIcon className={s.exampleIcon} item={source} />
