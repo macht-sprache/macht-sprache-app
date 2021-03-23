@@ -17,6 +17,10 @@ export default function ConfirmModal({ title, body, confirmLabel, children, onCo
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const openConfirmModal = useCallback(() => setShowConfirmModal(true), []);
     const closeConfirmModal = useCallback(() => setShowConfirmModal(false), []);
+    const handleConfirm = useCallback(() => {
+        closeConfirmModal();
+        onConfirm();
+    }, [closeConfirmModal, onConfirm]);
 
     return (
         <>
@@ -28,7 +32,7 @@ export default function ConfirmModal({ title, body, confirmLabel, children, onCo
                             <Button type="button" onClick={closeConfirmModal}>
                                 {t('common.formNav.cancel')}
                             </Button>
-                            <Button type="button" primary onClick={onConfirm}>
+                            <Button type="button" primary onClick={handleConfirm}>
                                 {confirmLabel}
                             </Button>
                         </ButtonContainer>
