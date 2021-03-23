@@ -1,19 +1,21 @@
-import s from './style.module.css';
-import { collections, useSources, useTranslations } from '../hooks/data';
+import clsx from 'clsx';
+import deburr from 'lodash.deburr';
+import orderBy from 'lodash.orderby';
 import { Trans, useTranslation } from 'react-i18next';
+import { generatePath, Link, useHistory } from 'react-router-dom';
+import { AddEntityButton } from '../AddEntityButton';
+import { CoverIcon } from '../CoverIcon';
+import { FormatDate } from '../FormatDate';
+import { collections, useSources, useTranslations } from '../hooks/data';
+import { langA, langB } from '../languages';
+import { RatingWidgetContainer } from '../Rating/RatingWidget';
+import { Redact } from '../RedactSensitiveTerms';
+import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { Source, Term, Translation } from '../types';
-import { FormatDate } from '../FormatDate';
-import { generatePath, Link, useHistory } from 'react-router-dom';
-import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
-import clsx from 'clsx';
-import { RatingWidgetContainer } from '../Rating/RatingWidget';
-import { CoverIcon } from '../CoverIcon';
-import { Redact } from '../RedactSensitiveTerms';
 import { getDominantLanguageClass } from '../useLangCssVars';
-import { AddEntityButton } from '../AddEntityButton';
 import { stopPropagation } from '../utils';
-import { langA, langB } from '../languages';
+import s from './style.module.css';
 
 type TranslationsListProps = { term: Term; size?: 'small' | 'medium' };
 
@@ -23,9 +25,11 @@ export function TranslationsList({ term, size = 'medium' }: TranslationsListProp
     const commentCount = translations.length;
     const sources = useSources(collections.terms.doc(term.id));
     const otherLang = term.lang === langA ? langB : langA;
-    const translationsSorted = translations.sort((a, b) => {
-        return averageRatings(a.ratings) < averageRatings(b.ratings) ? 1 : -1;
-    });
+    const translationsSorted = orderBy(
+        translations,
+        [({ ratings }) => averageRatings(ratings), ({ value }) => deburr(value)],
+        ['desc', 'asc']
+    );
 
     return (
         <div className={clsx(s.container, s[size])}>
@@ -172,5 +176,5 @@ function averageRatings(ratings: number[] = []) {
     }, 0);
     const countOfAllRatings = ratings.reduce((a, b) => a + b, 0);
 
-    return sumOfAllRatings / countOfAllRatings;
+    return countOfAllRatings && sumOfAllRatings / countOfAllRatings;
 }
