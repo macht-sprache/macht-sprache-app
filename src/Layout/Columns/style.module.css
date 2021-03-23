@@ -31,8 +31,12 @@
 }
 
 .columnHeading {
-    margin-top: 0;
     margin-bottom: 2rem;
+    margin-top: 4rem;
+}
+
+.columnHeading:first-child {
+    margin-top: 0;
 }
 
 .singleColumn {

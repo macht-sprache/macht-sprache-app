@@ -234,6 +234,8 @@
     "home": {
         "news": "Neuigkeiten",
         "about": "Über das Projekt",
+        "signUpPreLaunch": "Start am 14. März – Meld dich schon mal an!",
+        "signUpPreLaunchDescription": "Melde dich hier an, um einen Account zu erstellen und eine Benachrichtigungen zu erhalten, wenn es los geht. Optional kannst du dich auch gleich zu uneserem poco.lit.-Newsletter anmelden.",
         "termsOfTheWeek": "Begriffe der Woche",
         "termsOfTheWeekDescription": "Jede Woche suchen wir uns ein paar Begriffe heraus, auf welche wir einen Fokus legen. Diese Woche:",
         "viewAllTerms": "Zu allen Begriffen",

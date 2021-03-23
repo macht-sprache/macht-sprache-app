@@ -126,7 +126,6 @@
         "emptyShort": "There are no translations yet",
         "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss.",
         "addCommentHeading": "on <Translation /> as a translation for <Term />",
-
         "commentPlaceholder": "...on “{{translation}}” as a translation for “{{term}}”"
     },
     "mediaSearch": {
@@ -235,6 +234,8 @@
     "home": {
         "news": "News",
         "about": "About the project",
+        "signUpPreLaunch": "Launch on March 14th – Sign up already!",
+        "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified for the launch event. Optionally, you can also sign up for our poco.lit.-newsletter.",
         "termsOfTheWeek": "Terms of the week",
         "termsOfTheWeekDescription": "Every week we pick some terms that we are focussing on. This week:",
         "viewAllTerms": "View all terms",
