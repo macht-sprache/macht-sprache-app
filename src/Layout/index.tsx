@@ -3,8 +3,9 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useUserProperties } from '../hooks/appContext';
 import LinkButton from '../LinkButton';
-import { ABOUT, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS } from '../routes';
+import { ABOUT, ADMIN, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS } from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -68,6 +69,7 @@ export default Layout;
 function Footer() {
     const { t } = useTranslation();
     const launched = useLaunched();
+    const userProperties = useUserProperties();
 
     let footerLinks = [
         {
@@ -100,6 +102,13 @@ function Footer() {
             },
             ...footerLinks,
         ];
+    }
+
+    if (userProperties?.admin) {
+        footerLinks.push({
+            to: ADMIN,
+            label: 'administration',
+        });
     }
 
     return (

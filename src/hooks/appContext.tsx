@@ -28,6 +28,10 @@ export const useUserSettings = () => {
     return useContext(appContext).userSettings;
 };
 
+export const useUserProperties = () => {
+    return useContext(appContext).userProperties;
+};
+
 export const useSensitiveTerms = () => {
     return useContext(appContext).sensitiveTerms;
 };

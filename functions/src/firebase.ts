@@ -19,7 +19,7 @@ export const convertRef = <T>(ref: admin.firestore.DocumentReference) => (ref as
 
 export const verifyUser = (context: CallableContext) => {
     if (!context.auth?.uid || !context.auth?.token.email_verified) {
-        throw new Error('User is not verified.');
+        throw new HttpsError('unauthenticated', 'User is not verified.');
     }
     return context.auth.uid;
 };

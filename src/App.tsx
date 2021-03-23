@@ -4,13 +4,14 @@ import { FirebaseAppProvider } from 'reactfire';
 import AddTermPage from './AddTermPage';
 import { AddTranslationExamplePage } from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
+import AdminPage from './AdminPage/lazy';
 import ElementTestPage from './ElementTestPage';
 import ErrorBoundary from './ErrorBoundary';
 import { app } from './firebase';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import HomePage from './HomePage';
 import { HomePagePreLaunch } from './HomePage/HomePagePreLaunch';
-import { AppContextProvider, useUser } from './hooks/appContext';
+import { AppContextProvider, useUser, useUserProperties } from './hooks/appContext';
 import { useAddContinueParam } from './hooks/location';
 import { TranslationProvider } from './i18n/config';
 import Layout from './Layout';
@@ -95,6 +96,9 @@ function AppRouter() {
                             <LoggedInRoute path={routes.USER} exact>
                                 <UserPage />
                             </LoggedInRoute>
+                            <AdminRoute path={routes.ADMIN} exact>
+                                <AdminPage />
+                            </AdminRoute>
                             <LaunchedRoute path={routes.NEWS} exact>
                                 <NewsPage />
                             </LaunchedRoute>
@@ -148,6 +152,16 @@ function LaunchedRoute(props: RouteProps) {
     }
 
     return <RedirectToLogin />;
+}
+
+function AdminRoute(props: RouteProps) {
+    const userProperties = useUserProperties();
+
+    if (userProperties?.admin) {
+        return <Route {...props} />;
+    }
+
+    return <NotFoundPage />;
 }
 
 function RedirectToLogin() {

@@ -43,7 +43,8 @@ service cloud.firestore {
     }
 
     match /users/{user} {
-      allow read: if isUser(user);
+      allow get: if isUser(user) || isAdmin();
+      allow list: if isAdmin(); 
       allow create, update: if isValidatedUser() && isUser(user) && isValidUser();
     }
 
@@ -55,12 +56,15 @@ service cloud.firestore {
     }
 
     match /userSettings/{user} {
-      allow read: if isUser(user);
+      allow get: if isUser(user) || isAdmin();
+      allow list: if isAdmin(); 
       allow create, update: if isValidatedUser() && isUser(user) && isValidUserSettings();
     }
 
     match /userProperties/{user} {
-      allow read: if isUser(user);
+      allow get: if isUser(user) || isAdmin();
+      allow list: if isAdmin();
+      allow create, update: if isAdmin();
     }
 
     function isValidTerm() {

@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import { useMemo } from 'react';
-import { useFirestoreCollectionData, useFirestoreDoc, useFirestoreDocData } from 'reactfire';
+import { useFirestoreCollection, useFirestoreCollectionData, useFirestoreDoc, useFirestoreDocData } from 'reactfire';
 import { ERROR_NOT_FOUND } from '../constants';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';
@@ -194,6 +194,18 @@ export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, ini
     }
 
     return data;
+};
+
+export const useCollection = <T>(ref: firebase.firestore.CollectionReference<T>, initialData?: T[]) => {
+    return useFirestoreCollectionData<T>(ref, { initialData }).data;
+};
+
+export const useCollectionById = <T>(ref: firebase.firestore.CollectionReference<T>) => {
+    const snapshot: firebase.firestore.QuerySnapshot<T> = useFirestoreCollection(ref).data as any;
+
+    return useMemo(() => {
+        return snapshot.docs.reduce<Partial<Record<string, T>>>((acc, cur) => ({ ...acc, [cur.id]: cur.data() }), {});
+    }, [snapshot.docs]);
 };
 
 export function useTerms() {
