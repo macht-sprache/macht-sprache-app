@@ -95,9 +95,9 @@ function AppRouter() {
                             <LoggedInRoute path={routes.USER} exact>
                                 <UserPage />
                             </LoggedInRoute>
-                            <LoggedInRoute path={routes.NEWS} exact>
+                            <LaunchedRoute path={routes.NEWS} exact>
                                 <NewsPage />
-                            </LoggedInRoute>
+                            </LaunchedRoute>
                             <Route path={routes.ABOUT} exact>
                                 <StaticContentPage slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }} />
                             </Route>
