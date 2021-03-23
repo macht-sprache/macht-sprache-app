@@ -1,6 +1,6 @@
 import { FormEventHandler, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Redirect } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
+import { Link, Redirect } from 'react-router-dom';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
@@ -12,7 +12,7 @@ import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { useRequestState } from '../hooks/useRequestState';
 import { SingleColumn } from '../Layout/Columns';
-import { REGISTER_POST } from '../routes';
+import { IMPRINT, PRIVACY, REGISTER_POST } from '../routes';
 import { Lang } from '../types';
 import { useLang } from '../useLang';
 
@@ -66,6 +66,13 @@ export default function RegisterPage() {
             <Header>{t('auth.register.title')}</Header>
             <SingleColumn>
                 <p>{t('auth.register.intro')}</p>
+                <p>
+                    <Trans
+                        t={t}
+                        i18nKey="auth.register.termsAndPrivacy"
+                        components={{ TermsLink: <Link to={IMPRINT} />, PrivacyLink: <Link to={PRIVACY} /> }}
+                    />
+                </p>
                 <form onSubmit={onSubmit}>
                     <InputContainer>
                         <Input

@@ -1,9 +1,11 @@
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import Button, { ButtonContainer } from '../../Form/Button';
 import { Input } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import { ColumnHeading, Columns } from '../../Layout/Columns';
 import { NewsFeed } from '../../NewsFeed';
+import { IMPRINT, PRIVACY } from '../../routes';
 import { useWpPage } from '../../useWpHooks';
 import { HomePageHeader } from '../Header';
 import s from './style.module.css';
@@ -25,6 +27,13 @@ export function HomePagePreLaunch() {
                     <div className={s.signUpBox}>
                         <ColumnHeading>{t('home.signUpPreLaunch')}</ColumnHeading>
                         <p className={s.text}>{t('home.signUpPreLaunchDescription')}</p>
+                        <p className={s.text}>
+                            <Trans
+                                t={t}
+                                i18nKey="auth.register.termsAndPrivacy"
+                                components={{ TermsLink: <Link to={IMPRINT} />, PrivacyLink: <Link to={PRIVACY} /> }}
+                            />
+                        </p>
                         <SignUp />
                     </div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>

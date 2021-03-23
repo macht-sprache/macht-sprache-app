@@ -69,7 +69,8 @@
         "about": "about",
         "imprint": "imprint",
         "news": "news",
-        "coc": "code of conduct"
+        "coc": "code of conduct",
+        "privacyPolicy": "Privacy Policy"
     },
     "auth": {
         "displayName": "User Name",
@@ -94,7 +95,8 @@
         },
         "register": {
             "title": "Sign Up",
-            "intro": "The User Name will be public. You can make one up or use your real name, depending on how you would prefer to be identified."
+            "intro": "The User Name will be public. You can make one up or use your real name, depending on how you would prefer to be identified.",
+            "termsAndPrivacy": "By registering you agree to our <TermsLink>terms</TermsLink> and <PrivacyLink>privacy policy</PrivacyLink>."
         },
         "passwordReset": {
             "heading": "Choose a new password",

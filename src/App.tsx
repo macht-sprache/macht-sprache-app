@@ -101,6 +101,11 @@ function AppRouter() {
                             <Route path={routes.ABOUT} exact>
                                 <StaticContentPage slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }} />
                             </Route>
+                            <Route path={routes.PRIVACY} exact>
+                                <StaticContentPage
+                                    slugs={{ en: 'machtsprache-data-privacy', de: 'machtsprache-datenschutz' }}
+                                />
+                            </Route>
                             <Route path={routes.CODE_OF_CONDUCT} exact>
                                 <StaticContentPage slugs={{ en: 'code-of-conduct', de: 'code-of-conduct' }} />
                             </Route>
