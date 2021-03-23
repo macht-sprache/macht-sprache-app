@@ -31,6 +31,23 @@ export function ButtonLink({ primary = false, size, ...props }: ButtonLinkProps)
     return <Link className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })} {...props} />;
 }
 
+interface ButtonAnchorProps
+    extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
+    primary?: boolean;
+    size?: 'small' | 'medium';
+}
+
+export function ButtonAnchor({ primary = false, size, children, className, ...props }: ButtonAnchorProps) {
+    return (
+        <a
+            className={clsx(s.button, className, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })}
+            {...props}
+        >
+            {children}
+        </a>
+    );
+}
+
 type ButtonContainerProps = {
     children: React.ReactNode;
     align?: 'left' | 'right' | 'center';
