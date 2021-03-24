@@ -76,8 +76,8 @@ async function getTranslationExample(
     switch (model.type) {
         case 'BOOK':
             const [originalBookRef, translatedBookRef] = await Promise.all([
-                writeSource(model.original.sourceId, model.type, getBook, termSnap.ref, translationSnap.ref),
-                writeSource(model.translated.sourceId, model.type, getBook, termSnap.ref, translationSnap.ref),
+                writeSource(model.original.sourceId, model.type, getBook),
+                writeSource(model.translated.sourceId, model.type, getBook),
             ]);
             return {
                 ...baseExample,
@@ -97,8 +97,8 @@ async function getTranslationExample(
             };
         case 'MOVIE':
             const [originalMovieRef, translatedMovieRef] = await Promise.all([
-                writeSource(model.original.sourceId, model.type, getMovie, termSnap.ref, translationSnap.ref),
-                writeSource(model.translated.sourceId, model.type, getMovie, termSnap.ref, translationSnap.ref),
+                writeSource(model.original.sourceId, model.type, getMovie),
+                writeSource(model.translated.sourceId, model.type, getMovie),
             ]);
             return {
                 ...baseExample,
@@ -116,8 +116,8 @@ async function getTranslationExample(
             };
         case 'WEBPAGE':
             const [originalWebPageRef, translatedWebPageRef] = await Promise.all([
-                writeSource(model.original.sourceId, model.type, getWebPage, termSnap.ref, translationSnap.ref),
-                writeSource(model.translated.sourceId, model.type, getWebPage, termSnap.ref, translationSnap.ref),
+                writeSource(model.original.sourceId, model.type, getWebPage),
+                writeSource(model.translated.sourceId, model.type, getWebPage),
             ]);
             return {
                 ...baseExample,
@@ -139,9 +139,7 @@ async function getTranslationExample(
 async function writeSource<T extends SourceType>(
     sourceId: string,
     sourceType: T,
-    getSource: (sourceId: string) => Promise<SourceMediaForType<T>>,
-    termRef: firestore.DocumentReference,
-    translationRef: firestore.DocumentReference
+    getSource: (sourceId: string) => Promise<SourceMediaForType<T>>
 ) {
     const sourceRef = db.collection('sources').doc(sourceId);
     const sourceMedium = (await sourceRef.get()).data() as WithoutId<Source> | undefined;
@@ -151,14 +149,9 @@ async function writeSource<T extends SourceType>(
         const newSource = {
             ...sourceMedia,
             type: sourceType,
-            refs: [convertRef(termRef), convertRef(translationRef)],
+            refs: [],
         };
         await sourceRef.set(newSource);
-    } else {
-        const update: Partial<WithoutId<Source>> = {
-            refs: [...sourceMedium.refs, convertRef(termRef), convertRef(translationRef)],
-        };
-        await sourceRef.update(update);
     }
 
     return sourceRef;

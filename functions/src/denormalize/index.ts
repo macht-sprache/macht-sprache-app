@@ -1,6 +1,7 @@
-import { clamp } from 'rambdax';
-import type { Comment, Rating, Translation } from '../../../src/types';
+import { firestore } from 'firebase-admin';
+import { clamp, uniqWith } from 'rambdax';
 import { RATING_STEPS } from '../../../src/constants';
+import type { Comment, Rating, Translation } from '../../../src/types';
 import { db, functions, logger, WithoutId } from '../firebase';
 
 export const denormalizeCommentCount = functions.firestore
@@ -19,7 +20,11 @@ export const denormalizeCommentCount = functions.firestore
 
         for (const ref of refs) {
             const { size } = await db.collection('comments').select('ref').where('ref', '==', ref).get();
-            await ref.update({ commentCount: size });
+            try {
+                await ref.update({ commentCount: size });
+            } catch (error) {
+                logger.warn(`Updating ref ${ref.path} failed.`, { error });
+            }
         }
     });
 
@@ -46,3 +51,67 @@ export const denormalizeRatings = functions.firestore
 
         await translationRef.update({ ratings: ratingDistribution });
     });
+
+type TranslationExamplePartial = {
+    translation: firestore.DocumentReference;
+    original: {
+        source: firestore.DocumentReference;
+    };
+    translated: {
+        source: firestore.DocumentReference;
+    };
+};
+
+export const denormalizeSourceRefs = functions.firestore
+    .document('/translationExamples/{translationExampleId}')
+    .onWrite(async (change, { resource }) => {
+        const before = change.before.data() as TranslationExamplePartial | undefined;
+        const after = change.after.data() as TranslationExamplePartial | undefined;
+
+        if (
+            refsAreEqual(before?.original.source, after?.original.source) &&
+            refsAreEqual(before?.translated.source, after?.original.source)
+        ) {
+            logger.info('No change to refs', { resource });
+            return;
+        }
+
+        const sourceRefs = uniqueRefs([
+            before?.original.source,
+            after?.original.source,
+            before?.translated.source,
+            after?.original.source,
+        ]);
+
+        await Promise.all(
+            sourceRefs.map(sourceRef =>
+                db.runTransaction(async t => {
+                    const examplesWithOriginalSnap = await t.get(
+                        db.collection('translationExamples').where('original.source', '==', sourceRef)
+                    );
+                    const examplesWithTranslatedSnap = await t.get(
+                        db.collection('translationExamples').where('translated.source', '==', sourceRef)
+                    );
+                    const exampleDocs = [
+                        ...examplesWithOriginalSnap.docs,
+                        ...examplesWithTranslatedSnap.docs,
+                    ].map(doc => doc.data()) as TranslationExamplePartial[];
+
+                    const translationRefs = uniqueRefs(exampleDocs.map(doc => doc?.translation));
+                    const translationsSnap = await t.getAll(...translationRefs);
+                    const termRefs = uniqueRefs(translationsSnap.map(snap => snap.data()?.term));
+
+                    await t.update(sourceRef, { refs: [...termRefs, ...translationRefs] });
+                })
+            )
+        );
+    });
+
+const refsAreEqual = (a?: firestore.DocumentReference, b?: firestore.DocumentReference) =>
+    a === b || !!(b && a?.isEqual(b));
+
+const uniqueRefs = (refs: (firestore.DocumentReference | undefined)[]) =>
+    uniqWith(
+        refsAreEqual,
+        refs.filter((ref): ref is firestore.DocumentReference => !!ref)
+    );
