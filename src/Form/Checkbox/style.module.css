@@ -1,0 +1,72 @@
+.container {
+    display: grid;
+    grid-template-columns: 1rem 1fr;
+    grid-gap: 0.5rem;
+    position: relative;
+}
+
+.checkbox,
+.checkboxDisplay {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.checkbox:not(:disabled) ~ .label {
+    cursor: pointer;
+}
+
+.checkbox:disabled ~ .label {
+    color: var(--disabledGrey);
+}
+
+.checkbox {
+    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    height: 1rem;
+    width: 1rem;
+}
+
+.checkbox:not(:disabled) {
+    cursor: pointer;
+}
+
+.checkboxDisplay {
+    position: relative;
+    border: solid var(--dominantLanguageColor) var(--thickBorder);
+    height: 1rem;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox:disabled + .checkboxDisplay {
+    border-color: var(--disabledGrey);
+}
+.checkbox:focus:not(:focus-visible) + .checkboxDisplay {
+    border-color: var(--black);
+}
+
+.checkbox:focus + .checkboxDisplay {
+    border-color: var(--orange);
+}
+
+.checkbox:checked + .checkboxDisplay:before {
+    content: '';
+    position: absolute;
+    height: 0.7rem;
+    width: 0.3rem;
+    transform: rotate(45deg);
+    border-width: 0 var(--thickBorder) var(--thickBorder) 0;
+    border-color: var(--dominantLanguageColor);
+    border-style: solid;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.checkbox:disabled + .checkboxDisplay:before {
+    border-color: var(--disabledGrey);
+}

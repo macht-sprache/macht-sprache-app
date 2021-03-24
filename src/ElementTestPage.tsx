@@ -14,6 +14,7 @@ import { RatingWidget } from './Rating/RatingWidget';
 import { Book, Comment, Movie, WebPage } from './types';
 import MovieSearch from './MediaSelection/MovieSearch';
 import WebPageSearch from './MediaSelection/WebPageSearch';
+import { Checkbox } from './Form/Checkbox';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -188,6 +189,13 @@ export default function ElementTestPage() {
                 <Button>Cancel</Button>
                 <Button primary={true}>Submit</Button>
             </ButtonContainer>
+
+            <Heading>Checkbox</Heading>
+            <Checkbox label="This is just a normal checkbox" />
+            <br />
+            <Checkbox label="this is a disabled checkbox" disabled />
+            <br />
+            <Checkbox label="this is a disabled and checked checkbox" checked disabled />
 
             <Heading>Comments</Heading>
 
