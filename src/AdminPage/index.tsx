@@ -5,7 +5,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import Header from '../Header';
 import { collections, useCollection, useCollectionById } from '../hooks/data';
 import { useRequestState } from '../hooks/useRequestState';
-import { ColumnHeading, SingleColumn } from '../Layout/Columns';
+import { ColumnHeading } from '../Layout/Columns';
 import { User, UserProperties } from '../types';
 import s from './style.module.css';
 
