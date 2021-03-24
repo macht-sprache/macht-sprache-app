@@ -45,7 +45,7 @@ function UserList() {
     const authUserInfos = useAuthUserInfos();
 
     return (
-        <SingleColumn>
+        <>
             <ColumnHeading>Users</ColumnHeading>
             <ul className={s.userList}>
                 {users.map(user => (
@@ -57,7 +57,7 @@ function UserList() {
                     />
                 ))}
             </ul>
-        </SingleColumn>
+        </>
     );
 }
 
