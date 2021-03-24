@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { Checkbox } from '../Form/Checkbox';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
 import { collections } from '../hooks/data';
@@ -26,12 +27,11 @@ export default function UserPage() {
                     <Trans t={t} i18nKey="userPage.hideRedactedDescription" />
                 </p>
                 <label>
-                    <input
-                        type="checkbox"
+                    <Checkbox
                         checked={!userSettings.showRedacted}
                         onChange={event => onChange({ showRedacted: !event.target.checked })}
-                    />{' '}
-                    {t('userPage.hideRedacted')}
+                        label={t('userPage.hideRedacted')}
+                    />
                 </label>
             </SingleColumn>
         </>
