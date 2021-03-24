@@ -1,6 +1,7 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Button, { ButtonContainer } from '../../Form/Button';
+import { Checkbox } from '../../Form/Checkbox';
 import { Input } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import { ColumnHeading, Columns } from '../../Layout/Columns';
@@ -57,17 +58,14 @@ function SignUp() {
     const { t } = useTranslation();
 
     return (
-        <>
+        <div className={s.signUpForm}>
             <InputContainer>
                 <Input label={t('auth.email')} />
             </InputContainer>
-            <label>
-                <input type="checkbox" />
-                poco.lit.-newsletter
-            </label>
+            <Checkbox label="poco.lit.-newsletter" />
             <ButtonContainer>
                 <Button>{t('auth.register.title')}</Button>
             </ButtonContainer>
-        </>
+        </div>
     );
 }
