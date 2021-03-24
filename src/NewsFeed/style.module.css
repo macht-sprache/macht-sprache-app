@@ -44,10 +44,6 @@
     background: var(--orange);
 }
 
-.article + .article {
-    margin-top: 1rem;
-}
-
 .date {
     margin: 0 0 0.5rem;
     font-style: italic;
@@ -61,18 +57,7 @@
 }
 
 @media (max-width: 450px) {
-    .body {
-        display: block;
-    }
-
-    .article {
-        padding: 0.5rem;
-    }
-
     .image {
-        width: 100%;
         max-height: 100vw;
-        object-fit: contain;
-        margin-bottom: 0.5rem;
     }
 }

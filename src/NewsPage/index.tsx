@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
-import { ColumnHeading, SingleColumn } from '../Layout/Columns';
+import { ColumnHeading, Columns, SingleColumn } from '../Layout/Columns';
 import { NewsFeed } from '../NewsFeed';
 
 export function NewsPage() {
@@ -9,10 +9,10 @@ export function NewsPage() {
     return (
         <>
             <Header>macht.sprache.</Header>
-            <SingleColumn>
-                <ColumnHeading>{t('home.news')}</ColumnHeading>
+            <ColumnHeading>{t('home.news')}</ColumnHeading>
+            <Columns>
                 <NewsFeed />
-            </SingleColumn>
+            </Columns>
         </>
     );
 }

@@ -11,7 +11,7 @@ export function NewsFeed() {
     const { response, isLoading } = useWpPosts(MACHT_SPRACHE_TAGS);
 
     return (
-        <div>
+        <>
             {isLoading && <>{t('common.loading')}</>}
             {response?.map(({ title, link, excerpt, date, featuredMedia }, index) => (
                 <article
@@ -42,6 +42,6 @@ export function NewsFeed() {
                     </div>
                 </article>
             ))}
-        </div>
+        </>
     );
 }

@@ -7,3 +7,9 @@
     padding: 1rem;
     background: var(--white);
 }
+
+.newsFeed {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
+}

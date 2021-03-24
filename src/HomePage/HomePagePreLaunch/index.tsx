@@ -44,7 +44,9 @@ export function HomePagePreLaunch() {
                 </div>
                 <div>
                     <ColumnHeading>{t('home.news')}</ColumnHeading>
-                    <NewsFeed />
+                    <div className={s.newsFeed}>
+                        <NewsFeed />
+                    </div>
                 </div>
             </Columns>
         </>
