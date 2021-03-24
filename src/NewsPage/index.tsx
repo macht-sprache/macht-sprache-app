@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
-import { ColumnHeading, Columns, SingleColumn } from '../Layout/Columns';
+import { ColumnHeading, Columns } from '../Layout/Columns';
 import { NewsFeed } from '../NewsFeed';
 
 export function NewsPage() {
