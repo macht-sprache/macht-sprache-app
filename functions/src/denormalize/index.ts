@@ -98,7 +98,7 @@ export const denormalizeSourceRefs = functions.firestore
                     ].map(doc => doc.data()) as TranslationExamplePartial[];
 
                     const translationRefs = uniqueRefs(exampleDocs.map(doc => doc?.translation));
-                    const translationsSnap = await t.getAll(...translationRefs);
+                    const translationsSnap = translationRefs.length ? await t.getAll(...translationRefs) : [];
                     const termRefs = uniqueRefs(translationsSnap.map(snap => snap.data()?.term));
 
                     await t.update(sourceRef, { refs: [...termRefs, ...translationRefs] });
