@@ -164,6 +164,8 @@ export interface UserSettings {
 
 export interface UserProperties {
     admin: boolean;
+    enabled: boolean;
+    tokenTime: string;
 }
 
 export interface SensitiveTerms {

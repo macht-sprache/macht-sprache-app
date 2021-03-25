@@ -36,16 +36,9 @@ service cloud.firestore {
       return request.auth.uid == user;
     }
 
-    function isValidUser() {
-      let data = request.resource.data;
-      return data.keys().hasOnly(['displayName']) &&
-        data.displayName is string
-    }
-
     match /users/{user} {
       allow get: if isUser(user) || isAdmin();
       allow list: if isAdmin(); 
-      allow create, update: if isValidatedUser() && isUser(user) && isValidUser();
     }
 
     function isValidUserSettings() {
