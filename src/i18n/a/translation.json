@@ -110,6 +110,10 @@
             "requestSuccessExplanation": "If you had an account for {{email}} we sent you a link to reset your password.",
             "expiredHeading": "Password Reset Link Expired",
             "expiredExplanation": "Please try <Link>resetting your password</Link> again."
+        },
+        "activation": {
+            "heading": "Activation Required",
+            "explanation": "Almost there! We still need to activate your account. We'll send you an email when you can start using it."
         }
     },
     "term": {

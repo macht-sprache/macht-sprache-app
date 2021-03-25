@@ -6,7 +6,7 @@ import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import { postVerifyHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
-import { useAuthState, useUser } from '../hooks/appContext';
+import { useAppContext, useAuthState } from '../hooks/appContext';
 import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
@@ -15,7 +15,7 @@ import { User } from '../types';
 import { useLang } from '../useLang';
 
 export default function RegisterPostPage() {
-    const user = useUser();
+    const { user, accountState } = useAppContext();
     const [authUser] = useAuthState();
     const continuePath = useContinuePath();
     const verifyParams = useAuthHandlerParams('verifyEmail');
@@ -26,6 +26,10 @@ export default function RegisterPostPage() {
 
     if (user || !authUser) {
         return <Redirect to={continuePath} />;
+    }
+
+    if (accountState === 'DISABLED') {
+        return <ActivationRequired />;
     }
 
     return <VerificationRequired continuePath={continuePath} authUser={authUser} />;
@@ -113,6 +117,18 @@ function VerificationRequired({ continuePath, authUser }: { continuePath: string
                             : t('auth.emailVerification.resend')}
                     </Button>
                 </ButtonContainer>
+            </SingleColumn>
+        </>
+    );
+}
+
+function ActivationRequired() {
+    const { t } = useTranslation();
+    return (
+        <>
+            <Header>{t('auth.activation.heading')}</Header>
+            <SingleColumn>
+                <p>{t('auth.activation.explanation')}</p>
             </SingleColumn>
         </>
     );

@@ -1,42 +1,29 @@
 import { FormEventHandler, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { useUser } from '../hooks/appContext';
 import { useLogin } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
 import { FORGOT_PASSWORD } from '../routes';
 
 export default function LoginPage() {
-    const user = useUser();
     const { t } = useTranslation();
     const continuePath = useContinuePath();
-    const login = useLogin();
+    const { login, loginState, loginError } = useLogin(continuePath);
 
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
-    const [loggingIn, setLoggingIn] = useState(false);
-    const [loginError, setLoginError] = useState<any>();
 
-    if (user) {
-        return <Redirect to={continuePath} />;
-    }
-
-    const disabled = loggingIn || !email || !password;
+    const disabled = loginState === 'IN_PROGRESS' || !email || !password;
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
-        setLoggingIn(true);
-        setLoginError(undefined);
-        login(email, password, continuePath).catch(error => {
-            setLoginError(error);
-            setLoggingIn(false);
-        });
+        login(email, password);
     };
 
     return (
@@ -49,7 +36,7 @@ export default function LoginPage() {
                             label={t('auth.email')}
                             value={email}
                             autoComplete="email"
-                            disabled={loggingIn}
+                            disabled={loginState === 'IN_PROGRESS'}
                             onChange={value => {
                                 setEmail(value.target.value);
                             }}
@@ -60,7 +47,7 @@ export default function LoginPage() {
                             value={password}
                             autoComplete="current-password"
                             type="password"
-                            disabled={loggingIn}
+                            disabled={loginState === 'IN_PROGRESS'}
                             onChange={value => {
                                 setSetPassword(value.target.value);
                             }}

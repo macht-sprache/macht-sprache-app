@@ -20,7 +20,9 @@ service cloud.firestore {
     }
 
     function isValidatedUser() {
-      return request.auth != null && request.auth.token.email_verified;
+      return request.auth != null &&
+        request.auth.token.email_verified &&
+          get(/databases/$(database)/documents/userProperties/$(request.auth.uid)).data.enabled;
     }
 
     function isAdmin() {

@@ -110,6 +110,10 @@
             "requestSuccessExplanation": "Wenn du ein Konto für {{email}} hast haben wir dir einen Link zur Passwortwiederherstellung geschickt.",
             "expiredHeading": "Link zur Passwortwiederherstellung abgelaufen",
             "expiredExplanation": "Bitte versuche dein <Link>Passwort erneut zurückzusetzen</Link>."
+        },
+        "activation": {
+            "heading": "Aktivierung erforderlich",
+            "explanation": "Fast geschafft! Wir müssen dein Konto noch aktivieren. Wir schicken dir eine Email wenn es soweit ist."
         }
     },
     "term": {
