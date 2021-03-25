@@ -2,18 +2,20 @@ import type firebase from 'firebase';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useAuthState as _useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
-import { i18n } from '../i18n/config';
 import { DocReference, User, UserProperties, UserSettings } from '../types';
-import { toLanguageOrDefault } from '../useLang';
 import { collections } from './data';
+
+type AccountState = 'ANONYMOUS' | 'ACTIVE' | 'NEEDS_VERIFICATION' | 'DISABLED';
 
 const appContext = createContext<{
     user?: User;
     userSettings?: UserSettings;
     userProperties?: UserProperties;
     sensitiveTerms: Set<string>;
+    accountState: AccountState;
 }>({
     sensitiveTerms: new Set(),
+    accountState: 'ANONYMOUS',
 });
 
 export const useAppContext = () => {
@@ -41,80 +43,67 @@ export const useAuthState = (): [firebase.User | undefined, boolean, firebase.au
 
 export const AppContextProvider: React.FC = ({ children }) => {
     const [authUser, loadingAuthUser] = useAuthState();
-    const [user, loadingUser] = useEnsureUserEntity(authUser, loadingAuthUser);
+    const [user, loadingUser] = useLoadUser(authUser?.uid);
     const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid);
     const [userProperties, loadingUserProperties] = useLoadUserProperties(authUser?.uid);
     const [sensitiveTerms] = useLoadSensitiveTerms();
+    const accountState = useAccountState(authUser, userProperties);
 
-    if (loadingUser || loadingUserSettings || loadingUserProperties || !sensitiveTerms) {
+    if (loadingAuthUser || loadingUser || loadingUserSettings || loadingUserProperties || !sensitiveTerms) {
         return null;
     }
 
     return (
-        <appContext.Provider value={{ user, userSettings, userProperties, sensitiveTerms }}>
+        <appContext.Provider
+            value={
+                accountState === 'ACTIVE'
+                    ? { user, userSettings, userProperties, sensitiveTerms, accountState }
+                    : { accountState, sensitiveTerms }
+            }
+        >
             {children}
         </appContext.Provider>
     );
 };
 
-const ensureUpdatedToken = (authUser: firebase.User) =>
-    authUser.getIdTokenResult().then(token => (token.claims.email_verified ? token : authUser.getIdTokenResult(true)));
-
-export const ensureUserEntity = (authUser: firebase.User) =>
-    ensureUpdatedToken(authUser).then(() =>
-        collections.users.doc(authUser.uid).set({
-            id: authUser.uid,
-            displayName: authUser.displayName || authUser.email || '',
-        })
-    );
-
-function useEnsureUserEntity(authUser: firebase.User | undefined, loadingAuthUser: boolean) {
-    const [{ user, loading, error }, setState] = useState<{
-        user?: User;
-        loading: boolean;
-        error?: firebase.firestore.FirestoreError;
-    }>({
-        loading: true,
-    });
+function useAccountState(authUser?: firebase.User, userProperties?: UserProperties): AccountState {
+    const [tokenResult, setTokenResult] = useState<firebase.auth.IdTokenResult>();
 
     useEffect(() => {
-        let initialFetch = true;
+        if (authUser) {
+            authUser.getIdTokenResult().then(setTokenResult);
+            return () => setTokenResult(undefined);
+        }
+    }, [authUser]);
 
-        if (!authUser) {
-            if (!loadingAuthUser) {
-                setState(prev => ({ ...prev, loading: false }));
-            }
+    useEffect(() => {
+        if (!tokenResult || !userProperties || !authUser) {
             return;
         }
-
-        const unsubscribe = collections.users.doc(authUser.uid).onSnapshot(
-            snapshot => {
-                if (initialFetch && authUser.emailVerified && !snapshot.exists) {
-                    console.log('No user entity yet. Creating…');
-                    ensureUserEntity(authUser).catch(error => console.error(error));
-                }
-                initialFetch = false;
-                setState({ user: snapshot.data(), loading: false, error: undefined });
-            },
-            error => {
-                setState({ user: undefined, loading: false, error });
-                console.error(error);
-            }
-        );
-
-        return () => {
-            setState(prev => ({ ...prev, user: undefined }));
-            unsubscribe();
-        };
-    }, [authUser, loadingAuthUser]);
-
-    useEffect(() => {
-        if (authUser && user) {
-            ensureUpdatedToken(authUser);
+        if (new Date(userProperties.tokenTime) > new Date(tokenResult.issuedAtTime)) {
+            authUser.getIdTokenResult(true).then(setTokenResult);
         }
-    }, [authUser, user]);
+    }, [authUser, tokenResult, userProperties]);
 
-    return [user, loading, error] as const;
+    if (!authUser || !tokenResult || !userProperties) {
+        return 'ANONYMOUS';
+    }
+
+    if (!tokenResult.claims.email_verified) {
+        return 'NEEDS_VERIFICATION';
+    }
+
+    if (!userProperties.enabled) {
+        return 'DISABLED';
+    }
+
+    return 'ACTIVE';
+}
+
+const getUserRef = (id: string) => collections.users.doc(id);
+
+function useLoadUser(uid?: string) {
+    return useSnapshot(getUserRef, uid);
 }
 
 const getSenstiveTermsRef = (id: string) => collections.sensitiveTerms.doc(id);
@@ -135,40 +124,13 @@ function useLoadSensitiveTerms() {
 const getUserSettingsRef = (uid: string) => collections.userSettings.doc(uid);
 
 function useLoadUserSettings(uid?: string) {
-    const [value, loading, error] = useSnapshot(getUserSettingsRef, uid);
-
-    const userSettings = useMemo<UserSettings | undefined>(() => {
-        if (loading || error || !uid) {
-            return undefined;
-        }
-        return (
-            value || {
-                lang: toLanguageOrDefault(i18n.language),
-                showRedacted: false,
-            }
-        );
-    }, [error, loading, uid, value]);
-
-    return [userSettings, loading, error] as const;
+    return useSnapshot(getUserSettingsRef, uid);
 }
 
 const getUserPropertiesRef = (uid: string) => collections.userProperties.doc(uid);
 
 function useLoadUserProperties(uid?: string) {
-    const [value, loading, error] = useSnapshot(getUserPropertiesRef, uid);
-
-    const userProperties = useMemo<UserProperties | undefined>(() => {
-        if (loading || error || !uid) {
-            return undefined;
-        }
-        return (
-            value || {
-                admin: false,
-            }
-        );
-    }, [error, loading, uid, value]);
-
-    return [userProperties, loading, error] as const;
+    return useSnapshot(getUserPropertiesRef, uid);
 }
 
 function useSnapshot<T>(getRef: (docPath: string) => DocReference<T>, docPath: string | undefined) {

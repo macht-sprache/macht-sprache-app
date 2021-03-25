@@ -6,9 +6,9 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
-import { sendPasswordReset } from '../functions';
+import { postVerifyHandler, sendPasswordReset } from '../functions';
 import Header from '../Header';
-import { ensureUserEntity, useUser } from '../hooks/appContext';
+import { useUser } from '../hooks/appContext';
 import { AuthHandlerParams, useAuthHandlerParams, useLogin } from '../hooks/auth';
 import { useContinuePath } from '../hooks/location';
 import { useRequestState } from '../hooks/useRequestState';
@@ -74,7 +74,7 @@ function ResetPasswordForm({ email, actionCode, continueUrl }: { email: string }
         auth.confirmPasswordReset(actionCode, password)
             .then(() => auth.signInWithEmailAndPassword(email, password))
             .then(() => login(email, password, continuePath))
-            .then(authUser => authUser && ensureUserEntity(authUser))
+            .then(authUser => authUser && postVerifyHandler())
             .catch(error => setRequestState('ERROR', error));
     };
 

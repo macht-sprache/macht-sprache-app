@@ -23,10 +23,17 @@ export const addTranslationExample = (
     model: TranslationExampleModel
 ): Promise<{ data: { translationExampleId: string } }> => _addTranslationExample(model);
 
+const _postRegistrationHandler = functions.httpsCallable('userManagement-postRegistrationHandler');
+
+export const postRegistrationHandler = (displayName: string, lang: Lang) =>
+    _postRegistrationHandler({ displayName, lang });
+
 const _sendEmailVerification = functions.httpsCallable('mails-sendEmailVerification');
 
 export const sendEmailVerification = (lang: Lang, origin: string, continuePath: string) =>
     _sendEmailVerification({ lang, origin, continuePath });
+
+export const postVerifyHandler = functions.httpsCallable('userManagement-postVerifyHandler');
 
 const _sendPasswordReset = functions.httpsCallable('mails-sendPasswordResetMail');
 

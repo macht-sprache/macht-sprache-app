@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
-import { sendEmailVerification } from '../functions';
+import { postVerifyHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
-import { ensureUserEntity, useAuthState, useUser } from '../hooks/appContext';
+import { useAuthState, useUser } from '../hooks/appContext';
 import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
@@ -49,7 +49,6 @@ function VerifyEmail({
         auth.applyActionCode(actionCode).then(
             () => {
                 setVerifyState('VERIFIED');
-                auth.currentUser?.reload();
             },
             error => {
                 setVerifyState('ERROR');
@@ -60,7 +59,7 @@ function VerifyEmail({
 
     useEffect(() => {
         if (verifyState === 'VERIFIED' && authUser) {
-            ensureUserEntity(authUser);
+            postVerifyHandler();
         }
     }, [authUser, verifyState]);
 

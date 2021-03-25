@@ -6,7 +6,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
-import { sendEmailVerification } from '../functions';
+import { postRegistrationHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
@@ -24,6 +24,7 @@ const signUp = async (lang: Lang, displayName: string, email: string, password: 
     }
 
     await user.updateProfile({ displayName });
+    await postRegistrationHandler(displayName, lang);
 
     if (!user.emailVerified) {
         await sendEmailVerification(lang, window.location.origin, continuePath);
