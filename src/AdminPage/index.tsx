@@ -75,6 +75,12 @@ function UserItem({
         <li key={user.id} className={s.userItem}>
             <div className={s.userInfo}>
                 <span className={s.userName}>{user.displayName}</span>
+                {!properties?.enabled && (
+                    <>
+                        {' '}
+                        <span className={s.tag}>Disabled</span>
+                    </>
+                )}
                 {!!properties?.admin && (
                     <>
                         {' '}
@@ -89,6 +95,7 @@ function UserItem({
                 )}
             </div>
             <ButtonContainer>
+                <EnableButton user={user} properties={properties} />
                 {!properties?.admin ? (
                     <ConfirmModal
                         title="Make Admin"
@@ -157,4 +164,47 @@ function DeleteContentButton({ user }: { user: User }) {
             )}
         </ConfirmModal>
     );
+}
+
+function EnableButton({ user, properties }: { user: User; properties?: UserProperties }) {
+    const setEnabled = (enabled: boolean) => collections.userProperties.doc(user.id).set({ enabled }, { merge: true });
+
+    if (properties?.enabled) {
+        return (
+            <ConfirmModal
+                title="Disable User?"
+                body={
+                    <p>
+                        Are you sure you want to disable user <strong>{user.displayName}</strong>? It will log them out
+                        immediately and prevent them from creating further content. When they are enabled again they
+                        will recieve an email.
+                    </p>
+                }
+                confirmLabel="Disable"
+                onConfirm={() => setEnabled(false)}
+            >
+                {onClick => <Button onClick={onClick}>Disable</Button>}
+            </ConfirmModal>
+        );
+    } else {
+        return (
+            <ConfirmModal
+                title="Enable User?"
+                body={
+                    <>
+                        <p>
+                            Are you sure you want to enable user <strong>{user.displayName}</strong>?
+                        </p>
+                        {properties && (
+                            <p>They will recieve an email that they can start using their account (again).</p>
+                        )}
+                    </>
+                }
+                confirmLabel="Enable"
+                onConfirm={() => setEnabled(true)}
+            >
+                {onClick => <Button onClick={onClick}>Enable</Button>}
+            </ConfirmModal>
+        );
+    }
 }

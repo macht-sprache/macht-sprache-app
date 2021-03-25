@@ -10,6 +10,7 @@
     justify-content: flex-end;
     flex-wrap: wrap;
     padding: 0.5rem 0;
+    gap: 0.5rem;
 }
 
 .userItem + .userItem {
