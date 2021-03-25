@@ -133,3 +133,15 @@ export const getResetEmail = ({ recipientName, link, lang }: TemplateOptions): R
     );
     return { html, subject: t('resetPassword.subject') };
 };
+
+export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions): RenderedMailTemplate => {
+    const t = translate(lang);
+    const { html } = mjml2html(
+        withBaseTemplate([
+            getText(t('greeting', { recipientName })),
+            getText(t('activation.message')),
+            getButton(t('activation.button'), link),
+        ])
+    );
+    return { html, subject: t('activation.subject') };
+};
