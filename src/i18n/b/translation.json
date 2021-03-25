@@ -74,6 +74,7 @@
     },
     "auth": {
         "displayName": "Nutzer:innenname",
+        "displayNameRequirements": "Dein Nutzer:innenname darf nur aus Buchstaben, Zahlen, - oder _ bestehen und nicht länger als 20 Zeichen sein.",
         "email": "Email Adresse",
         "password": "Passwort",
         "login": "Anmelden",

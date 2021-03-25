@@ -1,6 +1,7 @@
 import { FormEventHandler, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, Redirect } from 'react-router-dom';
+import { DISPLAY_NAME_REGEX } from '../constants';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
@@ -42,7 +43,8 @@ export default function RegisterPage() {
     const [password, setSetPassword] = useState('');
     const [registrationState, setRegistrationState, registrationError] = useRequestState();
     const loadingRegistration = registrationState === 'IN_PROGRESS';
-    const disabled = loadingRegistration || !displayName || !email || !password;
+    const validDisplayName = DISPLAY_NAME_REGEX.test(displayName);
+    const disabled = loadingRegistration || !validDisplayName || !email || !password;
 
     if (user && !loadingRegistration) {
         return <Redirect to={continuePath} />;
@@ -81,6 +83,7 @@ export default function RegisterPage() {
                             value={displayName}
                             autoComplete="nickname"
                             disabled={registrationState === 'IN_PROGRESS'}
+                            error={!!displayName && !validDisplayName && t('auth.displayNameRequirements')}
                             onChange={event => {
                                 setUserName(event.target.value);
                             }}
