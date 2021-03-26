@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import { ContentWarning } from '../ContentWarning';
 import { useUserProperties } from '../hooks/appContext';
 import LinkButton from '../LinkButton';
 import { ABOUT, ADMIN, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS } from '../routes';
@@ -59,6 +60,7 @@ function Layout({ children }: Props) {
                 </div>
                 <main className={s.main}>{children}</main>
                 <div className={s.background} />
+                <ContentWarning />
             </div>
         </OverlayProvider>
     );

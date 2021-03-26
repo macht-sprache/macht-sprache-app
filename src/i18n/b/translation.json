@@ -256,5 +256,9 @@
         "title": "Nutzer:innenseite von",
         "hideRedactedDescription": "<strong>Sensible Begriffe</strong>: Standardmäßig versteckt <i>macht.sprache.</i> sensible Begriffe (z.B. n***r). Wenn du diese Begriffe trotzdem ausgeschrieben sehen möchtest, kannst du sie hier anzeigen lassen. ",
         "hideRedacted": "Diskrimminierende Begriffe verstecken"
+    },
+    "contentWarning": {
+        "title": "Warnung: es werden sensible Begriffe angezeigt werden.",
+        "button": "Danke, verstanden"
     }
 }

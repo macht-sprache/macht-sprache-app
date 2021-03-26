@@ -256,5 +256,10 @@
         "title": "User profile of",
         "hideRedactedDescription": "<strong>Sensitive terms</strong>: By default, <i>macht.sprache.</i> hides obviously offensive terms (e.g. n***o). If you would prefer to see them for the sake of clarity, you can disable this feature here.",
         "hideRedacted": "Hide offensive terms"
+    },
+    "contentWarning": {
+        "title": "Warning: sensible terms will be shown.",
+        "button": "Thanks, I understood",
+        "warning": "On this platform we are discussing sensitive terms, some of them are discriminatory or even offensive. Some will be hidden with * like the n-word. If things are unclear, you can show these words once you're logged in."
     }
 }
