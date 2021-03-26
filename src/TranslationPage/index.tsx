@@ -2,25 +2,20 @@ import clsx from 'clsx';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import { FormatDate } from '../FormatDate';
-import Comments from '../Comments';
 import Header from '../Header';
-import { collections, useTerm, useTranslationEntity } from '../hooks/data';
-import { SingleColumn } from '../Layout/Columns';
+import { useTerm, useTranslationEntity } from '../hooks/data';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
-import { Redact, useRedacted } from '../RedactSensitiveTerms';
+import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import s from './style.module.css';
-import { TermWithLang } from '../TermWithLang';
 
 export function TranslationPage() {
     const { t } = useTranslation();
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
     const term = useTerm(termId);
     const translation = useTranslationEntity(translationId);
-    const termRedacted = useRedacted(term.value);
-    const translationRedacted = useRedacted(translation.value);
 
     return (
         <>
@@ -53,27 +48,6 @@ export function TranslationPage() {
                 <Redact>{translation.value}</Redact>
             </Header>
             <TranslationExamplesList term={term} translation={translation} />
-            <SingleColumn>
-                <div className={getDominantLanguageClass(translation.lang)}>
-                    <Comments
-                        entityRef={collections.translations.doc(translation.id)}
-                        headingHint={
-                            <Trans
-                                t={t}
-                                i18nKey="translation.addCommentHeading"
-                                components={{
-                                    Term: <TermWithLang term={term} />,
-                                    Translation: <TermWithLang term={translation} />,
-                                }}
-                            />
-                        }
-                        placeholder={t('translation.commentPlaceholder', {
-                            term: termRedacted,
-                            translation: translationRedacted,
-                        })}
-                    />
-                </div>
-            </SingleColumn>
         </>
     );
 }
