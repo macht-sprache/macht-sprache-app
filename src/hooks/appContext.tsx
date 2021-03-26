@@ -1,6 +1,5 @@
 import type firebase from 'firebase';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useAuthState as _useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { DocReference, User, UserProperties, UserSettings } from '../types';
 import { collections } from './data';
@@ -38,14 +37,11 @@ export const useSensitiveTerms = () => {
     return useContext(appContext).sensitiveTerms;
 };
 
-export const useAuthState = (): [firebase.User | undefined, boolean, firebase.auth.Error | undefined] =>
-    _useAuthState(auth);
-
 export const AppContextProvider: React.FC = ({ children }) => {
-    const [authUser, loadingAuthUser] = useAuthState();
-    const [user, loadingUser] = useLoadUser(authUser?.uid);
-    const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid);
-    const [userProperties, loadingUserProperties] = useLoadUserProperties(authUser?.uid);
+    const [authUser, loadingAuthUser] = useAuthUser();
+    const [user, loadingUser] = useLoadUser(authUser?.uid, loadingAuthUser);
+    const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid, loadingAuthUser);
+    const [userProperties, loadingUserProperties] = useLoadUserProperties(authUser?.uid, loadingAuthUser);
     const [sensitiveTerms] = useLoadSensitiveTerms();
     const accountState = useAccountState(authUser, userProperties);
 
@@ -65,6 +61,28 @@ export const AppContextProvider: React.FC = ({ children }) => {
         </appContext.Provider>
     );
 };
+
+export function useAuthUser() {
+    const [{ authUser, loading, error }, setState] = useState<{
+        authUser?: firebase.User;
+        loading: boolean;
+        error?: firebase.auth.Error;
+    }>({
+        loading: true,
+    });
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(
+            newAuthUser => {
+                setState({ authUser: newAuthUser ?? undefined, loading: false });
+            },
+            error => setState({ loading: false, error })
+        );
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+    return [authUser, loading, error] as const;
+}
 
 function useAccountState(authUser?: firebase.User, userProperties?: UserProperties): AccountState {
     const [tokenResult, setTokenResult] = useState<firebase.auth.IdTokenResult>();
@@ -102,8 +120,8 @@ function useAccountState(authUser?: firebase.User, userProperties?: UserProperti
 
 const getUserRef = (id: string) => collections.users.doc(id);
 
-function useLoadUser(uid?: string) {
-    return useSnapshot(getUserRef, uid);
+function useLoadUser(uid: string | undefined, authUserLoading: boolean) {
+    return useSnapshot(getUserRef, uid, authUserLoading);
 }
 
 const getSenstiveTermsRef = (id: string) => collections.sensitiveTerms.doc(id);
@@ -123,26 +141,32 @@ function useLoadSensitiveTerms() {
 
 const getUserSettingsRef = (uid: string) => collections.userSettings.doc(uid);
 
-function useLoadUserSettings(uid?: string) {
-    return useSnapshot(getUserSettingsRef, uid);
+function useLoadUserSettings(uid: string | undefined, authUserLoading: boolean) {
+    return useSnapshot(getUserSettingsRef, uid, authUserLoading);
 }
 
 const getUserPropertiesRef = (uid: string) => collections.userProperties.doc(uid);
 
-function useLoadUserProperties(uid?: string) {
-    return useSnapshot(getUserPropertiesRef, uid);
+function useLoadUserProperties(uid: string | undefined, authUserLoading: boolean) {
+    return useSnapshot(getUserPropertiesRef, uid, authUserLoading);
 }
 
-function useSnapshot<T>(getRef: (docPath: string) => DocReference<T>, docPath: string | undefined) {
+function useSnapshot<T>(
+    getRef: (docPath: string) => DocReference<T>,
+    docPath: string | undefined,
+    dependencyLoading?: boolean
+) {
     const [{ value, loading, error }, setState] = useState<{
         value?: T;
         loading: boolean;
         error?: firebase.firestore.FirestoreError;
-    }>({ loading: true });
+    }>({ loading: !!docPath || !!dependencyLoading });
 
     useEffect(() => {
         if (!docPath) {
-            setState({ loading: false });
+            if (!dependencyLoading) {
+                setState({ loading: false });
+            }
             return;
         }
 
@@ -163,7 +187,7 @@ function useSnapshot<T>(getRef: (docPath: string) => DocReference<T>, docPath: s
             unsubscribe();
             setState({ loading: false });
         };
-    }, [docPath, getRef]);
+    }, [dependencyLoading, docPath, getRef]);
 
     return [value, loading, error] as const;
 }
