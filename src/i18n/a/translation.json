@@ -258,8 +258,8 @@
         "hideRedacted": "Hide offensive terms"
     },
     "contentWarning": {
-        "title": "Warning: sensible terms will be shown.",
-        "button": "Thanks, I understood",
-        "warning": "On this platform we are discussing sensitive terms, some of them are discriminatory or even offensive. Some will be hidden with * like the n-word. If things are unclear, you can show these words once you're logged in."
+        "title": "Content Warning",
+        "button": "Thanks, I understand",
+        "warning": "On macht.sprache., we discuss politically sensitive terminology. With a code of conduct and some terms that are not written out due to their discriminatory content, we try to make macht.sprache. a constructive place for learning and discussion. Nevertheless, it could happen that you are confronted with hurtful language on the platform."
     }
 }

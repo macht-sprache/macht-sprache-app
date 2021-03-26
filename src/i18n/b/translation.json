@@ -258,7 +258,8 @@
         "hideRedacted": "Diskrimminierende Begriffe verstecken"
     },
     "contentWarning": {
-        "title": "Warnung: es werden sensible Begriffe angezeigt werden.",
-        "button": "Danke, verstanden"
+        "title": "Inhaltliche Warnung",
+        "button": "Danke, verstanden",
+        "warning": "Auf macht.sprache. werden politisch sensible Begriffe diskutiert. Mit einem Code of Conduct und einigen Begriffen, die auf Grund ihres diskriminierenden Inhalts nicht ausgeschrieben werden, versuchen wir macht.sprache. zu einem konstruktiven Lern- und Diskussionsort zu machen. Dennoch könnte es passieren, dass ihr auf der Plattform mit verletzender Sprache konfrontiert werdet. "
     }
 }
