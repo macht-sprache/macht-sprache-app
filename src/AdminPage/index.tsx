@@ -2,11 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
+import { Select } from '../Form/Input';
+import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { collections, useCollection, useCollectionById } from '../hooks/data';
+import { collections, useCollection, useCollectionById, useDocument } from '../hooks/data';
 import { useRequestState } from '../hooks/useRequestState';
-import { ColumnHeading } from '../Layout/Columns';
-import { User, UserProperties } from '../types';
+import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
+import { GlobalSettings, User, UserProperties } from '../types';
 import s from './style.module.css';
 
 type AuthUserInfo = { email: string; verified: boolean };
@@ -44,23 +46,34 @@ export default function AdminPage() {
 function UserList() {
     const users = [...useCollection(collections.users, [])].sort((a, b) => a.displayName.localeCompare(b.displayName));
     const userProperties = useCollectionById(collections.userProperties);
+    const globalSettings = useDocument(collections.settings.doc('global'), { enableNewUsers: true });
     const authUserInfos = useAuthUserInfos();
 
     return (
         <>
-            <ColumnHeading>Users</ColumnHeading>
-            <ul className={s.userList}>
-                {users.map(user => (
-                    <UserItem
-                        key={user.id}
-                        user={user}
-                        properties={userProperties[user.id]}
-                        authInfo={authUserInfos[user.id]}
-                    />
-                ))}
-            </ul>
-            <ColumnHeading>Global User Actions</ColumnHeading>
-            <EnsureValidUserEntitiesButton />
+            <SingleColumn>
+                <ColumnHeading>Global Settings</ColumnHeading>
+                <EnableNewUsersSetting globalSettings={globalSettings} />
+            </SingleColumn>
+
+            <FullWidthColumn>
+                <ColumnHeading>Users</ColumnHeading>
+                <ul className={s.userList}>
+                    {users.map(user => (
+                        <UserItem
+                            key={user.id}
+                            user={user}
+                            properties={userProperties[user.id]}
+                            authInfo={authUserInfos[user.id]}
+                        />
+                    ))}
+                </ul>
+            </FullWidthColumn>
+
+            <SingleColumn>
+                <ColumnHeading>Data Migrations</ColumnHeading>
+                <EnsureValidUserEntitiesButton />
+            </SingleColumn>
         </>
     );
 }
@@ -240,5 +253,23 @@ function EnsureValidUserEntitiesButton() {
                 </Button>
             )}
         </ConfirmModal>
+    );
+}
+
+function EnableNewUsersSetting({ globalSettings }: { globalSettings?: GlobalSettings }) {
+    const setEnableNewUsers = (enableNewUsers: boolean) =>
+        collections.settings.doc('global').set({ enableNewUsers }, { merge: true });
+
+    return (
+        <InputContainer>
+            <Select
+                label="New users are by default"
+                value={JSON.stringify(globalSettings?.enableNewUsers ?? false)}
+                onChange={event => setEnableNewUsers(JSON.parse(event.target.value))}
+            >
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+            </Select>
+        </InputContainer>
     );
 }

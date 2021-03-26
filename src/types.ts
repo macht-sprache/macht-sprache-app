@@ -171,3 +171,7 @@ export interface UserProperties {
 export interface SensitiveTerms {
     terms: string[];
 }
+
+export interface GlobalSettings {
+    enableNewUsers: boolean;
+}

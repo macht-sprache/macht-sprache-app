@@ -1,6 +1,6 @@
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA } from '../../../src/languages';
-import { Lang, User, UserProperties, UserSettings } from '../../../src/types';
+import { GlobalSettings, Lang, User, UserProperties, UserSettings } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 
 const verifyAdmin = async (userId: string) => {
@@ -32,6 +32,12 @@ export const postRegistrationHandler = functions.https.onCall(
                 throw new HttpsError('already-exists', `Name ${displayName} is already in use.`);
             }
 
+            const globalSettings = ((
+                await t.get(db.collection('settings').doc('global'))
+            ).data() as GlobalSettings) || {
+                enableNewUsers: true,
+            };
+
             const userRef = db.collection('users').doc(userId);
             const userSettingsRef = db.collection('userSettings').doc(userId);
             const userPropertiesRef = db.collection('userProperties').doc(userId);
@@ -52,7 +58,7 @@ export const postRegistrationHandler = functions.https.onCall(
 
             const userProperties: UserProperties = {
                 admin: false,
-                enabled: true,
+                enabled: globalSettings.enableNewUsers,
                 tokenTime,
             };
 

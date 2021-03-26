@@ -7,6 +7,7 @@ import { langA, langB } from '../languages';
 import {
     Comment,
     DocReference,
+    GlobalSettings,
     Lang,
     Rating,
     SensitiveTerms,
@@ -170,6 +171,14 @@ const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
     },
 };
 
+const GlobalSettingsConverter: firebase.firestore.FirestoreDataConverter<GlobalSettings> = {
+    toFirestore: (globalSettings: GlobalSettings) => globalSettings,
+    fromFirestore: (snapshot): GlobalSettings => {
+        const { enableNewUsers } = snapshot.data(defaultSnapshotOptions);
+        return { enableNewUsers };
+    },
+};
+
 export const collections = {
     users: db.collection('users').withConverter(UserConverter),
     userSettings: db.collection('userSettings').withConverter(UserSettingsConverter),
@@ -180,14 +189,12 @@ export const collections = {
     sources: db.collection('sources').withConverter(SourceConverter),
     sensitiveTerms: db.collection('sensitiveTerms').withConverter(SensitiveTermsConverter),
     comments: db.collection('comments').withConverter(CommentConverter),
+    settings: db.collection('settings').withConverter(GlobalSettingsConverter),
 };
 
-export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, initialData?: T) => {
-    const { data: snapshot } = useFirestoreDoc<firebase.firestore.DocumentSnapshot<T>>(
-        ref,
-        initialData && { initialData }
-    );
-    const data = snapshot.data();
+export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, fallback?: T) => {
+    const { data: snapshot } = useFirestoreDoc<firebase.firestore.DocumentSnapshot<T>>(ref);
+    const data = snapshot.data() || fallback;
 
     if (!data) {
         throw ERROR_NOT_FOUND;

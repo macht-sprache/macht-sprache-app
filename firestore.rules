@@ -149,5 +149,9 @@ service cloud.firestore {
     match /sensitiveTerms/global {
       allow read: if true;
     }
+
+    match /settings/global {
+      allow read, write: if isValidatedUser() && isAdmin();
+    }
   }
 }
