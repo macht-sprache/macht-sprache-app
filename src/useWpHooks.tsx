@@ -45,7 +45,9 @@ export function useWpPage(slugs: { [langA]: string; [langB]: string }) {
                 }
             })
             .catch(error => {
-                setState({ isLoading: false, error: error });
+                if (error.name !== 'AbortError') {
+                    setState({ isLoading: false, error: error });
+                }
             });
 
         return () => {
@@ -83,7 +85,9 @@ export function useWpPosts(tags: { [langA]: string; [langB]: string }) {
                 }
             })
             .catch(error => {
-                setState({ isLoading: false, error: error });
+                if (error.name !== 'AbortError') {
+                    setState({ isLoading: false, error: error });
+                }
             });
 
         return () => {
