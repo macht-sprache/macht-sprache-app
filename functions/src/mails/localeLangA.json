@@ -11,5 +11,10 @@
         "message": "You requested to reset your password for macht.sprache.",
         "button": "Click here to create a new password",
         "ignoreHint": "If you have not requested to reset your password you can ignore this email."
+    },
+    "activation": {
+        "subject": "Your macht.sprache. account was activated.",
+        "message": "You can now start using your macht.sprache. account!",
+        "button": "Go to macht.sprache."
     }
 }

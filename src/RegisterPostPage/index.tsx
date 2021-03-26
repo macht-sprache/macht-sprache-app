@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
-import { sendEmailVerification } from '../functions';
+import { postVerifyHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
-import { ensureUserEntity, useAuthState, useUser } from '../hooks/appContext';
+import { useAppContext, useAuthState } from '../hooks/appContext';
 import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
@@ -15,17 +15,21 @@ import { User } from '../types';
 import { useLang } from '../useLang';
 
 export default function RegisterPostPage() {
-    const user = useUser();
+    const { user, accountState } = useAppContext();
     const [authUser] = useAuthState();
     const continuePath = useContinuePath();
     const verifyParams = useAuthHandlerParams('verifyEmail');
 
     if (verifyParams) {
-        return <VerifyEmail authUser={authUser} {...verifyParams} />;
+        return <VerifyEmail user={user} authUser={authUser} {...verifyParams} />;
     }
 
     if (user || !authUser) {
         return <Redirect to={continuePath} />;
+    }
+
+    if (accountState === 'DISABLED') {
+        return <ActivationRequired />;
     }
 
     return <VerificationRequired continuePath={continuePath} authUser={authUser} />;
@@ -49,7 +53,6 @@ function VerifyEmail({
         auth.applyActionCode(actionCode).then(
             () => {
                 setVerifyState('VERIFIED');
-                auth.currentUser?.reload();
             },
             error => {
                 setVerifyState('ERROR');
@@ -60,7 +63,7 @@ function VerifyEmail({
 
     useEffect(() => {
         if (verifyState === 'VERIFIED' && authUser) {
-            ensureUserEntity(authUser);
+            postVerifyHandler();
         }
     }, [authUser, verifyState]);
 
@@ -114,6 +117,18 @@ function VerificationRequired({ continuePath, authUser }: { continuePath: string
                             : t('auth.emailVerification.resend')}
                     </Button>
                 </ButtonContainer>
+            </SingleColumn>
+        </>
+    );
+}
+
+function ActivationRequired() {
+    const { t } = useTranslation();
+    return (
+        <>
+            <Header>{t('auth.activation.heading')}</Header>
+            <SingleColumn>
+                <p>{t('auth.activation.explanation')}</p>
             </SingleColumn>
         </>
     );

@@ -1,6 +1,6 @@
 import { FormEventHandler, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
@@ -8,12 +8,11 @@ import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { sendPasswordReset } from '../functions';
 import Header from '../Header';
-import { ensureUserEntity, useUser } from '../hooks/appContext';
 import { AuthHandlerParams, useAuthHandlerParams, useLogin } from '../hooks/auth';
 import { useContinuePath } from '../hooks/location';
 import { useRequestState } from '../hooks/useRequestState';
 import { SingleColumn } from '../Layout/Columns';
-import { FORGOT_PASSWORD, HOME } from '../routes';
+import { FORGOT_PASSWORD } from '../routes';
 import { useLang } from '../useLang';
 
 export default function ForgotPasswordPage() {
@@ -64,23 +63,16 @@ function ResetPasswordForm({ email, actionCode, continueUrl }: { email: string }
     const { t } = useTranslation();
     const [password, setPassword] = useState('');
     const [requestState, setRequestState] = useRequestState();
-    const login = useLogin();
-    const user = useUser();
     const continuePath = continueUrl?.replace(window.location.origin, '');
+    const { login, loginState } = useLogin(continuePath, true);
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setRequestState('IN_PROGRESS');
         auth.confirmPasswordReset(actionCode, password)
-            .then(() => auth.signInWithEmailAndPassword(email, password))
-            .then(() => login(email, password, continuePath))
-            .then(authUser => authUser && ensureUserEntity(authUser))
+            .then(() => login(email, password))
             .catch(error => setRequestState('ERROR', error));
     };
-
-    if (user) {
-        return <Redirect to={continuePath || HOME} />;
-    }
 
     return (
         <>
@@ -98,7 +90,9 @@ function ResetPasswordForm({ email, actionCode, continueUrl }: { email: string }
                         />
                     </InputContainer>
 
-                    {requestState === 'ERROR' && <ErrorBox>{t('common.error.general')}</ErrorBox>}
+                    {(requestState === 'ERROR' || loginState === 'ERROR') && (
+                        <ErrorBox>{t('common.error.general')}</ErrorBox>
+                    )}
 
                     <ButtonContainer>
                         <Button primary type="submit" disabled={requestState === 'IN_PROGRESS'}>

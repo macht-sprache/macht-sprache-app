@@ -3,8 +3,9 @@ import nodemailer from 'nodemailer';
 import { Lang } from '../../../src/types';
 import { REGISTER_POST, FORGOT_PASSWORD } from '../../../src/routes';
 import config from '../config';
-import { auth, functions } from '../firebase';
-import { getResetEmail, getVerifyEmailTemplate } from './templates';
+import { auth, db, functions } from '../firebase';
+import { getActivationMail, getResetEmail, getVerifyEmailTemplate } from './templates';
+import { langA } from '../../../src/languages';
 
 type MailOptions = {
     html: string;
@@ -87,3 +88,25 @@ export const sendPasswordResetMail = functions.https.onCall(
         await sendMail({ html, subject, to: user.email! });
     }
 );
+
+export const sendActivationMail = functions.firestore
+    .document('/userProperties/{userId}')
+    .onUpdate(async (change, context) => {
+        if (!(change.before.data()?.enabled === false && change.after.data()?.enabled === true)) {
+            return;
+        }
+
+        const userId = context.params.userId;
+        const authUser = await auth.getUser(userId);
+        const userSettingsSnap = await db.collection('userSettings').doc(userId).get();
+
+        const lang: Lang = userSettingsSnap.data()?.lang || langA;
+
+        const { html, subject } = getActivationMail({
+            recipientName: authUser.displayName || authUser.email!,
+            lang,
+            link: config.origin.main,
+        });
+
+        await sendMail({ html, subject, to: authUser.email! });
+    });

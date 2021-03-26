@@ -25,6 +25,8 @@ const useAuthUserInfos = () => {
     return authUserInfos;
 };
 
+const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
+
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
     return fn({ userId });
@@ -57,6 +59,8 @@ function UserList() {
                     />
                 ))}
             </ul>
+            <ColumnHeading>Global User Actions</ColumnHeading>
+            <EnsureValidUserEntitiesButton />
         </>
     );
 }
@@ -75,6 +79,12 @@ function UserItem({
         <li key={user.id} className={s.userItem}>
             <div className={s.userInfo}>
                 <span className={s.userName}>{user.displayName}</span>
+                {!properties?.enabled && (
+                    <>
+                        {' '}
+                        <span className={s.tag}>Disabled</span>
+                    </>
+                )}
                 {!!properties?.admin && (
                     <>
                         {' '}
@@ -89,6 +99,7 @@ function UserItem({
                 )}
             </div>
             <ButtonContainer>
+                <EnableButton user={user} properties={properties} />
                 {!properties?.admin ? (
                     <ConfirmModal
                         title="Make Admin"
@@ -153,6 +164,79 @@ function DeleteContentButton({ user }: { user: User }) {
             {onClick => (
                 <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
                     {requestState === 'DONE' ? 'Content Deleted' : 'Delete Content'}
+                </Button>
+            )}
+        </ConfirmModal>
+    );
+}
+
+function EnableButton({ user, properties }: { user: User; properties?: UserProperties }) {
+    const setEnabled = (enabled: boolean) => collections.userProperties.doc(user.id).set({ enabled }, { merge: true });
+
+    if (properties?.enabled) {
+        return (
+            <ConfirmModal
+                title="Disable User?"
+                body={
+                    <p>
+                        Are you sure you want to disable user <strong>{user.displayName}</strong>? It will log them out
+                        immediately and prevent them from creating further content. When they are enabled again they
+                        will recieve an email.
+                    </p>
+                }
+                confirmLabel="Disable"
+                onConfirm={() => setEnabled(false)}
+            >
+                {onClick => <Button onClick={onClick}>Disable</Button>}
+            </ConfirmModal>
+        );
+    } else {
+        return (
+            <ConfirmModal
+                title="Enable User?"
+                body={
+                    <>
+                        <p>
+                            Are you sure you want to enable user <strong>{user.displayName}</strong>?
+                        </p>
+                        {properties && (
+                            <p>They will recieve an email that they can start using their account (again).</p>
+                        )}
+                    </>
+                }
+                confirmLabel="Enable"
+                onConfirm={() => setEnabled(true)}
+            >
+                {onClick => <Button onClick={onClick}>Enable</Button>}
+            </ConfirmModal>
+        );
+    }
+}
+
+function EnsureValidUserEntitiesButton() {
+    const [requestState, setRequestState] = useRequestState();
+    const onConfirm = useCallback(() => {
+        setRequestState('IN_PROGRESS');
+        ensureValidUserEntities().then(
+            () => setRequestState('DONE'),
+            error => setRequestState('ERROR', error)
+        );
+    }, [setRequestState]);
+    return (
+        <ConfirmModal
+            title="Ensure Valid User Entities?"
+            body={
+                <p>
+                    This will make sure every user who ever registered has a valid User, UserProperties and UserSettings
+                    entity.
+                </p>
+            }
+            confirmLabel="Run"
+            onConfirm={onConfirm}
+        >
+            {onClick => (
+                <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
+                    {requestState === 'DONE' ? 'Ensured Valid User Entities' : 'Ensure Valid User Entities'}
                 </Button>
             )}
         </ConfirmModal>

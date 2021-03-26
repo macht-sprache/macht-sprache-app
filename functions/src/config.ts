@@ -17,6 +17,9 @@ type Config = {
         host: string;
         port?: number;
     };
+    origin: {
+        main: string;
+    };
 };
 
 const functionsRegion = firebaseFunctions.config().functions?.region;
@@ -42,6 +45,9 @@ const config: Config = {
         key: tmdbApikey,
     },
     smtp: firebaseFunctions.config().smtp,
+    origin: {
+        main: firebaseFunctions.config().origin.main,
+    },
 };
 
 export default config;
