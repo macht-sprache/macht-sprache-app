@@ -23,6 +23,10 @@ export const addTranslationExample = (
     model: TranslationExampleModel
 ): Promise<{ data: { translationExampleId: string } }> => _addTranslationExample(model);
 
+const _isDisplayNameAvailable = functions.httpsCallable('userManagement-isDisplayNameAvailable');
+
+export const isDisplayNameAvailable = (displayName: string) => _isDisplayNameAvailable({ displayName });
+
 const _postRegistrationHandler = functions.httpsCallable('userManagement-postRegistrationHandler');
 
 export const postRegistrationHandler = (displayName: string, lang: Lang) =>

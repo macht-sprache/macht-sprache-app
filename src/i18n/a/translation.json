@@ -89,6 +89,7 @@
             "welcomeVerified": "Welcome at macht.sprache., your Email has been verified. Click continue to get to the main page."
         },
         "errors": {
+            "name-already-in-use": "This user name is already in use by another account.",
             "email-already-in-use": "The email address is already in use by another account.",
             "weak-password": "Password should be at least 6 characters.",
             "user-not-found": "User not found",

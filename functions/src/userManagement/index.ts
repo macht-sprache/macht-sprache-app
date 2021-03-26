@@ -10,6 +10,17 @@ const verifyAdmin = async (userId: string) => {
     }
 };
 
+const getUsersWithDisplayNameRef = (displayName: string) =>
+    db.collection('users').where('displayName', '==', displayName.toLowerCase());
+
+export const isDisplayNameAvailable = functions.https.onCall(async ({ displayName }: { displayName: string }) => {
+    const { size } = await getUsersWithDisplayNameRef(displayName).get();
+
+    if (size) {
+        throw new HttpsError('already-exists', `Name ${displayName} is already in use.`);
+    }
+});
+
 export const postRegistrationHandler = functions.https.onCall(
     async ({ displayName, lang }: { displayName: string; lang: Lang }, context) => {
         if (!context.auth) {
@@ -24,9 +35,7 @@ export const postRegistrationHandler = functions.https.onCall(
         const tokenTime = new Date(context.auth.token.auth_time).toISOString();
 
         await db.runTransaction(async t => {
-            const usersWithDisplayNameSnap = await t.get(
-                db.collection('users').where('displayName', '==', displayName)
-            );
+            const usersWithDisplayNameSnap = await t.get(getUsersWithDisplayNameRef(displayName));
 
             if (usersWithDisplayNameSnap.size) {
                 throw new HttpsError('already-exists', `Name ${displayName} is already in use.`);
@@ -49,6 +58,7 @@ export const postRegistrationHandler = functions.https.onCall(
 
             const user: WithoutId<User> = {
                 displayName,
+                displayNameLowerCase: displayName.toLowerCase(),
             };
 
             const userSettings: UserSettings = {
@@ -122,7 +132,8 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
     const { users: authUsers } = await auth.listUsers();
 
     for (const authUser of authUsers) {
-        const defaultUser: WithoutId<User> = { displayName: authUser.displayName || '' };
+        const displayName = authUser.displayName || '';
+        const defaultUser: WithoutId<User> = { displayName, displayNameLowerCase: displayName.toLowerCase() };
         const defaultUserSettings: UserSettings = { lang: langA, showRedacted: false };
         const defaultUserProperties: UserProperties = {
             admin: false,

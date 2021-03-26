@@ -1,4 +1,4 @@
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, Redirect } from 'react-router-dom';
 import { DISPLAY_NAME_REGEX } from '../constants';
@@ -7,7 +7,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
-import { postRegistrationHandler, sendEmailVerification } from '../functions';
+import { isDisplayNameAvailable, postRegistrationHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
@@ -18,6 +18,8 @@ import { Lang } from '../types';
 import { useLang } from '../useLang';
 
 const signUp = async (lang: Lang, displayName: string, email: string, password: string, continuePath: string) => {
+    await isDisplayNameAvailable(displayName);
+
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
 
     if (!user) {
@@ -32,6 +34,50 @@ const signUp = async (lang: Lang, displayName: string, email: string, password: 
     }
 };
 
+type RegistrationErrorLabels = {
+    displayName?: string;
+    email?: string;
+    password?: string;
+    generic?: string;
+};
+
+const useRegistrationErrorLabels = (
+    registrationError: any,
+    setRegistrationState: ReturnType<typeof useRequestState>['1']
+) => {
+    const { t } = useTranslation();
+
+    const errorLabels: RegistrationErrorLabels = useMemo(() => {
+        if (registrationError?.code === 'already-exists') {
+            return { displayName: t('auth.errors.name-already-in-use') };
+        }
+        if (registrationError?.code === 'auth/email-already-in-use') {
+            return { email: t('auth.errors.email-already-in-use') };
+        }
+        if (registrationError?.code === 'auth/weak-password') {
+            return { password: t('auth.errors.weak-password') };
+        }
+        if (registrationError) {
+            return { generic: registrationError.message || t('common.error.general') };
+        }
+        return {};
+    }, [registrationError, t]);
+
+    const clearError = useCallback(
+        (field: keyof RegistrationErrorLabels) => {
+            if (errorLabels[field]) {
+                setRegistrationState('INIT');
+            }
+        },
+        [errorLabels, setRegistrationState]
+    );
+
+    return {
+        errorLabels,
+        clearError,
+    };
+};
+
 export default function RegisterPage() {
     const user = useUser();
     const [lang] = useLang();
@@ -42,6 +88,7 @@ export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
     const [registrationState, setRegistrationState, registrationError] = useRequestState();
+    const { errorLabels, clearError } = useRegistrationErrorLabels(registrationError, setRegistrationState);
     const loadingRegistration = registrationState === 'IN_PROGRESS';
     const validDisplayName = DISPLAY_NAME_REGEX.test(displayName);
     const disabled = loadingRegistration || !validDisplayName || !email || !password;
@@ -83,9 +130,14 @@ export default function RegisterPage() {
                             value={displayName}
                             autoComplete="nickname"
                             disabled={registrationState === 'IN_PROGRESS'}
-                            error={!!displayName && !validDisplayName && t('auth.displayNameRequirements')}
+                            error={
+                                !!displayName && !validDisplayName
+                                    ? t('auth.displayNameRequirements')
+                                    : errorLabels.displayName
+                            }
                             onChange={event => {
                                 setUserName(event.target.value);
+                                clearError('displayName');
                             }}
                         />
                         <Input
@@ -95,12 +147,10 @@ export default function RegisterPage() {
                             autoComplete="username"
                             onChange={event => {
                                 setEmail(event.target.value);
+                                clearError('email');
                             }}
                             disabled={registrationState === 'IN_PROGRESS'}
-                            error={
-                                registrationError?.code === 'auth/email-already-in-use' &&
-                                t('auth.errors.email-already-in-use')
-                            }
+                            error={errorLabels.email}
                         />
                         <Input
                             label={t('auth.password')}
@@ -109,17 +159,13 @@ export default function RegisterPage() {
                             type="password"
                             onChange={event => {
                                 setSetPassword(event.target.value);
+                                clearError('password');
                             }}
                             disabled={registrationState === 'IN_PROGRESS'}
-                            error={registrationError?.code === 'auth/weak-password' && t('auth.errors.weak-password')}
+                            error={errorLabels.password}
                         />
                     </InputContainer>
-                    {registrationError &&
-                        registrationError.code &&
-                        registrationError.code !== 'auth/weak-password' &&
-                        registrationError.code !== 'auth/email-already-in-use' && (
-                            <ErrorBox>{registrationError.message}</ErrorBox>
-                        )}
+                    {errorLabels.generic && <ErrorBox>{errorLabels.generic}</ErrorBox>}
                     <ButtonContainer>
                         <Button type="button">{t('common.formNav.cancel')}</Button>
                         <Button primary disabled={disabled} type="submit">

@@ -155,7 +155,9 @@ interface UserMini {
     displayName: string;
 }
 
-export interface User extends UserMini {}
+export interface User extends UserMini {
+    displayNameLowerCase: string;
+}
 
 export interface UserSettings {
     lang: Lang;

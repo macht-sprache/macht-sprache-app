@@ -89,6 +89,7 @@
             "welcomeVerified": "Willkommen bei macht.sprache., deine Mail-Adresse wurde verifiziert. Klick \"Weiter\" um zu Homepage zu gelangen."
         },
         "errors": {
+            "name-already-in-use": "Dieser Name wird schon verwendet.",
             "email-already-in-use": "Die Adresse ist schon mit einem Account verknüpft.",
             "weak-password": "Passwort zu kurz.",
             "user-not-found": "Benutzer:in nicht gefunden.",
