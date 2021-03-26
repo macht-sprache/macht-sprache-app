@@ -1,10 +1,11 @@
 .background {
     z-index: 20;
     background: var(--white);
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     overflow: scroll;
     align-items: center;
-    justify-content: center;
+    justify-items: center;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -21,8 +22,7 @@
 
 .overlay {
     padding: 2rem;
-    flex-basis: 600px;
-    min-width: 0;
+    width: min(600px, 100vw);
     --lang-color: var(--orange);
 }
 
