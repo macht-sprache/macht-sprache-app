@@ -73,10 +73,7 @@ export function TranslationExamplePage() {
                 />
 
                 <div className={clsx(s.comments, getDominantLanguageClass(translation.lang))}>
-                    <Comments
-                        entityRef={collections.translationExamples.doc(translationExample.id)}
-                        headingHint={t('translationExample.addCommentHeading')}
-                    />
+                    <Comments entityRef={collections.translationExamples.doc(translationExample.id)} />
                 </div>
             </div>
         </>
