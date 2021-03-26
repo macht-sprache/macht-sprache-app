@@ -5,7 +5,7 @@ import { auth } from '../firebase';
 import { DocReference, User, UserProperties, UserSettings } from '../types';
 import { collections } from './data';
 
-type AccountState = 'ANONYMOUS' | 'ACTIVE' | 'NEEDS_VERIFICATION' | 'DISABLED';
+export type AccountState = 'ANONYMOUS' | 'ACTIVE' | 'NEEDS_VERIFICATION' | 'DISABLED';
 
 const appContext = createContext<{
     user?: User;

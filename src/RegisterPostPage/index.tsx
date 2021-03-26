@@ -6,11 +6,11 @@ import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import { postVerifyHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
-import { useAppContext, useAuthState } from '../hooks/appContext';
+import { AccountState, useAppContext, useAuthState } from '../hooks/appContext';
 import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
-import { HOME, LOGIN } from '../routes';
+import { HOME, LOGIN, REGISTER_POST } from '../routes';
 import { User } from '../types';
 import { useLang } from '../useLang';
 
@@ -21,7 +21,7 @@ export default function RegisterPostPage() {
     const verifyParams = useAuthHandlerParams('verifyEmail');
 
     if (verifyParams) {
-        return <VerifyEmail user={user} authUser={authUser} {...verifyParams} />;
+        return <VerifyEmail user={user} authUser={authUser} accountState={accountState} {...verifyParams} />;
     }
 
     if (user || !authUser) {
@@ -38,11 +38,13 @@ export default function RegisterPostPage() {
 function VerifyEmail({
     user,
     authUser,
+    accountState,
     actionCode,
     continueUrl,
 }: {
     user?: User;
     authUser?: firebase.User;
+    accountState: AccountState;
     actionCode: string;
     continueUrl: string | null;
 }) {
@@ -68,7 +70,11 @@ function VerifyEmail({
     }, [authUser, verifyState]);
 
     const continuePath = continueUrl?.replace(window.location.origin, '') || HOME;
-    const linkTo = user ? continuePath : addContinueParam(LOGIN, continuePath);
+    const linkTo = user
+        ? continuePath
+        : accountState === 'DISABLED'
+        ? addContinueParam(REGISTER_POST, continuePath)
+        : addContinueParam(LOGIN, continuePath);
 
     switch (verifyState) {
         case 'VERIFYING':
