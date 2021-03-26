@@ -47,7 +47,7 @@ function Layout({ children }: Props) {
                         Menu
                     </LinkButton>
                 </div>
-                <div id={id('menu')} className={clsx(s.sidebar, { [s.open]: menuOpen })}>
+                <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
                     <div className={s.header}>
                         <Link className={s.logo} to="/">
                             <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
@@ -56,7 +56,7 @@ function Layout({ children }: Props) {
                     <div className={s.topRightMenu}>
                         <TopMenu />
                     </div>
-                    <Footer />
+                    <Sidebar />
                 </div>
                 <main className={s.main}>{children}</main>
                 <div className={s.background} />
@@ -68,12 +68,12 @@ function Layout({ children }: Props) {
 
 export default Layout;
 
-function Footer() {
+function Sidebar() {
     const { t } = useTranslation();
     const launched = useLaunched();
     const userProperties = useUserProperties();
 
-    let footerLinks = [
+    let mainLinks = [
         {
             to: ABOUT,
             label: t('nav.about'),
@@ -82,6 +82,9 @@ function Footer() {
             to: CODE_OF_CONDUCT,
             label: t('nav.coc'),
         },
+    ];
+
+    let footerLinks = [
         {
             to: IMPRINT,
             label: t('nav.imprint'),
@@ -93,7 +96,7 @@ function Footer() {
     ];
 
     if (launched) {
-        footerLinks = [
+        mainLinks = [
             {
                 to: TERMS,
                 label: t('common.entities.term.value_plural'),
@@ -102,26 +105,37 @@ function Footer() {
                 to: NEWS,
                 label: t('nav.news'),
             },
-            ...footerLinks,
+            ...mainLinks,
         ];
     }
 
     if (userProperties?.admin) {
-        footerLinks.push({
+        mainLinks.push({
             to: ADMIN,
             label: 'administration',
         });
     }
 
     return (
-        <footer className={s.footer}>
-            <div className={s.footerInner}>
-                {footerLinks.map(({ to, label }, index) => (
-                    <NavLink key={index} className={s.footerLink} activeClassName={s.footerLinkActive} to={to}>
-                        {label}
-                    </NavLink>
-                ))}
-            </div>
-        </footer>
+        <div className={s.sidebar}>
+            <nav className={s.sidebarInner}>
+                <SidebarNav links={mainLinks} />
+            </nav>
+            <footer className={s.sidebarInner}>
+                <SidebarNav links={footerLinks} />
+            </footer>
+        </div>
+    );
+}
+
+function SidebarNav({ links }: { links: { to: string; label: string }[] }) {
+    return (
+        <>
+            {links.map(({ to, label }, index) => (
+                <NavLink key={index} className={s.sidebarLink} activeClassName={s.sidebarLinkActive} to={to}>
+                    {label}
+                </NavLink>
+            ))}
+        </>
     );
 }

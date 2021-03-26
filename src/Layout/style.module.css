@@ -28,9 +28,7 @@
 
 @media (min-width: 600px) {
     .header,
-    .footer,
-    .terms,
-    .termsControl {
+    .sidebar {
         grid-gap: 1rem;
     }
 }
@@ -88,7 +86,7 @@
 }
 
 @media (max-width: 599px) {
-    .sidebar {
+    .menus {
         display: none;
         position: fixed;
         top: var(--headerBarHeight);
@@ -101,15 +99,14 @@
         overflow: scroll;
     }
 
-    .sidebar.open {
+    .menus.open {
         display: block;
     }
 }
 
 @media (min-width: 600px) {
-    .sidebar {
+    .menus {
         position: sticky;
-        display: block;
         top: 0;
         grid-column: 2 / 3;
         display: flex;
@@ -119,31 +116,26 @@
     }
 }
 
-.terms {
-    overflow-y: scroll;
-    flex: 1 0;
-    margin-top: 1rem;
-}
-
-.termsInner,
-.footerInner,
-.termsInner,
-.termsControlInner {
+.sidebarInner {
     grid-column: 2;
 }
 
-.footer {
+.sidebar {
     margin: 1rem 0;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.footerInner {
+.sidebarInner {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin: -0.5rem;
 }
 
-.footerLink {
+.sidebarLink {
     text-decoration: none;
     display: inline-block;
     margin: 0.5rem;
@@ -151,7 +143,7 @@
     text-transform: lowercase;
 }
 
-.footerLink:before {
+.sidebarLink:before {
     position: absolute;
     content: '';
     top: 0;
@@ -163,15 +155,15 @@
     z-index: -1;
 }
 
-.footerLink:hover,
-.footerLink:focus,
-.footerLinkActive {
+.sidebarLink:hover,
+.sidebarLink:focus,
+.sidebarLinkActive {
     outline: none;
     text-decoration: none !important;
     box-shadow: inset 0 calc(var(--thickBorder) * -1) calc(var(--thickBorder) * -1) var(--black);
 }
 
-.footerLinkActive {
+.sidebarLinkActive {
     font-weight: bold;
 }
 
