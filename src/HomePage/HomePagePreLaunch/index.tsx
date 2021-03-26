@@ -25,7 +25,7 @@ export function HomePagePreLaunch() {
             <HomePageHeader />
             <Columns>
                 <div>
-                    <div className={s.signUpBox}>
+                    {/* <div className={s.signUpBox}>
                         <ColumnHeading>{t('home.signUpPreLaunch')}</ColumnHeading>
                         <p className={s.text}>{t('home.signUpPreLaunchDescription')}</p>
                         <p className={s.text}>
@@ -36,7 +36,7 @@ export function HomePagePreLaunch() {
                             />
                         </p>
                         <SignUp />
-                    </div>
+                    </div> */}
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
                     <div
                         className={s.text}
@@ -54,18 +54,18 @@ export function HomePagePreLaunch() {
     );
 }
 
-function SignUp() {
-    const { t } = useTranslation();
+// function SignUp() {
+//     const { t } = useTranslation();
 
-    return (
-        <div className={s.signUpForm}>
-            <InputContainer>
-                <Input label={t('auth.email')} />
-            </InputContainer>
-            <Checkbox label="poco.lit.-newsletter" />
-            <ButtonContainer>
-                <Button>{t('auth.register.title')}</Button>
-            </ButtonContainer>
-        </div>
-    );
-}
+//     return (
+//         <div className={s.signUpForm}>
+//             <InputContainer>
+//                 <Input label={t('auth.email')} />
+//             </InputContainer>
+//             <Checkbox label="poco.lit.-newsletter" />
+//             <ButtonContainer>
+//                 <Button>{t('auth.register.title')}</Button>
+//             </ButtonContainer>
+//         </div>
+//     );
+// }
