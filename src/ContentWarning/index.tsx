@@ -32,7 +32,10 @@ export function ContentWarning() {
             width="wide"
         >
             <div className={s.body}>
-                <img className={s.illustration} src={Illustration} alt="" />
+                <div>
+                    <img className={s.illustration} src={Illustration} alt="" />
+                    <span className={s.imageCredit}>Illustration: Jane Schueler</span>
+                </div>
                 <div>
                     <p className={s.warning}>{t('contentWarning.warning')}</p>
 

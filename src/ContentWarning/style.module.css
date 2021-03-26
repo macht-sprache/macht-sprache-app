@@ -13,3 +13,9 @@
     line-height: var(--lineHeightParagraph);
     margin-top: 0;
 }
+
+.imageCredit {
+    font-size: var(--fontSizeS);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
