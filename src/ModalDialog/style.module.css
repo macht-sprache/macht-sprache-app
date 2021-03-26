@@ -26,6 +26,10 @@
     --lang-color: var(--orange);
 }
 
+.overlay.wide {
+    width: min(800px, 100vw);
+}
+
 @media (max-width: 500px) {
     .overlay {
         padding: 1rem;

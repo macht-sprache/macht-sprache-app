@@ -1,0 +1,15 @@
+.illustration {
+    width: 100%;
+}
+
+.body {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.warning {
+    font-family: var(--paragraphFont);
+    line-height: var(--lineHeightParagraph);
+    margin-top: 0;
+}
