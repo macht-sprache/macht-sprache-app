@@ -1,8 +1,7 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { CommentWrapper } from '../Comments/CommentWrapper';
 import { useTranslationExamples, useSources, collections } from '../hooks/data';
-import { ColumnHeading } from '../Layout/Columns';
+import { ColumnHeading, FullWidthColumn } from '../Layout/Columns';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { Term, Translation, TranslationExample, Source } from '../types';
@@ -25,7 +24,7 @@ export default function TranslationExamplesList({ term, translation }: Props) {
     const sources = useSources(collections.translations.doc(translation.id))[translation.id];
 
     return (
-        <CommentWrapper>
+        <FullWidthColumn>
             <ColumnHeading>{t('common.entities.translatioExample.value_plural')}</ColumnHeading>
             {!translationExamples.length && (
                 <p>
@@ -59,7 +58,7 @@ export default function TranslationExamplesList({ term, translation }: Props) {
                     <div className={s.buttonExample}>{t('translationExample.example')}</div>
                 </AddEntityButton>
             </div>
-        </CommentWrapper>
+        </FullWidthColumn>
     );
 }
 

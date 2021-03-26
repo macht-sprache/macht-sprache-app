@@ -12,11 +12,10 @@ type Props = {
         to?: string;
         inner: React.ReactNode;
     }[];
-    rating?: React.ReactNode;
     capitalize?: boolean;
 };
 
-export default function Header({ children, subLine, mainLang, topHeading, rating, capitalize = false }: Props) {
+export default function Header({ children, subLine, mainLang, topHeading, capitalize = false }: Props) {
     return (
         <header className={s.header}>
             <div className={s.headingWrapper}>
@@ -50,7 +49,6 @@ export default function Header({ children, subLine, mainLang, topHeading, rating
                         </span>
                     </h1>
                 </div>
-                {rating && <div className={s.rating}>{rating}</div>}
             </div>
             <div className={s.subline}>{subLine}</div>
         </header>
