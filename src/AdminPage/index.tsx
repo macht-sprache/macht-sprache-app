@@ -25,6 +25,8 @@ const useAuthUserInfos = () => {
     return authUserInfos;
 };
 
+const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
+
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
     return fn({ userId });
@@ -57,6 +59,8 @@ function UserList() {
                     />
                 ))}
             </ul>
+            <ColumnHeading>Global User Actions</ColumnHeading>
+            <EnsureValidUserEntitiesButton />
         </>
     );
 }
@@ -207,4 +211,34 @@ function EnableButton({ user, properties }: { user: User; properties?: UserPrope
             </ConfirmModal>
         );
     }
+}
+
+function EnsureValidUserEntitiesButton() {
+    const [requestState, setRequestState] = useRequestState();
+    const onConfirm = useCallback(() => {
+        setRequestState('IN_PROGRESS');
+        ensureValidUserEntities().then(
+            () => setRequestState('DONE'),
+            error => setRequestState('ERROR', error)
+        );
+    }, [setRequestState]);
+    return (
+        <ConfirmModal
+            title="Ensure Valid User Entities?"
+            body={
+                <p>
+                    This will make sure every user who ever registered has a valid User, UserProperties and UserSettings
+                    entity.
+                </p>
+            }
+            confirmLabel="Run"
+            onConfirm={onConfirm}
+        >
+            {onClick => (
+                <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
+                    {requestState === 'DONE' ? 'Ensured Valid User Entities' : 'Ensure Valid User Entities'}
+                </Button>
+            )}
+        </ConfirmModal>
+    );
 }

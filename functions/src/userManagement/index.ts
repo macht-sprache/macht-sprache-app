@@ -1,4 +1,5 @@
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
+import { langA } from '../../../src/languages';
 import { Lang, User, UserProperties, UserSettings } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 
@@ -106,4 +107,35 @@ export const deleteAllContentOfUser = functions.https.onCall(async ({ userId }: 
             return Promise.all(snapshot.docs.map(doc => doc.ref.delete()));
         })
     );
+});
+
+export const ensureValidUserEntities = functions.https.onCall(async (_, context) => {
+    const currentUserId = verifyUser(context);
+    await verifyAdmin(currentUserId);
+
+    const { users: authUsers } = await auth.listUsers();
+
+    for (const authUser of authUsers) {
+        const defaultUser: WithoutId<User> = { displayName: authUser.displayName || '' };
+        const defaultUserSettings: UserSettings = { lang: langA, showRedacted: false };
+        const defaultUserProperties: UserProperties = {
+            admin: false,
+            enabled: true,
+            tokenTime: new Date(0).toISOString(),
+        };
+
+        const userRef = db.collection('users').doc(authUser.uid);
+        const userSettingsRef = db.collection('userSettings').doc(authUser.uid);
+        const userPropertiesRef = db.collection('userProperties').doc(authUser.uid);
+
+        await db.runTransaction(async t => {
+            const user = (await t.get(userRef)).data() || {};
+            const userSettings = (await t.get(userSettingsRef)).data() || {};
+            const userProperties = (await t.get(userPropertiesRef)).data() || {};
+
+            await t.set(userRef, { ...defaultUser, ...user });
+            await t.set(userSettingsRef, { ...defaultUserSettings, ...userSettings });
+            await t.set(userPropertiesRef, { ...defaultUserProperties, ...userProperties });
+        });
+    }
 });
