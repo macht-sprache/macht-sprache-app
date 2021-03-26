@@ -21,7 +21,7 @@ export default function RegisterPostPage() {
     const verifyParams = useAuthHandlerParams('verifyEmail');
 
     if (verifyParams) {
-        return <VerifyEmail authUser={authUser} {...verifyParams} />;
+        return <VerifyEmail user={user} authUser={authUser} {...verifyParams} />;
     }
 
     if (user || !authUser) {
