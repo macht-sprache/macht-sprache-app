@@ -48,7 +48,7 @@ const UserPropertiesConverter: firebase.firestore.FirestoreDataConverter<UserPro
     toFirestore: (data: UserProperties) => data,
     fromFirestore: (snapshot): UserProperties => {
         const { admin, enabled, tokenTime } = snapshot.data(defaultSnapshotOptions);
-        return { admin, enabled: enabled ?? true, tokenTime: tokenTime ?? new Date(0).toISOString() };
+        return { admin, enabled: enabled ?? false, tokenTime: tokenTime ?? new Date(0).toISOString() };
     },
 };
 
