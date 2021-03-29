@@ -1,9 +1,12 @@
 .heading {
-    margin: 0 0 1rem;
+    margin: 0;
 }
 
 .header {
-    margin: 2.5rem 0 4rem;
+    margin: 1rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .headingInner {
@@ -63,11 +66,12 @@
 
 .subline {
     line-height: var(--lineHeightParagraph);
+    margin-top: 0.5rem;
 }
 
-@media (min-width: 800px) {
-    .headingWrapper {
-        display: flex;
-        justify-content: space-between;
+@media (min-width: 600px) {
+    .header {
+        min-height: 8rem;
+        margin-bottom: 5rem;
     }
 }
