@@ -1,7 +1,3 @@
-.text {
-    font-family: var(--paragraphFont);
-}
-
 .signUpBox {
     border: var(--thickBorder) solid var(--orange);
     padding: 1rem;

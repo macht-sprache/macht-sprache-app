@@ -3,6 +3,7 @@ import Header from '../Header';
 import { SingleColumn } from '../Layout/Columns';
 import PageLoadingState from '../PageLoadingState';
 import { useWpPage } from '../useWpHooks';
+import { WpStyle } from '../WpStyle';
 import s from './style.module.css';
 
 type StaticContentPageProps = {
@@ -32,7 +33,7 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
                 <div className={s.title}>{response.title}</div>
             </Header>
             <SingleColumn>
-                <div className={s.body} dangerouslySetInnerHTML={{ __html: response.body }} />
+                <WpStyle body={response?.body} />
             </SingleColumn>
         </>
     );

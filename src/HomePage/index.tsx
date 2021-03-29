@@ -5,6 +5,7 @@ import { ABOUT, TERMS } from '../routes';
 import { Terms } from '../Terms/TermsSmall';
 import { TermsWeekHighlights } from '../Terms/TermsWeekHighlights';
 import { useWpPage } from '../useWpHooks';
+import { WpStyle } from '../WpStyle';
 import { HomePageHeader } from './Header';
 import s from './style.module.css';
 
@@ -36,10 +37,7 @@ export default function Home() {
                 </div>
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <div
-                        className={s.text}
-                        dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }}
-                    />
+                    <WpStyle body={response?.body} />
                     <ButtonContainer align="left">
                         <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
                     </ButtonContainer>

@@ -1,0 +1,17 @@
+.container {
+    font-family: var(--paragraphFont);
+}
+
+.container ol,
+.container ul {
+    line-height: var(--lineHeightParagraph);
+}
+
+.container li {
+    margin-bottom: 0.5rem;
+}
+
+.container h2 {
+    margin-top: 2rem;
+    font-family: var(--monospaceFont);
+}
