@@ -20,7 +20,7 @@ export default function Home() {
     return (
         <>
             <HomePageHeader />
-            <p className={s.intro}>{t('home.termsOfTheWeekDescription')}</p>
+            <ColumnHeading>{t('home.termsOfTheWeek')}</ColumnHeading>
             <Columns>
                 <TermsWeekHighlights />
             </Columns>

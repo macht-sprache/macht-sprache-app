@@ -1,12 +1,5 @@
-.text,
-.intro {
+.text {
     font-family: var(--paragraphFont);
-}
-
-@media (min-width: 1300px) {
-    .intro {
-        margin-bottom: 2rem;
-    }
 }
 
 .button {
