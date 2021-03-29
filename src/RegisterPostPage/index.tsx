@@ -6,7 +6,7 @@ import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import { postVerifyHandler, sendEmailVerification } from '../functions';
 import Header from '../Header';
-import { AccountState, useAppContext, useAuthUser } from '../hooks/appContext';
+import { AccountState, useAppContext } from '../hooks/appContext';
 import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
@@ -15,8 +15,7 @@ import { User } from '../types';
 import { useLang } from '../useLang';
 
 export default function RegisterPostPage() {
-    const { user, accountState } = useAppContext();
-    const [authUser] = useAuthUser();
+    const { user, authUser, accountState } = useAppContext();
     const continuePath = useContinuePath();
     const verifyParams = useAuthHandlerParams('verifyEmail');
 

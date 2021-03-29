@@ -8,6 +8,7 @@ export type AccountState = 'ANONYMOUS' | 'ACTIVE' | 'NEEDS_VERIFICATION' | 'DISA
 
 const appContext = createContext<{
     user?: User;
+    authUser?: firebase.User;
     userSettings?: UserSettings;
     userProperties?: UserProperties;
     sensitiveTerms: Set<string>;
@@ -53,8 +54,8 @@ export const AppContextProvider: React.FC = ({ children }) => {
         <appContext.Provider
             value={
                 accountState === 'ACTIVE'
-                    ? { user, userSettings, userProperties, sensitiveTerms, accountState }
-                    : { accountState, sensitiveTerms }
+                    ? { user, authUser, userSettings, userProperties, sensitiveTerms, accountState }
+                    : { authUser, accountState, sensitiveTerms }
             }
         >
             {children}
@@ -62,7 +63,7 @@ export const AppContextProvider: React.FC = ({ children }) => {
     );
 };
 
-export function useAuthUser() {
+function useAuthUser() {
     const [{ authUser, loading, error }, setState] = useState<{
         authUser?: firebase.User;
         loading: boolean;
