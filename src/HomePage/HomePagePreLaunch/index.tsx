@@ -8,6 +8,7 @@ import { ColumnHeading, Columns } from '../../Layout/Columns';
 import { NewsFeed } from '../../NewsFeed';
 // import { IMPRINT, PRIVACY } from '../../routes';
 import { useWpPage } from '../../useWpHooks';
+import { WpStyle } from '../../WpStyle';
 import { HomePageHeader } from '../Header';
 import s from './style.module.css';
 
@@ -38,10 +39,7 @@ export function HomePagePreLaunch() {
                         <SignUp />
                     </div> */}
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <div
-                        className={s.text}
-                        dangerouslySetInnerHTML={{ __html: response ? response.body : t('common.loading') }}
-                    />
+                    <WpStyle body={response?.body} />
                 </div>
                 <div>
                     <ColumnHeading>{t('home.news')}</ColumnHeading>
