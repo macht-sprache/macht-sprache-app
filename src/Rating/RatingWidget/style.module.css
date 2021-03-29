@@ -30,8 +30,8 @@
     --thumbShadowWidth: 0;
 
     position: relative;
-    width: 12rem;
-    height: 3rem;
+    width: 15rem;
+    height: 4rem;
     font-weight: normal;
     margin-bottom: 2rem;
 }
@@ -85,7 +85,6 @@
 }
 
 .ratingInner {
-    visibility: hidden;
     position: absolute;
     width: 100%;
     text-align: center;
@@ -105,9 +104,8 @@
     top: 0;
 }
 
-.container:hover .ratingInner,
-.large .ratingInner {
-    visibility: visible;
+.small .ratingInner {
+    visibility: hidden;
 }
 
 .rating + .rating {
@@ -205,14 +203,9 @@
 .userUsageDisplay {
     font-size: var(--fontSizeS);
     text-align: center;
-    visibility: hidden;
 }
 
 .large .userUsageDisplay {
     font-size: inherit;
     font-style: italic;
-}
-
-.container:hover .userUsageDisplay {
-    visibility: visible;
 }

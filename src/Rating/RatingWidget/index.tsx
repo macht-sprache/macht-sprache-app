@@ -170,7 +170,7 @@ function RatingDisplay({
                                     }
                                 </>
                             )}
-                            {!rangeInputProps.value && size !== 'large' && <>{t('rating.dragToSet')}</>}
+                            {!rangeInputProps.value && size !== 'large' && <>{t('rating.clickToSet')}</>}
                         </div>
                     )}
                 </>

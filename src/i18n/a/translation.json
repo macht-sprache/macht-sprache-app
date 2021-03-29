@@ -222,7 +222,7 @@
         "ratingDistributionTimes": "{{times}} times \"{{value}}.\"",
         "scaleDescription": "{{number}} is \"{{value}}\". ",
         "yourRating": "Your Usage: ",
-        "dragToSet": "Drag to set your usage.",
+        "dragToSet": "Drag the orange dot to set your usage.",
         "clickToSet": "Click to set your usage",
         "overlayHeading": "How often would you translate <Term>{{term}}</Term> as <Translation>{{translation}}</Translation>?",
         "noData": "No ratings yet."
