@@ -145,7 +145,7 @@ function RatingDisplay({
                     </label>
                     <input
                         type="range"
-                        list={id('ratingSlider')}
+                        id={id('ratingSlider')}
                         min={1}
                         max={ratings.length}
                         step={0.1}
