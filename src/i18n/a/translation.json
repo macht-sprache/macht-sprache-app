@@ -248,7 +248,8 @@
         "claim": "Platform to collect and discuss sensitive terms and their translations"
     },
     "newsFeed": {
-        "clickForMore": "Click for more..."
+        "clickForMore": "Click for more...",
+        "subLine": "News about macht.sprache. from poco.lit."
     },
     "userPage": {
         "title": "User profile of",

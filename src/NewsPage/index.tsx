@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
-import { ColumnHeading, Columns } from '../Layout/Columns';
+import { Columns } from '../Layout/Columns';
 import { NewsFeed } from '../NewsFeed';
 
 export function NewsPage() {
@@ -8,8 +8,7 @@ export function NewsPage() {
 
     return (
         <>
-            <Header>macht.sprache.</Header>
-            <ColumnHeading>{t('home.news')}</ColumnHeading>
+            <Header subLine={t('newsFeed.subLine')}>{t('home.news')}</Header>
             <Columns>
                 <NewsFeed />
             </Columns>

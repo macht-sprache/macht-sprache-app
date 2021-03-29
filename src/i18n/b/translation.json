@@ -248,7 +248,8 @@
         "claim": "Diskussionsplattform für sensible Begriffe und ihre Übersetzungen"
     },
     "newsFeed": {
-        "clickForMore": "Hier klicken für mehr..."
+        "clickForMore": "Hier klicken für mehr...",
+        "subLine": "Neuigkeiten über macht.sprache. von poco.lit."
     },
     "userPage": {
         "title": "Nutzer:innenseite von",
