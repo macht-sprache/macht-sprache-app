@@ -170,7 +170,7 @@ function RatingDisplay({
                                     }
                                 </>
                             )}
-                            {!rangeInputProps.value && size !== 'large' && <>{t('rating.clickToSet')}</>}
+                            {!rangeInputProps.value && size !== 'large' && <>{t('rating.dragToSet')}</>}
                         </div>
                     )}
                 </>
@@ -241,7 +241,7 @@ function RatingWidgetLoggedIn({
     };
 
     return (
-        <RatingWidget
+        <RatingDisplay
             ratings={translation.ratings}
             termValue={termValue}
             termLang={term.lang}

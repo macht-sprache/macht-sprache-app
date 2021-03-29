@@ -8,6 +8,7 @@ import { ColumnHeading, SingleColumn } from '../Layout/Columns';
 import { RatingWidgetContainer } from '../Rating/RatingWidget';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
+import { WrappedInLangColor } from '../TermWithLang';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import s from './style.module.css';
@@ -45,9 +46,24 @@ export function TranslationPage() {
             </Header>
             <SingleColumn>
                 <ColumnHeading>{t('rating.heading')}</ColumnHeading>
-
+                <p>
+                    <Trans
+                        t={t}
+                        i18nKey="rating.overlayHeading"
+                        values={{
+                            translation: translation.value,
+                            term: term.value,
+                        }}
+                        components={{
+                            Term: <WrappedInLangColor lang={term.lang} />,
+                            Translation: <WrappedInLangColor lang={translation.lang} />,
+                        }}
+                    />
+                </p>
                 <div className={clsx(s.rating, getDominantLanguageClass(translation.lang))}>
-                    <RatingWidgetContainer term={term} translation={translation} />
+                    <div className={s.ratingInner}>
+                        <RatingWidgetContainer term={term} translation={translation} />
+                    </div>
                 </div>
             </SingleColumn>
 

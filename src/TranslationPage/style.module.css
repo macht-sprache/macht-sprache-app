@@ -1,0 +1,11 @@
+.rating {
+    display: flex;
+}
+
+.ratingInner {
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: solid var(--thickBorder) var(--dominantLanguageColor);
+    flex-basis: 20rem;
+}
