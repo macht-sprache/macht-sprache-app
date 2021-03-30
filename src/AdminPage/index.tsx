@@ -9,6 +9,7 @@ import { collections, useCollection, useCollectionById, useDocument } from '../h
 import { useRequestState } from '../hooks/useRequestState';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { GlobalSettings, User, UserProperties } from '../types';
+import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
 type AuthUserInfo = { email: string; verified: boolean };
@@ -95,7 +96,9 @@ function UserItem({
     return (
         <li key={user.id} className={s.userItem}>
             <div className={s.userInfo}>
-                <span className={s.userName}>{user.displayName}</span>
+                <span className={s.userName}>
+                    <UserInlineDisplay {...user} />
+                </span>
                 {!properties?.enabled && (
                     <>
                         {' '}

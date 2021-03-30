@@ -20,6 +20,7 @@ import { WrappedInLangColor } from '../TermWithLang';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { Translation } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
 export function TranslationPage() {
@@ -49,7 +50,7 @@ export function TranslationPage() {
                             t={t}
                             i18nKey="common.addedOn"
                             components={{
-                                User: translation.creator.displayName,
+                                User: <UserInlineDisplay {...translation.creator} />,
                                 FormatDate: <FormatDate date={translation.createdAt} />,
                             }}
                         />

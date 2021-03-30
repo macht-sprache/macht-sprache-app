@@ -13,6 +13,7 @@ import { extractRootDomain, trimString } from '../utils';
 import { FormatDate } from '../FormatDate';
 import { Redact } from '../RedactSensitiveTerms';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import { UserInlineDisplay } from '../UserInlineDisplay';
 
 export function TranslationExamplePage() {
     const { t } = useTranslation();
@@ -48,7 +49,7 @@ export function TranslationExamplePage() {
                             t={t}
                             i18nKey="common.addedOn"
                             components={{
-                                User: translationExample.creator.displayName,
+                                User: <UserInlineDisplay {...translationExample.creator} />,
                                 FormatDate: <FormatDate date={translationExample.createdAt} />,
                             }}
                         />
