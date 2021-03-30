@@ -23,9 +23,9 @@
                 "withCount": "{{count}} $t(common.entities.comment.value, {\"count\": {{count}} })",
                 "add": "Kommentar hinzufügen",
                 "action": "Kommentieren",
-                "edit": "Kommentar editieren",
-                "editAction": "Editieren",
-                "edited": "Editiert"
+                "edit": "Kommentar bearbeiten",
+                "editAction": "Bearbeiten",
+                "edited": "Bearbeitet"
             },
             "translatioExample": {
                 "value": "Beispielübersetzung",
@@ -70,7 +70,7 @@
         "imprint": "impressum",
         "news": "aktuelles",
         "coc": "code of conduct",
-        "privacyPolicy": "Datenschutz"
+        "privacyPolicy": "datenschutz"
     },
     "auth": {
         "displayName": "Nutzer:innenname",
@@ -105,16 +105,16 @@
             "newPassword": "Neues Passwort",
             "saveButton": "Passwort speichern",
             "requestLabel": "Passwort vergessen?",
-            "requestExplanation": "Gib die Email-Adresse mit der du dich angemeldet hast ein und wir schicken dir einen Link zur Passwortwiederherstellung.",
+            "requestExplanation": "Gib die Email-Adresse, mit der du dich angemeldet hast, ein und wir schicken dir einen Link zur Passwortwiederherstellung.",
             "requestButton": "Senden",
             "requestSuccessHeader": "Prüfe deinen Posteingang",
-            "requestSuccessExplanation": "Wenn du ein Konto für {{email}} hast haben wir dir einen Link zur Passwortwiederherstellung geschickt.",
-            "expiredHeading": "Link zur Passwortwiederherstellung abgelaufen",
+            "requestSuccessExplanation": "Wenn du ein Konto für {{email}} hast, haben wir dir einen Link zur Passwortwiederherstellung geschickt.",
+            "expiredHeading": "Der Link zur Passwortwiederherstellung ist abgelaufen",
             "expiredExplanation": "Bitte versuche dein <Link>Passwort erneut zurückzusetzen</Link>."
         },
         "activation": {
             "heading": "Aktivierung erforderlich",
-            "explanation": "Fast geschafft! Wir müssen dein Konto noch aktivieren. Wir schicken dir eine Email wenn es soweit ist."
+            "explanation": "Fast geschafft! Wir müssen dein Konto noch aktivieren. Wir schicken dir eine Email, wenn es soweit ist."
         }
     },
     "term": {
@@ -173,13 +173,13 @@
             },
             "MOVIE": {
                 "description": "Suche nach den Filmen, die du hinzufügen möchtest:",
-                "searchOriginal": "Search by the title of the original movie",
-                "searchTranslation": "Search by the title of the translated movie",
+                "searchOriginal": "Originalen Filmtitel suchen",
+                "searchTranslation": "Übersetzten Filmtitel suchen",
                 "titleOriginal": "Film in originaler Fassung",
                 "titleTranslated": "Übersetzte Version"
             },
             "WEBPAGE": {
-                "description": "Wähle nach den Webseiten, die du hinzufügen möchtest:",
+                "description": "Wähle die Webseiten aus, die du hinzufügen möchtest:",
                 "searchOriginal": "URL der unübersetzten Webseite",
                 "searchTranslation": "URL der übersetzten Webseite",
                 "titleOriginal": "Unübersetzte Webseite",
@@ -196,10 +196,10 @@
             "BOOK": "Buch",
             "NEWSPAPER": "Zeitung",
             "OTHER": "Anderes",
-            "WEBSITE": "Website"
+            "WEBSITE": "Webseite"
         },
         "registerToAdd": "Um ein Beispiel hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
-        "publishedBy": "Veröffentlicht bei {{publisher}}",
+        "publishedBy": "Veröffentlicht im {{publisher}} Verlag",
         "publisher": "Verlag",
         "year": "Jahr",
         "published": "Veröffentlicht",
@@ -220,17 +220,17 @@
         "rangeInputLabel": "Wie oft würdest du \"{{term}}\" benutzen? Auf einer Skala von {{from}} bis {{to}}.",
         "ratingDistribution": "Benutzungsstatistiken aller Benutzer:innen: ",
         "ratingDistributionTimes": "{{times}} mal \"{{value}}\".",
-        "scaleDescription": "{{number}} bedeuted \"{{value}}\". ",
+        "scaleDescription": "{{number}} bedeutet \"{{value}}\". ",
         "yourRating": "Deine Benutzung: ",
-        "dragToSet": "Schiebe den orangen Punkt, um deine Benutzung fest zu legen.",
+        "dragToSet": "Schiebe den orangen Punkt, um eine Aussage über deine Nutzung der Übersetzung zu treffen.",
         "clickToSet": "Klick, um deine Benutzung fest zu legen.",
         "overlayHeading": "Wie oft würdest du <Term>{{term}}</Term> zu <Translation>{{translation}}</Translation> übersetzen?",
-        "noData": "Bisher keine Bewertungen."
+        "noData": "Bisher gibt es noch keine Bewertungen."
     },
     "comment": {
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "deleteHeading": "Kommentar löschen?",
-        "deleteExplanation": "Bist du sicher, dass du diesen Kommentar löschen möchtest? Dies kann nicht rückgängig gemacht werden."
+        "deleteExplanation": "Bist du sicher, dass du diesen Kommentar löschen möchtest? Löschungen können nicht rückgängig gemacht werden."
     },
     "notFound": {
         "heading": "Seite nicht gefunden",
@@ -240,9 +240,9 @@
         "news": "Neuigkeiten",
         "about": "Über das Projekt",
         "signUpPreLaunch": "Start am 14. März – Meld dich schon mal an!",
-        "signUpPreLaunchDescription": "Melde dich hier an, um einen Account zu erstellen und eine Benachrichtigungen zu erhalten, wenn es los geht. Optional kannst du dich auch gleich zu uneserem poco.lit.-Newsletter anmelden.",
+        "signUpPreLaunchDescription": "Melde dich hier an, um einen Account zu erstellen und eine Benachrichtigungen zu erhalten, wenn es los geht. Optional kannst du dich auch gleich für den poco.lit.-Newsletter anmelden.",
         "termsOfTheWeek": "Begriffe der Woche",
-        "termsOfTheWeekDescription": "Jede Woche suchen wir uns ein paar Begriffe heraus, auf welche wir einen Fokus legen. Diese Woche:",
+        "termsOfTheWeekDescription": "Jede Woche legen wir einen besonderen Fokus auf bestimmte Begriffe. Diese Woche:",
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
         "claim": "Diskussionsplattform für sensible Begriffe und ihre Übersetzungen"
