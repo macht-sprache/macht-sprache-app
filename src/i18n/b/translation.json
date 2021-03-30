@@ -47,7 +47,8 @@
             "cancel": "Abbrechen",
             "close": "Schließen",
             "save": "Speichern",
-            "delete": "Löschen"
+            "delete": "Löschen",
+            "edit": "Bearbeiten"
         },
         "addedOn": "Hinzugefügt von <User /> am <FormatDate />",
         "settings": "Einstellungen",

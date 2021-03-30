@@ -1,7 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
+import Button, { ButtonContainer } from '../Form/Button';
 import { Checkbox } from '../Form/Checkbox';
+import { Input } from '../Form/Input';
+import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
 import { collections, useDocument } from '../hooks/data';
@@ -38,29 +41,100 @@ export default function UserPage() {
         <>
             <Header topHeading={[{ inner: t('userPage.title') }]}>{user.displayName}</Header>
             <Columns>
-                <UserInfo user={user} />
+                <UserInfo user={user} canEdit={loggedInUserIsCurrentUser} />
                 {loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
             </Columns>
         </>
     );
 }
 
-function UserInfo({ user }: { user: User }) {
+function UserInfo({ user, canEdit }: { user: User; canEdit: boolean }) {
+    const { t } = useTranslation();
+    const [isEditing, setIsEditing] = useState(false);
+
     return (
         <div>
             <ColumnHeading>Info</ColumnHeading>
-            {USER_LINKS.map(({ type, getUrl }) => {
-                return (
-                    <div key={type}>
-                        {type}:{' '}
-                        {user[type] && (
-                            <a target="_blank" rel="noreferrer" href={getUrl(user[type])}>
-                                {user[type]}
-                            </a>
-                        )}
-                    </div>
-                );
-            })}
+            {isEditing ? (
+                <EditUserInfo user={user} onClose={() => setIsEditing(false)} />
+            ) : (
+                <>
+                    {USER_LINKS.map(({ type, getUrl }) => {
+                        return (
+                            <div key={type}>
+                                {type}:{' '}
+                                {user[type] && (
+                                    <a target="_blank" rel="noreferrer" href={getUrl(user[type])}>
+                                        {user[type]}
+                                    </a>
+                                )}
+                            </div>
+                        );
+                    })}
+                    {canEdit && (
+                        <ButtonContainer align="left">
+                            <Button onClick={() => setIsEditing(true)}>{t('common.formNav.edit')}</Button>
+                        </ButtonContainer>
+                    )}
+                </>
+            )}
+        </div>
+    );
+}
+
+function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
+    const { t } = useTranslation();
+
+    const [saving, setIsSaving] = useState(false);
+    const [formState, setFormState] = useState({
+        facebook: user.facebook || '',
+        twitter: user.twitter || '',
+        instagram: user.instagram || '',
+        website: user.website || '',
+    });
+
+    const onSave = () => {
+        setIsSaving(true);
+
+        collections.users
+            .doc(user.id)
+            .set({ ...user, ...formState })
+            .then(() => {
+                setIsSaving(false);
+                onClose();
+            });
+    };
+
+    return (
+        <div>
+            {saving ? (
+                <>{t('common.saving')}</>
+            ) : (
+                <>
+                    <InputContainer>
+                        {USER_LINKS.map(({ type }) => {
+                            return (
+                                <Input
+                                    key={type}
+                                    value={formState[type]}
+                                    label={type}
+                                    onChange={el => {
+                                        setFormState(old => {
+                                            return { ...old, [type]: el.target.value };
+                                        });
+                                    }}
+                                />
+                            );
+                        })}
+                    </InputContainer>
+                    <ButtonContainer>
+                        <Button onClick={onClose}>{t('common.formNav.cancel')}</Button>
+                        <Button onClick={onSave} primary={true}>
+                            {t('common.formNav.save')}
+                        </Button>
+                    </ButtonContainer>
+                </>
+            )}
         </div>
     );
 }

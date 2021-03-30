@@ -47,7 +47,8 @@
             "cancel": "Cancel",
             "close": "Close",
             "save": "Save",
-            "delete": "Delete"
+            "delete": "Delete",
+            "edit": "Edit"
         },
         "addedOn": "Added by <User /> on <FormatDate />",
         "settings": "Settings",
