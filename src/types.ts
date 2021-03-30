@@ -158,6 +158,7 @@ interface UserMini {
 
 export interface User extends UserMini {
     displayNameLowerCase: string;
+    bio?: string;
     socialMediaProfiles?: {
         twitter?: string;
         facebook?: string;

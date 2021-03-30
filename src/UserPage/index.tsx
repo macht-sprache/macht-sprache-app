@@ -3,12 +3,14 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Checkbox } from '../Form/Checkbox';
-import { Input } from '../Form/Input';
+import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
 import { collections, useDocument } from '../hooks/data';
 import { ColumnHeading, Columns } from '../Layout/Columns';
+import LinkButton from '../LinkButton';
+import { ModalDialog } from '../ModalDialog';
 import { User, UserSettings } from '../types';
 
 const USER_LINKS: { type: 'facebook' | 'twitter' | 'website' | 'instagram'; getUrl: (handle?: string) => string }[] = [
@@ -34,49 +36,53 @@ export default function UserPage() {
     const { userId } = useParams<{ userId: string }>();
     const loggedInUser = useUser()!;
     const { t } = useTranslation();
+    const [isEditing, setIsEditing] = useState(false);
     const user = useDocument(collections.users.doc(userId));
     const loggedInUserIsCurrentUser = loggedInUser.id === userId;
 
+    const edit = () => {
+        setIsEditing(true);
+    };
+
     return (
         <>
-            <Header topHeading={[{ inner: t('userPage.title') }]}>{user.displayName}</Header>
+            <Header
+                topHeading={[{ inner: t('userPage.title') }]}
+                subLine={<UserBio user={user} canEdit={loggedInUserIsCurrentUser} edit={edit} />}
+            >
+                {user.displayName}
+            </Header>
             <Columns>
-                <UserInfo user={user} canEdit={loggedInUserIsCurrentUser} />
+                <UserInfo user={user} canEdit={loggedInUserIsCurrentUser} edit={edit} />
                 {loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
             </Columns>
+            {isEditing && <EditUserInfo user={user} onClose={() => setIsEditing(false)} />}
         </>
     );
 }
 
-function UserInfo({ user, canEdit }: { user: User; canEdit: boolean }) {
+function UserInfo({ user, canEdit, edit }: { user: User; canEdit: boolean; edit: () => void }) {
     const { t } = useTranslation();
-    const [isEditing, setIsEditing] = useState(false);
 
     return (
         <div>
-            <ColumnHeading>Info</ColumnHeading>
-            {isEditing ? (
-                <EditUserInfo user={user} onClose={() => setIsEditing(false)} />
-            ) : (
-                <>
-                    {USER_LINKS.map(({ type, getUrl }) => {
-                        return (
-                            <div key={type}>
-                                {type}:{' '}
-                                {user.socialMediaProfiles?.[type] && (
-                                    <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles[type])}>
-                                        {user.socialMediaProfiles[type]}
-                                    </a>
-                                )}
-                            </div>
-                        );
-                    })}
-                    {canEdit && (
-                        <ButtonContainer align="left">
-                            <Button onClick={() => setIsEditing(true)}>{t('common.formNav.edit')}</Button>
-                        </ButtonContainer>
-                    )}
-                </>
+            <ColumnHeading>{t('userPage.info')}</ColumnHeading>
+            {USER_LINKS.map(({ type, getUrl }) => {
+                return (
+                    <div key={type}>
+                        {type}:{' '}
+                        {user.socialMediaProfiles?.[type] && (
+                            <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles[type])}>
+                                {user.socialMediaProfiles[type]}
+                            </a>
+                        )}
+                    </div>
+                );
+            })}
+            {canEdit && (
+                <ButtonContainer align="left">
+                    <Button onClick={edit}>{t('common.formNav.edit')}</Button>
+                </ButtonContainer>
             )}
         </div>
     );
@@ -86,7 +92,9 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
     const { t } = useTranslation();
 
     const [saving, setIsSaving] = useState(false);
-    const [formState, setFormState] = useState({
+
+    const [bio, setBio] = useState(user.bio || '');
+    const [socialMediaState, setSocialMediaState] = useState({
         facebook: user.socialMediaProfiles?.facebook || '',
         twitter: user.socialMediaProfiles?.twitter || '',
         instagram: user.socialMediaProfiles?.instagram || '',
@@ -98,7 +106,7 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
 
         collections.users
             .doc(user.id)
-            .set({ ...user, socialMediaProfiles: { ...formState } })
+            .set({ ...user, socialMediaProfiles: { ...socialMediaState }, bio })
             .then(() => {
                 setIsSaving(false);
                 onClose();
@@ -106,20 +114,30 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
     };
 
     return (
-        <div>
+        <ModalDialog title={t('userPage.editInfo')} onClose={onClose}>
             {saving ? (
                 <>{t('common.saving')}</>
             ) : (
                 <>
                     <InputContainer>
+                        <Textarea
+                            value={bio}
+                            onChange={({ target: { value } }) => {
+                                setBio(value);
+                            }}
+                            maxLength={250}
+                            minHeight="10rem"
+                            label={t('userPage.bio')}
+                        />
+
                         {USER_LINKS.map(({ type }) => {
                             return (
                                 <Input
                                     key={type}
-                                    value={formState[type]}
+                                    value={socialMediaState[type]}
                                     label={type}
                                     onChange={el => {
-                                        setFormState(old => {
+                                        setSocialMediaState(old => {
                                             return { ...old, [type]: el.target.value };
                                         });
                                     }}
@@ -135,7 +153,29 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
                     </ButtonContainer>
                 </>
             )}
-        </div>
+        </ModalDialog>
+    );
+}
+
+function UserBio({ user, canEdit, edit }: { user: User; canEdit: boolean; edit: () => void }) {
+    const { t } = useTranslation();
+
+    return (
+        <>
+            {canEdit && !user.bio && (
+                <Trans
+                    t={t}
+                    i18nKey="userPage.addBio"
+                    components={{ AddDescription: <LinkButton onClick={edit} underlined /> }}
+                />
+            )}
+            {user.bio}
+            {canEdit && user.bio && (
+                <LinkButton onClick={edit} underlined>
+                    {t('common.formNav.edit')}
+                </LinkButton>
+            )}
+        </>
     );
 }
 
