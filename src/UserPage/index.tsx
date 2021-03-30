@@ -12,6 +12,7 @@ import { ColumnHeading, Columns } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
 import { User, UserSettings } from '../types';
+import s from './style.module.css';
 
 const USER_LINKS: { type: 'facebook' | 'twitter' | 'website' | 'instagram'; getUrl: (handle?: string) => string }[] = [
     {
@@ -63,21 +64,28 @@ export default function UserPage() {
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
     const { t } = useTranslation();
 
+    const socialMediaProfiles = USER_LINKS.filter(({ type }) => user.socialMediaProfiles?.[type]).map(
+        ({ type, getUrl }) => {
+            return { type, getUrl };
+        }
+    );
+
     return (
         <div>
             <ColumnHeading>{t('userPage.info')}</ColumnHeading>
-            {USER_LINKS.map(({ type, getUrl }) => {
-                return (
-                    <div key={type}>
-                        {type}:{' '}
-                        {user.socialMediaProfiles?.[type] && (
-                            <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles[type])}>
-                                {user.socialMediaProfiles[type]}
+            <div className={s.socialMedia}>
+                {socialMediaProfiles.length === 0 && edit && <>{t('userPage.addSocial')}</>}
+                {socialMediaProfiles.map(({ type, getUrl }) => {
+                    return (
+                        <div key={type}>
+                            {type}:{' '}
+                            <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles?.[type])}>
+                                {user.socialMediaProfiles?.[type]}
                             </a>
-                        )}
-                    </div>
-                );
-            })}
+                        </div>
+                    );
+                })}
+            </div>
             {edit && (
                 <ButtonContainer align="left">
                     <Button onClick={edit}>{t('common.formNav.edit')}</Button>
@@ -162,17 +170,24 @@ function UserBio({ user, edit }: { user: User; edit?: () => void }) {
     return (
         <>
             {edit && !user.bio && (
-                <Trans
-                    t={t}
-                    i18nKey="userPage.addBio"
-                    components={{ AddDescription: <LinkButton onClick={edit} underlined /> }}
-                />
+                <div className={s.addBioHint}>
+                    <Trans
+                        t={t}
+                        i18nKey="userPage.addBio"
+                        components={{ AddDescription: <LinkButton onClick={edit} underlined /> }}
+                    />
+                </div>
             )}
             {user.bio}
             {edit && user.bio && (
-                <LinkButton onClick={edit} underlined>
-                    {t('common.formNav.edit')}
-                </LinkButton>
+                <>
+                    {' '}
+                    (
+                    <LinkButton onClick={edit} underlined>
+                        {t('common.formNav.edit')}
+                    </LinkButton>
+                    )
+                </>
             )}
         </>
     );

@@ -261,7 +261,8 @@
         "bio": "Biografie",
         "addBio": "Klicke <AddDescription>hier</AddDescription> um eine Biographie über dich hinzuzufügen.",
         "editInfo": "Bearbeite dein Profilinformationen",
-        "info": "Info"
+        "info": "Info",
+        "addSocial": "Klicke the Bearbeiten-Button, um Social-Media-Profile hinzuzufügen."
     },
     "contentWarning": {
         "title": "Inhaltliche Warnung",
