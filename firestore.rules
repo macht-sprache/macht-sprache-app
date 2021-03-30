@@ -41,7 +41,16 @@ service cloud.firestore {
     match /users/{user} {
       allow get: if true;
       allow list: if isAdmin();
-      allow create, update: if isValidatedUser() && isUser(user);
+      allow update: if isValidatedUser() && isUser(user) && isValidUserUpdate();
+    }
+
+    function isValidUserUpdate() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['socialMediaProfiles']) &&
+        data.socialMediaProfiles.facebook is string &&
+        data.socialMediaProfiles.instagram is string &&
+        data.socialMediaProfiles.twitter is string &&
+        data.socialMediaProfiles.website is string
     }
 
     function isValidUserSettings() {
