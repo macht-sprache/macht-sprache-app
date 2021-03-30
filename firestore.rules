@@ -39,7 +39,7 @@ service cloud.firestore {
     }
 
     match /users/{user} {
-      allow get: if isUser(user) || isAdmin();
+      allow get: if true;
       allow list: if isAdmin();
     }
 

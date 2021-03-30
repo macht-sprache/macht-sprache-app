@@ -24,7 +24,7 @@ export function TopMenu() {
             <LanguageSwitcher />{' '}
             {user ? (
                 <>
-                    <Link to={USER}>{user.displayName}</Link>{' '}
+                    <Link to={generatePath(USER, { userId: user.id })}>{user.displayName}</Link>{' '}
                     <LinkButton onClick={logout}>{t('auth.logout')}</LinkButton>
                 </>
             ) : (
