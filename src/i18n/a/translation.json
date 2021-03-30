@@ -78,7 +78,7 @@
         "password": "Password",
         "login": "Login",
         "logout": "Logout",
-        "displayNameRequirements": "Your user name must only include letters, numbers, -, or _ and be no longer than 20 characters.",
+        "displayNameRequirements": "Your user name must only include letters, numbers, -, or _ and can be no longer than 20 characters.",
         "emailVerification": {
             "headingVerification": "Email Verification",
             "headingVerified": "Email Verified",
@@ -89,23 +89,23 @@
             "welcomeVerified": "Welcome at macht.sprache., your Email has been verified. Click continue to get to the main page."
         },
         "errors": {
-            "name-already-in-use": "This user name is already in use by another account.",
-            "email-already-in-use": "The email address is already in use by another account.",
-            "weak-password": "Password should be at least 6 characters.",
+            "name-already-in-use": "This user name is not available.",
+            "email-already-in-use": "The email address is already connected to another account.",
+            "weak-password": "Your password should consist of at least 6 characters.",
             "user-not-found": "User not found",
             "wrong-password": "Wrong Password"
         },
         "register": {
             "title": "Sign Up",
-            "intro": "The User Name will be public. You can make one up or use your real name, depending on how you would prefer to be identified.",
+            "intro": "The user name will be public. You are free to decide whether you want to appear under a pseudonym or under your real name, and if so, with which identity you will be recognized.",
             "termsAndPrivacy": "By registering you agree to our <TermsLink>terms</TermsLink> and <PrivacyLink>privacy policy</PrivacyLink>."
         },
         "passwordReset": {
             "heading": "Choose a new password",
             "newPassword": "New Password",
             "saveButton": "Save Password",
-            "requestLabel": "Forgot password?",
-            "requestExplanation": "Enter the email address you used to sign up and we'll send you a link to reset your password.",
+            "requestLabel": "Forgot your password?",
+            "requestExplanation": "Enter the email address you signed up with and we'll send you a link to reset your password.",
             "requestButton": "Request Password Reset",
             "requestSuccessHeader": "Check your inbox",
             "requestSuccessExplanation": "If you had an account for {{email}} we sent you a link to reset your password.",
@@ -240,9 +240,9 @@
         "news": "News",
         "about": "About the project",
         "signUpPreLaunch": "Launch on March 14th – Sign up already!",
-        "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified for the launch event. Optionally, you can also sign up for our poco.lit.-newsletter.",
+        "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified for the launch event. Optionally, you can also sign up for the poco.lit.-newsletter.",
         "termsOfTheWeek": "Terms of the week",
-        "termsOfTheWeekDescription": "Every week we pick some terms that we are focussing on. This week:",
+        "termsOfTheWeekDescription": "Every week we pick different terms to focus on. This week:",
         "viewAllTerms": "View all terms",
         "moreAbout": "more about macht.sprache.",
         "claim": "Platform to collect and discuss sensitive terms and their translations"
