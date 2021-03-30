@@ -1,0 +1,9 @@
+.addBioHint {
+    color: var(--placeholderGrey);
+    font-style: italic;
+}
+
+.socialMedia {
+    margin-bottom: 1rem;
+    line-height: var(--lineHeightParagraph);
+}
