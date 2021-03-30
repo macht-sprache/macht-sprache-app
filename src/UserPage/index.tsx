@@ -5,8 +5,27 @@ import { Checkbox } from '../Form/Checkbox';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
 import { collections, useDocument } from '../hooks/data';
-import { ColumnHeading, SingleColumn } from '../Layout/Columns';
+import { ColumnHeading, Columns } from '../Layout/Columns';
 import { User, UserSettings } from '../types';
+
+const USER_LINKS: { type: 'facebook' | 'twitter' | 'website' | 'instagram'; getUrl: (handle?: string) => string }[] = [
+    {
+        type: 'facebook',
+        getUrl: (handle?: string) => `https://www.facebook.com/${handle}`,
+    },
+    {
+        type: 'twitter',
+        getUrl: (handle?: string) => `https://twitter.com/${handle}`,
+    },
+    {
+        type: 'website',
+        getUrl: (handle?: string) => `${handle}`,
+    },
+    {
+        type: 'instagram',
+        getUrl: (handle?: string) => `https://www.instagram.com/${handle}`,
+    },
+];
 
 export default function UserPage() {
     const { userId } = useParams<{ userId: string }>();
@@ -18,8 +37,31 @@ export default function UserPage() {
     return (
         <>
             <Header topHeading={[{ inner: t('userPage.title') }]}>{user.displayName}</Header>
-            {loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
+            <Columns>
+                <UserInfo user={user} />
+                {loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
+            </Columns>
         </>
+    );
+}
+
+function UserInfo({ user }: { user: User }) {
+    return (
+        <div>
+            <ColumnHeading>Info</ColumnHeading>
+            {USER_LINKS.map(({ type, getUrl }) => {
+                return (
+                    <div key={type}>
+                        {type}:{' '}
+                        {user[type] && (
+                            <a target="_blank" rel="noreferrer" href={getUrl(user[type])}>
+                                {user[type]}
+                            </a>
+                        )}
+                    </div>
+                );
+            })}
+        </div>
     );
 }
 
@@ -33,7 +75,7 @@ function EditUserSettings({ user }: { user: User }) {
     );
 
     return (
-        <SingleColumn>
+        <div>
             <ColumnHeading>{t('common.settings')}</ColumnHeading>
 
             <p>
@@ -46,6 +88,6 @@ function EditUserSettings({ user }: { user: User }) {
                     label={t('userPage.hideRedacted')}
                 />
             </label>
-        </SingleColumn>
+        </div>
     );
 }
