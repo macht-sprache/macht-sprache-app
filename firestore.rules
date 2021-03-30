@@ -41,6 +41,7 @@ service cloud.firestore {
     match /users/{user} {
       allow get: if true;
       allow list: if isAdmin();
+      allow create, update: if isValidatedUser() && isUser(user);
     }
 
     function isValidUserSettings() {
