@@ -20,6 +20,7 @@ import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
 import { Lang, Term } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
 export default function TermPage() {
@@ -41,7 +42,7 @@ export default function TermPage() {
                             t={t}
                             i18nKey="common.addedOn"
                             components={{
-                                User: term.creator.displayName,
+                                User: <UserInlineDisplay {...term.creator} />,
                                 FormatDate: <FormatDate date={term.createdAt} />,
                             }}
                         />

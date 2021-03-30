@@ -8,6 +8,7 @@ import { deleteComment, updateComment } from '../../hooks/data';
 import LinkButton from '../../LinkButton';
 import { Comment } from '../../types';
 import { useLang } from '../../useLang';
+import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { trimString } from '../../utils';
 import { CommentEdit } from '../CommentEdit';
 import s from './style.module.css';
@@ -75,7 +76,9 @@ export function CommentItem({
                     )}
                 </span>
                 <span className={s.creator}>
-                    <span className={s.creatorInner}>{creator.displayName}</span>
+                    <span className={s.creatorInner}>
+                        <UserInlineDisplay {...creator} />
+                    </span>
                 </span>
             </div>
         </div>
