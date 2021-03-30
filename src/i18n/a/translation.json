@@ -261,7 +261,11 @@
     "userPage": {
         "title": "User profile of",
         "hideRedactedDescription": "<strong>Sensitive terms</strong>: By default, <i>macht.sprache.</i> hides obviously offensive terms (e.g. n***o). If you would prefer to see them for the sake of clarity, you can disable this feature here.",
-        "hideRedacted": "Hide offensive terms"
+        "hideRedacted": "Hide offensive terms",
+        "bio": "Bio",
+        "addBio": "You can add a little description about yourself <AddDescription>here</AddDescription>",
+        "editInfo": "Edit your profile information",
+        "info": "Info"
     },
     "contentWarning": {
         "title": "Content Warning",

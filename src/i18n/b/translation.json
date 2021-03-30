@@ -257,7 +257,11 @@
     "userPage": {
         "title": "Nutzer:innenseite von",
         "hideRedactedDescription": "<strong>Sensible Begriffe</strong>: Standardmäßig versteckt <i>macht.sprache.</i> sensible Begriffe (z.B. n***r). Wenn du diese Begriffe trotzdem ausgeschrieben sehen möchtest, kannst du sie hier anzeigen lassen. ",
-        "hideRedacted": "Diskrimminierende Begriffe verstecken"
+        "hideRedacted": "Diskrimminierende Begriffe verstecken",
+        "bio": "Biografie",
+        "addBio": "Klicke <AddDescription>hier</AddDescription> um eine Biographie über dich hinzuzufügen.",
+        "editInfo": "Bearbeite dein Profilinformationen",
+        "info": "Info"
     },
     "contentWarning": {
         "title": "Inhaltliche Warnung",
