@@ -63,9 +63,9 @@ function UserInfo({ user, canEdit }: { user: User; canEdit: boolean }) {
                         return (
                             <div key={type}>
                                 {type}:{' '}
-                                {user[type] && (
-                                    <a target="_blank" rel="noreferrer" href={getUrl(user[type])}>
-                                        {user[type]}
+                                {user.socialMediaProfiles?.[type] && (
+                                    <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles[type])}>
+                                        {user.socialMediaProfiles[type]}
                                     </a>
                                 )}
                             </div>
@@ -87,10 +87,10 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
 
     const [saving, setIsSaving] = useState(false);
     const [formState, setFormState] = useState({
-        facebook: user.facebook || '',
-        twitter: user.twitter || '',
-        instagram: user.instagram || '',
-        website: user.website || '',
+        facebook: user.socialMediaProfiles?.facebook || '',
+        twitter: user.socialMediaProfiles?.twitter || '',
+        instagram: user.socialMediaProfiles?.instagram || '',
+        website: user.socialMediaProfiles?.website || '',
     });
 
     const onSave = () => {
@@ -98,7 +98,7 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
 
         collections.users
             .doc(user.id)
-            .set({ ...user, ...formState })
+            .set({ ...user, socialMediaProfiles: { ...formState } })
             .then(() => {
                 setIsSaving(false);
                 onClose();
