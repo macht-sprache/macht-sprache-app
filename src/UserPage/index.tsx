@@ -40,20 +40,19 @@ export default function UserPage() {
     const user = useDocument(collections.users.doc(userId));
     const loggedInUserIsCurrentUser = loggedInUser.id === userId;
 
-    const edit = () => {
-        setIsEditing(true);
-    };
+    const edit = loggedInUserIsCurrentUser
+        ? () => {
+              setIsEditing(true);
+          }
+        : undefined;
 
     return (
         <>
-            <Header
-                topHeading={[{ inner: t('userPage.title') }]}
-                subLine={<UserBio user={user} canEdit={loggedInUserIsCurrentUser} edit={edit} />}
-            >
+            <Header topHeading={[{ inner: t('userPage.title') }]} subLine={<UserBio user={user} edit={edit} />}>
                 {user.displayName}
             </Header>
             <Columns>
-                <UserInfo user={user} canEdit={loggedInUserIsCurrentUser} edit={edit} />
+                <UserInfo user={user} edit={edit} />
                 {loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
             </Columns>
             {isEditing && <EditUserInfo user={user} onClose={() => setIsEditing(false)} />}
@@ -61,7 +60,7 @@ export default function UserPage() {
     );
 }
 
-function UserInfo({ user, canEdit, edit }: { user: User; canEdit: boolean; edit: () => void }) {
+function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
     const { t } = useTranslation();
 
     return (
@@ -79,7 +78,7 @@ function UserInfo({ user, canEdit, edit }: { user: User; canEdit: boolean; edit:
                     </div>
                 );
             })}
-            {canEdit && (
+            {edit && (
                 <ButtonContainer align="left">
                     <Button onClick={edit}>{t('common.formNav.edit')}</Button>
                 </ButtonContainer>
@@ -157,12 +156,12 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
     );
 }
 
-function UserBio({ user, canEdit, edit }: { user: User; canEdit: boolean; edit: () => void }) {
+function UserBio({ user, edit }: { user: User; edit?: () => void }) {
     const { t } = useTranslation();
 
     return (
         <>
-            {canEdit && !user.bio && (
+            {edit && !user.bio && (
                 <Trans
                     t={t}
                     i18nKey="userPage.addBio"
@@ -170,7 +169,7 @@ function UserBio({ user, canEdit, edit }: { user: User; canEdit: boolean; edit: 
                 />
             )}
             {user.bio}
-            {canEdit && user.bio && (
+            {edit && user.bio && (
                 <LinkButton onClick={edit} underlined>
                     {t('common.formNav.edit')}
                 </LinkButton>
