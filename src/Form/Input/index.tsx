@@ -22,6 +22,7 @@ export function Input({ label, value, disabled, span = 4, busy = false, error, o
             label={label}
             empty={!value}
             optional={optional}
+            placeholder={props.placeholder}
         >
             <input className={s.input} aria-invalid={!!error} {...inputProps} />
         </Container>
