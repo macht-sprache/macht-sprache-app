@@ -25,6 +25,7 @@ export interface Term extends Commentable {
     creator: UserMini;
     createdAt: Timestamp;
     weekHighlight?: boolean;
+    adminComment?: string;
 
     value: string;
     variants: string[];

@@ -3,7 +3,8 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
 import Button, { ButtonContainer } from '../Form/Button';
-import { Input, Select } from '../Form/Input';
+import { Checkbox } from '../Form/Checkbox';
+import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
@@ -18,6 +19,7 @@ import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
 import { Lang, Term } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import s from './style.module.css';
 
 export default function TermPage() {
     const { termId } = useParams<{ termId: string }>();
@@ -46,6 +48,12 @@ export default function TermPage() {
             >
                 <Redact>{term.value}</Redact>
             </Header>
+
+            {term.adminComment && (
+                <SingleColumn>
+                    <div className={s.adminComment}>{term.adminComment}</div>
+                </SingleColumn>
+            )}
 
             <FullWidthColumn>
                 <TranslationsList term={term} />
@@ -102,16 +110,19 @@ function EditTerm({ term }: { term: Term }) {
 }
 
 function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void }) {
+    const { userProperties } = useAppContext();
     const { t } = useTranslation();
     const [saving, setIsSaving] = useState(false);
     const [value, setValue] = useState(term.value);
-    const [lang, setLang] = useState<Lang>(term.lang);
+    const [lang, setLang] = useState(term.lang);
+    const [adminComment, setAdminComment] = useState(term?.adminComment ?? '');
+    const [weekHighlight, setWeekHighlight] = useState(term?.weekHighlight ?? false);
 
     const onSave = () => {
         setIsSaving(true);
         collections.terms
             .doc(term.id)
-            .set({ ...term, value, lang })
+            .set({ ...term, value, lang, adminComment, weekHighlight })
             .then(() => {
                 setIsSaving(false);
                 onClose();
@@ -141,6 +152,30 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             <option value={langB}>{t(`common.langLabels.${langB}` as const)}</option>
                         </Select>
                     </InputContainer>
+
+                    {userProperties?.admin && (
+                        <>
+                            <h3>Admin</h3>
+                            <InputContainer>
+                                <Textarea
+                                    label="admin comment"
+                                    value={adminComment}
+                                    onChange={({ target: { value } }) => setAdminComment(value)}
+                                    minHeight="300px"
+                                />
+                            </InputContainer>
+                            <div style={{ margin: '1rem 0' }}>
+                                <Checkbox
+                                    checked={weekHighlight}
+                                    onChange={({ target: { checked } }) => {
+                                        setWeekHighlight(checked);
+                                    }}
+                                    label="Highlight landing page"
+                                />
+                            </div>
+                        </>
+                    )}
+
                     <ButtonContainer>
                         <Button onClick={onClose}>{t('common.formNav.cancel')}</Button>
                         <Button onClick={onSave} primary>

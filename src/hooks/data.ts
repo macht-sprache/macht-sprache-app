@@ -59,9 +59,17 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
         return { ...data, createdAt: getCreatedAt(term) };
     },
     fromFirestore: (snapshot): Term => {
-        const { relatedTerms, creator, createdAt, value, variants, lang, commentCount, weekHighlight } = snapshot.data(
-            defaultSnapshotOptions
-        );
+        const {
+            relatedTerms,
+            creator,
+            createdAt,
+            value,
+            variants,
+            lang,
+            commentCount,
+            weekHighlight,
+            adminComment,
+        } = snapshot.data(defaultSnapshotOptions);
         return {
             id: snapshot.id,
             relatedTerms,
@@ -72,6 +80,7 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
             lang,
             commentCount,
             weekHighlight,
+            adminComment,
         };
     },
 };

@@ -1,0 +1,5 @@
+.adminComment {
+    font-family: var(--paragraphFont);
+    line-height: var(--lineHeightParagraph);
+    white-space: pre-wrap;
+}

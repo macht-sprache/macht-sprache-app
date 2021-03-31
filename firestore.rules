@@ -81,10 +81,20 @@ service cloud.firestore {
         data.lang is string;
     }
 
+    function isValidTermUpdateAdmin() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'weekHighlight']) &&
+        data.value is string &&
+        data.lang is string &&
+        data.adminComment is string &&
+        data.weekHighlight is bool;
+    }
+
     match /terms/{term} {
       allow read: if true;
       allow create: if isValidatedUser() && isCreator() && isValidTerm();
-      allow update: if isValidatedUser() && (isCreator() || isAdmin()) && isValidTermUpdate();
+      allow update: if isValidatedUser() &&
+        ((isAdmin() && isValidTermUpdateAdmin()) || (isCreator() && isValidTermUpdate()));
     }
 
     function isValidTranslation() {
