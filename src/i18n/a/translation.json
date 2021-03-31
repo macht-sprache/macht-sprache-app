@@ -10,7 +10,8 @@
                 "value": "Term",
                 "value_plural": "Terms",
                 "add": "Add Term",
-                "all": "All Terms"
+                "all": "All Terms",
+                "edit": "Edit Term"
             },
             "translation": {
                 "value": "Translation",

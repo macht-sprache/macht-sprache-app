@@ -40,7 +40,7 @@ service cloud.firestore {
 
     match /users/{user} {
       allow get: if isUser(user) || isAdmin();
-      allow list: if isAdmin(); 
+      allow list: if isAdmin();
     }
 
     function isValidUserSettings() {
@@ -52,7 +52,7 @@ service cloud.firestore {
 
     match /userSettings/{user} {
       allow get: if isUser(user) || isAdmin();
-      allow list: if isAdmin(); 
+      allow list: if isAdmin();
       allow create, update: if isValidatedUser() && isUser(user) && isValidUserSettings();
     }
 
@@ -74,9 +74,17 @@ service cloud.firestore {
         data.commentCount == 0;
     }
 
+    function isValidTermUpdate() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang']) &&
+        data.value is string &&
+        data.lang is string;
+    }
+
     match /terms/{term} {
       allow read: if true;
       allow create: if isValidatedUser() && isCreator() && isValidTerm();
+      allow update: if isValidatedUser() && (isCreator() || isAdmin()) && isValidTermUpdate();
     }
 
     function isValidTranslation() {
