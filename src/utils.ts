@@ -14,3 +14,11 @@ export function trimString(string?: string, length = 50) {
 export function stopPropagation(event: React.MouseEvent) {
     event.stopPropagation();
 }
+
+export function removeHttpsWwwPageParams(url?: string) {
+    if (!url) return '';
+    return url
+        .replace(/(^\w+:|^)\/\//, '')
+        .replace('www.', '')
+        .split('?')[0];
+}

@@ -266,7 +266,29 @@
         "addBio": "You can add a little bio about yourself <AddDescription>here</AddDescription>",
         "editInfo": "Edit your profile information",
         "info": "Info",
-        "addSocial": "Click the button below to add some social media profiles"
+        "addSocial": "Click the button below to add some social media profiles",
+        "socialLabels": {
+            "instagram": {
+                "label": "Instagram",
+                "placeholder": "instagram_user_name",
+                "inputHint": "handle without @"
+            },
+            "twitter": {
+                "label": "Twitter",
+                "placeholder": "twitter_user_name",
+                "inputHint": "handle without @"
+            },
+            "facebook": {
+                "label": "Facebook",
+                "placeholder": "https://facebook.com/user.name",
+                "inputHint": "full URL"
+            },
+            "website": {
+                "label": "Website",
+                "placeholder": "https://yourwebsite.com",
+                "inputHint": "full URL"
+            }
+        }
     },
     "contentWarning": {
         "title": "Content Warning",

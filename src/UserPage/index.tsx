@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { TFuncKey, Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Checkbox } from '../Form/Checkbox';
@@ -12,24 +12,48 @@ import { ColumnHeading, Columns } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
 import { User, UserSettings } from '../types';
+import { removeHttpsWwwPageParams } from '../utils';
 import s from './style.module.css';
 
-const USER_LINKS: { type: 'facebook' | 'twitter' | 'website' | 'instagram'; getUrl: (handle?: string) => string }[] = [
+const USER_LINKS: {
+    type: 'facebook' | 'twitter' | 'website' | 'instagram';
+    getUrl: (handle?: string) => string;
+    getLinkLabel: (handle?: string) => string;
+    labelKey: TFuncKey<'translation'>;
+    placeholerKey: TFuncKey<'translation'>;
+    labelHintKey: TFuncKey<'translation'>;
+}[] = [
     {
-        type: 'facebook',
-        getUrl: (handle?: string) => `https://www.facebook.com/${handle}`,
+        type: 'instagram',
+        getUrl: (handle?: string) => `https://www.instagram.com/${handle}`,
+        getLinkLabel: (handle?: string) => `@${handle}`,
+        labelKey: 'userPage.socialLabels.instagram.label',
+        placeholerKey: 'userPage.socialLabels.instagram.placeholder',
+        labelHintKey: 'userPage.socialLabels.instagram.inputHint',
     },
     {
         type: 'twitter',
         getUrl: (handle?: string) => `https://twitter.com/${handle}`,
+        getLinkLabel: (handle?: string) => `@${handle}`,
+        labelKey: 'userPage.socialLabels.twitter.label',
+        placeholerKey: 'userPage.socialLabels.twitter.placeholder',
+        labelHintKey: 'userPage.socialLabels.twitter.inputHint',
+    },
+    {
+        type: 'facebook',
+        getUrl: (handle?: string) => `${handle}`,
+        getLinkLabel: (handle?: string) => `${removeHttpsWwwPageParams(handle)}`,
+        labelKey: 'userPage.socialLabels.facebook.label',
+        placeholerKey: 'userPage.socialLabels.facebook.placeholder',
+        labelHintKey: 'userPage.socialLabels.facebook.inputHint',
     },
     {
         type: 'website',
         getUrl: (handle?: string) => `${handle}`,
-    },
-    {
-        type: 'instagram',
-        getUrl: (handle?: string) => `https://www.instagram.com/${handle}`,
+        getLinkLabel: (handle?: string) => `${removeHttpsWwwPageParams(handle)}`,
+        labelKey: 'userPage.socialLabels.website.label',
+        placeholerKey: 'userPage.socialLabels.website.placeholder',
+        labelHintKey: 'userPage.socialLabels.website.inputHint',
     },
 ];
 
@@ -65,8 +89,8 @@ function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
     const { t } = useTranslation();
 
     const socialMediaProfiles = USER_LINKS.filter(({ type }) => user.socialMediaProfiles?.[type]).map(
-        ({ type, getUrl }) => {
-            return { type, getUrl };
+        ({ type, getUrl, getLinkLabel }) => {
+            return { type, getUrl, getLinkLabel };
         }
     );
 
@@ -75,12 +99,12 @@ function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
             <ColumnHeading>{t('userPage.info')}</ColumnHeading>
             <div className={s.socialMedia}>
                 {socialMediaProfiles.length === 0 && edit && <>{t('userPage.addSocial')}</>}
-                {socialMediaProfiles.map(({ type, getUrl }) => {
+                {socialMediaProfiles.map(({ type, getUrl, getLinkLabel }) => {
                     return (
                         <div key={type}>
                             {type}:{' '}
                             <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles?.[type])}>
-                                {user.socialMediaProfiles?.[type]}
+                                {getLinkLabel(user.socialMediaProfiles?.[type])}
                             </a>
                         </div>
                     );
@@ -137,12 +161,13 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
                             label={t('userPage.bio')}
                         />
 
-                        {USER_LINKS.map(({ type }) => {
+                        {USER_LINKS.map(({ type, labelHintKey, labelKey, placeholerKey }) => {
                             return (
                                 <Input
                                     key={type}
                                     value={socialMediaState[type]}
-                                    label={type}
+                                    label={`${t(labelKey)} (${t(labelHintKey)})`}
+                                    placeholder={t(placeholerKey).toString()}
                                     onChange={el => {
                                         setSocialMediaState(old => {
                                             return { ...old, [type]: el.target.value };
