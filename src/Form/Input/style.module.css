@@ -121,7 +121,8 @@
     min-height: 100px;
 }
 
-.textarea::placeholder {
+.textarea::placeholder,
+.input::placeholder {
     color: var(--placeholderGrey);
     font-weight: normal;
 }
