@@ -16,7 +16,8 @@
             "translation": {
                 "value": "Translation",
                 "value_plural": "Translations",
-                "add": "Add Translation"
+                "add": "Add Translation",
+                "edit": "Edit Translation"
             },
             "comment": {
                 "value": "Comment",

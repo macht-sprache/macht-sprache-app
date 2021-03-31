@@ -109,9 +109,16 @@ service cloud.firestore {
         data.commentCount == 0;
     }
 
+    function isValidTranslationUpdate() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['value']) &&
+        data.value is string;
+    }
+
     match /translations/{translation} {
       allow read: if true;
       allow create: if isValidatedUser() && isCreator() && isValidTranslation();
+      allow update: if isValidatedUser() && (isCreator() || isAdmin()) && isValidTranslationUpdate();
 
       function isValidRating() {
         let data = request.resource.data;
