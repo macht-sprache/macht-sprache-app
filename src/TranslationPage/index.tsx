@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath, useHistory, useParams } from 'react-router-dom';
+import ConfirmModal from '../ConfirmModal';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
@@ -28,6 +29,7 @@ export function TranslationPage() {
     const term = useTerm(termId);
     const translation = useTranslationEntity(translationId);
     const canEdit = translation.creator.id === user?.id || userProperties?.admin;
+    const canDelete = userProperties?.admin;
 
     return (
         <>
@@ -51,11 +53,16 @@ export function TranslationPage() {
                                 FormatDate: <FormatDate date={translation.createdAt} />,
                             }}
                         />
-
                         {canEdit && (
                             <>
                                 {' | '}
                                 <EditTranslation translation={translation} />
+                            </>
+                        )}
+                        {canDelete && (
+                            <>
+                                {' | '}
+                                <DeleteTranslation translation={translation} />
                             </>
                         )}
                     </>
@@ -88,6 +95,33 @@ export function TranslationPage() {
 
             <TranslationExamplesList term={term} translation={translation} />
         </>
+    );
+}
+
+function DeleteTranslation({ translation }: { translation: Translation }) {
+    const { t } = useTranslation();
+    const history = useHistory();
+
+    return (
+        <ConfirmModal
+            title={t('translation.deleteHeading')}
+            body={<p>{t('translation.deleteExplanation')}</p>}
+            confirmLabel={t('common.formNav.delete')}
+            onConfirm={() => {
+                history.push('/');
+                collections.translations
+                    .doc(translation.id)
+                    .delete()
+                    .then(() => {
+                        alert('Translation deleted');
+                    })
+                    .catch(error => {
+                        alert('Something went wrong: ' + error);
+                    });
+            }}
+        >
+            {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
+        </ConfirmModal>
     );
 }
 

@@ -136,7 +136,9 @@
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet. Add one:",
         "emptyShort": "There are no translations yet",
-        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss."
+        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss.",
+        "deleteHeading": "Delete Translation?",
+        "deleteExplanation": "Are you sure you want to delete this translation? This cannot be undone!"
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",

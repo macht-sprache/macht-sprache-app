@@ -119,6 +119,7 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isValidatedUser() && isCreator() && isValidTranslation();
       allow update: if isValidatedUser() && (isCreator() || isAdmin()) && isValidTranslationUpdate();
+      allow delete: if isValidatedUser() && isAdmin();
 
       function isValidRating() {
         let data = request.resource.data;
