@@ -127,7 +127,9 @@
             "en": "Add an English translation for: <Term />"
         },
         "addCommentHeading": "on how translate <Term />",
-        "commentPlaceholder": "...on how translate “{{term}}”"
+        "commentPlaceholder": "...on how translate “{{term}}”",
+        "deleteHeading": "Delete Term?",
+        "deleteExplanation": "Are you sure you want to delete this term? This cannot be undone!"
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",

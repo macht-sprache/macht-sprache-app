@@ -95,6 +95,7 @@ service cloud.firestore {
       allow create: if isValidatedUser() && isCreator() && isValidTerm();
       allow update: if isValidatedUser() &&
         ((isAdmin() && isValidTermUpdateAdmin()) || (isCreator() && isValidTermUpdate()));
+      allow delete: if isValidatedUser() && isAdmin();
     }
 
     function isValidTranslation() {

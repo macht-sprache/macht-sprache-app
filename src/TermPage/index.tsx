@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Comments from '../Comments';
+import ConfirmModal from '../ConfirmModal';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Checkbox } from '../Form/Checkbox';
 import { Input, Select, Textarea } from '../Form/Input';
@@ -22,10 +23,13 @@ import { getDominantLanguageClass } from '../useLangCssVars';
 import s from './style.module.css';
 
 export default function TermPage() {
+    const { user, userProperties } = useAppContext();
     const { termId } = useParams<{ termId: string }>();
     const { t } = useTranslation();
     const term = useTerm(termId);
     const termRedacted = useRedacted(term.value);
+    const canEdit = term.creator.id === user?.id || userProperties?.admin;
+    const canDelete = userProperties?.admin;
 
     return (
         <>
@@ -41,7 +45,18 @@ export default function TermPage() {
                                 FormatDate: <FormatDate date={term.createdAt} />,
                             }}
                         />
-                        <EditTerm term={term} />
+                        {canEdit && (
+                            <>
+                                {' | '}
+                                <EditTerm term={term} />
+                            </>
+                        )}
+                        {canDelete && (
+                            <>
+                                {' | '}
+                                <DeleteTerm term={term} />
+                            </>
+                        )}
                     </>
                 }
                 mainLang={term.lang}
@@ -78,18 +93,39 @@ export default function TermPage() {
     );
 }
 
-function EditTerm({ term }: { term: Term }) {
-    const { user, userProperties } = useAppContext();
-    const [editOpen, setEditOpen] = useState(false);
+function DeleteTerm({ term }: { term: Term }) {
     const { t } = useTranslation();
-    const canEdit = term.creator.id === user?.id || userProperties?.admin;
-
-    if (!canEdit) {
-        return null;
-    }
+    const history = useHistory();
 
     return (
-        <div>
+        <ConfirmModal
+            title={t('term.deleteHeading')}
+            body={<p>{t('term.deleteExplanation')}</p>}
+            confirmLabel={t('common.formNav.delete')}
+            onConfirm={() => {
+                history.push('/');
+                collections.terms
+                    .doc(term.id)
+                    .delete()
+                    .then(() => {
+                        alert('Term deleted');
+                    })
+                    .catch(error => {
+                        alert('Something went wrong: ' + error);
+                    });
+            }}
+        >
+            {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
+        </ConfirmModal>
+    );
+}
+
+function EditTerm({ term }: { term: Term }) {
+    const [editOpen, setEditOpen] = useState(false);
+    const { t } = useTranslation();
+
+    return (
+        <>
             <LinkButton
                 onClick={() => {
                     setEditOpen(true);
@@ -105,7 +141,7 @@ function EditTerm({ term }: { term: Term }) {
                     }}
                 />
             )}
-        </div>
+        </>
     );
 }
 
