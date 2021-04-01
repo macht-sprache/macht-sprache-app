@@ -11,7 +11,13 @@
     margin-bottom: 0.5rem;
 }
 
-.container h2 {
-    margin-top: 2rem;
+.container h2,
+.container h3 {
     font-family: var(--monospaceFont);
+    margin-top: 2rem;
+    line-height: 1.4;
+}
+
+.container h3 {
+    font-size: 1.1rem;
 }
