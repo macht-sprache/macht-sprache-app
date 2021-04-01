@@ -1,3 +1,4 @@
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -23,6 +24,7 @@ function Layout({ children }: Props) {
     const id = useDomId();
     const [menuOpen, setMenuOpen] = useState(false);
     const location = useLocation();
+    const { trackPageView } = useMatomo();
 
     useEffect(() => {
         document.body.classList.toggle(s.bodyMenuOpen, menuOpen);
@@ -31,6 +33,10 @@ function Layout({ children }: Props) {
     useEffect(() => {
         setMenuOpen(false);
     }, [location]);
+
+    useEffect(() => {
+        trackPageView({ href: location.pathname });
+    }, [trackPageView, location]);
 
     return (
         <OverlayProvider>
