@@ -64,9 +64,10 @@ service cloud.firestore {
 
     function isValidTerm() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'createdAt', 'weekHighlight', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
+      return data.keys().hasOnly(['creator', 'createdAt', 'weekHighlight', 'adminComment', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
         data.createdAt == request.time &&
         data.weekHighlight == false &&
+        data.adminComment == '' &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&
@@ -86,7 +87,6 @@ service cloud.firestore {
       return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'weekHighlight']) &&
         data.value is string &&
         data.lang is string &&
-        data.adminComment is string &&
         data.weekHighlight is bool;
     }
 

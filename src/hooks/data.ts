@@ -242,6 +242,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
         value,
         commentCount: 0,
         weekHighlight: false,
+        adminComment: '',
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
     });

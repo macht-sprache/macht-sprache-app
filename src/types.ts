@@ -24,8 +24,8 @@ export interface Term extends Commentable {
     relatedTerms: DocReference<Term>[];
     creator: UserMini;
     createdAt: Timestamp;
-    weekHighlight?: boolean;
-    adminComment?: string;
+    weekHighlight: boolean;
+    adminComment: string;
 
     value: string;
     variants: string[];
