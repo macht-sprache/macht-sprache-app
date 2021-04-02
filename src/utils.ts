@@ -17,8 +17,11 @@ export function stopPropagation(event: React.MouseEvent) {
 
 export function removeHttpsWwwPageParams(url?: string) {
     if (!url) return '';
-    return url
-        .replace(/(^\w+:|^)\/\//, '')
-        .replace('www.', '')
-        .split('?')[0];
+
+    try {
+        const parsedUrl = new URL(url);
+        return parsedUrl.hostname.replace(/^www\./, '') + parsedUrl.pathname;
+    } catch {
+        return url;
+    }
 }
