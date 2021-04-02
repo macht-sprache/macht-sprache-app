@@ -76,19 +76,19 @@ export default function UserPage() {
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
     const { t } = useTranslation();
 
-    const socialMediaProfiles = USER_LINKS.filter(({ type }) => user.socialMediaProfiles?.[type]);
+    const externalProfiles = USER_LINKS.filter(({ type }) => user.externalProfiles?.[type]);
 
     return (
         <div>
             <ColumnHeading>{t('userPage.info')}</ColumnHeading>
             <div className={s.socialMedia}>
-                {socialMediaProfiles.length === 0 && edit && <>{t('userPage.addSocial')}</>}
-                {socialMediaProfiles.map(({ type, getUrl, getLinkLabel }) => {
+                {externalProfiles.length === 0 && edit && <>{t('userPage.addSocial')}</>}
+                {externalProfiles.map(({ type, getUrl, getLinkLabel }) => {
                     return (
                         <div key={type}>
                             {type}:{' '}
-                            <a target="_blank" rel="noreferrer" href={getUrl(user.socialMediaProfiles?.[type])}>
-                                {getLinkLabel(user.socialMediaProfiles?.[type])}
+                            <a target="_blank" rel="noreferrer" href={getUrl(user.externalProfiles?.[type])}>
+                                {getLinkLabel(user.externalProfiles?.[type])}
                             </a>
                         </div>
                     );
@@ -110,9 +110,9 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
 
     const [bio, setBio] = useState(user.bio || '');
     const [socialMediaState, setSocialMediaState] = useState({
-        twitter: user.socialMediaProfiles?.twitter || '',
-        instagram: user.socialMediaProfiles?.instagram || '',
-        website: user.socialMediaProfiles?.website || '',
+        twitter: user.externalProfiles?.twitter || '',
+        instagram: user.externalProfiles?.instagram || '',
+        website: user.externalProfiles?.website || '',
     });
 
     const onSave = () => {
@@ -120,7 +120,7 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
 
         collections.users
             .doc(user.id)
-            .set({ ...user, socialMediaProfiles: { ...socialMediaState }, bio })
+            .set({ ...user, externalProfiles: { ...socialMediaState }, bio })
             .then(() => {
                 setIsSaving(false);
                 onClose();

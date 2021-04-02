@@ -32,8 +32,8 @@ const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
         return data;
     },
     fromFirestore: (snapshot): User => {
-        const { displayName, displayNameLowerCase, socialMediaProfiles, bio } = snapshot.data(defaultSnapshotOptions);
-        return { id: snapshot.id, displayName, displayNameLowerCase, socialMediaProfiles, bio };
+        const { displayName, displayNameLowerCase, externalProfiles, bio } = snapshot.data(defaultSnapshotOptions);
+        return { id: snapshot.id, displayName, displayNameLowerCase, externalProfiles, bio };
     },
 };
 

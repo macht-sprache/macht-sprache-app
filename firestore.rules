@@ -46,10 +46,10 @@ service cloud.firestore {
 
     function isValidUserUpdate() {
       let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['socialMediaProfiles', 'bio']) &&
-        data.socialMediaProfiles.instagram is string &&
-        data.socialMediaProfiles.twitter is string &&
-        data.socialMediaProfiles.website is string
+      return data.diff(resource.data).affectedKeys().hasOnly(['externalProfiles', 'bio']) &&
+        data.externalProfiles.instagram is string &&
+        data.externalProfiles.twitter is string &&
+        data.externalProfiles.website is string
     }
 
     function isValidUserSettings() {
