@@ -47,7 +47,6 @@ service cloud.firestore {
     function isValidUserUpdate() {
       let data = request.resource.data;
       return data.diff(resource.data).affectedKeys().hasOnly(['socialMediaProfiles', 'bio']) &&
-        data.socialMediaProfiles.facebook is string &&
         data.socialMediaProfiles.instagram is string &&
         data.socialMediaProfiles.twitter is string &&
         data.socialMediaProfiles.website is string
