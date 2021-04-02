@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, useHistory, useParams } from 'react-router-dom';
+import { generatePath, useParams } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
@@ -100,25 +100,13 @@ export function TranslationPage() {
 
 function DeleteTranslation({ translation }: { translation: Translation }) {
     const { t } = useTranslation();
-    const history = useHistory();
 
     return (
         <ConfirmModal
             title={t('translation.deleteHeading')}
             body={<p>{t('translation.deleteExplanation')}</p>}
             confirmLabel={t('common.formNav.delete')}
-            onConfirm={() => {
-                history.push('/');
-                collections.translations
-                    .doc(translation.id)
-                    .delete()
-                    .then(() => {
-                        alert('Translation deleted');
-                    })
-                    .catch(error => {
-                        alert('Something went wrong: ' + error);
-                    });
-            }}
+            onConfirm={() => collections.translations.doc(translation.id).delete()}
         >
             {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
         </ConfirmModal>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
 import ConfirmModal from '../ConfirmModal';
 import Button, { ButtonContainer } from '../Form/Button';
@@ -95,25 +95,13 @@ export default function TermPage() {
 
 function DeleteTerm({ term }: { term: Term }) {
     const { t } = useTranslation();
-    const history = useHistory();
 
     return (
         <ConfirmModal
             title={t('term.deleteHeading')}
             body={<p>{t('term.deleteExplanation')}</p>}
             confirmLabel={t('common.formNav.delete')}
-            onConfirm={() => {
-                history.push('/');
-                collections.terms
-                    .doc(term.id)
-                    .delete()
-                    .then(() => {
-                        alert('Term deleted');
-                    })
-                    .catch(error => {
-                        alert('Something went wrong: ' + error);
-                    });
-            }}
+            onConfirm={() => collections.terms.doc(term.id).delete()}
         >
             {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
         </ConfirmModal>
