@@ -161,7 +161,6 @@ export interface User extends UserMini {
     bio?: string;
     socialMediaProfiles?: {
         twitter?: string;
-        facebook?: string;
         website?: string;
         instagram?: string;
     };
