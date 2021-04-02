@@ -7,20 +7,13 @@ import { findWebPage } from '../../functions';
 import { Lang, WebPage } from '../../types';
 import { WebsiteCoverIcon } from '../../CoverIcon/WebsiteCoverIcon';
 import SelectedItem from '../SelectedItem';
+import { isValidUrl } from '../../utils';
 
 type Props = {
     label: string;
     lang: Lang;
     selectedPage?: WebPage;
     onSelect: (page: WebPage | undefined) => void;
-};
-
-const isValidUrl = (url: string) => {
-    try {
-        return !!new URL(url);
-    } catch {
-        return false;
-    }
 };
 
 type State = {
