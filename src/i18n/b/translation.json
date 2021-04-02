@@ -277,7 +277,8 @@
             "website": {
                 "label": "Website",
                 "placeholder": "https://yourwebsite.com",
-                "inputHint": "Komplette URL"
+                "inputHint": "Komplette URL",
+                "error": "bitte komplette URL (mit http)"
             }
         }
     },

@@ -25,3 +25,10 @@ export function removeHttpsWwwPageParams(url?: string) {
         return url;
     }
 }
+export function isValidUrl(url: string) {
+    try {
+        return !!new URL(url);
+    } catch {
+        return false;
+    }
+}

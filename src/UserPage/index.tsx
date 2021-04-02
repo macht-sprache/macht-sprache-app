@@ -12,7 +12,7 @@ import { ColumnHeading, Columns } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
 import { User, UserSettings } from '../types';
-import { removeHttpsWwwPageParams } from '../utils';
+import { isValidUrl, removeHttpsWwwPageParams } from '../utils';
 import s from './style.module.css';
 
 const USER_LINKS: {
@@ -22,6 +22,8 @@ const USER_LINKS: {
     labelKey: TFuncKey<'translation'>;
     placeholerKey: TFuncKey<'translation'>;
     labelHintKey: TFuncKey<'translation'>;
+    validate?: (input: string) => boolean;
+    errorMessageKey?: TFuncKey<'translation'>;
 }[] = [
     {
         type: 'instagram',
@@ -41,11 +43,13 @@ const USER_LINKS: {
     },
     {
         type: 'website',
-        getUrl: (handle?: string) => `${handle}`,
+        getUrl: (handle?: string) => `${isValidUrl(handle ?? '') && handle}`,
         getLinkLabel: (handle?: string) => `${removeHttpsWwwPageParams(handle)}`,
         labelKey: 'userPage.socialLabels.website.label',
         placeholerKey: 'userPage.socialLabels.website.placeholder',
         labelHintKey: 'userPage.socialLabels.website.inputHint',
+        validate: (input: string) => input === '' || isValidUrl(input),
+        errorMessageKey: 'userPage.socialLabels.website.error',
     },
 ];
 
@@ -127,6 +131,8 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
             });
     };
 
+    const formValid = USER_LINKS.every(({ type, validate }) => (validate ? validate(socialMediaState[type]) : true));
+
     return (
         <ModalDialog title={t('userPage.editInfo')} onClose={onClose}>
             {saving ? (
@@ -144,23 +150,30 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
                             label={t('userPage.bio')}
                         />
 
-                        {USER_LINKS.map(({ type, labelHintKey, labelKey, placeholerKey }) => {
-                            return (
-                                <Input
-                                    key={type}
-                                    value={socialMediaState[type]}
-                                    label={`${t(labelKey)} (${t(labelHintKey)})`}
-                                    placeholder={t(placeholerKey).toString()}
-                                    onChange={el => {
-                                        setSocialMediaState(old => ({ ...old, [type]: el.target.value }));
-                                    }}
-                                />
-                            );
-                        })}
+                        {USER_LINKS.map(
+                            ({ type, labelHintKey, labelKey, placeholerKey, validate, errorMessageKey }) => {
+                                return (
+                                    <Input
+                                        key={type}
+                                        value={socialMediaState[type]}
+                                        label={`${t(labelKey)} (${t(labelHintKey)})`}
+                                        placeholder={t(placeholerKey).toString()}
+                                        onChange={el => {
+                                            setSocialMediaState(old => ({ ...old, [type]: el.target.value }));
+                                        }}
+                                        error={
+                                            errorMessageKey &&
+                                            validate &&
+                                            !validate(socialMediaState[type]) && <>{t(errorMessageKey)}</>
+                                        }
+                                    />
+                                );
+                            }
+                        )}
                     </InputContainer>
                     <ButtonContainer>
                         <Button onClick={onClose}>{t('common.formNav.cancel')}</Button>
-                        <Button onClick={onSave} primary={true}>
+                        <Button onClick={onSave} primary={true} disabled={!formValid}>
                             {t('common.formNav.save')}
                         </Button>
                     </ButtonContainer>

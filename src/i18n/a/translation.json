@@ -281,7 +281,8 @@
             "website": {
                 "label": "Website",
                 "placeholder": "https://yourwebsite.com",
-                "inputHint": "full URL"
+                "inputHint": "full URL",
+                "error": "please add a full URL (with http)"
             }
         }
     },
