@@ -274,11 +274,6 @@
                 "placeholder": "twitter_bentuzername",
                 "inputHint": "name ohne @"
             },
-            "facebook": {
-                "label": "Facebook",
-                "placeholder": "https://facebook.com/user.name",
-                "inputHint": "Komplette URL"
-            },
             "website": {
                 "label": "Website",
                 "placeholder": "https://yourwebsite.com",

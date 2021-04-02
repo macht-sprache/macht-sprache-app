@@ -278,11 +278,6 @@
                 "placeholder": "twitter_user_name",
                 "inputHint": "handle without @"
             },
-            "facebook": {
-                "label": "Facebook",
-                "placeholder": "https://facebook.com/user.name",
-                "inputHint": "full URL"
-            },
             "website": {
                 "label": "Website",
                 "placeholder": "https://yourwebsite.com",

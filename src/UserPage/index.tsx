@@ -16,7 +16,7 @@ import { removeHttpsWwwPageParams } from '../utils';
 import s from './style.module.css';
 
 const USER_LINKS: {
-    type: 'facebook' | 'twitter' | 'website' | 'instagram';
+    type: 'twitter' | 'website' | 'instagram';
     getUrl: (handle?: string) => string;
     getLinkLabel: (handle?: string) => string;
     labelKey: TFuncKey<'translation'>;
@@ -38,14 +38,6 @@ const USER_LINKS: {
         labelKey: 'userPage.socialLabels.twitter.label',
         placeholerKey: 'userPage.socialLabels.twitter.placeholder',
         labelHintKey: 'userPage.socialLabels.twitter.inputHint',
-    },
-    {
-        type: 'facebook',
-        getUrl: (handle?: string) => `${handle}`,
-        getLinkLabel: (handle?: string) => `${removeHttpsWwwPageParams(handle)}`,
-        labelKey: 'userPage.socialLabels.facebook.label',
-        placeholerKey: 'userPage.socialLabels.facebook.placeholder',
-        labelHintKey: 'userPage.socialLabels.facebook.inputHint',
     },
     {
         type: 'website',
@@ -126,7 +118,6 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
 
     const [bio, setBio] = useState(user.bio || '');
     const [socialMediaState, setSocialMediaState] = useState({
-        facebook: user.socialMediaProfiles?.facebook || '',
         twitter: user.socialMediaProfiles?.twitter || '',
         instagram: user.socialMediaProfiles?.instagram || '',
         website: user.socialMediaProfiles?.website || '',
