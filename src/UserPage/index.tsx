@@ -57,11 +57,7 @@ export default function UserPage() {
     const user = useDocument(collections.users.doc(userId));
     const loggedInUserIsCurrentUser = loggedInUser?.id === userId;
 
-    const edit = loggedInUserIsCurrentUser
-        ? () => {
-              setIsEditing(true);
-          }
-        : undefined;
+    const edit = loggedInUserIsCurrentUser ? () => setIsEditing(true) : undefined;
 
     return (
         <>
@@ -80,11 +76,7 @@ export default function UserPage() {
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
     const { t } = useTranslation();
 
-    const socialMediaProfiles = USER_LINKS.filter(({ type }) => user.socialMediaProfiles?.[type]).map(
-        ({ type, getUrl, getLinkLabel }) => {
-            return { type, getUrl, getLinkLabel };
-        }
-    );
+    const socialMediaProfiles = USER_LINKS.filter(({ type }) => user.socialMediaProfiles?.[type]);
 
     return (
         <div>
@@ -160,9 +152,7 @@ function EditUserInfo({ user, onClose }: { user: User; onClose: () => void }) {
                                     label={`${t(labelKey)} (${t(labelHintKey)})`}
                                     placeholder={t(placeholerKey).toString()}
                                     onChange={el => {
-                                        setSocialMediaState(old => {
-                                            return { ...old, [type]: el.target.value };
-                                        });
+                                        setSocialMediaState(old => ({ ...old, [type]: el.target.value }));
                                     }}
                                 />
                             );
