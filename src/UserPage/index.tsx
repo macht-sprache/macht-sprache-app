@@ -184,7 +184,7 @@ function UserBio({ user, edit }: { user: User; edit?: () => void }) {
                     />
                 </div>
             )}
-            {user.bio}
+            <div className={s.bio}>{user.bio}</div>
             {edit && user.bio && (
                 <>
                     {' '}
