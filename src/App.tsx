@@ -93,9 +93,9 @@ function AppRouter() {
                             <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
                                 <TranslationExamplePage />
                             </LaunchedRoute>
-                            <LoggedInRoute path={routes.USER} exact>
+                            <LaunchedRoute path={routes.USER} exact>
                                 <UserPage />
-                            </LoggedInRoute>
+                            </LaunchedRoute>
                             <AdminRoute path={routes.ADMIN} exact>
                                 <AdminPage />
                             </AdminRoute>

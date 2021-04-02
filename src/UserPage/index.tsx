@@ -51,11 +51,11 @@ const USER_LINKS: {
 
 export default function UserPage() {
     const { userId } = useParams<{ userId: string }>();
-    const loggedInUser = useUser()!;
+    const loggedInUser = useUser();
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const user = useDocument(collections.users.doc(userId));
-    const loggedInUserIsCurrentUser = loggedInUser.id === userId;
+    const loggedInUserIsCurrentUser = loggedInUser?.id === userId;
 
     const edit = loggedInUserIsCurrentUser
         ? () => {
@@ -70,7 +70,7 @@ export default function UserPage() {
             </Header>
             <Columns>
                 <UserInfo user={user} edit={edit} />
-                {loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
+                {loggedInUser && loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
             </Columns>
             {isEditing && <EditUserInfo user={user} onClose={() => setIsEditing(false)} />}
         </>
