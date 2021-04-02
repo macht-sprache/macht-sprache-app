@@ -274,6 +274,7 @@ export async function addTranslation(user: User, term: Term, value: string, comm
         commentCount: 0,
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
+        ratings: null,
     });
 
     if (comment) {

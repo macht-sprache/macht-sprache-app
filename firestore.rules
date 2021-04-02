@@ -100,13 +100,14 @@ service cloud.firestore {
 
     function isValidTranslation() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['term', 'creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
+      return data.keys().hasOnly(['term', 'creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'ratings']) &&
         data.term is path &&
         data.createdAt == request.time &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&
-        data.commentCount == 0;
+        data.commentCount == 0 &&
+        data.ratings == null;
     }
 
     function isValidTranslationUpdate() {
