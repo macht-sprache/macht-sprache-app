@@ -28,6 +28,7 @@ const useAuthUserInfos = () => {
 };
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
+const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
 
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
@@ -72,7 +73,10 @@ function UserList() {
 
             <SingleColumn>
                 <ColumnHeading>Data Migrations</ColumnHeading>
-                <EnsureValidUserEntitiesButton />
+                <ButtonContainer align="left">
+                    <EnsureValidUserEntitiesButton />
+                    <RunContentMigrationsButton />
+                </ButtonContainer>
             </SingleColumn>
         </>
     );
@@ -250,6 +254,31 @@ function EnsureValidUserEntitiesButton() {
             {onClick => (
                 <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
                     {requestState === 'DONE' ? 'Ensured Valid User Entities' : 'Ensure Valid User Entities'}
+                </Button>
+            )}
+        </ConfirmModal>
+    );
+}
+
+function RunContentMigrationsButton() {
+    const [requestState, setRequestState] = useRequestState();
+    const onConfirm = useCallback(() => {
+        setRequestState('IN_PROGRESS');
+        runContentMigrations().then(
+            () => setRequestState('DONE'),
+            error => setRequestState('ERROR', error)
+        );
+    }, [setRequestState]);
+    return (
+        <ConfirmModal
+            title="Run Content Migrations?"
+            body={<p>This will add defaults for newly added fields to content entites.</p>}
+            confirmLabel="Run"
+            onConfirm={onConfirm}
+        >
+            {onClick => (
+                <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
+                    {requestState === 'DONE' ? 'Ran Content Migrations' : 'Run Content Migrations'}
                 </Button>
             )}
         </ConfirmModal>
