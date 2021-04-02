@@ -7,3 +7,7 @@
     margin-bottom: 1rem;
     line-height: var(--lineHeightParagraph);
 }
+
+.bio {
+    white-space: pre-wrap;
+}
