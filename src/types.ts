@@ -24,7 +24,8 @@ export interface Term extends Commentable {
     relatedTerms: DocReference<Term>[];
     creator: UserMini;
     createdAt: Timestamp;
-    weekHighlight?: boolean;
+    weekHighlight: boolean;
+    adminComment: string;
 
     value: string;
     variants: string[];
@@ -40,7 +41,7 @@ export interface Translation extends Commentable {
     value: string;
     variants: string[];
     lang: Lang;
-    ratings?: number[];
+    ratings: number[] | null;
 }
 
 export type SourceType = 'BOOK' | 'WEBPAGE' | 'MOVIE';

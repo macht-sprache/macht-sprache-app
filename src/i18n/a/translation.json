@@ -10,12 +10,14 @@
                 "value": "Term",
                 "value_plural": "Terms",
                 "add": "Add Term",
-                "all": "All Terms"
+                "all": "All Terms",
+                "edit": "Edit Term"
             },
             "translation": {
                 "value": "Translation",
                 "value_plural": "Translations",
-                "add": "Add Translation"
+                "add": "Add Translation",
+                "edit": "Edit Translation"
             },
             "comment": {
                 "value": "Comment",
@@ -126,13 +128,17 @@
             "en": "Add an English translation for: <Term />"
         },
         "addCommentHeading": "on how translate <Term />",
-        "commentPlaceholder": "...on how translate “{{term}}”"
+        "commentPlaceholder": "...on how translate “{{term}}”",
+        "deleteHeading": "Delete Term?",
+        "deleteExplanation": "Are you sure you want to delete this term? This cannot be undone!"
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "empty": "There are no translations for <TermWithLang>{{term}}</TermWithLang> yet. Add one:",
         "emptyShort": "There are no translations yet",
-        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss."
+        "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss.",
+        "deleteHeading": "Delete Translation?",
+        "deleteExplanation": "Are you sure you want to delete this translation? This cannot be undone!"
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",

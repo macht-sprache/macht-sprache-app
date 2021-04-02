@@ -59,9 +59,17 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
         return { ...data, createdAt: getCreatedAt(term) };
     },
     fromFirestore: (snapshot): Term => {
-        const { relatedTerms, creator, createdAt, value, variants, lang, commentCount, weekHighlight } = snapshot.data(
-            defaultSnapshotOptions
-        );
+        const {
+            relatedTerms,
+            creator,
+            createdAt,
+            value,
+            variants,
+            lang,
+            commentCount,
+            weekHighlight,
+            adminComment,
+        } = snapshot.data(defaultSnapshotOptions);
         return {
             id: snapshot.id,
             relatedTerms,
@@ -72,6 +80,7 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
             lang,
             commentCount,
             weekHighlight,
+            adminComment,
         };
     },
 };
@@ -233,6 +242,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
         value,
         commentCount: 0,
         weekHighlight: false,
+        adminComment: '',
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
     });
@@ -265,6 +275,7 @@ export async function addTranslation(user: User, term: Term, value: string, comm
         commentCount: 0,
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
+        ratings: null,
     });
 
     if (comment) {

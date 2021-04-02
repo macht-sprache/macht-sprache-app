@@ -17,8 +17,8 @@ import s from './style.module.css';
 
 type Sizes = 'small' | 'medium' | 'large';
 
-type RatingDisplayProps = {
-    ratings?: number[];
+type Props = {
+    ratings: number[] | null;
     termLang: Lang;
     termValue: string;
     translationValue: string;
@@ -27,14 +27,28 @@ type RatingDisplayProps = {
     size?: Sizes;
 };
 
-export function RatingWidget(props: RatingDisplayProps) {
+type DisplayProps = {
+    ratings?: number[];
+    termValue: string;
+    rangeInputProps?: React.InputHTMLAttributes<any>;
+    size?: Sizes;
+};
+
+export function RatingWidget(props: Props) {
     const { t } = useTranslation();
     const [overlayOpen, setOverlayOpen] = useState(false);
     const unset = !props.rangeInputProps?.value;
 
+    const displayProps: DisplayProps = {
+        ratings: props.ratings ?? undefined,
+        termValue: props.termValue,
+        rangeInputProps: props.rangeInputProps,
+        size: props.size,
+    };
+
     return (
         <div className={s.unsetButtonContainer}>
-            <RatingDisplay {...props} />
+            <RatingDisplay {...displayProps} />
             {unset && props.size !== 'small' && (
                 <button onClick={() => setOverlayOpen(true)} className={s.unsetButton}>
                     {t('rating.clickToSet')}
@@ -60,7 +74,7 @@ export function RatingWidget(props: RatingDisplayProps) {
                 >
                     <p>{t('rating.dragToSet')}</p>
                     <div className={getDominantLanguageClass(props.translationLang)}>
-                        <RatingDisplay {...props} size="large" />
+                        <RatingDisplay {...displayProps} size="large" />
                     </div>
                     <ButtonContainer>
                         <Button onClick={() => setOverlayOpen(false)} style={{ marginTop: 10 }}>
@@ -78,7 +92,7 @@ function RatingDisplay({
     termValue,
     rangeInputProps,
     size = 'medium',
-}: RatingDisplayProps) {
+}: DisplayProps) {
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();
@@ -203,16 +217,7 @@ export function RatingWidgetContainer({ translation, term, size }: RatingWidgetC
         );
     }
 
-    return (
-        <RatingDisplay
-            size={size}
-            ratings={translation.ratings}
-            translationLang={translation.lang}
-            translationValue={translationValue}
-            termValue={termValue}
-            termLang={term.lang}
-        />
-    );
+    return <RatingDisplay size={size} ratings={translation.ratings ?? undefined} termValue={termValue} />;
 }
 
 function RatingWidgetLoggedIn({
@@ -242,11 +247,8 @@ function RatingWidgetLoggedIn({
 
     return (
         <RatingDisplay
-            ratings={translation.ratings}
+            ratings={translation.ratings ?? undefined}
             termValue={termValue}
-            termLang={term.lang}
-            translationValue={translationValue}
-            translationLang={translation.lang}
             rangeInputProps={rangeInputProps}
             size={size}
         />

@@ -170,7 +170,11 @@ function AddExampleButton({ to, className }: { to: string; className?: string })
     );
 }
 
-function averageRatings(ratings: number[] = []) {
+function averageRatings(ratings: number[] | null) {
+    if (!ratings) {
+        return 0;
+    }
+
     const sumOfAllRatings = ratings.reduce((accumulator, current, index) => {
         return accumulator + current * (index + 1);
     }, 0);

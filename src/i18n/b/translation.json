@@ -10,12 +10,14 @@
                 "value": "Begriff",
                 "value_plural": "Begriffe",
                 "add": "Begriff hinzufügen",
-                "all": "Alle Begriffe"
+                "all": "Alle Begriffe",
+                "edit": "Begriff bearbeiten"
             },
             "translation": {
                 "value": "Übersetzung",
                 "value_plural": "Übersetzungen",
-                "add": "Übersetzung hinzufügen"
+                "add": "Übersetzung hinzufügen",
+                "edit": "Übersetzung bearbeiten"
             },
             "comment": {
                 "value": "Kommentar",

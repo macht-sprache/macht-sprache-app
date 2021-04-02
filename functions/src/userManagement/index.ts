@@ -1,6 +1,6 @@
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA } from '../../../src/languages';
-import { GlobalSettings, Lang, User, UserProperties, UserSettings } from '../../../src/types';
+import { GlobalSettings, Lang, Term, Translation, User, UserProperties, UserSettings } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 
 const verifyAdmin = async (userId: string) => {
@@ -150,9 +150,31 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
             const userSettings = (await t.get(userSettingsRef)).data() || {};
             const userProperties = (await t.get(userPropertiesRef)).data() || {};
 
-            await t.set(userRef, { ...defaultUser, ...user });
-            await t.set(userSettingsRef, { ...defaultUserSettings, ...userSettings });
-            await t.set(userPropertiesRef, { ...defaultUserProperties, ...userProperties });
+            t.set(userRef, { ...defaultUser, ...user });
+            t.set(userSettingsRef, { ...defaultUserSettings, ...userSettings });
+            t.set(userPropertiesRef, { ...defaultUserProperties, ...userProperties });
         });
     }
+});
+
+export const runContentMigrations = functions.https.onCall(async (_, context) => {
+    const currentUserId = verifyUser(context);
+    await verifyAdmin(currentUserId);
+
+    const termDefaults: Partial<Term> = { weekHighlight: false, adminComment: '' };
+    const translationDefaults: Partial<Translation> = { ratings: null };
+
+    await db.runTransaction(async t => {
+        const terms = await t.get(db.collection('terms'));
+        terms.forEach(term => {
+            t.set(term.ref, { ...termDefaults, ...term.data() });
+        });
+    });
+
+    await db.runTransaction(async t => {
+        const translations = await t.get(db.collection('translations'));
+        translations.forEach(translation => {
+            t.set(translation.ref, { ...translationDefaults, ...translation.data() });
+        });
+    });
 });
