@@ -13,7 +13,7 @@ import { collections, useTerm, useTranslationEntity } from '../hooks/data';
 import { ColumnHeading, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
-import { RatingWidgetContainer } from '../Rating/RatingWidget';
+import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import { WrappedInLangColor } from '../TermWithLang';
@@ -89,7 +89,7 @@ export function TranslationPage() {
                 </p>
                 <div className={clsx(s.rating, getDominantLanguageClass(translation.lang))}>
                     <div className={s.ratingInner}>
-                        <RatingWidgetContainer term={term} translation={translation} />
+                        <RatingContainer term={term} translation={translation} />
                     </div>
                 </div>
             </SingleColumn>

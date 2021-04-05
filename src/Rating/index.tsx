@@ -1,30 +1,30 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
 import { useTranslation } from 'react-i18next';
-import { RATING_STEPS } from '../../constants';
-import { useUser } from '../../hooks/appContext';
-import { setRating, useRating } from '../../hooks/data';
-import { useRedacted } from '../../RedactSensitiveTerms';
-import { Term, Translation, User } from '../../types';
-import { useDomId } from '../../useDomId';
-import { useLang } from '../../useLang';
+import { RATING_STEPS } from '../constants';
+import { useUser } from '../hooks/appContext';
+import { setRating, useRating } from '../hooks/data';
+import { useRedacted } from '../RedactSensitiveTerms';
+import { Term, Translation, User } from '../types';
+import { useDomId } from '../useDomId';
+import { useLang } from '../useLang';
 import s from './style.module.css';
 
 type Sizes = 'small' | 'medium';
 
-type DisplayProps = {
+type RatingProps = {
     ratings?: number[];
     termValue: string;
     rangeInputProps?: React.InputHTMLAttributes<any>;
     size?: Sizes;
 };
 
-export function RatingDisplay({
+export function Rating({
     ratings = new Array(RATING_STEPS).fill(0),
     termValue,
     rangeInputProps,
     size = 'medium',
-}: DisplayProps) {
+}: RatingProps) {
     const max = Math.max(...ratings);
     const { t } = useTranslation();
     const [globalLang] = useLang();
@@ -119,20 +119,20 @@ export function RatingDisplay({
     );
 }
 
-type RatingWidgetContainerProps = {
+type RatingContainerProps = {
     term: Term;
     translation: Translation;
     size?: Sizes;
 };
 
-export function RatingWidgetContainer({ translation, term, size }: RatingWidgetContainerProps) {
+export function RatingContainer({ translation, term, size }: RatingContainerProps) {
     const user = useUser();
     const translationValue = useRedacted(translation.value);
     const termValue = useRedacted(term.value);
 
     if (user) {
         return (
-            <RatingWidgetLoggedIn
+            <RatingLoggedIn
                 size={size}
                 translationValue={translationValue}
                 termValue={termValue}
@@ -143,10 +143,10 @@ export function RatingWidgetContainer({ translation, term, size }: RatingWidgetC
         );
     }
 
-    return <RatingDisplay size={size} ratings={translation.ratings ?? undefined} termValue={termValue} />;
+    return <Rating size={size} ratings={translation.ratings ?? undefined} termValue={termValue} />;
 }
 
-function RatingWidgetLoggedIn({
+function RatingLoggedIn({
     translation,
     termValue,
     user,
@@ -170,7 +170,7 @@ function RatingWidgetLoggedIn({
     };
 
     return (
-        <RatingDisplay
+        <Rating
             ratings={translation.ratings ?? undefined}
             termValue={termValue}
             rangeInputProps={rangeInputProps}

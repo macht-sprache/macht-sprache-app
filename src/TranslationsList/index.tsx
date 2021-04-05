@@ -8,7 +8,7 @@ import { CoverIcon } from '../CoverIcon';
 import { FormatDate } from '../FormatDate';
 import { collections, useSources, useTranslations } from '../hooks/data';
 import { langA, langB } from '../languages';
-import { RatingWidgetContainer } from '../Rating/RatingWidget';
+import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
@@ -100,7 +100,7 @@ function TranslationItem({
                     </h1>
                 </Link>
                 <div className={s.rating}>
-                    <RatingWidgetContainer term={term} translation={translation} size="small" />
+                    <RatingContainer term={term} translation={translation} size="small" />
                 </div>
             </header>
             {size === 'medium' && (

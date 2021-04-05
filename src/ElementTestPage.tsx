@@ -10,7 +10,7 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
-import { RatingDisplay } from './Rating/RatingWidget';
+import { Rating } from './Rating';
 import { Book, Comment, Movie, WebPage } from './types';
 import MovieSearch from './MediaSelection/MovieSearch';
 import WebPageSearch from './MediaSelection/WebPageSearch';
@@ -95,11 +95,11 @@ export default function ElementTestPage() {
             <Heading>Rating Widget</Heading>
             <p>Without user rating</p>
             <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
-                <RatingDisplay termValue="Indianer" ratings={[5, 2, 0, 12, 21]} />
+                <Rating termValue="Indianer" ratings={[5, 2, 0, 12, 21]} />
             </div>
             <p>With user rating</p>
             <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
-                <RatingDisplay
+                <Rating
                     termValue="Indianer"
                     ratings={[5, 2, 0, 12, 21]}
                     rangeInputProps={{
@@ -112,7 +112,7 @@ export default function ElementTestPage() {
             </div>
             <p>Small:</p>
             <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
-                <RatingDisplay size="small" termValue="Indianer" ratings={[5, 2, 0, 12, 21]} />
+                <Rating size="small" termValue="Indianer" ratings={[5, 2, 0, 12, 21]} />
             </div>
 
             <Heading>Button</Heading>
