@@ -32,26 +32,13 @@
     position: relative;
     max-width: 20rem;
     width: 100%;
-    height: 6rem;
     font-weight: normal;
-    margin-bottom: 2rem;
-}
-
-.container:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: var(--thickBorder);
-    background: var(--dominantLanguageColor);
-    box-shadow: 0 0 0 var(--thickBorder) var(--white);
 }
 
 .container.small {
     --thumbSize: 0.7rem;
     margin: 0;
     width: 5rem;
-    height: 1.9rem;
 }
 
 .container.large {
@@ -66,16 +53,17 @@
     --thumbShadowWidth: 0.1rem;
 }
 
-.container:focus-within:after {
-    background: var(--orange);
-}
-
 .ratings {
+    position: relative;
     width: 100%;
-    height: calc(100% - var(--thickBorder) * 2);
+    height: 6rem;
     display: flex;
     align-items: flex-end;
     padding-top: var(--thickBorder);
+}
+
+.small .ratings {
+    height: 1.7rem;
 }
 
 .rating {
@@ -129,18 +117,20 @@
 .rangeInput {
     --columnCount: 5;
     --thumbOpacity: 1;
+    display: block;
+    position: relative;
     z-index: 2;
-    position: absolute;
-    bottom: calc(var(--thumbSize) * -0.5 - var(--thickBorder) / 2);
-    left: 0.1rem;
-    right: 0.1rem;
     width: calc(100% - 0.3rem);
-    background: transparent;
+    margin: var(--thickBorder) 0;
+    width: 100%;
+    background: var(--dominantLanguageColor);
+    height: var(--thickBorder);
     -webkit-appearance: none;
 }
 
 .rangeInput:focus {
     outline: none;
+    background: var(--orange);
 }
 
 .rangeInput.unset {
@@ -182,8 +172,6 @@
 
 .permanentSliderLabel,
 .userUsageDisplay {
-    position: absolute;
-    top: 100%;
     margin-top: 0.5rem;
     width: 100%;
 }

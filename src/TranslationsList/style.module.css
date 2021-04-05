@@ -37,7 +37,7 @@
 }
 
 .rating {
-    margin: 0 0.5rem;
+    margin: 0 calc(var(--thickBorder) * 2);
 }
 
 .body {

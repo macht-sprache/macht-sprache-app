@@ -124,6 +124,8 @@ function RatingDisplay({
         return null;
     }
 
+    console.log(size);
+
     return (
         <div
             className={clsx(s.container, s[size])}
