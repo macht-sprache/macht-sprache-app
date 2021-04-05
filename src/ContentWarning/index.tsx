@@ -31,7 +31,7 @@ export function ContentWarning() {
         >
             <div className={s.body}>
                 <div>
-                    <img className={s.illustration} src={Illustration} alt="" />
+                    <img className={s.illustration} width="700" height="700" src={Illustration} alt="" />
                     <span className={s.imageCredit}>Illustration: Jane Schueler</span>
                 </div>
                 <div>
