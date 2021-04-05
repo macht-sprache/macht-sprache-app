@@ -1,10 +1,9 @@
 .container {
     --headerBarHeight: 4rem;
-    --sidebarWidth: 10rem;
 
     display: grid;
     height: 100%;
-    grid-template-columns: 1fr var(--sidebarWidth) minmax(auto, 65rem) 1fr;
+    grid-template-columns: 1fr var(--sidebarWidth) minmax(auto, var(--contentWidth)) 1fr;
     grid-gap: 4rem;
 }
 
