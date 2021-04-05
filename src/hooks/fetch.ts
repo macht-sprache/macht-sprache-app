@@ -2,14 +2,14 @@ import firebase from 'firebase/app';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ERROR_NOT_FOUND } from '../constants';
 
-type CollectionReference<T> = firebase.firestore.CollectionReference<T>;
+type Query<T> = firebase.firestore.Query<T>;
 type DocumentReference<T> = firebase.firestore.DocumentReference<T>;
 type QuerySnapshot<T> = firebase.firestore.QuerySnapshot<T>;
 type DocumentSnapshot<T> = firebase.firestore.DocumentSnapshot<T>;
 type Dictionary<T> = Partial<Record<string, T>>;
 
-type Reference<T> = CollectionReference<T> | DocumentReference<T>;
-type Snapshot<T, R extends Reference<T>> = R extends CollectionReference<T>
+type Reference<T> = Query<T> | DocumentReference<T>;
+type Snapshot<T, R extends Reference<T>> = R extends Query<T>
     ? QuerySnapshot<T>
     : R extends DocumentReference<T>
     ? DocumentSnapshot<T>
@@ -23,22 +23,17 @@ export type Get<T> = {
     (): T;
 };
 
-const referenceCache: (firebase.firestore.DocumentReference | firebase.firestore.CollectionReference)[] = [];
-const readerCache = new WeakMap<firebase.firestore.DocumentReference | firebase.firestore.CollectionReference>();
+const referenceCache: (firebase.firestore.DocumentReference | firebase.firestore.Query)[] = [];
+const readerCache = new WeakMap<firebase.firestore.DocumentReference | firebase.firestore.Query>();
 
-const useStableRef = <T extends firebase.firestore.DocumentReference | firebase.firestore.CollectionReference>(
-    ref: T
-): T => {
+const useStableRef = <T extends firebase.firestore.DocumentReference | firebase.firestore.Query>(ref: T): T => {
     const cachedRef = referenceCache.find(cachedRef => {
         if (
             ref instanceof firebase.firestore.DocumentReference &&
             cachedRef instanceof firebase.firestore.DocumentReference
         ) {
             return cachedRef.isEqual(ref);
-        } else if (
-            ref instanceof firebase.firestore.CollectionReference &&
-            cachedRef instanceof firebase.firestore.CollectionReference
-        ) {
+        } else if (ref instanceof firebase.firestore.Query && cachedRef instanceof firebase.firestore.Query) {
             return cachedRef.isEqual(ref);
         }
         return false;
@@ -103,7 +98,7 @@ function useSnapshot<T, Ref extends Reference<T>>(currentRef: Ref) {
     }, [ref, state?.ref, state?.snapshot]);
 }
 
-export function useCollection<T>(ref: CollectionReference<T>): GetList<T> {
+export function useCollection<T>(ref: Query<T>): GetList<T> {
     const snapshotReader = useSnapshot<T, typeof ref>(ref);
     return useCallback(() => {
         const snapshot = snapshotReader();
@@ -111,7 +106,7 @@ export function useCollection<T>(ref: CollectionReference<T>): GetList<T> {
     }, [snapshotReader]);
 }
 
-export function useCollectionById<T>(ref: CollectionReference<T>): GetListById<T> {
+export function useCollectionById<T>(ref: Query<T>): GetListById<T> {
     const snapshotReader = useSnapshot<T, typeof ref>(ref);
     return useCallback(() => {
         const snapshot = snapshotReader();
