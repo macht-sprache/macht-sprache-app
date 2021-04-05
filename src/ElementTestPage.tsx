@@ -10,7 +10,7 @@ import InputContainer from './Form/InputContainer';
 import Header from './Header';
 import { collections } from './hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
-import { RatingWidget } from './Rating/RatingWidget';
+import { RatingDisplay } from './Rating/RatingWidget';
 import { Book, Comment, Movie, WebPage } from './types';
 import MovieSearch from './MediaSelection/MovieSearch';
 import WebPageSearch from './MediaSelection/WebPageSearch';
@@ -94,27 +94,26 @@ export default function ElementTestPage() {
             <Header>Element Test Page</Header>
             <Heading>Rating Widget</Heading>
             <p>Without user rating</p>
-            <RatingWidget
-                termLang="de"
-                termValue="Indianer"
-                translationLang="en"
-                translationValue="Native American"
-                ratings={[5, 2, 0, 12, 21]}
-            />
+            <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
+                <RatingDisplay termValue="Indianer" ratings={[5, 2, 0, 12, 21]} />
+            </div>
             <p>With user rating</p>
-            <RatingWidget
-                termLang="de"
-                termValue="Indianer"
-                translationLang="en"
-                translationValue="Native American"
-                ratings={[5, 2, 0, 12, 21]}
-                rangeInputProps={{
-                    value: rating,
-                    onChange: e => {
-                        setRating(e.currentTarget.value);
-                    },
-                }}
-            />
+            <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
+                <RatingDisplay
+                    termValue="Indianer"
+                    ratings={[5, 2, 0, 12, 21]}
+                    rangeInputProps={{
+                        value: rating,
+                        onChange: e => {
+                            setRating(e.currentTarget.value);
+                        },
+                    }}
+                />
+            </div>
+            <p>Small:</p>
+            <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
+                <RatingDisplay size="small" termValue="Indianer" ratings={[5, 2, 0, 12, 21]} />
+            </div>
 
             <Heading>Button</Heading>
             <Button>button</Button>

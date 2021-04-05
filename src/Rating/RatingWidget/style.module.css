@@ -41,14 +41,6 @@
     width: 5rem;
 }
 
-.container.large {
-    --thumbSize: 1.5rem;
-    margin-top: 2rem;
-    margin-bottom: 4rem;
-    width: 100%;
-    height: 10rem;
-}
-
 .container:focus-within {
     --thumbShadowWidth: 0.1rem;
 }
@@ -81,11 +73,6 @@
     bottom: 100%;
     padding: 0.2rem;
     cursor: default;
-}
-
-.large .ratingInner {
-    padding: 1rem;
-    font-weight: bold;
 }
 
 .ratingInner.inside {

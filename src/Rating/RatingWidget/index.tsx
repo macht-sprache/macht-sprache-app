@@ -1,31 +1,16 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
-import { useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { RATING_STEPS } from '../../constants';
-import Button, { ButtonContainer } from '../../Form/Button';
 import { useUser } from '../../hooks/appContext';
 import { setRating, useRating } from '../../hooks/data';
-import { ModalDialog } from '../../ModalDialog';
 import { useRedacted } from '../../RedactSensitiveTerms';
-import { WrappedInLangColor } from '../../TermWithLang';
-import { Lang, Term, Translation, User } from '../../types';
+import { Term, Translation, User } from '../../types';
 import { useDomId } from '../../useDomId';
 import { useLang } from '../../useLang';
-import { getDominantLanguageClass } from '../../useLangCssVars';
 import s from './style.module.css';
 
-type Sizes = 'small' | 'medium' | 'large';
-
-type Props = {
-    ratings: number[] | null;
-    termLang: Lang;
-    termValue: string;
-    translationValue: string;
-    translationLang: Lang;
-    rangeInputProps?: React.InputHTMLAttributes<any>;
-    size?: Sizes;
-};
+type Sizes = 'small' | 'medium';
 
 type DisplayProps = {
     ratings?: number[];
@@ -34,60 +19,7 @@ type DisplayProps = {
     size?: Sizes;
 };
 
-export function RatingWidget(props: Props) {
-    const { t } = useTranslation();
-    const [overlayOpen, setOverlayOpen] = useState(false);
-    const unset = !props.rangeInputProps?.value;
-
-    const displayProps: DisplayProps = {
-        ratings: props.ratings ?? undefined,
-        termValue: props.termValue,
-        rangeInputProps: props.rangeInputProps,
-        size: props.size,
-    };
-
-    return (
-        <div className={s.unsetButtonContainer}>
-            <RatingDisplay {...displayProps} />
-            {unset && props.size !== 'small' && (
-                <button onClick={() => setOverlayOpen(true)} className={s.unsetButton}>
-                    {t('rating.clickToSet')}
-                </button>
-            )}
-            {overlayOpen && (
-                <ModalDialog
-                    title={
-                        <Trans
-                            t={t}
-                            i18nKey="rating.overlayHeading"
-                            values={{
-                                translation: props.translationValue,
-                                term: props.termValue,
-                            }}
-                            components={{
-                                Term: <WrappedInLangColor lang={props.termLang} />,
-                                Translation: <WrappedInLangColor lang={props.translationLang} />,
-                            }}
-                        />
-                    }
-                    onClose={() => setOverlayOpen(false)}
-                >
-                    <p>{t('rating.dragToSet')}</p>
-                    <div className={getDominantLanguageClass(props.translationLang)}>
-                        <RatingDisplay {...displayProps} size="large" />
-                    </div>
-                    <ButtonContainer>
-                        <Button onClick={() => setOverlayOpen(false)} style={{ marginTop: 10 }}>
-                            {t('common.formNav.close')}
-                        </Button>
-                    </ButtonContainer>
-                </ModalDialog>
-            )}
-        </div>
-    );
-}
-
-function RatingDisplay({
+export function RatingDisplay({
     ratings = new Array(RATING_STEPS).fill(0),
     termValue,
     rangeInputProps,
@@ -124,8 +56,6 @@ function RatingDisplay({
         return null;
     }
 
-    console.log(size);
-
     return (
         <div
             className={clsx(s.container, s[size])}
@@ -148,12 +78,6 @@ function RatingDisplay({
                 ))}
                 {sumOfAllRatings === 0 && <div className={s.emtpyMessage}>{t('rating.noData')}</div>}
             </div>
-            {size === 'large' && (
-                <div aria-hidden="true" className={s.permanentSliderLabel}>
-                    <div>{ratingTranslations[0]}</div>
-                    <div>{ratingTranslations[ratingTranslations.length - 1]}</div>
-                </div>
-            )}
             {rangeInputProps && (
                 <>
                     <label htmlFor={id('ratingSlider')} lang={globalLang} className={s.hiddenLabel}>
@@ -178,7 +102,7 @@ function RatingDisplay({
                         <div className={s.userUsageDisplay} lang={globalLang}>
                             {rangeInputProps.value && (
                                 <>
-                                    {size !== 'large' && t('rating.yourRating')}
+                                    {t('rating.yourRating')}
                                     {
                                         t('rating.values', { returnObjects: true })[
                                             Math.round(rangeInputProps.value as number) - 1
@@ -186,7 +110,7 @@ function RatingDisplay({
                                     }
                                 </>
                             )}
-                            {!rangeInputProps.value && size !== 'large' && <>{t('rating.dragToSet')}</>}
+                            {!rangeInputProps.value && <>{t('rating.dragToSet')}</>}
                         </div>
                     )}
                 </>
@@ -223,10 +147,8 @@ export function RatingWidgetContainer({ translation, term, size }: RatingWidgetC
 }
 
 function RatingWidgetLoggedIn({
-    translationValue,
     translation,
     termValue,
-    term,
     user,
     size,
 }: {
