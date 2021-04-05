@@ -60,7 +60,7 @@ export default function AdminPage() {
 function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListProps) {
     const users = [...getUsers()].sort((a, b) => a.displayName.localeCompare(b.displayName));
     const userProperties = getUserProperties();
-    const globalSettings = getGlobalSettings(true);
+    const globalSettings = getGlobalSettings(true) || { enableNewUsers: true };
     const authUserInfos = useAuthUserInfos();
 
     return (

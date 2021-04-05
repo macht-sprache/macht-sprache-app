@@ -1,7 +1,5 @@
 import firebase from 'firebase/app';
 import { useMemo } from 'react';
-import { useFirestoreCollection, useFirestoreCollectionData, useFirestoreDoc, useFirestoreDocData } from 'reactfire';
-import { ERROR_NOT_FOUND } from '../constants';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';
 import {
@@ -201,36 +199,20 @@ export const collections = {
     settings: db.collection('settings').withConverter(GlobalSettingsConverter),
 };
 
-export const useDocument = <T>(ref: firebase.firestore.DocumentReference<T>, fallback?: T) => {
-    const { data: snapshot } = useFirestoreDoc<firebase.firestore.DocumentSnapshot<T>>(ref);
-    const data = snapshot.data() || fallback;
+export const getTranslationsRef = (termRef: firebase.firestore.DocumentReference<Term>) =>
+    collections.translations.where('term', '==', termRef);
 
-    if (!data) {
-        throw ERROR_NOT_FOUND;
-    }
+export const getTranslationExamplesRef = (translationRef: firebase.firestore.DocumentReference<Translation>) =>
+    collections.translationExamples.where('translation', '==', translationRef);
 
-    return data;
-};
+export const getSourcesRef = (ref: DocReference<Term | Translation>) =>
+    collections.sources.where('refs', 'array-contains', ref);
 
-export const useCollection = <T>(ref: firebase.firestore.CollectionReference<T>, initialData?: T[]) => {
-    return useFirestoreCollectionData<T>(ref, { initialData }).data;
-};
+export const getRatingRef = (userId: string, translationId: string) =>
+    collections.translations.doc(translationId).collection('ratings').withConverter(RatingConverter).doc(userId);
 
-export const useCollectionById = <T>(ref: firebase.firestore.CollectionReference<T>) => {
-    const snapshot: firebase.firestore.QuerySnapshot<T> = useFirestoreCollection(ref).data as any;
-
-    return useMemo(() => {
-        return snapshot.docs.reduce<Partial<Record<string, T>>>((acc, cur) => ({ ...acc, [cur.id]: cur.data() }), {});
-    }, [snapshot.docs]);
-};
-
-export function useTerms() {
-    return useFirestoreCollectionData<Term>(collections.terms, { initialData: [] }).data;
-}
-
-export function useTerm(id: string) {
-    return useDocument(collections.terms.doc(id));
-}
+export const getCommentsRef = (ref: Comment['ref']) =>
+    collections.comments.where('ref', '==', ref).orderBy('createdAt');
 
 export async function addTerm(user: User, value: string, lang: Lang, comment?: string) {
     const termRef = collections.terms.doc();
@@ -254,16 +236,6 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
     return termRef;
 }
 
-export function useTranslationEntity(id: string) {
-    return useDocument(collections.translations.doc(id));
-}
-
-export function useTranslations(termId: string) {
-    return useFirestoreCollectionData<Translation>(
-        collections.translations.where('term', '==', collections.terms.doc(termId))
-    ).data;
-}
-
 export async function addTranslation(user: User, term: Term, value: string, comment?: string) {
     const translationRef = collections.translations.doc();
     await translationRef.set({
@@ -285,20 +257,8 @@ export async function addTranslation(user: User, term: Term, value: string, comm
     return translationRef;
 }
 
-export function useTranslationExample(id: string) {
-    return useDocument(collections.translationExamples.doc(id));
-}
-
-export function useTranslationExamples(translationId: string) {
-    return useFirestoreCollectionData<TranslationExample>(
-        collections.translationExamples.where('translation', '==', collections.translations.doc(translationId))
-    ).data;
-}
-
-export function useSources(ref: DocReference<Term | Translation>) {
-    const sources = useFirestoreCollectionData<Source>(collections.sources.where('refs', 'array-contains', ref)).data;
-
-    const grouped = useMemo(
+export function useGroupedSources(sources: Source[]) {
+    return useMemo(
         () =>
             sources.reduce<{ [refId: string]: Source[] }>((acc, cur) => {
                 cur.refs.forEach(({ id }) => {
@@ -314,14 +274,6 @@ export function useSources(ref: DocReference<Term | Translation>) {
             }, {}),
         [sources]
     );
-
-    return grouped;
-}
-
-export function useRating(userId: string, translationId: string) {
-    return useFirestoreDocData<Rating | undefined>(
-        collections.translations.doc(translationId).collection('ratings').withConverter(RatingConverter).doc(userId)
-    ).data;
 }
 
 export const setRating = (userId: string, translationId: string, rating: number) =>
@@ -331,12 +283,6 @@ export const setRating = (userId: string, translationId: string, rating: number)
         .withConverter(RatingConverter)
         .doc(userId)
         .set({ rating, updatedAt: firebase.firestore.Timestamp.now() });
-
-export function useComments(ref: Comment['ref']) {
-    return useFirestoreCollectionData<Comment>(collections.comments.where('ref', '==', ref).orderBy('createdAt'), {
-        initialData: [],
-    }).data;
-}
 
 export const addComment = (user: User, ref: Comment['ref'], comment: string) => {
     return collections.comments.doc().set({

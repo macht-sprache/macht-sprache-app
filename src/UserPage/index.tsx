@@ -7,7 +7,8 @@ import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
-import { collections, useDocument } from '../hooks/data';
+import { collections } from '../hooks/data';
+import { Get, useDocument } from '../hooks/fetch';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
@@ -53,13 +54,19 @@ const USER_LINKS: {
     },
 ];
 
-export default function UserPage() {
+export default function UserPageWrapper() {
     const { userId } = useParams<{ userId: string }>();
+    const getUser = useDocument(collections.users.doc(userId));
+    return <UserPage getUser={getUser} />;
+}
+
+function UserPage({ getUser }: { getUser: Get<User> }) {
     const loggedInUser = useUser();
     const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
-    const user = useDocument(collections.users.doc(userId));
-    const loggedInUserIsCurrentUser = loggedInUser?.id === userId;
+
+    const user = getUser();
+    const loggedInUserIsCurrentUser = loggedInUser?.id === user.id;
 
     const edit = loggedInUserIsCurrentUser ? () => setIsEditing(true) : undefined;
 

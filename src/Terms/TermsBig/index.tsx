@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import { useTerms } from '../../hooks/data';
-import { Lang } from '../../types';
+import { GetList } from '../../hooks/fetch';
+import { Lang, Term } from '../../types';
 import { useLang } from '../../useLang';
 import { LangFilter } from '../LangFilter';
 import { TermItem } from '../TermItem';
 import s from './style.module.css';
 
-export function TermsBig() {
-    const terms = useTerms();
+type Props = {
+    getTerms: GetList<Term>;
+};
+
+export function TermsBig({ getTerms }: Props) {
     const [langFilter, setLangFilter] = useState<Lang>();
     const [lang] = useLang();
+
+    const terms = getTerms();
     const sortedTerms = terms
         .filter(term => !langFilter || langFilter === term.lang)
         .sort(({ value: valueA }, { value: valueB }) => valueA.localeCompare(valueB, lang));

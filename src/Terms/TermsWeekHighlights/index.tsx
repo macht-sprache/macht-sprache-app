@@ -1,12 +1,10 @@
-import { useTerms } from '../../hooks/data';
+import { collections } from '../../hooks/data';
+import { useCollection } from '../../hooks/fetch';
 import { TermItem } from '../TermItem';
 
 export function TermsWeekHighlights() {
-    const terms = useTerms();
-
-    const highlightedTerms = terms
-        .filter(term => term.weekHighlight)
-        .sort((termA, termB) => termA.value.localeCompare(termB.value, termA.lang));
+    const getTerms = useCollection(collections.terms.where('weekHighlight', '==', true));
+    const highlightedTerms = [...getTerms()].sort((termA, termB) => termA.value.localeCompare(termB.value, termA.lang));
 
     return (
         <>

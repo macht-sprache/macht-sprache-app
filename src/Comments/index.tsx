@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../hooks/appContext';
-import { addComment, useComments } from '../hooks/data';
+import { addComment, getCommentsRef } from '../hooks/data';
+import { GetList, useCollection } from '../hooks/fetch';
 import { ColumnHeading } from '../Layout/Columns';
 import { Comment } from '../types';
 import { CommentCreate } from './CommentCreate';
@@ -10,15 +12,15 @@ import s from './style.module.css';
 
 type Props = {
     entityRef: Comment['ref'];
+    commentCount: number;
     headingHint?: React.ReactNode;
     placeholder?: string;
 };
 
-export default function Comments({ entityRef: ref, headingHint, placeholder }: Props) {
+export default function Comments({ entityRef: ref, commentCount, headingHint, placeholder }: Props) {
     const user = useUser();
-    const comments = useComments(ref);
+    const getComments = useCollection(getCommentsRef(ref));
     const { t } = useTranslation();
-    const commentCount = comments.length;
     const onCreate = async (comment: string) => user && addComment(user, ref, comment);
 
     return (
@@ -32,8 +34,14 @@ export default function Comments({ entityRef: ref, headingHint, placeholder }: P
                     </>
                 )}
             </ColumnHeading>
-            <CommentList comments={comments} />
-            <CommentCreate placeholder={placeholder} onCreate={onCreate} />
+            <Suspense fallback={null}>
+                <CommentListWrapped getComments={getComments} />
+                <CommentCreate placeholder={placeholder} onCreate={onCreate} />
+            </Suspense>
         </CommentWrapper>
     );
+}
+
+function CommentListWrapped({ getComments }: { getComments: GetList<Comment> }) {
+    return <CommentList comments={getComments()} />;
 }

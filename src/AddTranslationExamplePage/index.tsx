@@ -8,7 +8,8 @@ import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { addTranslationExample } from '../functions';
 import Header from '../Header';
-import { useTerm, useTranslationEntity } from '../hooks/data';
+import { collections } from '../hooks/data';
+import { Get, useDocument } from '../hooks/fetch';
 import { Columns } from '../Layout/Columns';
 import BookSearch from '../MediaSelection/BookSearch';
 import MovieSearch from '../MediaSelection/MovieSearch';
@@ -278,12 +279,15 @@ function SnippetSelection({
     );
 }
 
-function AddTranslationExample({ term, translation }: { term: Term; translation: Translation }) {
+function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>; getTranslation: Get<Translation> }) {
     const { t } = useTranslation();
     const history = useHistory();
     const [step, setStep] = useState(steps[0]);
     const [model, onChange] = useState<Model>({ original: {}, translated: {} });
     const [{ saving, error }, setSaveState] = useState({ saving: false, error: false });
+
+    const term = getTerm();
+    const translation = getTranslation();
 
     const save = () => {
         const translationExampleModel = toTranslationExampleModel(term, translation, model);
@@ -366,12 +370,12 @@ function AddTranslationExample({ term, translation }: { term: Term; translation:
     );
 }
 
-export function AddTranslationExamplePage() {
+export default function AddTranslationExamplePage() {
     const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
-    const term = useTerm(termId);
-    const translation = useTranslationEntity(translationId);
+    const getTerm = useDocument(collections.terms.doc(termId));
+    const getTranslation = useDocument(collections.translations.doc(translationId));
 
-    return <AddTranslationExample term={term} translation={translation} />;
+    return <AddTranslationExample getTerm={getTerm} getTranslation={getTranslation} />;
 }
 
 const Section = ({ children }: { children: React.ReactNode }) => <div className={s.section}>{children}</div>;

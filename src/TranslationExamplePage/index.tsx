@@ -2,31 +2,50 @@ import clsx from 'clsx';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../Comments';
-import { ExampleText } from '../ExampleText';
-import Header from '../Header';
-import { collections, useDocument, useTerm, useTranslationEntity, useTranslationExample } from '../hooks/data';
-import { TERM, TRANSLATION } from '../routes';
-import { DocReference, Source } from '../types';
-import s from './style.module.css';
 import { CoverIcon } from '../CoverIcon';
-import { extractRootDomain, trimString } from '../utils';
+import { ExampleText } from '../ExampleText';
 import { FormatDate } from '../FormatDate';
+import Header from '../Header';
+import { collections } from '../hooks/data';
+import { Get, useDocument } from '../hooks/fetch';
 import { Redact } from '../RedactSensitiveTerms';
+import { TERM, TRANSLATION } from '../routes';
+import { DocReference, Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
+import { extractRootDomain, trimString } from '../utils';
+import s from './style.module.css';
 
-export function TranslationExamplePage() {
-    const { t } = useTranslation();
+type Props = {
+    getTerm: Get<Term>;
+    getTranslation: Get<Translation>;
+    getTranslationExample: Get<TranslationExample>;
+};
+
+export default function TranslationExamplePageWrapper() {
     const { termId, translationId, translationExampleId } = useParams<{
         termId: string;
         translationId: string;
         translationExampleId: string;
     }>();
-    const term = useTerm(termId);
-    const translation = useTranslationEntity(translationId);
-    const translationExample = useTranslationExample(translationExampleId);
-    const originalSource = useDocument(translationExample.original.source as DocReference<Source>);
-    const translatedSource = useDocument(translationExample.translated.source as DocReference<Source>);
+    const getTerm = useDocument(collections.terms.doc(termId));
+    const getTranslation = useDocument(collections.translations.doc(translationId));
+    const getTranslationExample = useDocument(collections.translationExamples.doc(translationExampleId));
+    const props = { getTerm, getTranslation, getTranslationExample };
+    return <TranslationExamplePage {...props} />;
+}
+
+function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample }: Props) {
+    const { t } = useTranslation();
+    const term = getTerm();
+    const translation = getTranslation();
+    const translationExample = getTranslationExample();
+
+    const getOriginalSource = useDocument(translationExample.original.source as DocReference<Source>);
+    const getTranslatedSource = useDocument(translationExample.translated.source as DocReference<Source>);
+
+    const originalSource = getOriginalSource();
+    const translatedSource = getTranslatedSource();
 
     return (
         <>
@@ -74,7 +93,10 @@ export function TranslationExamplePage() {
                 />
 
                 <div className={clsx(s.comments, getDominantLanguageClass(translation.lang))}>
-                    <Comments entityRef={collections.translationExamples.doc(translationExample.id)} />
+                    <Comments
+                        entityRef={collections.translationExamples.doc(translationExample.id)}
+                        commentCount={translationExample.commentCount}
+                    />
                 </div>
             </div>
         </>

@@ -1,27 +1,29 @@
+import clsx from 'clsx';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { useTranslationExamples, useSources, collections } from '../hooks/data';
+import { AddEntityButton } from '../AddEntityButton';
+import { CoverIcon } from '../CoverIcon';
+import { FormatDate } from '../FormatDate';
+import { GetList } from '../hooks/fetch';
 import { ColumnHeading, FullWidthColumn } from '../Layout/Columns';
 import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import { Term, Translation, TranslationExample, Source } from '../types';
+import { Source, Term, Translation, TranslationExample } from '../types';
+import { getDominantLanguageClass } from '../useLangCssVars';
 import { extractRootDomain, trimString } from '../utils';
 import s from './style.module.css';
-import { CoverIcon } from '../CoverIcon';
-import clsx from 'clsx';
-import { getDominantLanguageClass } from '../useLangCssVars';
-import { FormatDate } from '../FormatDate';
-import { AddEntityButton } from '../AddEntityButton';
 
 type Props = {
     term: Term;
     translation: Translation;
+    getTranslationExamples: GetList<TranslationExample>;
+    getSources: GetList<Source>;
 };
 
-export default function TranslationExamplesList({ term, translation }: Props) {
+export default function TranslationExamplesList({ term, translation, getTranslationExamples, getSources }: Props) {
     const { t } = useTranslation();
-    const translationExamples = useTranslationExamples(translation.id);
-    const sources = useSources(collections.translations.doc(translation.id))[translation.id];
+    const translationExamples = getTranslationExamples();
+    const sources = getSources();
 
     return (
         <FullWidthColumn>

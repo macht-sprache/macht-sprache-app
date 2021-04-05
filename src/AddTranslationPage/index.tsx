@@ -1,15 +1,16 @@
 import { FormEventHandler, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
-import { useUser } from '../hooks/appContext';
-import { addTranslation, useTerm } from '../hooks/data';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
+import { useUser } from '../hooks/appContext';
+import { addTranslation, collections } from '../hooks/data';
+import { useDocument } from '../hooks/fetch';
+import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import { Redact } from '../RedactSensitiveTerms';
 
 type Model = {
     translation: string;
@@ -17,17 +18,15 @@ type Model = {
 };
 
 export default function AddTranslationPage() {
-    const user = useUser();
+    const user = useUser()!;
     const history = useHistory();
     const { termId } = useParams<{ termId: string }>();
-    const term = useTerm(termId);
     const { t } = useTranslation();
     const [submitting, setSubmitting] = useState(false);
     const [model, setModel] = useState<Model>({ translation: '', comment: '' });
 
-    if (!user) {
-        return null;
-    }
+    const getTerm = useDocument(collections.terms.doc(termId));
+    const term = getTerm();
 
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();

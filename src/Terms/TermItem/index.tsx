@@ -1,26 +1,32 @@
-import s from './style.module.css';
 import clsx from 'clsx';
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { CommentItem } from '../../Comments/CommentItem';
-import { collections, useComments, useTranslations } from '../../hooks/data';
+import { collections, getCommentsRef, getTranslationsRef } from '../../hooks/data';
+import { GetList, useCollection } from '../../hooks/fetch';
+import { Redact } from '../../RedactSensitiveTerms';
 import { TERM } from '../../routes';
+import { TermWithLang } from '../../TermWithLang';
 import { TranslationsList } from '../../TranslationsList';
-import { Term } from '../../types';
+import { Comment, Term } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import { stopPropagation } from '../../utils';
-import { TermWithLang } from '../../TermWithLang';
-import { Redact } from '../../RedactSensitiveTerms';
+import s from './style.module.css';
+
+const EMPTY_ARRAY: never[] = [];
 
 type TermItemProps = { term: Term; size?: 'small' | 'medium' };
 
 export function TermItem({ term, size = 'medium' }: TermItemProps) {
-    const comments = useComments(collections.terms.doc(term.id));
-    const translations = useTranslations(term.id);
+    const termRef = collections.terms.doc(term.id);
+    const getComments = useCollection(getCommentsRef(termRef));
+    const getTranslations = useCollection(getTranslationsRef(termRef));
     const history = useHistory();
-
     const { t } = useTranslation();
+
+    const translations = getTranslations();
     const pathToTerm = generatePath(TERM, { termId: term.id });
 
     return (
@@ -44,34 +50,17 @@ export function TermItem({ term, size = 'medium' }: TermItemProps) {
                                 {t('common.entities.translation.value', { count: translations.length })}:
                             </h2>
                             <div className={s.sectionBody}>
-                                <TranslationsList term={term} size="small" />
+                                <TranslationsList
+                                    term={term}
+                                    getTranslations={getTranslations}
+                                    getSources={() => EMPTY_ARRAY}
+                                    size="small"
+                                />
                             </div>
                         </section>
-                        {!!comments.length && (
-                            <>
-                                <section className={s.section}>
-                                    <h2 className={s.bodyHeading}>
-                                        {term.commentCount}{' '}
-                                        {t('common.entities.comment.value', { count: term.commentCount })}:
-                                    </h2>
-                                    <div className={s.sectionBody}>
-                                        {comments.map(comment => (
-                                            <CommentItem key={comment.id} size="small" comment={comment} />
-                                        ))}
-
-                                        <div className={s.commentFooter}>
-                                            <span>
-                                                {term.commentCount}{' '}
-                                                {t('common.entities.comment.value', { count: term.commentCount })}{' '}
-                                                <Link onClick={stopPropagation} to={pathToTerm}>
-                                                    {t('common.viewAll')}
-                                                </Link>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </section>
-                            </>
-                        )}
+                        <Suspense fallback={null}>
+                            <InlineComments term={term} pathToTerm={pathToTerm} getComments={getComments} />
+                        </Suspense>
                     </>
                 )}
                 {size === 'small' && (
@@ -96,5 +85,44 @@ export function TermItem({ term, size = 'medium' }: TermItemProps) {
                 )}
             </div>
         </article>
+    );
+}
+
+type InlineCommentsProps = {
+    term: Term;
+    pathToTerm: string;
+    getComments: GetList<Comment>;
+};
+
+function InlineComments({ term, pathToTerm, getComments }: InlineCommentsProps) {
+    const { t } = useTranslation();
+    const comments = getComments();
+
+    if (!comments.length) {
+        return null;
+    }
+
+    return (
+        <>
+            <section className={s.section}>
+                <h2 className={s.bodyHeading}>
+                    {term.commentCount} {t('common.entities.comment.value', { count: term.commentCount })}:
+                </h2>
+                <div className={s.sectionBody}>
+                    {comments.map(comment => (
+                        <CommentItem key={comment.id} size="small" comment={comment} />
+                    ))}
+
+                    <div className={s.commentFooter}>
+                        <span>
+                            {term.commentCount} {t('common.entities.comment.value', { count: term.commentCount })}{' '}
+                            <Link onClick={stopPropagation} to={pathToTerm}>
+                                {t('common.viewAll')}
+                            </Link>
+                        </span>
+                    </div>
+                </div>
+            </section>
+        </>
     );
 }
