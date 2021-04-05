@@ -22,7 +22,7 @@ export const isDisplayNameAvailable = functions.https.onCall(async ({ displayNam
 });
 
 export const postRegistrationHandler = functions.https.onCall(
-    async ({ displayName, lang }: { displayName: string; lang: Lang }, context) => {
+    async ({ displayName, lang, newsletter }: { displayName: string; lang: Lang; newsletter: boolean }, context) => {
         if (!context.auth) {
             throw new HttpsError('unauthenticated', 'User not logged in');
         }
@@ -63,6 +63,7 @@ export const postRegistrationHandler = functions.https.onCall(
 
             const userSettings: UserSettings = {
                 lang,
+                newsletter,
                 showRedacted: false,
             };
 
@@ -134,7 +135,7 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
     for (const authUser of authUsers) {
         const displayName = authUser.displayName || '';
         const defaultUser: WithoutId<User> = { displayName, displayNameLowerCase: displayName.toLowerCase() };
-        const defaultUserSettings: UserSettings = { lang: langA, showRedacted: false };
+        const defaultUserSettings: UserSettings = { lang: langA, newsletter: false, showRedacted: false };
         const defaultUserProperties: UserProperties = {
             admin: false,
             enabled: true,

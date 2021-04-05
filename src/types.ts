@@ -169,6 +169,7 @@ export interface User extends UserMini {
 export interface UserSettings {
     lang: Lang;
     showRedacted: boolean;
+    newsletter: boolean;
 }
 
 export interface UserProperties {

@@ -54,9 +54,10 @@ service cloud.firestore {
 
     function isValidUserSettings() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['lang', 'showRedacted']) &&
+      return data.keys().hasOnly(['lang', 'showRedacted', 'newsletter']) &&
         data.lang is string &&
-        data.showRedacted is bool;
+        data.showRedacted is bool &&
+        data.newsletter is bool;
     }
 
     match /userSettings/{user} {
