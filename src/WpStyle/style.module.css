@@ -79,3 +79,7 @@
 .container :global(.boxes > .wp-block-group__inner-container ul) {
     padding-left: 1rem;
 }
+
+.container :global(.wp-block-image) {
+    margin: 2rem 0;
+}
