@@ -5,7 +5,8 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { Select } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
-import { collections, useCollection, useCollectionById, useDocument } from '../hooks/data';
+import { collections } from '../hooks/data';
+import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
 import { useRequestState } from '../hooks/useRequestState';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { GlobalSettings, User, UserProperties } from '../types';
@@ -14,6 +15,12 @@ import s from './style.module.css';
 
 type AuthUserInfo = { email: string; verified: boolean };
 type AuthUserInfos = Partial<Record<string, { email: string; verified: boolean }>>;
+
+type UserListProps = {
+    getUsers: GetList<User>;
+    getUserProperties: GetListById<UserProperties>;
+    getGlobalSettings: Get<GlobalSettings>;
+};
 
 const useAuthUserInfos = () => {
     const [authUserInfos, setAuthUserInfos] = useState<AuthUserInfos>({});
@@ -37,18 +44,23 @@ const deleteAllContentOfUser = (userId: string) => {
 };
 
 export default function AdminPage() {
+    const getUsers = useCollection(collections.users);
+    const getUserProperties = useCollectionById(collections.userProperties);
+    const getGlobalSettings = useDocument(collections.settings.doc('global'));
+    const userListProps = { getUsers, getUserProperties, getGlobalSettings };
+
     return (
         <>
             <Header>Administration</Header>
-            <UserList />
+            <UserList {...userListProps} />
         </>
     );
 }
 
-function UserList() {
-    const users = [...useCollection(collections.users, [])].sort((a, b) => a.displayName.localeCompare(b.displayName));
-    const userProperties = useCollectionById(collections.userProperties);
-    const globalSettings = useDocument(collections.settings.doc('global'), { enableNewUsers: true });
+function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListProps) {
+    const users = [...getUsers()].sort((a, b) => a.displayName.localeCompare(b.displayName));
+    const userProperties = getUserProperties();
+    const globalSettings = getGlobalSettings(true);
     const authUserInfos = useAuthUserInfos();
 
     return (
