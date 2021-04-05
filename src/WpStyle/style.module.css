@@ -21,3 +21,30 @@
 .container h3 {
     font-size: 1.1rem;
 }
+
+.container :global(.wp-block-button__link) {
+    display: inline-block;
+    font-size: inherit;
+    font-family: var(--monospaceFont);
+    color: var(--black);
+    border: var(--thinBorder) var(--black) solid;
+    padding: 0.5rem;
+    background-color: var(--backgroundColor);
+    text-decoration: none;
+}
+
+.container :global(.wp-block-button__link):focus {
+    outline: none;
+}
+
+.container :global(.wp-block-button__link):focus:not(:focus-visible) {
+    color: var(--black);
+    background-color: var(--backgroundColor);
+}
+
+.container :global(.wp-block-button__link):hover:not(:disabled),
+.container :global(.wp-block-button__link):focus {
+    color: var(--white);
+    cursor: pointer;
+    background-color: var(--black);
+}
