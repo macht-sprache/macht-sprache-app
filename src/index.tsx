@@ -1,6 +1,3 @@
-/// <reference types="react/experimental" />
-/// <reference types="react-dom/experimental" />
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -19,10 +16,11 @@ const instance = createInstance({
     },
 });
 
-ReactDOM.unstable_createRoot(document.getElementById('root')!).render(
+ReactDOM.render(
     <React.StrictMode>
         <MatomoProvider value={instance}>
             <App />
         </MatomoProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
