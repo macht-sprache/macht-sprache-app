@@ -1,5 +1,8 @@
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
+import { collections } from '../hooks/data';
+import { useCollection } from '../hooks/fetch';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import { ABOUT, TERMS } from '../routes';
 import { Terms } from '../Terms/TermsSmall';
@@ -16,6 +19,7 @@ const ABOUT_SLUGS = {
 
 export default function Home() {
     const { t } = useTranslation();
+    const getTerms = useCollection(collections.terms);
     const { response } = useWpPage(ABOUT_SLUGS);
 
     return (
@@ -27,13 +31,15 @@ export default function Home() {
             </Columns>
             <Columns>
                 <div>
-                    <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
-                    <Terms />
-                    <div className={s.button}>
-                        <ButtonContainer align="left">
-                            <ButtonLink to={TERMS}>{t('home.viewAllTerms')}</ButtonLink>
-                        </ButtonContainer>
-                    </div>
+                    <Suspense fallback={null}>
+                        <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
+                        <Terms getTerms={getTerms} />
+                        <div className={s.button}>
+                            <ButtonContainer align="left">
+                                <ButtonLink to={TERMS}>{t('home.viewAllTerms')}</ButtonLink>
+                            </ButtonContainer>
+                        </div>
+                    </Suspense>
                 </div>
                 <div>
                     <ColumnHeading>{t('home.about')}</ColumnHeading>

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import ConfirmModal from '../ConfirmModal';
@@ -9,7 +9,8 @@ import InputContainer from '../Form/InputContainer';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { useAppContext } from '../hooks/appContext';
-import { collections, useTerm, useTranslationEntity } from '../hooks/data';
+import { collections, getSourcesRef, getTranslationExamplesRef } from '../hooks/data';
+import { Get, GetList, useCollection, useDocument } from '../hooks/fetch';
 import { ColumnHeading, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
@@ -18,17 +19,37 @@ import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import { WrappedInLangColor } from '../TermWithLang';
 import TranslationExamplesList from '../TranslationExamplesList';
-import { Translation } from '../types';
+import { Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
-export function TranslationPage() {
+type Props = {
+    getTerm: Get<Term>;
+    getTranslation: Get<Translation>;
+    getTranslationExamples: GetList<TranslationExample>;
+    getSources: GetList<Source>;
+};
+
+export default function TranslationPageWrapper() {
+    const { termId, translationId } = useParams<{
+        termId: string;
+        translationId: string;
+    }>();
+    const translationRef = collections.translations.doc(translationId);
+    const getTerm = useDocument(collections.terms.doc(termId));
+    const getTranslation = useDocument(translationRef);
+    const getTranslationExamples = useCollection(getTranslationExamplesRef(translationRef));
+    const getSources = useCollection(getSourcesRef(translationRef));
+    const props = { getTerm, getTranslation, getTranslationExamples, getSources };
+    return <TranslationPage {...props} />;
+}
+
+function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getSources }: Props) {
     const { user, userProperties } = useAppContext();
     const { t } = useTranslation();
-    const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
-    const term = useTerm(termId);
-    const translation = useTranslationEntity(translationId);
+    const term = getTerm();
+    const translation = getTranslation();
     const canEdit = translation.creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
 
@@ -94,7 +115,14 @@ export function TranslationPage() {
                 </div>
             </SingleColumn>
 
-            <TranslationExamplesList term={term} translation={translation} />
+            <Suspense fallback={null}>
+                <TranslationExamplesList
+                    term={term}
+                    translation={translation}
+                    getTranslationExamples={getTranslationExamples}
+                    getSources={getSources}
+                />
+            </Suspense>
         </>
     );
 }

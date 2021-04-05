@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { generatePath, NavLink } from 'react-router-dom';
-import { useTerms } from '../../hooks/data';
+import { GetList } from '../../hooks/fetch';
 import { Redact } from '../../RedactSensitiveTerms';
 import { TERM } from '../../routes';
-import { Lang } from '../../types';
+import { Lang, Term } from '../../types';
 import { useLang } from '../../useLang';
 import { LangFilter } from '../LangFilter';
 import s from './style.module.css';
 
 type TermsProps = {
+    getTerms: GetList<Term>;
     classNames?: {
         terms?: string;
         termsInner?: string;
@@ -17,10 +18,11 @@ type TermsProps = {
     };
 };
 
-export function Terms({ classNames }: TermsProps) {
-    const terms = useTerms();
+export function Terms({ classNames, getTerms }: TermsProps) {
     const [langFilter, setLangFilter] = useState<Lang>();
     const [lang] = useLang();
+
+    const terms = getTerms();
     const sortedTerms = terms
         .filter(term => !langFilter || langFilter === term.lang)
         .sort(({ value: valueA }, { value: valueB }) => valueA.localeCompare(valueB, lang));

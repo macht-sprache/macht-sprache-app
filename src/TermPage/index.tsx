@@ -10,7 +10,8 @@ import InputContainer from '../Form/InputContainer';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { useAppContext } from '../hooks/appContext';
-import { collections, useTerm } from '../hooks/data';
+import { collections, getSourcesRef, getTranslationsRef } from '../hooks/data';
+import { Get, GetList, useCollection, useDocument } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
@@ -18,16 +19,30 @@ import { ModalDialog } from '../ModalDialog';
 import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
-import { Lang, Term } from '../types';
+import { Lang, Source, Term, Translation } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
-export default function TermPage() {
-    const { user, userProperties } = useAppContext();
+type Props = {
+    getTerm: Get<Term>;
+    getTranslations: GetList<Translation>;
+    getSources: GetList<Source>;
+};
+
+export default function TermPageWrapper() {
     const { termId } = useParams<{ termId: string }>();
+    const termRef = collections.terms.doc(termId);
+    const getTerm = useDocument(termRef);
+    const getTranslations = useCollection(getTranslationsRef(termRef));
+    const getSources = useCollection(getSourcesRef(termRef));
+    return <TermPage getTerm={getTerm} getTranslations={getTranslations} getSources={getSources} />;
+}
+
+function TermPage({ getTerm, getTranslations, getSources }: Props) {
+    const { user, userProperties } = useAppContext();
     const { t } = useTranslation();
-    const term = useTerm(termId);
+    const term = getTerm();
     const termRedacted = useRedacted(term.value);
     const canEdit = term.creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
@@ -72,13 +87,14 @@ export default function TermPage() {
             )}
 
             <FullWidthColumn>
-                <TranslationsList term={term} />
+                <TranslationsList term={term} getTranslations={getTranslations} getSources={getSources} />
             </FullWidthColumn>
 
             <SingleColumn>
                 <div className={getDominantLanguageClass(term.lang)}>
                     <Comments
-                        entityRef={collections.terms.doc(termId)}
+                        entityRef={collections.terms.doc(term.id)}
+                        commentCount={term.commentCount}
                         headingHint={
                             <Trans
                                 t={t}

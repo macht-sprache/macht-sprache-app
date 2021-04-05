@@ -1,13 +1,11 @@
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom';
-import { FirebaseAppProvider } from 'reactfire';
 import AddTermPage from './AddTermPage';
-import { AddTranslationExamplePage } from './AddTranslationExamplePage';
+import AddTranslationExamplePage from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
 import AdminPage from './AdminPage/lazy';
 import ElementTestPage from './ElementTestPage';
 import ErrorBoundary from './ErrorBoundary';
-import { app } from './firebase';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import HomePage from './HomePage';
 import { HomePagePreLaunch } from './HomePage/HomePagePreLaunch';
@@ -25,8 +23,8 @@ import * as routes from './routes';
 import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
 import { TermsPage } from './TermsPage';
-import { TranslationExamplePage } from './TranslationExamplePage';
-import { TranslationPage } from './TranslationPage';
+import TranslationExamplePage from './TranslationExamplePage';
+import TranslationPage from './TranslationPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
@@ -36,15 +34,13 @@ function App() {
     useLangCssVars();
 
     return (
-        <FirebaseAppProvider firebaseApp={app} suspense>
-            <AppContextProvider>
-                <TranslationProvider>
-                    <LangProvider>
-                        <AppRouter />
-                    </LangProvider>
-                </TranslationProvider>
-            </AppContextProvider>
-        </FirebaseAppProvider>
+        <AppContextProvider>
+            <TranslationProvider>
+                <LangProvider>
+                    <AppRouter />
+                </LangProvider>
+            </TranslationProvider>
+        </AppContextProvider>
     );
 }
 

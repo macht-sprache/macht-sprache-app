@@ -1,9 +1,11 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
+import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RATING_STEPS } from '../constants';
 import { useUser } from '../hooks/appContext';
-import { setRating, useRating } from '../hooks/data';
+import { getRatingRef, setRating } from '../hooks/data';
+import { useDocument } from '../hooks/fetch';
 import { useRedacted } from '../RedactSensitiveTerms';
 import { Term, Translation, User } from '../types';
 import { useDomId } from '../useDomId';
@@ -130,20 +132,24 @@ export function RatingContainer({ translation, term, size }: RatingContainerProp
     const translationValue = useRedacted(translation.value);
     const termValue = useRedacted(term.value);
 
+    const ratingElement = <Rating size={size} ratings={translation.ratings ?? undefined} termValue={termValue} />;
+
     if (user) {
         return (
-            <RatingLoggedIn
-                size={size}
-                translationValue={translationValue}
-                termValue={termValue}
-                term={term}
-                translation={translation}
-                user={user}
-            />
+            <Suspense fallback={ratingElement}>
+                <RatingLoggedIn
+                    size={size}
+                    translationValue={translationValue}
+                    termValue={termValue}
+                    term={term}
+                    translation={translation}
+                    user={user}
+                />
+            </Suspense>
         );
     }
 
-    return <Rating size={size} ratings={translation.ratings ?? undefined} termValue={termValue} />;
+    return ratingElement;
 }
 
 function RatingLoggedIn({
@@ -159,7 +165,8 @@ function RatingLoggedIn({
     user: User;
     size?: Sizes;
 }) {
-    const rating = useRating(user?.id, translation.id);
+    const getRating = useDocument(getRatingRef(user.id, translation.id));
+    const rating = getRating(true);
 
     const rangeInputProps = user && {
         value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,

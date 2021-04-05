@@ -6,7 +6,8 @@ import { generatePath, Link, useHistory } from 'react-router-dom';
 import { AddEntityButton } from '../AddEntityButton';
 import { CoverIcon } from '../CoverIcon';
 import { FormatDate } from '../FormatDate';
-import { collections, useSources, useTranslations } from '../hooks/data';
+import { useGroupedSources } from '../hooks/data';
+import { GetList } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
@@ -17,13 +18,19 @@ import { getDominantLanguageClass } from '../useLangCssVars';
 import { stopPropagation } from '../utils';
 import s from './style.module.css';
 
-type TranslationsListProps = { term: Term; size?: 'small' | 'medium' };
+type TranslationsListProps = {
+    term: Term;
+    getTranslations: GetList<Translation>;
+    // TODO: This is not actually needed on the small size – we should split this component up
+    getSources: GetList<Source>;
+    size?: 'small' | 'medium';
+};
 
-export function TranslationsList({ term, size = 'medium' }: TranslationsListProps) {
-    const translations = useTranslations(term.id);
+export function TranslationsList({ term, getTranslations, getSources, size = 'medium' }: TranslationsListProps) {
+    const translations = getTranslations();
     const { t } = useTranslation();
-    const commentCount = translations.length;
-    const sources = useSources(collections.terms.doc(term.id));
+    const translationsCount = translations.length;
+    const sources = useGroupedSources(getSources());
     const otherLang = term.lang === langA ? langB : langA;
     const translationsSorted = orderBy(
         translations,
@@ -35,7 +42,7 @@ export function TranslationsList({ term, size = 'medium' }: TranslationsListProp
         <div className={clsx(s.container, s[size])}>
             {size === 'medium' && (
                 <h2>
-                    {commentCount} {t('common.entities.translation.value', { count: commentCount })}
+                    {translationsCount} {t('common.entities.translation.value', { count: translationsCount })}
                 </h2>
             )}
             {!translations.length && (
