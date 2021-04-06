@@ -17,14 +17,16 @@ type Sizes = 'small' | 'medium';
 type RatingProps = {
     ratings?: number[];
     termValue: string;
-    rangeInputProps?: React.InputHTMLAttributes<any>;
+    rating?: number;
+    onChange?: (rating: number) => void;
     size?: Sizes;
 };
 
 export function Rating({
     ratings = new Array(RATING_STEPS).fill(0),
     termValue,
-    rangeInputProps,
+    rating,
+    onChange,
     size = 'medium',
 }: RatingProps) {
     const max = Math.max(...ratings);
@@ -80,7 +82,7 @@ export function Rating({
                 ))}
                 {sumOfAllRatings === 0 && <div className={s.emtpyMessage}>{t('rating.noData')}</div>}
             </div>
-            {rangeInputProps && (
+            {onChange && (
                 <>
                     <label htmlFor={id('ratingSlider')} lang={globalLang} className={s.hiddenLabel}>
                         {sliderLabel}
@@ -91,28 +93,21 @@ export function Rating({
                         min={1}
                         max={ratings.length}
                         step={0.1}
-                        className={clsx(s.rangeInput, { [s.unset]: !rangeInputProps?.value })}
-                        {...rangeInputProps}
-                        value={
-                            typeof rangeInputProps.value !== 'undefined'
-                                ? rangeInputProps.value
-                                : (RATING_STEPS + 1) / 2
-                        }
+                        className={clsx(s.rangeInput, { [s.unset]: rating === undefined })}
+                        value={rating === undefined ? (RATING_STEPS + 1) / 2 : toSliderValue(rating)}
+                        onChange={event => onChange(fromSliderValue(parseFloat(event.target.value)))}
                         disabled={size === 'small'}
                     />
                     {size !== 'small' && (
                         <div className={s.userUsageDisplay} lang={globalLang}>
-                            {rangeInputProps.value && (
+                            {rating === undefined ? (
+                                <>{t('rating.dragToSet')}</>
+                            ) : (
                                 <>
                                     {t('rating.yourRating')}
-                                    {
-                                        t('rating.values', { returnObjects: true })[
-                                            Math.round(rangeInputProps.value as number) - 1
-                                        ]
-                                    }
+                                    {t('rating.values', { returnObjects: true })[Math.round(toSliderValue(rating)) - 1]}
                                 </>
                             )}
-                            {!rangeInputProps.value && <>{t('rating.dragToSet')}</>}
                         </div>
                     )}
                 </>
@@ -168,19 +163,16 @@ function RatingLoggedIn({
     const getRating = useDocument(getRatingRef(user.id, translation.id));
     const rating = getRating(true);
 
-    const rangeInputProps = user && {
-        value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-            const ratingFromSlider = parseFloat(e.currentTarget.value);
-            setRating(user.id, translation.id, fromSliderValue(ratingFromSlider));
-        },
+    const onChange = (newRating: number) => {
+        setRating(user.id, translation.id, newRating);
     };
 
     return (
         <Rating
             ratings={translation.ratings ?? undefined}
             termValue={termValue}
-            rangeInputProps={rangeInputProps}
+            rating={rating?.rating}
+            onChange={onChange}
             size={size}
         />
     );

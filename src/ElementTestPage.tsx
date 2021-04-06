@@ -99,16 +99,7 @@ export default function ElementTestPage() {
             </div>
             <p>With user rating</p>
             <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
-                <Rating
-                    termValue="Indianer"
-                    ratings={[5, 2, 0, 12, 21]}
-                    rangeInputProps={{
-                        value: rating,
-                        onChange: e => {
-                            setRating(e.currentTarget.value);
-                        },
-                    }}
-                />
+                <Rating termValue="Indianer" ratings={[5, 2, 0, 12, 21]} rating={rating} onChange={setRating} />
             </div>
             <p>Small:</p>
             <div style={{ '--dominantLanguageColor': 'var(--green)' } as React.CSSProperties}>
