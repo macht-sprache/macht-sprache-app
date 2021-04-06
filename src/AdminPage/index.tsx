@@ -9,6 +9,7 @@ import { collections } from '../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
 import { useRequestState } from '../hooks/useRequestState';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
+import { Terms } from '../Terms/TermsSmall';
 import { GlobalSettings, User, UserProperties } from '../types';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
@@ -48,11 +49,26 @@ export default function AdminPage() {
     const getUserProperties = useCollectionById(collections.userProperties);
     const getGlobalSettings = useDocument(collections.settings.doc('global'));
     const userListProps = { getUsers, getUserProperties, getGlobalSettings };
+    const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', true));
 
     return (
         <>
             <Header>Administration</Header>
             <UserList {...userListProps} />
+
+            <SingleColumn>
+                <ColumnHeading>Hidden Terms</ColumnHeading>
+                <p>Terms that have been hidden with the admin option are listet here:</p>
+                <Terms getTerms={getTerms} />
+            </SingleColumn>
+
+            <SingleColumn>
+                <ColumnHeading>Data Migrations</ColumnHeading>
+                <ButtonContainer align="left">
+                    <EnsureValidUserEntitiesButton />
+                    <RunContentMigrationsButton />
+                </ButtonContainer>
+            </SingleColumn>
         </>
     );
 }
@@ -83,14 +99,6 @@ function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListPr
                     ))}
                 </ul>
             </FullWidthColumn>
-
-            <SingleColumn>
-                <ColumnHeading>Data Migrations</ColumnHeading>
-                <ButtonContainer align="left">
-                    <EnsureValidUserEntitiesButton />
-                    <RunContentMigrationsButton />
-                </ButtonContainer>
-            </SingleColumn>
         </>
     );
 }

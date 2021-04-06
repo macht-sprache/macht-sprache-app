@@ -74,15 +74,15 @@ service cloud.firestore {
 
     function isValidTerm() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'createdAt', 'weekHighlight', 'adminComment', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount']) &&
+      return data.keys().hasOnly(['creator', 'createdAt',  'adminComment', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'adminTags']) &&
         data.createdAt == request.time &&
-        data.weekHighlight == false &&
         data.adminComment == '' &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&
         data.relatedTerms is list &&
-        data.commentCount == 0;
+        data.commentCount == 0 &&
+        data.adminTags.hideFromList == false;
     }
 
     function isValidTermUpdate() {
@@ -94,10 +94,10 @@ service cloud.firestore {
 
     function isValidTermUpdateAdmin() {
       let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'weekHighlight']) &&
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'adminTags']) &&
         data.value is string &&
         data.lang is string &&
-        data.weekHighlight is bool;
+        data.adminTags is map;
     }
 
     match /terms/{term} {

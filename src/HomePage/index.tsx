@@ -19,7 +19,7 @@ const ABOUT_SLUGS = {
 
 export default function Home() {
     const { t } = useTranslation();
-    const getTerms = useCollection(collections.terms);
+    const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
     const { response } = useWpPage(ABOUT_SLUGS);
 
     return (

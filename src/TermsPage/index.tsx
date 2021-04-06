@@ -10,7 +10,7 @@ import { TermsBig } from '../Terms/TermsBig';
 
 export function TermsPage() {
     const { t } = useTranslation();
-    const getTerms = useCollection(collections.terms);
+    const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
 
     return (
         <>

@@ -3,7 +3,7 @@ import { useCollection } from '../../hooks/fetch';
 import { TermItem } from '../TermItem';
 
 export function TermsWeekHighlights() {
-    const getTerms = useCollection(collections.terms.where('weekHighlight', '==', true));
+    const getTerms = useCollection(collections.terms.where('adminTags.hightlightLandingPage', '==', true));
     const highlightedTerms = [...getTerms()].sort((termA, termB) => termA.value.localeCompare(termB.value, termA.lang));
 
     return (
