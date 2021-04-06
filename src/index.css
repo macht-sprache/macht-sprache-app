@@ -61,6 +61,10 @@ h2 {
     font-size: var(--fontSizeL);
 }
 
+h3 {
+    font-size: var(--fontSizeM);
+}
+
 a {
     color: inherit;
 }
