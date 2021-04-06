@@ -94,6 +94,9 @@ function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
             <ColumnHeading>{t('userPage.info')}</ColumnHeading>
             <div className={s.socialMedia}>
                 {externalProfiles.length === 0 && edit && <>{t('userPage.addSocial')}</>}
+                {externalProfiles.length === 0 && !edit && (
+                    <>{t('userPage.noSocial', { displayName: user.displayName })}</>
+                )}
                 {externalProfiles.map(({ type, getUrl, getLinkLabel }) => {
                     return (
                         <div key={type}>

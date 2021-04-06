@@ -271,6 +271,7 @@
         "editInfo": "Bearbeite dein Profilinformationen",
         "info": "Info",
         "addSocial": "Klicke the Bearbeiten-Button, um Social-Media-Profile hinzuzufügen.",
+        "noSocial": "{{displayName}} hat keine weiteren Informationen hinzugefügt.",
         "socialLabels": {
             "instagram": {
                 "label": "Instagram",

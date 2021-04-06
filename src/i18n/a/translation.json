@@ -275,6 +275,7 @@
         "editInfo": "Edit your profile information",
         "info": "Info",
         "addSocial": "Click the button below to add some social media profiles",
+        "noSocial": "{{displayName}} did not add more more information.",
         "socialLabels": {
             "instagram": {
                 "label": "Instagram",
