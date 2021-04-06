@@ -235,13 +235,21 @@ function EditUserSettings({ user }: { user: User }) {
             <p>
                 <Trans t={t} i18nKey="userPage.hideRedactedDescription" />
             </p>
-            <label>
-                <Checkbox
-                    checked={!userSettings.showRedacted}
-                    onChange={event => onChange({ showRedacted: !event.target.checked })}
-                    label={t('userPage.hideRedacted')}
-                />
-            </label>
+            <Checkbox
+                checked={!userSettings.showRedacted}
+                onChange={event => onChange({ showRedacted: !event.target.checked })}
+                label={t('userPage.hideRedacted')}
+            />
+
+            <p>
+                <strong>Newsletter</strong>
+            </p>
+
+            <Checkbox
+                checked={userSettings.newsletter}
+                onChange={event => onChange({ newsletter: event.target.checked })}
+                label={'Newsletter'}
+            />
         </div>
     );
 }

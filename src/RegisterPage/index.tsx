@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { DISPLAY_NAME_REGEX } from '../constants';
 import { auth } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
+import { Checkbox } from '../Form/Checkbox';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
@@ -17,7 +18,14 @@ import { IMPRINT, PRIVACY, REGISTER_POST } from '../routes';
 import { Lang } from '../types';
 import { useLang } from '../useLang';
 
-const signUp = async (lang: Lang, displayName: string, email: string, password: string, continuePath: string) => {
+const signUp = async (
+    lang: Lang,
+    displayName: string,
+    newsletter: boolean,
+    email: string,
+    password: string,
+    continuePath: string
+) => {
     await isDisplayNameAvailable(displayName);
 
     const { user } = await auth.createUserWithEmailAndPassword(email, password);
@@ -27,7 +35,7 @@ const signUp = async (lang: Lang, displayName: string, email: string, password: 
     }
 
     await user.updateProfile({ displayName });
-    await postRegistrationHandler(displayName, lang);
+    await postRegistrationHandler(displayName, lang, newsletter);
 
     if (!user.emailVerified) {
         await sendEmailVerification(lang, window.location.origin, continuePath);
@@ -87,6 +95,7 @@ export default function RegisterPage() {
     const [displayName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setSetPassword] = useState('');
+    const [newsletter, setNewsletter] = useState(false);
     const [registrationState, setRegistrationState, registrationError] = useRequestState();
     const { errorLabels, clearError } = useRegistrationErrorLabels(registrationError, setRegistrationState);
     const loadingRegistration = registrationState === 'IN_PROGRESS';
@@ -104,7 +113,7 @@ export default function RegisterPage() {
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setRegistrationState('IN_PROGRESS');
-        signUp(lang, displayName, email, password, continuePath)
+        signUp(lang, displayName, newsletter, email, password, continuePath)
             .then(() => setRegistrationState('DONE'))
             .catch(error => {
                 setRegistrationState('ERROR', error);
@@ -165,6 +174,11 @@ export default function RegisterPage() {
                             error={errorLabels.password}
                         />
                     </InputContainer>
+                    <Checkbox
+                        label={'Newsletter'}
+                        checked={newsletter}
+                        onChange={event => setNewsletter(event.target.checked)}
+                    />
                     {errorLabels.generic && <ErrorBox>{errorLabels.generic}</ErrorBox>}
                     <ButtonContainer>
                         <Button type="button">{t('common.formNav.cancel')}</Button>

@@ -29,8 +29,8 @@ export const isDisplayNameAvailable = (displayName: string) => _isDisplayNameAva
 
 const _postRegistrationHandler = functions.httpsCallable('userManagement-postRegistrationHandler');
 
-export const postRegistrationHandler = (displayName: string, lang: Lang) =>
-    _postRegistrationHandler({ displayName, lang });
+export const postRegistrationHandler = (displayName: string, lang: Lang, newsletter: boolean) =>
+    _postRegistrationHandler({ displayName, lang, newsletter });
 
 const _sendEmailVerification = functions.httpsCallable('mails-sendEmailVerification');
 
