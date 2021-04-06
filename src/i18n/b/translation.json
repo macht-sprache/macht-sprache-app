@@ -75,6 +75,11 @@
         "coc": "code of conduct",
         "privacyPolicy": "datenschutz"
     },
+    "footer": {
+        "initiatedBy": "Initiiert von",
+        "fundedBy": "Gefördert durch",
+        "senate": "Berliner Senatsverwaltung für Kultur und Europa"
+    },
     "auth": {
         "displayName": "Nutzer:innenname",
         "displayNameRequirements": "Dein Nutzer:innenname darf nur aus Buchstaben, Zahlen, - oder _ bestehen und nicht länger als 20 Zeichen sein.",

@@ -1,0 +1,33 @@
+.logos {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -1rem;
+}
+
+.logoContainer {
+    margin: 1rem;
+}
+
+.logoImg {
+    height: 5rem;
+    background-size: contain;
+}
+
+.logoImg.small {
+    max-width: 5rem;
+}
+
+.logoHeading {
+    font-size: var(--fontSizeS);
+    font-style: italic;
+    font-weight: normal;
+    margin: 0 0 1rem;
+}
+
+.logoWrapper {
+    display: inline-block;
+}
+
+.logoWrapper + .logoWrapper {
+    margin-left: 1rem;
+}
