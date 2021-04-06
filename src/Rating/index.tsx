@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
-import { Suspense } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RATING_STEPS } from '../constants';
 import { useUser } from '../hooks/appContext';
 import { getRatingRef, setRating } from '../hooks/data';
-import { useDocument } from '../hooks/fetch';
+import { Get, useDocument } from '../hooks/fetch';
 import { useRedacted } from '../RedactSensitiveTerms';
-import { Term, Translation, User } from '../types';
+import { Rating as RatingType, Term, Translation, User } from '../types';
 import { useDomId } from '../useDomId';
 import { useLang } from '../useLang';
 import s from './style.module.css';
@@ -161,21 +161,60 @@ function RatingLoggedIn({
     size?: Sizes;
 }) {
     const getRating = useDocument(getRatingRef(user.id, translation.id));
-    const rating = getRating(true);
-
-    const onChange = (newRating: number) => {
-        setRating(user.id, translation.id, newRating);
-    };
+    const { rating, onChange } = useDebouncedRatingSaving(getRating, user.id, translation.id);
 
     return (
         <Rating
             ratings={translation.ratings ?? undefined}
             termValue={termValue}
-            rating={rating?.rating}
+            rating={rating}
             onChange={onChange}
             size={size}
         />
     );
+}
+
+function useDebouncedRatingSaving(getRating: Get<RatingType>, userId: string, translationId: string) {
+    const rating = getRating(true);
+    const ratingRef = useRef(rating?.rating);
+    const localRatingRef = useRef(rating?.rating);
+    const [localRating, setLocalRating] = useState(rating?.rating);
+    const isSavingRef = useRef(false);
+
+    const save = useCallback((newRating: number) => setRating(userId, translationId, newRating), [
+        translationId,
+        userId,
+    ]);
+
+    useEffect(() => {
+        ratingRef.current = rating?.rating;
+        if (!isSavingRef.current && rating?.rating !== localRatingRef.current) {
+            setLocalRating(rating?.rating);
+        }
+    }, [rating?.rating]);
+
+    useEffect(() => {
+        isSavingRef.current = true;
+        localRatingRef.current = localRating;
+        const timeoutId = window.setTimeout(() => {
+            if (localRating !== undefined && localRating !== ratingRef.current) {
+                save(localRating);
+            }
+            isSavingRef.current = false;
+        }, 500);
+        return () => window.clearTimeout(timeoutId);
+    }, [localRating, save]);
+
+    useEffect(
+        () => () => {
+            if (localRatingRef.current !== undefined && localRatingRef.current !== ratingRef.current) {
+                save(localRatingRef.current);
+            }
+        },
+        [save]
+    );
+
+    return { rating: localRating, onChange: setLocalRating };
 }
 
 function toSliderValue(rating: number) {
