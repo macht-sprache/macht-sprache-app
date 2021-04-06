@@ -171,11 +171,22 @@
     padding: 4rem 0.5rem 4rem;
 }
 
+.footer {
+    grid-column: 1 / -1;
+    padding: 0.5rem;
+}
+
 @media (min-width: 600px) {
     .main {
         grid-column: 3;
         padding: 1rem 0 4rem;
         min-width: 0;
+    }
+
+    .footer {
+        grid-column: 3;
+        padding: 0;
+        margin-bottom: 1rem;
     }
 }
 

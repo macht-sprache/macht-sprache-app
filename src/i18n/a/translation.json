@@ -75,6 +75,11 @@
         "coc": "code of conduct",
         "privacyPolicy": "Privacy Policy"
     },
+    "footer": {
+        "initiatedBy": "Initiated by",
+        "fundedBy": "Funded by",
+        "senate": "Berlin Senate Department for Culture and Europe"
+    },
     "auth": {
         "displayName": "User Name",
         "email": "Email Address",

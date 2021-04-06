@@ -11,6 +11,7 @@ import { ABOUT, ADMIN, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS } from '..
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
+import Footer from './Footer';
 import Logo from './logo.svg';
 import LogoSmall from './logo_small.svg';
 import s from './style.module.css';
@@ -65,6 +66,7 @@ function Layout({ children }: Props) {
                     <Sidebar />
                 </div>
                 <main className={s.main}>{children}</main>
+                <Footer className={s.footer} />
                 <div className={s.background} />
                 <ContentWarning />
             </div>
