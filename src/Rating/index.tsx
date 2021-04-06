@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
-import { Suspense } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RATING_STEPS } from '../constants';
 import { useUser } from '../hooks/appContext';
 import { getRatingRef, setRating } from '../hooks/data';
-import { useDocument } from '../hooks/fetch';
+import { Get, useDocument } from '../hooks/fetch';
 import { useRedacted } from '../RedactSensitiveTerms';
-import { Term, Translation, User } from '../types';
+import { Rating as RatingType, Term, Translation, User } from '../types';
 import { useDomId } from '../useDomId';
 import { useLang } from '../useLang';
 import s from './style.module.css';
@@ -17,14 +17,16 @@ type Sizes = 'small' | 'medium';
 type RatingProps = {
     ratings?: number[];
     termValue: string;
-    rangeInputProps?: React.InputHTMLAttributes<any>;
+    rating?: number;
+    onChange?: (rating: number) => void;
     size?: Sizes;
 };
 
 export function Rating({
     ratings = new Array(RATING_STEPS).fill(0),
     termValue,
-    rangeInputProps,
+    rating,
+    onChange,
     size = 'medium',
 }: RatingProps) {
     const max = Math.max(...ratings);
@@ -80,7 +82,7 @@ export function Rating({
                 ))}
                 {sumOfAllRatings === 0 && <div className={s.emtpyMessage}>{t('rating.noData')}</div>}
             </div>
-            {rangeInputProps && (
+            {onChange && (
                 <>
                     <label htmlFor={id('ratingSlider')} lang={globalLang} className={s.hiddenLabel}>
                         {sliderLabel}
@@ -91,28 +93,21 @@ export function Rating({
                         min={1}
                         max={ratings.length}
                         step={0.1}
-                        className={clsx(s.rangeInput, { [s.unset]: !rangeInputProps?.value })}
-                        {...rangeInputProps}
-                        value={
-                            typeof rangeInputProps.value !== 'undefined'
-                                ? rangeInputProps.value
-                                : (RATING_STEPS + 1) / 2
-                        }
+                        className={clsx(s.rangeInput, { [s.unset]: rating === undefined })}
+                        value={rating === undefined ? (RATING_STEPS + 1) / 2 : toSliderValue(rating)}
+                        onChange={event => onChange(fromSliderValue(parseFloat(event.target.value)))}
                         disabled={size === 'small'}
                     />
                     {size !== 'small' && (
                         <div className={s.userUsageDisplay} lang={globalLang}>
-                            {rangeInputProps.value && (
+                            {rating === undefined ? (
+                                <>{t('rating.dragToSet')}</>
+                            ) : (
                                 <>
                                     {t('rating.yourRating')}
-                                    {
-                                        t('rating.values', { returnObjects: true })[
-                                            Math.round(rangeInputProps.value as number) - 1
-                                        ]
-                                    }
+                                    {t('rating.values', { returnObjects: true })[Math.round(toSliderValue(rating)) - 1]}
                                 </>
                             )}
-                            {!rangeInputProps.value && <>{t('rating.dragToSet')}</>}
                         </div>
                     )}
                 </>
@@ -166,24 +161,60 @@ function RatingLoggedIn({
     size?: Sizes;
 }) {
     const getRating = useDocument(getRatingRef(user.id, translation.id));
-    const rating = getRating(true);
-
-    const rangeInputProps = user && {
-        value: typeof rating?.rating !== 'undefined' ? toSliderValue(rating.rating) : undefined,
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
-            const ratingFromSlider = parseFloat(e.currentTarget.value);
-            setRating(user.id, translation.id, fromSliderValue(ratingFromSlider));
-        },
-    };
+    const { rating, onChange } = useDebouncedRatingSaving(getRating, user.id, translation.id);
 
     return (
         <Rating
             ratings={translation.ratings ?? undefined}
             termValue={termValue}
-            rangeInputProps={rangeInputProps}
+            rating={rating}
+            onChange={onChange}
             size={size}
         />
     );
+}
+
+function useDebouncedRatingSaving(getRating: Get<RatingType>, userId: string, translationId: string) {
+    const rating = getRating(true);
+    const ratingRef = useRef(rating?.rating);
+    const localRatingRef = useRef(rating?.rating);
+    const [localRating, setLocalRating] = useState(rating?.rating);
+    const isSavingRef = useRef(false);
+
+    const save = useCallback((newRating: number) => setRating(userId, translationId, newRating), [
+        translationId,
+        userId,
+    ]);
+
+    useEffect(() => {
+        ratingRef.current = rating?.rating;
+        if (!isSavingRef.current && rating?.rating !== localRatingRef.current) {
+            setLocalRating(rating?.rating);
+        }
+    }, [rating?.rating]);
+
+    useEffect(() => {
+        isSavingRef.current = true;
+        localRatingRef.current = localRating;
+        const timeoutId = window.setTimeout(() => {
+            if (localRating !== undefined && localRating !== ratingRef.current) {
+                save(localRating);
+            }
+            isSavingRef.current = false;
+        }, 500);
+        return () => window.clearTimeout(timeoutId);
+    }, [localRating, save]);
+
+    useEffect(
+        () => () => {
+            if (localRatingRef.current !== undefined && localRatingRef.current !== ratingRef.current) {
+                save(localRatingRef.current);
+            }
+        },
+        [save]
+    );
+
+    return { rating: localRating, onChange: setLocalRating };
 }
 
 function toSliderValue(rating: number) {
