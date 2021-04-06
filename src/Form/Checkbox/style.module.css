@@ -3,12 +3,14 @@
     grid-template-columns: 1rem 1fr;
     grid-gap: 0.5rem;
     position: relative;
+    line-height: var(--lineHeightParagraph);
 }
 
 .checkbox,
 .checkboxDisplay {
     grid-column: 1;
     grid-row: 1;
+    margin-top: 0.2rem;
 }
 
 .checkbox:not(:disabled) ~ .label {
@@ -27,6 +29,7 @@
     left: 0;
     height: 1rem;
     width: 1rem;
+    margin: 0;
 }
 
 .checkbox:not(:disabled) {
@@ -57,6 +60,7 @@
 .checkbox:checked + .checkboxDisplay:before {
     content: '';
     position: absolute;
+    top: -0.04rem;
     height: 0.7rem;
     width: 0.3rem;
     transform: rotate(45deg);
