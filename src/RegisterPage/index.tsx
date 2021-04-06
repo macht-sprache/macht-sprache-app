@@ -17,6 +17,7 @@ import { SingleColumn } from '../Layout/Columns';
 import { IMPRINT, PRIVACY, REGISTER_POST } from '../routes';
 import { Lang } from '../types';
 import { useLang } from '../useLang';
+import s from './style.module.css';
 
 const signUp = async (
     lang: Lang,
@@ -125,13 +126,6 @@ export default function RegisterPage() {
             <Header>{t('auth.register.title')}</Header>
             <SingleColumn>
                 <p>{t('auth.register.intro')}</p>
-                <p>
-                    <Trans
-                        t={t}
-                        i18nKey="auth.register.termsAndPrivacy"
-                        components={{ TermsLink: <Link to={IMPRINT} />, PrivacyLink: <Link to={PRIVACY} /> }}
-                    />
-                </p>
                 <form onSubmit={onSubmit}>
                     <InputContainer>
                         <Input
@@ -174,11 +168,26 @@ export default function RegisterPage() {
                             error={errorLabels.password}
                         />
                     </InputContainer>
-                    <Checkbox
-                        label={'Newsletter'}
-                        checked={newsletter}
-                        onChange={event => setNewsletter(event.target.checked)}
-                    />
+                    <div className={s.newsletterCheckBox}>
+                        <Checkbox
+                            label={
+                                <>
+                                    {t('common.newsletter')}
+                                    <br />
+                                    {t('auth.register.newsletter')}
+                                </>
+                            }
+                            checked={newsletter}
+                            onChange={event => setNewsletter(event.target.checked)}
+                        />
+                    </div>
+                    <p>
+                        <Trans
+                            t={t}
+                            i18nKey="auth.register.termsAndPrivacy"
+                            components={{ TermsLink: <Link to={IMPRINT} />, PrivacyLink: <Link to={PRIVACY} /> }}
+                        />
+                    </p>
                     {errorLabels.generic && <ErrorBox>{errorLabels.generic}</ErrorBox>}
                     <ButtonContainer>
                         <Button type="button">{t('common.formNav.cancel')}</Button>

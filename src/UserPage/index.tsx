@@ -229,9 +229,10 @@ function EditUserSettings({ user }: { user: User }) {
     );
 
     return (
-        <div>
+        <div className={s.editSettings}>
             <ColumnHeading>{t('common.settings')}</ColumnHeading>
 
+            <h3>{t('userPage.hideRedactedHeading')}</h3>
             <p>
                 <Trans t={t} i18nKey="userPage.hideRedactedDescription" />
             </p>
@@ -241,14 +242,12 @@ function EditUserSettings({ user }: { user: User }) {
                 label={t('userPage.hideRedacted')}
             />
 
-            <p>
-                <strong>Newsletter</strong>
-            </p>
+            <h3>{t('common.newsletter')}</h3>
 
             <Checkbox
                 checked={userSettings.newsletter}
                 onChange={event => onChange({ newsletter: event.target.checked })}
-                label={'Newsletter'}
+                label={t('auth.register.newsletter')}
             />
         </div>
     );

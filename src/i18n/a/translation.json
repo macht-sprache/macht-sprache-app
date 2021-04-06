@@ -53,7 +53,8 @@
         "addedOn": "Added by <User /> on <FormatDate />",
         "settings": "Settings",
         "viewAll": "show all",
-        "optional": "optional"
+        "optional": "optional",
+        "newsletter": "Newsletter"
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
@@ -106,7 +107,8 @@
         "register": {
             "title": "Sign Up",
             "intro": "The user name will be public. You are free to decide whether you want to appear under a pseudonym or under your real name, and if so, with which identity you will be recognized.",
-            "termsAndPrivacy": "By registering you agree to our <TermsLink>terms</TermsLink> and <PrivacyLink>privacy policy</PrivacyLink>."
+            "termsAndPrivacy": "By registering you agree to our <TermsLink>terms</TermsLink> and <PrivacyLink>privacy policy</PrivacyLink>.",
+            "newsletter": "Send me a newsletter about macht.sprache. and poco.lit. from time to time. Every mail contains a link to unsubscribe."
         },
         "passwordReset": {
             "heading": "Choose a new password",
@@ -265,7 +267,8 @@
     },
     "userPage": {
         "title": "User profile of",
-        "hideRedactedDescription": "<strong>Sensitive terms</strong>: By default, <i>macht.sprache.</i> hides obviously offensive terms (e.g. n***o). If you would prefer to see them for the sake of clarity, you can disable this feature here.",
+        "hideRedactedHeading": "Sensitive terms",
+        "hideRedactedDescription": "By default, <i>macht.sprache.</i> hides obviously offensive terms (e.g. n***o). If you would prefer to see them for the sake of clarity, you can disable this feature here.",
         "hideRedacted": "Hide offensive terms",
         "bio": "Bio",
         "addBio": "You can add a little bio about yourself <AddDescription>here</AddDescription>",

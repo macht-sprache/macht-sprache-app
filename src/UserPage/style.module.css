@@ -11,3 +11,7 @@
 .bio {
     white-space: pre-wrap;
 }
+
+.editSettings h3 {
+    margin-top: 2rem;
+}
