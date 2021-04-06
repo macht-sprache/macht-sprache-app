@@ -162,13 +162,15 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     const currentUserId = verifyUser(context);
     await verifyAdmin(currentUserId);
 
-    const termDefaults: Partial<Term> = { weekHighlight: false, adminComment: '' };
+    const termDefaults: Partial<Term> = { adminComment: '', adminTags: { hideFromList: false } };
     const translationDefaults: Partial<Translation> = { ratings: null };
 
     await db.runTransaction(async t => {
         const terms = await t.get(db.collection('terms'));
         terms.forEach(term => {
-            t.set(term.ref, { ...termDefaults, ...term.data() });
+            const data = term.data();
+            delete data.weekHighlight;
+            t.set(term.ref, { ...termDefaults, ...data });
         });
     });
 

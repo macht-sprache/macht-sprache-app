@@ -157,13 +157,13 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
     const [value, setValue] = useState(term.value);
     const [lang, setLang] = useState(term.lang);
     const [adminComment, setAdminComment] = useState(term?.adminComment ?? '');
-    const [weekHighlight, setWeekHighlight] = useState(term?.weekHighlight ?? false);
+    const [adminTags, setAdminTags] = useState(term.adminTags);
 
     const onSave = () => {
         setIsSaving(true);
         collections.terms
             .doc(term.id)
-            .set({ ...term, value, lang, adminComment, weekHighlight })
+            .set({ ...term, value, lang, adminComment, adminTags })
             .then(() => {
                 setIsSaving(false);
                 onClose();
@@ -207,11 +207,29 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             </InputContainer>
                             <div style={{ margin: '1rem 0' }}>
                                 <Checkbox
-                                    checked={weekHighlight}
+                                    checked={adminTags?.hightlightLandingPage || false}
                                     onChange={({ target: { checked } }) => {
-                                        setWeekHighlight(checked);
+                                        setAdminTags(before => ({ ...before, hightlightLandingPage: checked }));
                                     }}
                                     label="Highlight landing page"
+                                />
+                            </div>
+                            <div style={{ margin: '.5rem 0' }}>
+                                <Checkbox
+                                    checked={adminTags?.showInSidebar || false}
+                                    onChange={({ target: { checked } }) => {
+                                        setAdminTags(before => ({ ...before, showInSidebar: checked }));
+                                    }}
+                                    label="Show in sidebar"
+                                />
+                            </div>
+                            <div style={{ margin: '.5rem 0' }}>
+                                <Checkbox
+                                    checked={adminTags?.hideFromList || false}
+                                    onChange={({ target: { checked } }) => {
+                                        setAdminTags(before => ({ ...before, hideFromList: checked }));
+                                    }}
+                                    label="Hide from list"
                                 />
                             </div>
                         </>

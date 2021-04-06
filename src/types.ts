@@ -24,7 +24,11 @@ export interface Term extends Commentable {
     relatedTerms: DocReference<Term>[];
     creator: UserMini;
     createdAt: Timestamp;
-    weekHighlight: boolean;
+    adminTags: {
+        hightlightLandingPage?: boolean;
+        showInSidebar?: boolean;
+        hideFromList: boolean;
+    };
     adminComment: string;
 
     value: string;

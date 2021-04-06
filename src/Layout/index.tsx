@@ -1,13 +1,15 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { generatePath, Link, NavLink, useLocation } from 'react-router-dom';
 import { ContentWarning } from '../ContentWarning';
 import { useUserProperties } from '../hooks/appContext';
+import { collections } from '../hooks/data';
+import { useCollection } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
-import { ABOUT, ADMIN, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS } from '../routes';
+import { ABOUT, ADMIN, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERM, TERMS } from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -106,10 +108,6 @@ function Sidebar() {
     if (launched) {
         mainLinks = [
             {
-                to: TERMS,
-                label: t('common.entities.term.value_plural'),
-            },
-            {
                 to: NEWS,
                 label: t('nav.news'),
             },
@@ -127,6 +125,19 @@ function Sidebar() {
     return (
         <div className={s.sidebar}>
             <nav className={s.sidebarInner}>
+                {launched && (
+                    <SidebarNav
+                        links={[
+                            {
+                                to: TERMS,
+                                label: t('common.entities.term.value_plural'),
+                            },
+                        ]}
+                    />
+                )}
+                <Suspense fallback={null}>
+                    <SidebarTerms />
+                </Suspense>
                 <SidebarNav links={mainLinks} />
             </nav>
             <footer className={s.sidebarInner}>
@@ -146,4 +157,12 @@ function SidebarNav({ links }: { links: { to: string; label: string }[] }) {
             ))}
         </>
     );
+}
+
+function SidebarTerms() {
+    const getTerms = useCollection(collections.terms.where('adminTags.showInSidebar', '==', true));
+    const sidebarTerms = [...getTerms()].sort((termA, termB) => termA.value.localeCompare(termB.value, termA.lang));
+    const links = sidebarTerms.map(term => ({ label: term.value, to: generatePath(TERM, { termId: term.id }) }));
+
+    return <SidebarNav links={links} />;
 }
