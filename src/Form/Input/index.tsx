@@ -99,8 +99,8 @@ export function Textarea({
             placeholder={props.placeholder}
         >
             <div className={s.textAreaWrapper}>
-                <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} style={{ minHeight }} />
-                <div className={s.textareaDummy} aria-hidden="true">
+                <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} />
+                <div className={s.textareaDummy} aria-hidden="true" style={{ minHeight }}>
                     {textareaProps.value ? textareaProps.value + ' ' : ' '}
                 </div>
             </div>
