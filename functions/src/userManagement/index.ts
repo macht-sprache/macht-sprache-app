@@ -162,7 +162,10 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     const currentUserId = verifyUser(context);
     await verifyAdmin(currentUserId);
 
-    const termDefaults: Partial<Term> = { adminComment: '', adminTags: { hideFromList: false } };
+    const termDefaults: Partial<Term> = {
+        adminComment: '',
+        adminTags: { hideFromList: false, showInSidebar: false, hightlightLandingPage: false },
+    };
     const translationDefaults: Partial<Translation> = { ratings: null };
 
     await db.runTransaction(async t => {

@@ -207,7 +207,7 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             </InputContainer>
                             <div style={{ margin: '1rem 0' }}>
                                 <Checkbox
-                                    checked={adminTags?.hightlightLandingPage || false}
+                                    checked={adminTags.hightlightLandingPage}
                                     onChange={({ target: { checked } }) => {
                                         setAdminTags(before => ({ ...before, hightlightLandingPage: checked }));
                                     }}
@@ -216,7 +216,7 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             </div>
                             <div style={{ margin: '.5rem 0' }}>
                                 <Checkbox
-                                    checked={adminTags?.showInSidebar || false}
+                                    checked={adminTags.showInSidebar}
                                     onChange={({ target: { checked } }) => {
                                         setAdminTags(before => ({ ...before, showInSidebar: checked }));
                                     }}
@@ -225,7 +225,7 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             </div>
                             <div style={{ margin: '.5rem 0' }}>
                                 <Checkbox
-                                    checked={adminTags?.hideFromList || false}
+                                    checked={adminTags.hideFromList}
                                     onChange={({ target: { checked } }) => {
                                         setAdminTags(before => ({ ...before, hideFromList: checked }));
                                     }}
