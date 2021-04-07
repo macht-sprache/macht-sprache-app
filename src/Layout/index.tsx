@@ -126,18 +126,20 @@ function Sidebar() {
         <div className={s.sidebar}>
             <nav className={s.sidebarInner}>
                 {launched && (
-                    <SidebarNav
-                        links={[
-                            {
-                                to: TERMS,
-                                label: t('common.entities.term.value_plural'),
-                            },
-                        ]}
-                    />
+                    <>
+                        <SidebarNav
+                            links={[
+                                {
+                                    to: TERMS,
+                                    label: t('common.entities.term.value_plural'),
+                                },
+                            ]}
+                        />
+                        <Suspense fallback={null}>
+                            <SidebarTerms />
+                        </Suspense>
+                    </>
                 )}
-                <Suspense fallback={null}>
-                    <SidebarTerms />
-                </Suspense>
                 <SidebarNav links={mainLinks} />
             </nav>
             <footer className={s.sidebarInner}>
