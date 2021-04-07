@@ -1,5 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ButtonLink } from '../../Form/Button';
+import { useUser } from '../../hooks/appContext';
 import { GetList } from '../../hooks/fetch';
+import { LoginHint } from '../../LoginHint';
+import { TERM_ADD } from '../../routes';
 import { Lang, Term } from '../../types';
 import { useLang } from '../../useLang';
 import { LangFilter } from '../LangFilter';
@@ -13,6 +18,8 @@ type Props = {
 export function TermsBig({ getTerms }: Props) {
     const [langFilter, setLangFilter] = useState<Lang>();
     const [lang] = useLang();
+    const { t } = useTranslation();
+    const user = useUser();
 
     const terms = getTerms();
     const sortedTerms = terms
@@ -21,7 +28,15 @@ export function TermsBig({ getTerms }: Props) {
 
     return (
         <>
-            <LangFilter langFilter={langFilter} setLangFilter={setLangFilter} />
+            <div className={s.filters}>
+                <LangFilter langFilter={langFilter} setLangFilter={setLangFilter} />
+
+                {user && (
+                    <ButtonLink size="small" to={TERM_ADD}>
+                        {t('common.entities.term.add')}
+                    </ButtonLink>
+                )}
+            </div>
             <div className={s.terms}>
                 {sortedTerms.map(term => (
                     <TermItem key={term.id} term={term} size="small" />

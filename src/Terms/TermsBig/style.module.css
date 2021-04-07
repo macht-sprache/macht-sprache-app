@@ -2,5 +2,28 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 0rem;
+}
+
+.filters {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    padding-top: 0.5rem;
+    margin: -4rem -0.5rem 0;
+    height: 4rem;
+    background: var(--white);
+    display: flex;
+    align-items: flex-start;
+}
+
+.filters > * {
+    margin: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .filters {
+        margin-top: 0;
+        top: 4rem;
+    }
 }

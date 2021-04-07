@@ -14,26 +14,18 @@ export function TermsPage() {
 
     return (
         <>
-            <Header
-                subLine={
-                    <LoginHint i18nKey="term.registerToAdd">
-                        <ButtonContainer align="left">
-                            <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
-                        </ButtonContainer>
-                    </LoginHint>
-                }
-            >
-                {t('common.entities.term.value_plural')}
-            </Header>
+            <Header>{t('common.entities.term.value_plural')}</Header>
 
             <FullWidthColumn>
                 <TermsBig getTerms={getTerms} />
             </FullWidthColumn>
 
             <SingleColumn>
-                <ButtonContainer align="left">
-                    <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
-                </ButtonContainer>
+                <LoginHint i18nKey="term.registerToAdd">
+                    <ButtonContainer align="left">
+                        <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
+                    </ButtonContainer>
+                </LoginHint>
             </SingleColumn>
         </>
     );
