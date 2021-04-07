@@ -113,12 +113,27 @@
     outline: none;
 }
 
-.textarea {
+.textarea,
+.textareaDummy {
     composes: input;
     background: transparent;
     font-size: inherit;
-    resize: vertical;
     min-height: 100px;
+}
+
+.textareaDummy {
+    visibility: hidden;
+    white-space: pre-wrap;
+}
+
+.textarea {
+    position: absolute;
+    height: 100%;
+    resize: none;
+}
+
+.textAreaWrapper {
+    position: relative;
 }
 
 .textarea::placeholder,

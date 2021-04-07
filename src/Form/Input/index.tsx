@@ -98,7 +98,12 @@ export function Textarea({
             warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
             placeholder={props.placeholder}
         >
-            <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} style={{ minHeight }} />
+            <div className={s.textAreaWrapper}>
+                <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} style={{ minHeight }} />
+                <div className={s.textareaDummy} aria-hidden="true">
+                    {textareaProps.value ? textareaProps.value + ' ' : ' '}
+                </div>
+            </div>
         </Container>
     );
 }
