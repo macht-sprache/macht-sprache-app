@@ -136,7 +136,8 @@
             "en": "Füge eine englische Übersetzung hinzu für: <Term /> "
         },
         "addCommentHeading": "dazu, wie <Term /> zu übersetzen ist",
-        "commentPlaceholder": "...dazu, wie »{{term}}« zu übersetzen ist"
+        "commentPlaceholder": "...dazu, wie »{{term}}« zu übersetzen ist",
+        "search": "Tippe zum Suchen"
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
