@@ -1,0 +1,47 @@
+.container {
+    position: relative;
+    display: inline-block;
+    border: solid var(--thickBorder) var(--dominantLanguageColor);
+}
+
+.input {
+    padding: 0.2rem 1.5rem 0.2rem 0.5rem;
+    font-family: var(--monospaceFont);
+    font-size: inherit;
+    border: 0;
+}
+
+.input::placeholder {
+    color: var(--placeholderGrey);
+}
+
+.input:focus {
+    outline: none;
+}
+
+.container:focus-within {
+    border-color: var(--orange);
+}
+
+.cancel {
+    position: absolute;
+    cursor: pointer;
+    border: none;
+    width: 1.5rem;
+    right: 0;
+    height: 100%;
+    z-index: 1;
+    background-image: url(./x.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 0.8rem;
+    background-color: transparent;
+}
+
+.label {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}

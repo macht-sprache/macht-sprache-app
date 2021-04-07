@@ -15,6 +15,7 @@ import { Book, Comment, Movie, WebPage } from './types';
 import MovieSearch from './MediaSelection/MovieSearch';
 import WebPageSearch from './MediaSelection/WebPageSearch';
 import { Checkbox } from './Form/Checkbox';
+import { InlineInput } from './Form/InlineInput';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -28,6 +29,7 @@ export default function ElementTestPage() {
     const [selectValue, setSelectValue] = useState('');
     const [anotherSelectValue, setAnotherSelectValue] = useState('2');
     const [textAreaValue, setTextAreaValue] = useState('');
+    const [inlineInputValue, setInlineInputValue] = useState('');
     const [enBook, setEnBook] = useState<Book>();
     const [deBook, setDeBook] = useState<Book>();
     const [enMovie, setEnMovie] = useState<Movie>();
@@ -186,6 +188,15 @@ export default function ElementTestPage() {
             <Checkbox label="this is a disabled checkbox" disabled />
             <br />
             <Checkbox label="this is a disabled and checked checkbox" checked disabled />
+
+            <Heading>Inline Input</Heading>
+            <InlineInput
+                label="Search"
+                placeholder="Search"
+                value={inlineInputValue}
+                onChange={({ target: { value } }) => setInlineInputValue(value)}
+                onCancel={() => setInlineInputValue('')}
+            />
 
             <Heading>Comments</Heading>
 
