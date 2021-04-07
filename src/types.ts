@@ -25,8 +25,8 @@ export interface Term extends Commentable {
     creator: UserMini;
     createdAt: Timestamp;
     adminTags: {
-        hightlightLandingPage?: boolean;
-        showInSidebar?: boolean;
+        hightlightLandingPage: boolean;
+        showInSidebar: boolean;
         hideFromList: boolean;
     };
     adminComment: string;

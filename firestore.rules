@@ -82,7 +82,9 @@ service cloud.firestore {
         data.lang is string &&
         data.relatedTerms is list &&
         data.commentCount == 0 &&
-        data.adminTags.hideFromList == false;
+        data.adminTags.hideFromList == false &&
+        data.adminTags.showInSidebar == false &&
+        data.adminTags.hightlightLandingPage == false;
     }
 
     function isValidTermUpdate() {
