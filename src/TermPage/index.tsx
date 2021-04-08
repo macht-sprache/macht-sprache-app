@@ -232,6 +232,15 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     label="Hide from list"
                                 />
                             </div>
+                            <div style={{ margin: '.5rem 0' }}>
+                                <Checkbox
+                                    checked={adminTags.disableExamples}
+                                    onChange={({ target: { checked } }) => {
+                                        setAdminTags(before => ({ ...before, disableExamples: checked }));
+                                    }}
+                                    label="Disable Examples"
+                                />
+                            </div>
                         </>
                     )}
 

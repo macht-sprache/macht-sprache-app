@@ -28,6 +28,7 @@ export interface Term extends Commentable {
         hightlightLandingPage: boolean;
         showInSidebar: boolean;
         hideFromList: boolean;
+        disableExamples: boolean;
     };
     adminComment: string;
 

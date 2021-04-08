@@ -1,3 +1,4 @@
+import { mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA } from '../../../src/languages';
 import { GlobalSettings, Lang, Term, Translation, User, UserProperties, UserSettings } from '../../../src/types';
@@ -164,7 +165,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
 
     const termDefaults: Partial<Term> = {
         adminComment: '',
-        adminTags: { hideFromList: false, showInSidebar: false, hightlightLandingPage: false },
+        adminTags: { hideFromList: false, showInSidebar: false, hightlightLandingPage: false, disableExamples: false },
     };
     const translationDefaults: Partial<Translation> = { ratings: null };
 
@@ -173,7 +174,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
         terms.forEach(term => {
             const data = term.data();
             delete data.weekHighlight;
-            t.set(term.ref, { ...termDefaults, ...data });
+            t.set(term.ref, mergeDeepRight(termDefaults, data));
         });
     });
 
