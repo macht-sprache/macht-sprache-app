@@ -252,7 +252,8 @@
     "comment": {
         "registerToAdd": "To comment, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "deleteHeading": "Delete Comment?",
-        "deleteExplanation": "Are you sure you want to delete this comment? This cannot be undone."
+        "deleteExplanation": "Are you sure you want to delete this comment? This cannot be undone.",
+        "commentedBy": "<User /> commented on <DocumentLink>{{title}}</DocumentLink>"
     },
     "notFound": {
         "heading": "Page not found",
