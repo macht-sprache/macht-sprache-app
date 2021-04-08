@@ -50,13 +50,19 @@ export default function AddTranslationPage() {
                     },
                 ]}
             >
-                {t(term.adminTags.isAboutGender ? 'term.gender.addVariant' : 'common.entities.translation.add')}
+                {t(
+                    term.adminTags.translationsAsVariants
+                        ? 'term.variants.addVariant'
+                        : 'common.entities.translation.add'
+                )}
             </Header>
             <p>
                 <Trans
                     t={t}
                     i18nKey={
-                        term.adminTags.isAboutGender ? 'term.gender.addVariantDiscuss' : 'translation.addTranslation'
+                        term.adminTags.translationsAsVariants
+                            ? 'term.variants.addVariantDiscuss'
+                            : 'translation.addTranslation'
                     }
                     components={{ Term: <TermWithLang term={term} /> }}
                 />
@@ -65,7 +71,9 @@ export default function AddTranslationPage() {
                 <InputContainer>
                     <Input
                         label={t(
-                            term.adminTags.isAboutGender ? 'term.gender.variant' : 'common.entities.translation.value'
+                            term.adminTags.translationsAsVariants
+                                ? 'term.variants.variant'
+                                : 'common.entities.translation.value'
                         )}
                         value={model.translation}
                         onChange={event => setModel(prev => ({ ...prev, translation: event.target.value }))}
@@ -80,7 +88,11 @@ export default function AddTranslationPage() {
 
                 <ButtonContainer>
                     <Button primary disabled={submitting || !model.translation} type="submit">
-                        {t(term.adminTags.isAboutGender ? 'term.gender.addVariant' : 'common.entities.translation.add')}
+                        {t(
+                            term.adminTags.translationsAsVariants
+                                ? 'term.variants.addVariant'
+                                : 'common.entities.translation.add'
+                        )}
                     </Button>
                 </ButtonContainer>
             </form>

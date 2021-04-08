@@ -138,7 +138,7 @@
         "addCommentHeading": "dazu, wie <Term /> zu übersetzen ist",
         "commentPlaceholder": "...dazu, wie »{{term}}« zu übersetzen ist",
         "search": "Tippe zum Suchen",
-        "gender": {
+        "variants": {
             "variant": "Variante",
             "variant_plural": "Varianten",
             "addVariant": "Variante Hinzufügen",

@@ -98,7 +98,9 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                 <p>
                     <Trans
                         t={t}
-                        i18nKey={term.adminTags.isAboutGender ? 'term.gender.usage' : 'rating.overlayHeading'}
+                        i18nKey={
+                            term.adminTags.translationsAsVariants ? 'term.variants.usage' : 'rating.overlayHeading'
+                        }
                         values={{
                             translation: translation.value,
                             term: term.value,

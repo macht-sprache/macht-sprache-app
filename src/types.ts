@@ -30,9 +30,9 @@ export interface Term extends Commentable {
         hideFromList: boolean;
         disableExamples: boolean;
         enableCommentsOnTranslations: boolean;
-        isAboutGender: boolean;
+        translationsAsVariants: boolean;
     };
-    adminComment: { a: string; b: string };
+    adminComment: { langA: string; langB: string };
 
     value: string;
     variants: string[];

@@ -48,7 +48,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const canEdit = term.creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
     const [lang] = useLang();
-    const adminComment = term.adminComment[lang === langA ? 'a' : 'b'];
+    const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
 
     return (
         <>
@@ -56,7 +56,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                 capitalize
                 subLine={
                     <>
-                        {!term.adminTags.isAboutGender && (
+                        {!term.adminTags.translationsAsVariants && (
                             <Trans
                                 t={t}
                                 i18nKey="common.addedOn"
@@ -102,7 +102,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         commentCount={term.commentCount}
                         headingHint={
                             <>
-                                {!term.adminTags.isAboutGender && (
+                                {!term.adminTags.translationsAsVariants && (
                                     <Trans
                                         t={t}
                                         i18nKey="term.addCommentHeading"
@@ -112,7 +112,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </>
                         }
                         placeholder={
-                            term.adminTags.isAboutGender
+                            term.adminTags.translationsAsVariants
                                 ? undefined
                                 : t('term.commentPlaceholder', { term: termRedacted })
                         }
@@ -213,16 +213,16 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             <InputContainer>
                                 <Textarea
                                     label={`admin comment ${langA}`}
-                                    value={adminComment.a}
+                                    value={adminComment.langA}
                                     onChange={({ target: { value } }) =>
-                                        setAdminComment(before => ({ ...before, a: value }))
+                                        setAdminComment(before => ({ ...before, langA: value }))
                                     }
                                 />
                                 <Textarea
                                     label={`admin comment ${langB}`}
-                                    value={adminComment.b}
+                                    value={adminComment.langB}
                                     onChange={({ target: { value } }) =>
-                                        setAdminComment(before => ({ ...before, b: value }))
+                                        setAdminComment(before => ({ ...before, langB: value }))
                                     }
                                 />
                             </InputContainer>
@@ -273,9 +273,9 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             </div>
                             <div style={{ margin: '.5rem 0' }}>
                                 <Checkbox
-                                    checked={adminTags.isAboutGender}
+                                    checked={adminTags.translationsAsVariants}
                                     onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, isAboutGender: checked }));
+                                        setAdminTags(before => ({ ...before, translationsAsVariants: checked }));
                                     }}
                                     label="Is 'about gender'-page (changes wording)"
                                 />

@@ -140,7 +140,7 @@
         "deleteHeading": "Delete Term?",
         "deleteExplanation": "Are you sure you want to delete this term? This cannot be undone!",
         "search": "Type to search",
-        "gender": {
+        "variants": {
             "variant": "Variant",
             "variant_plural": "Variants",
             "addVariant": "Add a variant",
