@@ -84,7 +84,8 @@ service cloud.firestore {
         data.commentCount == 0 &&
         data.adminTags.hideFromList == false &&
         data.adminTags.showInSidebar == false &&
-        data.adminTags.hightlightLandingPage == false;
+        data.adminTags.hightlightLandingPage == false &&
+        data.adminTags.disableExamples == false;
     }
 
     function isValidTermUpdate() {

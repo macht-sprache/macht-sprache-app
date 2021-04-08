@@ -223,7 +223,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
         lang,
         value,
         commentCount: 0,
-        adminTags: { hideFromList: false, showInSidebar: false, hightlightLandingPage: false },
+        adminTags: { hideFromList: false, showInSidebar: false, hightlightLandingPage: false, disableExamples: false },
         adminComment: '',
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),

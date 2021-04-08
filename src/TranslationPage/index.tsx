@@ -114,15 +114,16 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                     </div>
                 </div>
             </SingleColumn>
-
-            <Suspense fallback={null}>
-                <TranslationExamplesList
-                    term={term}
-                    translation={translation}
-                    getTranslationExamples={getTranslationExamples}
-                    getSources={getSources}
-                />
-            </Suspense>
+            {!term.adminTags.disableExamples && (
+                <Suspense fallback={null}>
+                    <TranslationExamplesList
+                        term={term}
+                        translation={translation}
+                        getTranslationExamples={getTranslationExamples}
+                        getSources={getSources}
+                    />
+                </Suspense>
+            )}
         </>
     );
 }
