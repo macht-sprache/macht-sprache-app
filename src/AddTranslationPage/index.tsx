@@ -50,15 +50,23 @@ export default function AddTranslationPage() {
                     },
                 ]}
             >
-                {t('common.entities.translation.add')}
+                {t(term.adminTags.isAboutGender ? 'term.gender.addVariant' : 'common.entities.translation.add')}
             </Header>
             <p>
-                <Trans t={t} i18nKey="translation.addTranslation" components={{ Term: <TermWithLang term={term} /> }} />
+                <Trans
+                    t={t}
+                    i18nKey={
+                        term.adminTags.isAboutGender ? 'term.gender.addVariantDiscuss' : 'translation.addTranslation'
+                    }
+                    components={{ Term: <TermWithLang term={term} /> }}
+                />
             </p>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input
-                        label={t('common.entities.translation.value')}
+                        label={t(
+                            term.adminTags.isAboutGender ? 'term.gender.variant' : 'common.entities.translation.value'
+                        )}
                         value={model.translation}
                         onChange={event => setModel(prev => ({ ...prev, translation: event.target.value }))}
                     />
@@ -72,7 +80,7 @@ export default function AddTranslationPage() {
 
                 <ButtonContainer>
                     <Button primary disabled={submitting || !model.translation} type="submit">
-                        {t('common.entities.translation.add')}
+                        {t(term.adminTags.isAboutGender ? 'term.gender.addVariant' : 'common.entities.translation.add')}
                     </Button>
                 </ButtonContainer>
             </form>

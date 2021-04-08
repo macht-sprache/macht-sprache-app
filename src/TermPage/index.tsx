@@ -53,14 +53,16 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                 capitalize
                 subLine={
                     <>
-                        <Trans
-                            t={t}
-                            i18nKey="common.addedOn"
-                            components={{
-                                User: <UserInlineDisplay {...term.creator} />,
-                                FormatDate: <FormatDate date={term.createdAt} />,
-                            }}
-                        />
+                        {!term.adminTags.isAboutGender && (
+                            <Trans
+                                t={t}
+                                i18nKey="common.addedOn"
+                                components={{
+                                    User: <UserInlineDisplay {...term.creator} />,
+                                    FormatDate: <FormatDate date={term.createdAt} />,
+                                }}
+                            />
+                        )}
                         {canEdit && (
                             <>
                                 {' | '}
@@ -96,13 +98,21 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         entityRef={collections.terms.doc(term.id)}
                         commentCount={term.commentCount}
                         headingHint={
-                            <Trans
-                                t={t}
-                                i18nKey="term.addCommentHeading"
-                                components={{ Term: <TermWithLang term={term} /> }}
-                            />
+                            <>
+                                {!term.adminTags.isAboutGender && (
+                                    <Trans
+                                        t={t}
+                                        i18nKey="term.addCommentHeading"
+                                        components={{ Term: <TermWithLang term={term} /> }}
+                                    />
+                                )}
+                            </>
                         }
-                        placeholder={t('term.commentPlaceholder', { term: termRedacted })}
+                        placeholder={
+                            term.adminTags.isAboutGender
+                                ? undefined
+                                : t('term.commentPlaceholder', { term: termRedacted })
+                        }
                     />
                 </div>
             </SingleColumn>
@@ -248,6 +258,15 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                         setAdminTags(before => ({ ...before, enableCommentsOnTranslations: checked }));
                                     }}
                                     label="Enable Comments on Translations"
+                                />
+                            </div>
+                            <div style={{ margin: '.5rem 0' }}>
+                                <Checkbox
+                                    checked={adminTags.isAboutGender}
+                                    onChange={({ target: { checked } }) => {
+                                        setAdminTags(before => ({ ...before, isAboutGender: checked }));
+                                    }}
+                                    label="Is 'about gender'-page (changes wording)"
                                 />
                             </div>
                         </>

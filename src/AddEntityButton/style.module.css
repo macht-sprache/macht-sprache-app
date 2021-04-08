@@ -9,7 +9,6 @@
     padding: 1rem;
     line-height: var(--lineHeightParagraph);
     border: solid var(--black) var(--thinBorder);
-    min-height: 7rem;
 }
 
 .button:hover,

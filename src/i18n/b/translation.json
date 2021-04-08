@@ -137,7 +137,14 @@
         },
         "addCommentHeading": "dazu, wie <Term /> zu übersetzen ist",
         "commentPlaceholder": "...dazu, wie »{{term}}« zu übersetzen ist",
-        "search": "Tippe zum Suchen"
+        "search": "Tippe zum Suchen",
+        "gender": {
+            "variant": "Variante",
+            "variant_plural": "Varianten",
+            "addVariant": "Variante Hinzufügen",
+            "addVariantDiscuss": "Füge eine Variante hinzu, die du diskutieren möchtest.",
+            "usage": "Wie oft würdest du <Translation>{{translation}}</Translation> in Übersetzungen benutzen?"
+        }
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",

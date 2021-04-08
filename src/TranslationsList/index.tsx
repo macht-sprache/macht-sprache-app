@@ -42,7 +42,10 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
         <div className={clsx(s.container, s[size])}>
             {size === 'medium' && (
                 <h2>
-                    {translationsCount} {t('common.entities.translation.value', { count: translationsCount })}
+                    {translationsCount}{' '}
+                    {t(term.adminTags.isAboutGender ? 'term.gender.variant' : 'common.entities.translation.value', {
+                        count: translationsCount,
+                    })}
                 </h2>
             )}
             {!translations.length && (
@@ -68,7 +71,11 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
                 {size === 'medium' && (
                     <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
                         <Trans
-                            i18nKey={`term.addTranslation.${otherLang}` as const}
+                            i18nKey={
+                                term.adminTags.isAboutGender
+                                    ? 'term.gender.addVariant'
+                                    : (`term.addTranslation.${otherLang}` as const)
+                            }
                             t={t}
                             components={{ Term: <TermWithLang term={term} /> }}
                         />
@@ -112,39 +119,43 @@ function TranslationItem({
             </header>
             {size === 'medium' && (
                 <div className={s.body}>
-                    {!sources.length ? (
-                        <div className={s.noExample}>
-                            <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
-                            <span className={s.noExampleText}>
-                                <Trans
-                                    t={t}
-                                    i18nKey={'translationExample.translationListNoExample'}
-                                    components={{
-                                        Link: (
-                                            <Link
-                                                onClick={e => {
-                                                    e.stopPropagation();
-                                                }}
-                                                to={addExampleLink}
-                                            />
-                                        ),
-                                    }}
-                                />
-                            </span>
-                        </div>
-                    ) : (
-                        <ul className={s.translationExampleList}>
-                            <li className={s.translationExampleListItem}>
-                                <AddExampleButton to={addExampleLink} />
-                            </li>
-                            {sources
-                                .filter(source => source.lang === term.lang)
-                                .map(source => (
-                                    <li key={source.id} className={s.translationExampleListItem}>
-                                        <CoverIcon className={s.exampleIcon} item={source} />
+                    {!term.adminTags.isAboutGender && (
+                        <>
+                            {!sources.length ? (
+                                <div className={s.noExample}>
+                                    <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
+                                    <span className={s.noExampleText}>
+                                        <Trans
+                                            t={t}
+                                            i18nKey={'translationExample.translationListNoExample'}
+                                            components={{
+                                                Link: (
+                                                    <Link
+                                                        onClick={e => {
+                                                            e.stopPropagation();
+                                                        }}
+                                                        to={addExampleLink}
+                                                    />
+                                                ),
+                                            }}
+                                        />
+                                    </span>
+                                </div>
+                            ) : (
+                                <ul className={s.translationExampleList}>
+                                    <li className={s.translationExampleListItem}>
+                                        <AddExampleButton to={addExampleLink} />
                                     </li>
-                                ))}
-                        </ul>
+                                    {sources
+                                        .filter(source => source.lang === term.lang)
+                                        .map(source => (
+                                            <li key={source.id} className={s.translationExampleListItem}>
+                                                <CoverIcon className={s.exampleIcon} item={source} />
+                                            </li>
+                                        ))}
+                                </ul>
+                            )}
+                        </>
                     )}
                     <footer className={s.footer}>
                         <div className={s.comments}>
