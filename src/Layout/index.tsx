@@ -9,7 +9,7 @@ import { useUserProperties } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
-import { ABOUT, ADMIN, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERM, TERMS } from '../routes';
+import { ABOUT, ADMIN, ADMIN_CONTENT, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERM, TERMS } from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -123,10 +123,16 @@ function Sidebar() {
     }
 
     if (userProperties?.admin) {
-        mainLinks.push({
-            to: ADMIN,
-            label: 'administration',
-        });
+        mainLinks.push(
+            {
+                to: ADMIN,
+                label: 'admin – users',
+            },
+            {
+                to: ADMIN_CONTENT,
+                label: 'admin – content',
+            }
+        );
     }
 
     return (
