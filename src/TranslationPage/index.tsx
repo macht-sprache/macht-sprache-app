@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
+import Comments from '../Comments';
 import ConfirmModal from '../ConfirmModal';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
@@ -123,6 +124,16 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                         getSources={getSources}
                     />
                 </Suspense>
+            )}
+            {term.adminTags.enableCommentsOnTranslations && (
+                <SingleColumn>
+                    <div className={clsx(s.comments, getDominantLanguageClass(translation.lang))}>
+                        <Comments
+                            entityRef={collections.translationExamples.doc(translation.id)}
+                            commentCount={translation.commentCount}
+                        />
+                    </div>
+                </SingleColumn>
             )}
         </>
     );
