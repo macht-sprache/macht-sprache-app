@@ -32,7 +32,7 @@ export interface Term extends Commentable {
         enableCommentsOnTranslations: boolean;
         isAboutGender: boolean;
     };
-    adminComment: string;
+    adminComment: { a: string; b: string };
 
     value: string;
     variants: string[];
