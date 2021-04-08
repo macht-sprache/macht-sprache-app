@@ -3,7 +3,7 @@ import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
 import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generatePath, Link, NavLink, useLocation } from 'react-router-dom';
+import { generatePath, Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ContentWarning } from '../ContentWarning';
 import { useUserProperties } from '../hooks/appContext';
 import { collections } from '../hooks/data';
@@ -26,6 +26,7 @@ function Layout({ children }: Props) {
     const { t } = useTranslation();
     const id = useDomId();
     const [menuOpen, setMenuOpen] = useState(false);
+    const history = useHistory();
     const location = useLocation();
     const { trackPageView } = useMatomo();
 
@@ -38,8 +39,14 @@ function Layout({ children }: Props) {
     }, [location]);
 
     useEffect(() => {
+        if (history.action === 'PUSH') {
+            window.scrollTo(0, 0);
+        }
+    }, [history.action, location.pathname]);
+
+    useEffect(() => {
         trackPageView({ href: location.pathname });
-    }, [trackPageView, location]);
+    }, [trackPageView, location.pathname]);
 
     return (
         <OverlayProvider>
