@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 import { TFuncKey, Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
+import { CommentListWithLinks } from '../Comments/CommentList';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Checkbox } from '../Form/Checkbox';
 import { Input, Textarea } from '../Form/Input';
@@ -8,7 +9,7 @@ import InputContainer from '../Form/InputContainer';
 import Header from '../Header';
 import { useUser, useUserSettings } from '../hooks/appContext';
 import { collections } from '../hooks/data';
-import { Get, useDocument } from '../hooks/fetch';
+import { Get, useCollection, useDocument } from '../hooks/fetch';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
@@ -78,10 +79,25 @@ function UserPage({ getUser }: { getUser: Get<User> }) {
             <Columns>
                 <UserInfo user={user} edit={edit} />
                 {loggedInUser && loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
+                <div>
+                    <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
+                    <Suspense fallback={null}>
+                        <Comments user={user} />
+                    </Suspense>
+                </div>
             </Columns>
             {isEditing && <EditUserInfo user={user} onClose={() => setIsEditing(false)} />}
         </>
     );
+}
+
+function Comments({ user }: { user: User }) {
+    const getComments = useCollection(
+        collections.comments.where('creator.id', '==', user.id).orderBy('createdAt').limit(10)
+    );
+    const comments = getComments();
+
+    return <CommentListWithLinks comments={comments} />;
 }
 
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
