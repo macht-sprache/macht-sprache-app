@@ -29,6 +29,7 @@ export interface Term extends Commentable {
         showInSidebar: boolean;
         hideFromList: boolean;
         disableExamples: boolean;
+        enableCommentsOnTranslations: boolean;
     };
     adminComment: string;
 

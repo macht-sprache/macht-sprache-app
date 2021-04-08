@@ -241,6 +241,15 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     label="Disable Examples"
                                 />
                             </div>
+                            <div style={{ margin: '.5rem 0' }}>
+                                <Checkbox
+                                    checked={adminTags.enableCommentsOnTranslations}
+                                    onChange={({ target: { checked } }) => {
+                                        setAdminTags(before => ({ ...before, enableCommentsOnTranslations: checked }));
+                                    }}
+                                    label="Enable Comments on Translations"
+                                />
+                            </div>
                         </>
                     )}
 
