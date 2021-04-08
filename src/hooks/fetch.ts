@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import isEqual from 'lodash.isequal';
+import { DependencyList, useEffect, useMemo, useState } from 'react';
 import { ERROR_NOT_FOUND } from '../constants';
 
 type Query<T> = firebase.firestore.Query<T>;
@@ -98,9 +99,25 @@ function useSnapshot<T, Ref extends Reference<T>>(currentRef: Ref) {
     }, [ref, state?.ref, state?.snapshot]);
 }
 
+function useCachedGetter<T extends (...args: any) => any>(getter: T, deps: DependencyList) {
+    return useMemo(() => {
+        let args: Parameters<T>;
+        let result: ReturnType<T>;
+        return (...newArgs: Parameters<T>) => {
+            if (result !== undefined && isEqual(args, newArgs)) {
+                return result;
+            }
+            args = newArgs;
+            result = getter(...newArgs);
+            return result;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, deps);
+}
+
 export function useCollection<T>(ref: Query<T>): GetList<T> {
     const snapshotReader = useSnapshot<T, typeof ref>(ref);
-    return useCallback(() => {
+    return useCachedGetter(() => {
         const snapshot = snapshotReader();
         return snapshot.docs.map(doc => doc.data());
     }, [snapshotReader]);
@@ -108,7 +125,7 @@ export function useCollection<T>(ref: Query<T>): GetList<T> {
 
 export function useCollectionById<T>(ref: Query<T>): GetListById<T> {
     const snapshotReader = useSnapshot<T, typeof ref>(ref);
-    return useCallback(() => {
+    return useCachedGetter(() => {
         const snapshot = snapshotReader();
         return snapshot.docs.reduce<Dictionary<T>>((acc, cur) => ({ ...acc, [cur.id]: cur.data() }), {});
     }, [snapshotReader]);
@@ -116,8 +133,9 @@ export function useCollectionById<T>(ref: Query<T>): GetListById<T> {
 
 export function useDocument<T>(ref: DocumentReference<T>): Get<T> {
     const snapshotReader = useSnapshot<T, typeof ref>(ref);
-    return useMemo(() => {
-        const reader = (allowEmpty?: boolean) => {
+
+    return useCachedGetter(
+        (allowEmpty?: boolean) => {
             const snapshot = snapshotReader();
             const data = snapshot.data();
 
@@ -129,7 +147,7 @@ export function useDocument<T>(ref: DocumentReference<T>): Get<T> {
                 throw ERROR_NOT_FOUND;
             }
             return data;
-        };
-        return reader as Get<T>;
-    }, [snapshotReader]);
+        },
+        [snapshotReader]
+    ) as Get<T>;
 }
