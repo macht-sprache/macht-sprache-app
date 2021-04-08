@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 're
 import AddTermPage from './AddTermPage';
 import AddTranslationExamplePage from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
+import AdminContentPage from './AdminContentPage';
 import AdminPage from './AdminPage/lazy';
 import ElementTestPage from './ElementTestPage';
 import ErrorBoundary from './ErrorBoundary';
@@ -94,6 +95,9 @@ function AppRouter() {
                             </LaunchedRoute>
                             <AdminRoute path={routes.ADMIN} exact>
                                 <AdminPage />
+                            </AdminRoute>
+                            <AdminRoute path={routes.ADMIN_CONTENT} exact>
+                                <AdminContentPage />
                             </AdminRoute>
                             <LaunchedRoute path={routes.NEWS} exact>
                                 <NewsPage />
