@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CommentListWithLinks } from '../Comments/CommentList';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
@@ -31,8 +32,15 @@ export default function Home() {
             </Columns>
             <Columns>
                 <div>
+                    <ColumnHeading>{t('home.about')}</ColumnHeading>
+                    <WpStyle body={response?.body} />
+                    <ButtonContainer align="left">
+                        <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
+                    </ButtonContainer>
+                </div>
+                <div>
+                    <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
                     <Suspense fallback={null}>
-                        <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
                         <Terms getTerms={getTerms} />
                         <div className={s.button}>
                             <ButtonContainer align="left">
@@ -40,15 +48,19 @@ export default function Home() {
                             </ButtonContainer>
                         </div>
                     </Suspense>
-                </div>
-                <div>
-                    <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <WpStyle body={response?.body} />
-                    <ButtonContainer align="left">
-                        <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
-                    </ButtonContainer>
+                    <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
+                    <Suspense fallback={null}>
+                        <LatestComments />
+                    </Suspense>
                 </div>
             </Columns>
         </>
     );
+}
+
+function LatestComments() {
+    const getComments = useCollection(collections.comments.orderBy('createdAt').limit(5));
+    const comments = getComments();
+
+    return <CommentListWithLinks comments={comments} />;
 }
