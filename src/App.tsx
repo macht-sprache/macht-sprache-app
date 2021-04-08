@@ -25,6 +25,7 @@ import { StaticContentPage } from './StaticContentPage';
 import TermPage from './TermPage';
 import { TermsPage } from './TermsPage';
 import TranslationExamplePage from './TranslationExamplePage';
+import TranslationExampleRedirect from './TranslationExampleRedirect';
 import TranslationPage from './TranslationPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
@@ -89,6 +90,9 @@ function AppRouter() {
                             </LoggedInRoute>
                             <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
                                 <TranslationExamplePage />
+                            </LaunchedRoute>
+                            <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_REDIRECT} exact>
+                                <TranslationExampleRedirect />
                             </LaunchedRoute>
                             <LaunchedRoute path={routes.USER} exact>
                                 <UserPage />
