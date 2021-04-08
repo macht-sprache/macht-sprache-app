@@ -1,7 +1,9 @@
+import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { useDocument } from '../../hooks/fetch';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT } from '../../routes';
-import { Comment, DocReference, Source, Term, Translation, TranslationExample } from '../../types';
+import { Comment, DocReference, Source, Term, Translation, TranslationExample, UserMini } from '../../types';
+import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { CommentItem } from '../CommentItem';
 import s from './style.module.css';
 
@@ -34,8 +36,10 @@ function CommentWithLink({ comment }: { comment: Comment }) {
     const linkedDocument = getDocument();
 
     return (
-        <div style={{ marginBottom: '2rem' }}>
-            <LinkToDocument document={linkedDocument} documentRef={comment.ref} />
+        <div>
+            <div className={s.linkToDocument}>
+                <LinkToDocument document={linkedDocument} documentRef={comment.ref} creator={comment.creator} />
+            </div>
             <CommentItem key={comment.id} comment={comment} />
         </div>
     );
@@ -44,17 +48,26 @@ function CommentWithLink({ comment }: { comment: Comment }) {
 function LinkToDocument({
     document,
     documentRef,
+    creator,
 }: {
     document: Term | Translation | TranslationExample;
     documentRef: DocReference<Term | Translation | TranslationExample>;
+    creator: UserMini;
 }) {
+    const { t } = useTranslation();
     if (documentRef.parent.id === 'terms') {
         const term = document as Term;
 
         return (
-            <div style={{ marginBottom: '.5rem' }}>
-                On <Link to={generatePath(TERM, { termId: documentRef.id })}>{term.value}</Link>
-            </div>
+            <Trans
+                t={t}
+                i18nKey="comment.commentedBy"
+                components={{
+                    User: <UserInlineDisplay {...creator} />,
+                    DocumentLink: <Link to={generatePath(TERM, { termId: documentRef.id })} />,
+                }}
+                values={{ title: term.value }}
+            />
         );
     }
 
@@ -62,9 +75,14 @@ function LinkToDocument({
         const example = document as TranslationExample;
 
         return (
-            <div style={{ marginBottom: '.5rem' }}>
-                On <LinkToTranslationExample example={example} exampleId={documentRef.id} />
-            </div>
+            <Trans
+                t={t}
+                i18nKey="comment.commentedBy"
+                components={{
+                    User: <UserInlineDisplay {...creator} />,
+                    DocumentLink: <LinkToTranslationExample example={example} exampleId={documentRef.id} />,
+                }}
+            />
         );
     }
 

@@ -158,7 +158,7 @@ export interface Comment extends Editable {
     comment: string;
 }
 
-interface UserMini {
+export interface UserMini {
     id: string;
     displayName: string;
 }

@@ -1,6 +1,12 @@
 .container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-gap: 1rem;
+    grid-gap: 1.5rem;
     margin-bottom: 2rem;
+}
+
+.linkToDocument {
+    font-style: italic;
+    font-size: var(--fontSizeS);
+    margin-bottom: 0.5rem;
 }
