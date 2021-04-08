@@ -229,9 +229,9 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
             hightlightLandingPage: false,
             disableExamples: false,
             enableCommentsOnTranslations: false,
-            isAboutGender: false,
+            translationsAsVariants: false,
         },
-        adminComment: { a: '', b: '' },
+        adminComment: { langA: '', langB: '' },
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
     });

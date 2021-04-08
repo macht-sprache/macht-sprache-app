@@ -43,9 +43,14 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
             {size === 'medium' && (
                 <h2>
                     {translationsCount}{' '}
-                    {t(term.adminTags.isAboutGender ? 'term.gender.variant' : 'common.entities.translation.value', {
-                        count: translationsCount,
-                    })}
+                    {t(
+                        term.adminTags.translationsAsVariants
+                            ? 'term.variants.variant'
+                            : 'common.entities.translation.value',
+                        {
+                            count: translationsCount,
+                        }
+                    )}
                 </h2>
             )}
             {!translations.length && (
@@ -72,8 +77,8 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
                     <AddEntityButton to={generatePath(TRANSLATION_ADD, { termId: term.id })}>
                         <Trans
                             i18nKey={
-                                term.adminTags.isAboutGender
-                                    ? 'term.gender.addVariant'
+                                term.adminTags.translationsAsVariants
+                                    ? 'term.variants.addVariant'
                                     : (`term.addTranslation.${otherLang}` as const)
                             }
                             t={t}
@@ -119,7 +124,7 @@ function TranslationItem({
             </header>
             {size === 'medium' && (
                 <div className={s.body}>
-                    {!term.adminTags.isAboutGender && (
+                    {!term.adminTags.translationsAsVariants && (
                         <>
                             {!sources.length ? (
                                 <div className={s.noExample}>

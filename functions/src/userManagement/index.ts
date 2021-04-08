@@ -165,8 +165,8 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
 
     const termDefaults: Partial<Term> = {
         adminComment: {
-            a: '',
-            b: '',
+            langA: '',
+            langB: '',
         },
         adminTags: {
             hideFromList: false,
@@ -174,7 +174,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
             hightlightLandingPage: false,
             disableExamples: false,
             enableCommentsOnTranslations: false,
-            isAboutGender: false,
+            translationsAsVariants: false,
         },
     };
     const translationDefaults: Partial<Translation> = { ratings: null };
