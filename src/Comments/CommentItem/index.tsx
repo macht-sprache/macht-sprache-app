@@ -12,6 +12,9 @@ import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { trimString } from '../../utils';
 import { CommentEdit } from '../CommentEdit';
 import s from './style.module.css';
+import HeartSolid from './heart-solid.svg';
+import HeartEmpty from './heart-regular.svg';
+import { ModalDialog } from '../../ModalDialog';
 
 type CommentItemProps = {
     comment: Comment;
@@ -28,6 +31,8 @@ export function CommentItem({
     const [editOpen, setEditOpen] = useState(false);
     const canEdit = creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
+    const [liked, setLiked] = useState(false);
+    const [likeOverlayOpen, setLikeOverlayOpen] = useState(false);
 
     if (user && editOpen) {
         const onSubmit = (newComment: string) => updateComment(user, id, newComment);
@@ -49,6 +54,13 @@ export function CommentItem({
                 <span className={s.meta}>
                     {size === 'medium' && (
                         <>
+                            <LinkButton className={s.likeButton} onClick={() => setLiked(!liked)}>
+                                <img src={liked ? HeartSolid : HeartEmpty} alt="" className={s.likeIcon} />
+                            </LinkButton>{' '}
+                            <LinkButton className={s.likeButton} onClick={() => setLikeOverlayOpen(true)}>
+                                {liked ? 4 : 3} likes
+                            </LinkButton>
+                            {' | '}
                             <FormatDate date={createdAt} />
                             {edited && (
                                 <>
@@ -81,6 +93,16 @@ export function CommentItem({
                     </span>
                 </span>
             </div>
+            {likeOverlayOpen && (
+                <ModalDialog title="Likes" onClose={() => setLikeOverlayOpen(false)}>
+                    Timur
+                    <br />
+                    Kolja
+                    <br />
+                    Lucy
+                    <br />
+                </ModalDialog>
+            )}
         </div>
     );
 }

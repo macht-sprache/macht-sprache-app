@@ -69,3 +69,7 @@
 .small .body {
     font-size: var(--fontSizeS);
 }
+
+.likeIcon {
+    height: 1rem;
+}
