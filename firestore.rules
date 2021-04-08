@@ -76,7 +76,8 @@ service cloud.firestore {
       let data = request.resource.data;
       return data.keys().hasOnly(['creator', 'createdAt',  'adminComment', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'adminTags']) &&
         data.createdAt == request.time &&
-        data.adminComment == '' &&
+        data.adminComment.a == '' &&
+        data.adminComment.b == '' &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&

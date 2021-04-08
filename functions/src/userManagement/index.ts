@@ -164,7 +164,10 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     await verifyAdmin(currentUserId);
 
     const termDefaults: Partial<Term> = {
-        adminComment: '',
+        adminComment: {
+            a: '',
+            b: '',
+        },
         adminTags: {
             hideFromList: false,
             showInSidebar: false,
@@ -181,6 +184,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
         terms.forEach(term => {
             const data = term.data();
             delete data.weekHighlight;
+            delete data.adminComment;
             t.set(term.ref, mergeDeepRight(termDefaults, data));
         });
     });

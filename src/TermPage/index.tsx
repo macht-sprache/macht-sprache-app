@@ -20,6 +20,7 @@ import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
 import { Lang, Source, Term, Translation } from '../types';
+import { useLang } from '../useLang';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
@@ -46,6 +47,8 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const termRedacted = useRedacted(term.value);
     const canEdit = term.creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
+    const [lang] = useLang();
+    const adminComment = term.adminComment[lang === langA ? 'a' : 'b'];
 
     return (
         <>
@@ -82,9 +85,9 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                 <Redact>{term.value}</Redact>
             </Header>
 
-            {term.adminComment && (
+            {adminComment && (
                 <SingleColumn>
-                    <div className={s.adminComment}>{term.adminComment}</div>
+                    <div className={s.adminComment}>{adminComment}</div>
                 </SingleColumn>
             )}
 
@@ -166,7 +169,7 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
     const [saving, setIsSaving] = useState(false);
     const [value, setValue] = useState(term.value);
     const [lang, setLang] = useState(term.lang);
-    const [adminComment, setAdminComment] = useState(term?.adminComment ?? '');
+    const [adminComment, setAdminComment] = useState(term.adminComment);
     const [adminTags, setAdminTags] = useState(term.adminTags);
 
     const onSave = () => {
@@ -209,10 +212,18 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                             <h3>Admin</h3>
                             <InputContainer>
                                 <Textarea
-                                    label="admin comment"
-                                    value={adminComment}
-                                    onChange={({ target: { value } }) => setAdminComment(value)}
-                                    minHeight="300px"
+                                    label={`admin comment ${langA}`}
+                                    value={adminComment.a}
+                                    onChange={({ target: { value } }) =>
+                                        setAdminComment(before => ({ ...before, a: value }))
+                                    }
+                                />
+                                <Textarea
+                                    label={`admin comment ${langB}`}
+                                    value={adminComment.b}
+                                    onChange={({ target: { value } }) =>
+                                        setAdminComment(before => ({ ...before, b: value }))
+                                    }
                                 />
                             </InputContainer>
                             <div style={{ margin: '1rem 0' }}>
