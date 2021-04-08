@@ -171,6 +171,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
             hightlightLandingPage: false,
             disableExamples: false,
             enableCommentsOnTranslations: false,
+            isAboutGender: false,
         },
     };
     const translationDefaults: Partial<Translation> = { ratings: null };
