@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { Get, useDocument } from '../../hooks/fetch';
-import { TERM, TRANSLATION_EXAMPLE_REDIRECT } from '../../routes';
+import { TERM, TRANSLATION, TRANSLATION_EXAMPLE_REDIRECT } from '../../routes';
 import { Comment, DocReference, Source, Term, Translation, TranslationExample, UserMini } from '../../types';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { CommentItem } from '../CommentItem';
@@ -75,6 +75,7 @@ function LinkToDocument({
     creator: UserMini;
 }) {
     const { t } = useTranslation();
+    console.log(documentRef.parent.id);
     if (documentRef.parent.id === 'terms') {
         const term = document as Term;
 
@@ -102,6 +103,29 @@ function LinkToDocument({
                     User: <UserInlineDisplay {...creator} />,
                     DocumentLink: <LinkToTranslationExample example={example} exampleId={documentRef.id} />,
                 }}
+            />
+        );
+    }
+
+    if (documentRef.parent.id === 'translations') {
+        const translation = document as Translation;
+
+        return (
+            <Trans
+                t={t}
+                i18nKey="comment.commentedBy"
+                components={{
+                    User: <UserInlineDisplay {...creator} />,
+                    DocumentLink: (
+                        <Link
+                            to={generatePath(TRANSLATION, {
+                                translationId: documentRef.id,
+                                termId: translation.term.id,
+                            })}
+                        />
+                    ),
+                }}
+                values={{ title: translation.value }}
             />
         );
     }
