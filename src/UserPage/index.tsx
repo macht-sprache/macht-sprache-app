@@ -95,9 +95,8 @@ function Comments({ user }: { user: User }) {
     const getComments = useCollection(
         collections.comments.where('creator.id', '==', user.id).orderBy('createdAt').limit(10)
     );
-    const comments = getComments();
 
-    return <CommentListWithLinks comments={comments} />;
+    return <CommentListWithLinks comments={getComments()} />;
 }
 
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
