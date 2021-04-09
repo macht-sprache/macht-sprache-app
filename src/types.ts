@@ -156,6 +156,12 @@ export interface Comment extends Editable {
     createdAt: Timestamp;
 
     comment: string;
+    likeCount: number;
+}
+
+export interface Like {
+    creator: UserMini;
+    createdAt: Timestamp;
 }
 
 export interface UserMini {

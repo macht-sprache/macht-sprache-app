@@ -29,6 +29,12 @@
                 "editAction": "Edit",
                 "edited": "Edited"
             },
+            "like": {
+                "value": "Like",
+                "value_plural": "Likes",
+                "add": "Like this comment",
+                "remove": "Unlike this comment"
+            },
             "translatioExample": {
                 "value": "Translation Example",
                 "value_plural": "Translation Examples",

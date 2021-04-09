@@ -47,6 +47,7 @@ export default function ElementTestPage() {
             createdAt: firebase.firestore.Timestamp.fromDate(
                 new Date('Mon Jan 25 2021 17:29:26 GMT+0100 (Central European Standard Time)')
             ),
+            likeCount: 0,
         },
         {
             id: '2',
@@ -60,6 +61,7 @@ export default function ElementTestPage() {
             createdAt: firebase.firestore.Timestamp.fromDate(
                 new Date('Mon Jan 25 2021 12:20:26 GMT+0100 (Central European Standard Time)')
             ),
+            likeCount: 0,
         },
         {
             id: '3',
@@ -74,6 +76,7 @@ export default function ElementTestPage() {
             createdAt: firebase.firestore.Timestamp.fromDate(
                 new Date('Mon Jan 24 2021 17:29:26 GMT+0100 (Central European Standard Time)')
             ),
+            likeCount: 0,
         },
     ]);
 
@@ -87,6 +90,7 @@ export default function ElementTestPage() {
                 comment,
                 edited: null,
                 createdAt: firebase.firestore.Timestamp.now(),
+                likeCount: 0,
             },
         ]);
     };

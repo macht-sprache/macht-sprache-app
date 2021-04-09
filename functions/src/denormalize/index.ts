@@ -52,6 +52,22 @@ export const denormalizeRatings = functions.firestore
         await translationRef.update({ ratings: ratingDistribution });
     });
 
+export const denormalizeLikes = functions.firestore
+    .document('/comments/{commentId}/likes/{userId}')
+    .onWrite(async (change, context) => {
+        const commentRef = db.collection('comments').doc(context.params.commentId);
+        const likesRef = commentRef.collection('likes');
+
+        const [commentSnap, likesSnap] = await Promise.all([commentRef.get(), likesRef.get()]);
+        const comment = commentSnap.data() as WithoutId<Comment> | undefined;
+
+        if (!comment) {
+            return;
+        }
+
+        await commentRef.update({ likeCount: likesSnap.size });
+    });
+
 type TranslationExamplePartial = {
     translation: firestore.DocumentReference;
     original: {

@@ -1,20 +1,21 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../../ConfirmModal';
 import { formatDate, FormatDate } from '../../FormatDate';
 import { useAppContext } from '../../hooks/appContext';
-import { deleteComment, updateComment } from '../../hooks/data';
+import { addLike, deleteComment, getLikesRef, updateComment } from '../../hooks/data';
+import { useCollection, useDocument } from '../../hooks/fetch';
 import LinkButton from '../../LinkButton';
-import { Comment } from '../../types';
+import { ModalDialog } from '../../ModalDialog';
+import { Comment, User } from '../../types';
 import { useLang } from '../../useLang';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { trimString } from '../../utils';
 import { CommentEdit } from '../CommentEdit';
+import { ReactComponent as HeartEmpty } from './heart-regular.svg';
+import { ReactComponent as HeartSolid } from './heart-solid.svg';
 import s from './style.module.css';
-import HeartSolid from './heart-solid.svg';
-import HeartEmpty from './heart-regular.svg';
-import { ModalDialog } from '../../ModalDialog';
 
 type CommentItemProps = {
     comment: Comment;
@@ -22,7 +23,7 @@ type CommentItemProps = {
 };
 
 export function CommentItem({
-    comment: { id, comment, createdAt, creator, edited },
+    comment: { id, comment, createdAt, creator, edited, likeCount },
     size = 'medium',
 }: CommentItemProps) {
     const { t } = useTranslation();
@@ -31,8 +32,6 @@ export function CommentItem({
     const [editOpen, setEditOpen] = useState(false);
     const canEdit = creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
-    const [liked, setLiked] = useState(false);
-    const [likeOverlayOpen, setLikeOverlayOpen] = useState(false);
 
     if (user && editOpen) {
         const onSubmit = (newComment: string) => updateComment(user, id, newComment);
@@ -54,12 +53,7 @@ export function CommentItem({
                 <span className={s.meta}>
                     {size === 'medium' && (
                         <>
-                            <LinkButton className={s.likeButton} onClick={() => setLiked(!liked)}>
-                                <img src={liked ? HeartSolid : HeartEmpty} alt="" className={s.likeIcon} />
-                            </LinkButton>{' '}
-                            <LinkButton className={s.likeButton} onClick={() => setLikeOverlayOpen(true)}>
-                                {liked ? 4 : 3} likes
-                            </LinkButton>
+                            <Likes id={id} user={user} likeCount={likeCount} />
                             {' | '}
                             <FormatDate date={createdAt} />
                             {edited && (
@@ -93,17 +87,59 @@ export function CommentItem({
                     </span>
                 </span>
             </div>
-            {likeOverlayOpen && (
-                <ModalDialog title="Likes" onClose={() => setLikeOverlayOpen(false)}>
-                    Timur
-                    <br />
-                    Kolja
-                    <br />
-                    Lucy
-                    <br />
-                </ModalDialog>
-            )}
         </div>
+    );
+}
+
+function Likes({ id, user, likeCount }: { id: string; user?: User; likeCount: number }) {
+    const { t } = useTranslation();
+    const [likeOverlayOpen, setLikeOverlayOpen] = useState(false);
+    return (
+        <>
+            <Suspense fallback={null}>{user && <LikeButton id={id} user={user} />}</Suspense>{' '}
+            <LinkButton disabled={!likeCount} onClick={() => setLikeOverlayOpen(true)}>
+                {likeCount} {t('common.entities.like.value', { count: likeCount })}
+            </LinkButton>
+            <Suspense fallback={null}>
+                {likeOverlayOpen && <LikeOverlay id={id} onClose={() => setLikeOverlayOpen(false)} />}
+            </Suspense>
+        </>
+    );
+}
+
+function LikeButton({ id, user }: { id: string; user: User }) {
+    const { t } = useTranslation();
+    const likeRef = getLikesRef(id).doc(user.id);
+    const getLike = useDocument(likeRef);
+    const liked = !!getLike(true);
+    const toggleLike = () => (liked ? likeRef.delete() : addLike(user, likeRef));
+
+    return (
+        <>
+            <LinkButton
+                onClick={toggleLike}
+                className={s.likeButton}
+                title={liked ? t('common.entities.like.remove') : t('common.entities.like.add')}
+            >
+                {liked ? <HeartSolid className={s.likeIcon} /> : <HeartEmpty className={s.likeIcon} />}
+            </LinkButton>
+        </>
+    );
+}
+
+function LikeOverlay({ id, onClose }: { id: string; onClose: () => void }) {
+    const { t } = useTranslation();
+    const getLikes = useCollection(getLikesRef(id));
+    return (
+        <ModalDialog title={t('common.entities.like.value_plural')} onClose={onClose}>
+            <ul>
+                {getLikes().map(like => (
+                    <li key={like.creator.id}>
+                        <UserInlineDisplay {...like.creator} />
+                    </li>
+                ))}
+            </ul>
+        </ModalDialog>
     );
 }
 

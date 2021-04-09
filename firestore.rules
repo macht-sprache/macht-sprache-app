@@ -164,11 +164,12 @@ service cloud.firestore {
 
     function isValidComment() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'edited', 'comment']) &&
+      return data.keys().hasOnly(['creator', 'ref', 'createdAt', 'edited', 'comment', 'likeCount']) &&
         data.ref is path &&
         data.createdAt == request.time &&
         data.edited == null &&
-        data.comment is string;
+        data.comment is string &&
+        data.likeCount == 0;
     }
 
     function isValidCommentUpdate() {
@@ -188,6 +189,18 @@ service cloud.firestore {
         isValidCommentUpdate();
       allow delete: if isValidatedUser() &&
         isAdmin();
+
+      function isValidLike() {
+        let data = request.resource.data;
+        return data.keys().hasOnly(['creator', 'createdAt']) &&
+          data.createdAt == request.time;
+      }
+
+      match /likes/{userId} {
+        allow read: if true;
+        allow create: if isValidatedUser() && isUser(userId) && isCreator();
+        allow delete: if isValidatedUser() && isUser(userId);
+      }
     }
 
     match /sensitiveTerms/global {
