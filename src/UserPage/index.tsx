@@ -93,7 +93,7 @@ function UserPage({ getUser }: { getUser: Get<User> }) {
 
 function Comments({ user }: { user: User }) {
     const getComments = useCollection(
-        collections.comments.where('creator.id', '==', user.id).orderBy('createdAt').limit(10)
+        collections.comments.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(10)
     );
 
     return <CommentListWithLinks comments={getComments()} />;
