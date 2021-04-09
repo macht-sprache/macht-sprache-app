@@ -56,7 +56,7 @@ function CommentWithLink({
     }
 
     return (
-        <div>
+        <div className={s.linkContainer}>
             <div className={s.linkToDocument}>
                 <LinkToDocument document={linkedDocument} documentRef={comment.ref} creator={comment.creator} />
             </div>

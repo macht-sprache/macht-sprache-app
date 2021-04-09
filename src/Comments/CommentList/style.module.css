@@ -10,3 +10,7 @@
     font-size: var(--fontSizeS);
     margin-bottom: 0.5rem;
 }
+
+.linkContainer {
+    min-width: 0;
+}
