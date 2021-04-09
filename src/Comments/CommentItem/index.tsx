@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../../ConfirmModal';
+import Button, { ButtonContainer } from '../../Form/Button';
 import { formatDate, FormatDate } from '../../FormatDate';
 import { useAppContext } from '../../hooks/appContext';
 import { addLike, deleteComment, getLikesRef, updateComment } from '../../hooks/data';
@@ -16,8 +17,8 @@ import { CommentEdit } from '../CommentEdit';
 import { ReactComponent as HeartEmpty } from './heart-regular.svg';
 import { ReactComponent as HeartSolid } from './heart-solid.svg';
 import { ReactComponent as Pencil } from './pencil-alt-solid.svg';
-import { ReactComponent as Trash } from './trash-alt-regular.svg';
 import s from './style.module.css';
+import { ReactComponent as Trash } from './trash-alt-regular.svg';
 
 type CommentItemProps = {
     comment: Comment;
@@ -138,13 +139,16 @@ function LikeOverlay({ id, onClose }: { id: string; onClose: () => void }) {
     const getLikes = useCollection(getLikesRef(id));
     return (
         <ModalDialog title={t('common.entities.like.value_plural')} onClose={onClose}>
-            <ul>
+            <ul className={s.likeList}>
                 {getLikes().map(like => (
                     <li key={like.creator.id}>
                         <UserInlineDisplay {...like.creator} />
                     </li>
                 ))}
             </ul>
+            <ButtonContainer>
+                <Button onClick={onClose}>{t('common.formNav.close')}</Button>
+            </ButtonContainer>
         </ModalDialog>
     );
 }

@@ -81,3 +81,10 @@
     height: 1rem;
     width: 1rem;
 }
+
+.likeList {
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style-type: none;
+    line-height: var(--lineHeightParagraph);
+}
