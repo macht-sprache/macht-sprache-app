@@ -1,6 +1,7 @@
+import { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { useDocument } from '../../hooks/fetch';
+import { Get, useDocument } from '../../hooks/fetch';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT } from '../../routes';
 import { Comment, DocReference, Source, Term, Translation, TranslationExample, UserMini } from '../../types';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
@@ -25,14 +26,29 @@ export function CommentListWithLinks({ comments }: CommentListProps) {
     return (
         <div className={s.container}>
             {comments.map(comment => {
-                return <CommentWithLink key={comment.id} comment={comment} />;
+                return <CommentWithLinkContainer key={comment.id} comment={comment} />;
             })}
         </div>
     );
 }
 
-function CommentWithLink({ comment }: { comment: Comment }) {
+function CommentWithLinkContainer({ comment }: { comment: Comment }) {
     const getDocument = useDocument(comment.ref);
+
+    return (
+        <Suspense fallback={null}>
+            <CommentWithLink comment={comment} getDocument={getDocument} />
+        </Suspense>
+    );
+}
+
+function CommentWithLink({
+    comment,
+    getDocument,
+}: {
+    comment: Comment;
+    getDocument: Get<Translation | Term | TranslationExample>;
+}) {
     const linkedDocument = getDocument(true);
 
     if (!linkedDocument) {
