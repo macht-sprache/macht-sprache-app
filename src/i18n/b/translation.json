@@ -255,7 +255,8 @@
         "registerToAdd": "Zum Kommentieren bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "deleteHeading": "Kommentar löschen?",
         "deleteExplanation": "Bist du sicher, dass du diesen Kommentar löschen möchtest? Löschungen können nicht rückgängig gemacht werden.",
-        "commentedBy": "<User /> kommentierte <DocumentLink>{{title}}</DocumentLink>"
+        "userCommented": "<User /> kommentierte",
+        "userCommentedOn": "<User /> kommentierte <DocumentLink />"
     },
     "notFound": {
         "heading": "Seite nicht gefunden",

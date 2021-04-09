@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { Get, useDocument } from '../../hooks/fetch';
+import { Redact } from '../../RedactSensitiveTerms';
 import { TERM, TRANSLATION, TRANSLATION_EXAMPLE_REDIRECT } from '../../routes';
 import { Comment, DocReference, Source, Term, Translation, TranslationExample, UserMini } from '../../types';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
@@ -26,39 +27,20 @@ export function CommentListWithLinks({ comments }: CommentListProps) {
     return (
         <div className={s.container}>
             {comments.map(comment => {
-                return <CommentWithLinkContainer key={comment.id} comment={comment} />;
+                return <CommentWithLink key={comment.id} comment={comment} />;
             })}
         </div>
     );
 }
 
-function CommentWithLinkContainer({ comment }: { comment: Comment }) {
+function CommentWithLink({ comment }: { comment: Comment }) {
     const getDocument = useDocument(comment.ref);
-
-    return (
-        <Suspense fallback={null}>
-            <CommentWithLink comment={comment} getDocument={getDocument} />
-        </Suspense>
-    );
-}
-
-function CommentWithLink({
-    comment,
-    getDocument,
-}: {
-    comment: Comment;
-    getDocument: Get<Translation | Term | TranslationExample>;
-}) {
-    const linkedDocument = getDocument(true);
-
-    if (!linkedDocument) {
-        return null;
-    }
-
     return (
         <div className={s.linkContainer}>
             <div className={s.linkToDocument}>
-                <LinkToDocument document={linkedDocument} documentRef={comment.ref} creator={comment.creator} />
+                <Suspense fallback={<LinkHeading creator={comment.creator} />}>
+                    <LinkToDocument getDocument={getDocument} documentRef={comment.ref} creator={comment.creator} />
+                </Suspense>
             </div>
             <CommentItem key={comment.id} comment={comment} />
         </div>
@@ -66,71 +48,36 @@ function CommentWithLink({
 }
 
 function LinkToDocument({
-    document,
+    getDocument,
     documentRef,
     creator,
 }: {
-    document: Term | Translation | TranslationExample;
+    getDocument: Get<Term | Translation | TranslationExample>;
     documentRef: DocReference<Term | Translation | TranslationExample>;
     creator: UserMini;
 }) {
-    const { t } = useTranslation();
+    return <LinkHeading creator={creator}>{getLinkToDocument(getDocument, documentRef)}</LinkHeading>;
+}
 
-    if (documentRef.parent.id === 'terms') {
-        const term = document as Term;
+function LinkToTerm({ term, termId }: { term: Term; termId: string }) {
+    return (
+        <Link to={generatePath(TERM, { termId })}>
+            <Redact>{term.value}</Redact>
+        </Link>
+    );
+}
 
-        return (
-            <Trans
-                t={t}
-                i18nKey="comment.commentedBy"
-                components={{
-                    User: <UserInlineDisplay {...creator} />,
-                    DocumentLink: <Link to={generatePath(TERM, { termId: documentRef.id })} />,
-                }}
-                values={{ title: term.value }}
-            />
-        );
-    }
-
-    if (documentRef.parent.id === 'translationExamples') {
-        const example = document as TranslationExample;
-
-        return (
-            <Trans
-                t={t}
-                i18nKey="comment.commentedBy"
-                components={{
-                    User: <UserInlineDisplay {...creator} />,
-                    DocumentLink: <LinkToTranslationExample example={example} exampleId={documentRef.id} />,
-                }}
-            />
-        );
-    }
-
-    if (documentRef.parent.id === 'translations') {
-        const translation = document as Translation;
-
-        return (
-            <Trans
-                t={t}
-                i18nKey="comment.commentedBy"
-                components={{
-                    User: <UserInlineDisplay {...creator} />,
-                    DocumentLink: (
-                        <Link
-                            to={generatePath(TRANSLATION, {
-                                translationId: documentRef.id,
-                                termId: translation.term.id,
-                            })}
-                        />
-                    ),
-                }}
-                values={{ title: translation.value }}
-            />
-        );
-    }
-
-    return null;
+function LinkToTranslation({ translation, translationId }: { translation: Translation; translationId: string }) {
+    return (
+        <Link
+            to={generatePath(TRANSLATION, {
+                translationId: translationId,
+                termId: translation.term.id,
+            })}
+        >
+            <Redact>{translation.value}</Redact>
+        </Link>
+    );
 }
 
 function LinkToTranslationExample({ example, exampleId }: { example: TranslationExample; exampleId: string }) {
@@ -143,3 +90,50 @@ function LinkToTranslationExample({ example, exampleId }: { example: Translation
         </Link>
     );
 }
+
+const LinkHeading: React.FC<{ creator: UserMini }> = ({ creator, children }) => {
+    const { t } = useTranslation();
+
+    if (!children) {
+        return (
+            <Trans
+                t={t}
+                i18nKey="comment.userCommented"
+                components={{
+                    User: <UserInlineDisplay {...creator} />,
+                }}
+            />
+        );
+    }
+
+    return (
+        <Trans
+            t={t}
+            i18nKey="comment.userCommentedOn"
+            components={{
+                User: <UserInlineDisplay {...creator} />,
+                DocumentLink: children,
+            }}
+        />
+    );
+};
+
+const getLinkToDocument = (
+    getDocument: Get<Term | Translation | TranslationExample>,
+    documentRef: DocReference<Term | Translation | TranslationExample>
+) => {
+    const document = getDocument(true);
+    const { id } = documentRef;
+
+    if (!document) {
+        return null;
+    } else if (documentRef.parent.id === 'terms') {
+        return <LinkToTerm term={document as Term} termId={id} />;
+    } else if (documentRef.parent.id === 'translationExamples') {
+        return <LinkToTranslationExample example={document as TranslationExample} exampleId={id} />;
+    } else if (documentRef.parent.id === 'translations') {
+        return <LinkToTranslation translation={document as Translation} translationId={id} />;
+    }
+
+    return null;
+};
