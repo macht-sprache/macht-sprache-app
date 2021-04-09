@@ -131,7 +131,7 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                 <SingleColumn>
                     <div className={clsx(s.comments, getDominantLanguageClass(translation.lang))}>
                         <Comments
-                            entityRef={collections.translationExamples.doc(translation.id)}
+                            entityRef={collections.translations.doc(translation.id)}
                             commentCount={translation.commentCount}
                         />
                     </div>
