@@ -75,7 +75,7 @@ function LinkToDocument({
     creator: UserMini;
 }) {
     const { t } = useTranslation();
-    console.log(documentRef.parent.id);
+
     if (documentRef.parent.id === 'terms') {
         const term = document as Term;
 
