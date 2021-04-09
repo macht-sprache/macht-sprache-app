@@ -15,6 +15,8 @@ import { trimString } from '../../utils';
 import { CommentEdit } from '../CommentEdit';
 import { ReactComponent as HeartEmpty } from './heart-regular.svg';
 import { ReactComponent as HeartSolid } from './heart-solid.svg';
+import { ReactComponent as Pencil } from './pencil-alt-solid.svg';
+import { ReactComponent as Trash } from './trash-alt-regular.svg';
 import s from './style.module.css';
 
 type CommentItemProps = {
@@ -67,14 +69,18 @@ export function CommentItem({
                             {canEdit && (
                                 <>
                                     {' | '}
-                                    <LinkButton onClick={() => setEditOpen(true)}>
-                                        {t('common.entities.comment.editAction')}
+                                    <LinkButton
+                                        onClick={() => setEditOpen(true)}
+                                        title={t('common.entities.comment.editAction')}
+                                        className={s.metaButton}
+                                    >
+                                        <Pencil className={s.metaIcon} />
                                     </LinkButton>
                                 </>
                             )}
                             {canDelete && (
                                 <>
-                                    {' | '}
+                                    {' '}
                                     <DeleteButton id={id} />
                                 </>
                             )}
@@ -96,7 +102,7 @@ function Likes({ id, user, likeCount }: { id: string; user?: User; likeCount: nu
     const [likeOverlayOpen, setLikeOverlayOpen] = useState(false);
     return (
         <>
-            <Suspense fallback={null}>{user && <LikeButton id={id} user={user} />}</Suspense>{' '}
+            <Suspense fallback={null}>{user && <MetaButton id={id} user={user} />}</Suspense>{' '}
             <LinkButton disabled={!likeCount} onClick={() => setLikeOverlayOpen(true)}>
                 {likeCount} {t('common.entities.like.value', { count: likeCount })}
             </LinkButton>
@@ -107,7 +113,7 @@ function Likes({ id, user, likeCount }: { id: string; user?: User; likeCount: nu
     );
 }
 
-function LikeButton({ id, user }: { id: string; user: User }) {
+function MetaButton({ id, user }: { id: string; user: User }) {
     const { t } = useTranslation();
     const likeRef = getLikesRef(id).doc(user.id);
     const getLike = useDocument(likeRef);
@@ -118,10 +124,10 @@ function LikeButton({ id, user }: { id: string; user: User }) {
         <>
             <LinkButton
                 onClick={toggleLike}
-                className={s.likeButton}
+                className={s.metaButton}
                 title={liked ? t('common.entities.like.remove') : t('common.entities.like.add')}
             >
-                {liked ? <HeartSolid className={s.likeIcon} /> : <HeartEmpty className={s.likeIcon} />}
+                {liked ? <HeartSolid className={s.metaIcon} /> : <HeartEmpty className={s.metaIcon} />}
             </LinkButton>
         </>
     );
@@ -152,7 +158,11 @@ function DeleteButton({ id }: { id: string }) {
             confirmLabel={t('common.formNav.delete')}
             onConfirm={() => deleteComment(id)}
         >
-            {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
+            {onClick => (
+                <LinkButton onClick={onClick} title={t('common.formNav.delete')} className={s.metaButton}>
+                    <Trash className={s.metaIcon} />
+                </LinkButton>
+            )}
         </ConfirmModal>
     );
 }
