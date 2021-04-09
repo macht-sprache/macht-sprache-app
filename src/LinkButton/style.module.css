@@ -17,3 +17,8 @@
 .underlined {
     text-decoration: underline;
 }
+
+.button:disabled {
+    text-decoration: none;
+    cursor: default;
+}

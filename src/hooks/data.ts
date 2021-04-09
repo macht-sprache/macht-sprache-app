@@ -7,6 +7,7 @@ import {
     DocReference,
     GlobalSettings,
     Lang,
+    Like,
     Rating,
     SensitiveTerms,
     Source,
@@ -173,8 +174,18 @@ const CommentConverter: firebase.firestore.FirestoreDataConverter<Comment> = {
         return { ...data, createdAt: getCreatedAt(comment) };
     },
     fromFirestore: (snapshot): Comment => {
-        const { creator, ref, createdAt, comment, edited } = snapshot.data(defaultSnapshotOptions);
-        return { id: snapshot.id, creator, ref, createdAt, comment, edited: edited ?? null };
+        const { creator, ref, createdAt, comment, likeCount, edited } = snapshot.data(defaultSnapshotOptions);
+        return { id: snapshot.id, creator, ref, createdAt, comment, likeCount, edited: edited ?? null };
+    },
+};
+
+const LikeConverter: firebase.firestore.FirestoreDataConverter<Like> = {
+    toFirestore: (like: Like) => {
+        return { ...like, createdAt: getCreatedAt(like) };
+    },
+    fromFirestore: (snapshot): Like => {
+        const { creator, createdAt } = snapshot.data(defaultSnapshotOptions);
+        return { creator, createdAt };
     },
 };
 
@@ -213,6 +224,9 @@ export const getRatingRef = (userId: string, translationId: string) =>
 
 export const getCommentsRef = (ref: Comment['ref']) =>
     collections.comments.where('ref', '==', ref).orderBy('createdAt');
+
+export const getLikesRef = (commentId: string) =>
+    collections.comments.doc(commentId).collection('likes').withConverter(LikeConverter);
 
 export async function addTerm(user: User, value: string, lang: Lang, comment?: string) {
     const termRef = collections.terms.doc();
@@ -302,8 +316,18 @@ export const addComment = (user: User, ref: Comment['ref'], comment: string) => 
         edited: null,
         createdAt: firebase.firestore.Timestamp.now(),
         comment,
+        likeCount: 0,
     });
 };
+
+export const addLike = (user: User, likeRef: DocReference<Like>) =>
+    likeRef.set({
+        creator: {
+            id: user.id,
+            displayName: user.displayName,
+        },
+        createdAt: firebase.firestore.Timestamp.now(),
+    });
 
 export const updateComment = (user: User, id: string, comment: string) => {
     return collections.comments.doc(id).update({

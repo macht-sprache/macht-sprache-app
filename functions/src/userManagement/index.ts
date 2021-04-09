@@ -1,7 +1,16 @@
 import { mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA } from '../../../src/languages';
-import { GlobalSettings, Lang, Term, Translation, User, UserProperties, UserSettings } from '../../../src/types';
+import {
+    Comment,
+    GlobalSettings,
+    Lang,
+    Term,
+    Translation,
+    User,
+    UserProperties,
+    UserSettings,
+} from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 
 const verifyAdmin = async (userId: string) => {
@@ -119,9 +128,14 @@ export const deleteAllContentOfUser = functions.https.onCall(async ({ userId }: 
             db.collection('terms'),
             db.collection('translations'),
             db.collection('translationExamples'),
+            db.collectionGroup('likes'),
         ].map(async collectionRef => {
             const snapshot = await collectionRef.where('creator.id', '==', userId).get();
-            logger.info(`Deleting ${snapshot.size} documents from collection ${collectionRef.path}`);
+            logger.info(
+                `Deleting ${snapshot.size} documents from collection ${
+                    'path' in collectionRef ? collectionRef.path : 'collectionGroup'
+                }`
+            );
             return Promise.all(snapshot.docs.map(doc => doc.ref.delete()));
         })
     );
@@ -178,6 +192,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
         },
     };
     const translationDefaults: Partial<Translation> = { ratings: null };
+    const commentDefaults: Partial<Comment> = { likeCount: 0 };
 
     await db.runTransaction(async t => {
         const terms = await t.get(db.collection('terms'));
@@ -193,6 +208,13 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
         const translations = await t.get(db.collection('translations'));
         translations.forEach(translation => {
             t.set(translation.ref, { ...translationDefaults, ...translation.data() });
+        });
+    });
+
+    await db.runTransaction(async t => {
+        const comments = await t.get(db.collection('comments'));
+        comments.forEach(comment => {
+            t.set(comment.ref, { ...commentDefaults, ...comment.data() });
         });
     });
 });

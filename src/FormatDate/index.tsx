@@ -7,7 +7,7 @@ type formatDateProps = {
 };
 
 const dateOptions: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
+    year: '2-digit',
     month: 'numeric',
     day: 'numeric',
     hour: 'numeric',

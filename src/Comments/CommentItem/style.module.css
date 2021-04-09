@@ -69,3 +69,22 @@
 .small .body {
     font-size: var(--fontSizeS);
 }
+
+.metaButton {
+    display: inline-flex;
+    vertical-align: text-top;
+    margin: -0.75ch;
+    padding: 0.75ch;
+}
+
+.metaIcon {
+    height: 1rem;
+    width: 1rem;
+}
+
+.likeList {
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style-type: none;
+    line-height: var(--lineHeightParagraph);
+}
