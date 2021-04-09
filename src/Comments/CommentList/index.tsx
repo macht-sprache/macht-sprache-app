@@ -56,35 +56,28 @@ function LinkToDocument({
     documentRef: DocReference<Term | Translation | TranslationExample>;
     creator: UserMini;
 }) {
-    const document = getDocument(true);
+    return <LinkHeading creator={creator}>{getLinkToDocument(getDocument, documentRef)}</LinkHeading>;
+}
 
-    let documentLinkEl: React.ReactNode;
+function LinkToTerm({ term, termId }: { term: Term; termId: string }) {
+    return (
+        <Link to={generatePath(TERM, { termId })}>
+            <Redact>{term.value}</Redact>
+        </Link>
+    );
+}
 
-    if (documentRef.parent.id === 'terms') {
-        const term = document as Term;
-        documentLinkEl = (
-            <Link to={generatePath(TERM, { termId: documentRef.id })}>
-                <Redact>{term.value}</Redact>
-            </Link>
-        );
-    } else if (documentRef.parent.id === 'translationExamples') {
-        const example = document as TranslationExample;
-        documentLinkEl = <LinkToTranslationExample example={example} exampleId={documentRef.id} />;
-    } else if (documentRef.parent.id === 'translations') {
-        const translation = document as Translation;
-        documentLinkEl = (
-            <Link
-                to={generatePath(TRANSLATION, {
-                    translationId: documentRef.id,
-                    termId: translation.term.id,
-                })}
-            >
-                <Redact>{translation.value}</Redact>
-            </Link>
-        );
-    }
-
-    return <LinkHeading creator={creator}>{documentLinkEl}</LinkHeading>;
+function LinkToTranslation({ translation, translationId }: { translation: Translation; translationId: string }) {
+    return (
+        <Link
+            to={generatePath(TRANSLATION, {
+                translationId: translationId,
+                termId: translation.term.id,
+            })}
+        >
+            <Redact>{translation.value}</Redact>
+        </Link>
+    );
 }
 
 function LinkToTranslationExample({ example, exampleId }: { example: TranslationExample; exampleId: string }) {
@@ -123,4 +116,24 @@ const LinkHeading: React.FC<{ creator: UserMini }> = ({ creator, children }) => 
             }}
         />
     );
+};
+
+const getLinkToDocument = (
+    getDocument: Get<Term | Translation | TranslationExample>,
+    documentRef: DocReference<Term | Translation | TranslationExample>
+) => {
+    const document = getDocument(true);
+    const { id } = documentRef;
+
+    if (!document) {
+        return null;
+    } else if (documentRef.parent.id === 'terms') {
+        return <LinkToTerm term={document as Term} termId={id} />;
+    } else if (documentRef.parent.id === 'translationExamples') {
+        return <LinkToTranslationExample example={document as TranslationExample} exampleId={id} />;
+    } else if (documentRef.parent.id === 'translations') {
+        return <LinkToTranslation translation={document as Translation} translationId={id} />;
+    }
+
+    return null;
 };
