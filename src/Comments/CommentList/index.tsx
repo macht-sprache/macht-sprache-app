@@ -33,7 +33,11 @@ export function CommentListWithLinks({ comments }: CommentListProps) {
 
 function CommentWithLink({ comment }: { comment: Comment }) {
     const getDocument = useDocument(comment.ref);
-    const linkedDocument = getDocument();
+    const linkedDocument = getDocument(true);
+
+    if (!linkedDocument) {
+        return null;
+    }
 
     return (
         <div>
