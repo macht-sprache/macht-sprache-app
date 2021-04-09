@@ -198,7 +198,7 @@ service cloud.firestore {
 
       match /likes/{userId} {
         allow read: if true;
-        allow create: if isValidatedUser() && isUser(userId) && isCreator();
+        allow create: if isValidatedUser() && isUser(userId) && isCreator() && isValidLike();
         allow delete: if isValidatedUser() && isUser(userId);
       }
     }
