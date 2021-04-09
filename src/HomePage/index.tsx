@@ -59,7 +59,7 @@ export default function Home() {
 }
 
 function LatestComments() {
-    const getComments = useCollection(collections.comments.orderBy('createdAt').limit(5));
+    const getComments = useCollection(collections.comments.orderBy('createdAt', 'desc').limit(5));
     const comments = getComments();
 
     return <CommentListWithLinks comments={comments} />;
