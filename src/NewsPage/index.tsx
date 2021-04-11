@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Header from '../Header';
-import { Columns } from '../Layout/Columns';
 import { NewsFeed } from '../NewsFeed';
+import s from './style.module.css';
 
 export function NewsPage() {
     const { t } = useTranslation();
@@ -9,9 +9,9 @@ export function NewsPage() {
     return (
         <>
             <Header subLine={t('newsFeed.subLine')}>{t('home.news')}</Header>
-            <Columns>
+            <div className={s.feed}>
                 <NewsFeed />
-            </Columns>
+            </div>
         </>
     );
 }

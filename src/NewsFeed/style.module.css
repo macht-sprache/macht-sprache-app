@@ -20,7 +20,7 @@
     height: auto;
     margin-right: 1rem;
     display: block;
-    max-height: 22rem;
+    max-height: 15rem;
     object-fit: cover;
     background: var(--orange);
 }
