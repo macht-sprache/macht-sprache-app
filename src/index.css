@@ -41,7 +41,7 @@ body {
 
     --singleColumnWidth: 600px;
 
-    --sidebarWidth: 10rem;
+    --sidebarWidth: 11rem;
     --contentWidth: 65rem;
 
     color: var(--black);
