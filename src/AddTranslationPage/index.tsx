@@ -78,12 +78,14 @@ export default function AddTranslationPage() {
                         value={model.translation}
                         onChange={event => setModel(prev => ({ ...prev, translation: event.target.value }))}
                     />
-                    <Textarea
-                        label={t('common.entities.comment.value')}
-                        value={model.comment}
-                        optional
-                        onChange={event => setModel(prev => ({ ...prev, comment: event.target.value }))}
-                    />
+                    {term.adminTags.enableCommentsOnTranslations && (
+                        <Textarea
+                            label={t('common.entities.comment.value')}
+                            value={model.comment}
+                            optional
+                            onChange={event => setModel(prev => ({ ...prev, comment: event.target.value }))}
+                        />
+                    )}
                 </InputContainer>
 
                 <ButtonContainer>
