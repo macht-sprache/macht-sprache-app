@@ -163,9 +163,11 @@ function TranslationItem({
                         </>
                     )}
                     <footer className={s.footer}>
-                        <div className={s.comments}>
-                            {t('common.entities.comment.withCount', { count: translation.commentCount })}
-                        </div>
+                        {term.adminTags.enableCommentsOnTranslations && (
+                            <div className={s.comments}>
+                                {t('common.entities.comment.withCount', { count: translation.commentCount })}
+                            </div>
+                        )}
 
                         <div className={s.date}>
                             <FormatDate date={translation.createdAt} />
