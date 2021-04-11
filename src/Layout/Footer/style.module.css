@@ -1,11 +1,11 @@
 .logos {
     display: flex;
     flex-wrap: wrap;
-    margin: -1rem;
+    margin: -2rem;
 }
 
 .logoContainer {
-    margin: 1rem;
+    margin: 2rem;
 }
 
 .logoImg {
@@ -29,5 +29,5 @@
 }
 
 .logoWrapper + .logoWrapper {
-    margin-left: 1rem;
+    margin-left: 2rem;
 }
