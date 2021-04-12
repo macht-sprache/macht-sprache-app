@@ -190,7 +190,6 @@ export default function RegisterPage() {
                     </p>
                     {errorLabels.generic && <ErrorBox>{errorLabels.generic}</ErrorBox>}
                     <ButtonContainer>
-                        <Button type="button">{t('common.formNav.cancel')}</Button>
                         <Button primary disabled={disabled} type="submit">
                             {t('auth.register.title')}
                         </Button>

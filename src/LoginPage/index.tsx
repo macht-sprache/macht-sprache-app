@@ -65,7 +65,6 @@ export default function LoginPage() {
                         </Link>
                     </p>
                     <ButtonContainer>
-                        <Button type="button">{t('common.formNav.cancel')}</Button>
                         <Button primary type="submit" disabled={disabled}>
                             {t('auth.login')}
                         </Button>
