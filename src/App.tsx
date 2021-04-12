@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 're
 import AddTermPage from './AddTermPage';
 import AddTranslationExamplePage from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
-import AdminContentPage from './AdminContentPage';
+import AdminContentPage from './AdminContentPage/lazy';
 import AdminPage from './AdminPage/lazy';
 import ElementTestPage from './ElementTestPage/lazy';
 import ErrorBoundary from './ErrorBoundary';
