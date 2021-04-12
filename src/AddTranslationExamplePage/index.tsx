@@ -23,7 +23,6 @@ import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import { Lang, SourceMediaForType, SourceType, Term, Translation } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
-import { trimString } from '../utils';
 import s from './style.module.css';
 import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
