@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
@@ -20,7 +21,8 @@ import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import SavingState from '../SavingState';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
-import { SourceMediaForType, SourceType, Term, Translation } from '../types';
+import { Lang, SourceMediaForType, SourceType, Term, Translation } from '../types';
+import { getDominantLanguageClass } from '../useLangCssVars';
 import s from './style.module.css';
 import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
@@ -146,54 +148,56 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
                         lang: term.lang,
                     },
                 ]}
-                subLine={
-                    <Trans
-                        t={t}
-                        i18nKey="translationExample.add"
-                        components={{
-                            Term: <TermWithLang term={term} />,
-                            Translation: <TermWithLang term={translation} />,
-                        }}
-                    />
-                }
             >
                 <Redact>{translation.value}</Redact>
             </Header>
 
-            {saving ? (
-                <SavingState />
-            ) : (
-                <>
-                    <FullWidthColumn>
-                        <Heading>{t('translationExample.steps.type.label')}</Heading>
-                        <SelectType {...stepProps} />
-                    </FullWidthColumn>
-                    {!!model.type && (
-                        <>
-                            <FullWidthColumn>
-                                <Heading>{t('translationExample.steps.source.label')}</Heading>
-                                <SelectMedia {...stepProps} />{' '}
-                            </FullWidthColumn>
-                            <FullWidthColumn>
-                                <Heading>{t('translationExample.steps.example.label')}</Heading>
-                                <AddSnippet {...stepProps} />{' '}
-                            </FullWidthColumn>
-                        </>
-                    )}
-
-                    {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
-
-                    {!!model.type && (
+            <div className={clsx(s.wrapper, getDominantLanguageClass(translation.lang))}>
+                {saving ? (
+                    <SavingState />
+                ) : (
+                    <>
+                        <p className={s.intro}>
+                            <Trans
+                                t={t}
+                                i18nKey="translationExample.add"
+                                components={{
+                                    Term: <TermWithLang term={term} />,
+                                    Translation: <TermWithLang term={translation} />,
+                                }}
+                            />
+                        </p>
                         <FullWidthColumn>
-                            <ButtonContainer>
-                                <Button primary onClick={save} disabled={!isValid}>
-                                    {t('common.formNav.save')}
-                                </Button>
-                            </ButtonContainer>
+                            <Heading>{t('translationExample.steps.type.label')}</Heading>
+                            <SelectType {...stepProps} />
                         </FullWidthColumn>
-                    )}
-                </>
-            )}
+                        {!!model.type && (
+                            <>
+                                <FullWidthColumn>
+                                    <Heading>{t('translationExample.steps.source.label')}</Heading>
+                                    <SelectMedia {...stepProps} />{' '}
+                                </FullWidthColumn>
+                                <FullWidthColumn>
+                                    <Heading>{t('translationExample.steps.example.label')}</Heading>
+                                    <AddSnippet {...stepProps} />{' '}
+                                </FullWidthColumn>
+                            </>
+                        )}
+
+                        {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
+
+                        {!!model.type && (
+                            <FullWidthColumn>
+                                <ButtonContainer>
+                                    <Button primary onClick={save} disabled={!isValid}>
+                                        {t('common.formNav.save')}
+                                    </Button>
+                                </ButtonContainer>
+                            </FullWidthColumn>
+                        )}
+                    </>
+                )}
+            </div>
         </>
     );
 }
@@ -234,34 +238,33 @@ function BookSelection({ term, translation, model, onChange }: StepProps<'BOOK'>
     const { t } = useTranslation();
 
     return (
-        <>
-            <p className={s.sourceDescription}>{t('translationExample.source.BOOK.description')}</p>
-
-            <Columns>
-                <div>
-                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.BOOK.titleOriginal')}</h3>
-                    <BookSearch
-                        label={t('translationExample.source.BOOK.searchOriginal')}
-                        lang={term.lang}
-                        selectedBook={model.original.sourceMedium}
-                        onSelect={sourceMedium =>
-                            onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
-                        }
-                    />
-                </div>
-                <div>
-                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.BOOK.titleTranslated')}</h3>
-                    <BookSearch
-                        label={t('translationExample.source.BOOK.searchTranslation')}
-                        lang={translation.lang}
-                        selectedBook={model.translated.sourceMedium}
-                        onSelect={sourceMedium =>
-                            onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
-                        }
-                    />
-                </div>
-            </Columns>
-        </>
+        <AddContentSection
+            translationLang={translation.lang}
+            termLang={term.lang}
+            description={t('translationExample.source.BOOK.description')}
+            originalHeading={t('translationExample.source.BOOK.titleOriginal')}
+            originalColumn={
+                <BookSearch
+                    label={t('translationExample.source.BOOK.searchOriginal')}
+                    lang={term.lang}
+                    selectedBook={model.original.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
+                    }
+                />
+            }
+            translatedHeading={t('translationExample.source.BOOK.titleTranslated')}
+            translatedColumn={
+                <BookSearch
+                    label={t('translationExample.source.BOOK.searchTranslation')}
+                    lang={translation.lang}
+                    selectedBook={model.translated.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
+                    }
+                />
+            }
+        />
     );
 }
 
@@ -269,112 +272,118 @@ function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE
     const { t } = useTranslation();
 
     return (
-        <>
-            <p className={s.sourceDescription}>{t('translationExample.source.MOVIE.description')}</p>
-            <Columns>
-                <div>
-                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.MOVIE.titleOriginal')}</h3>
-                    <MovieSearch
-                        label={t('translationExample.source.MOVIE.searchOriginal')}
-                        lang={term.lang}
-                        selectedMovie={model.original.sourceMedium}
-                        onSelect={sourceMedium =>
-                            onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
-                        }
-                    />
-                </div>
-                <div>
-                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.MOVIE.titleTranslated')}</h3>
-                    <MovieSearch
-                        label={t('translationExample.source.MOVIE.searchTranslation')}
-                        lang={translation.lang}
-                        selectedMovie={model.translated.sourceMedium}
-                        onSelect={sourceMedium =>
-                            onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
-                        }
-                    />
-                </div>
-            </Columns>
-        </>
+        <AddContentSection
+            translationLang={translation.lang}
+            termLang={term.lang}
+            description={t('translationExample.source.MOVIE.description')}
+            originalHeading={t('translationExample.source.MOVIE.titleOriginal')}
+            originalColumn={
+                <MovieSearch
+                    label={t('translationExample.source.MOVIE.searchOriginal')}
+                    lang={term.lang}
+                    selectedMovie={model.original.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
+                    }
+                />
+            }
+            translatedHeading={t('translationExample.source.MOVIE.titleTranslated')}
+            translatedColumn={
+                <MovieSearch
+                    label={t('translationExample.source.MOVIE.searchTranslation')}
+                    lang={translation.lang}
+                    selectedMovie={model.translated.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
+                    }
+                />
+            }
+        />
     );
 }
 
 function WebPageSelection({ term, translation, model, onChange }: StepProps<'WEBPAGE'>) {
     const { t } = useTranslation();
-
     return (
-        <>
-            <p className={s.sourceDescription}>{t('translationExample.source.WEBPAGE.description')}</p>
-            <Columns>
-                <div>
-                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.WEBPAGE.titleOriginal')}</h3>
-                    <WebPageSearch
-                        label={t('translationExample.source.WEBPAGE.searchOriginal')}
-                        lang={term.lang}
-                        selectedPage={model.original.sourceMedium}
-                        onSelect={sourceMedium =>
-                            onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
-                        }
-                    />
-                </div>
-                <div>
-                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.WEBPAGE.titleTranslated')}</h3>
-                    <WebPageSearch
-                        label={t('translationExample.source.WEBPAGE.searchTranslation')}
-                        lang={translation.lang}
-                        selectedPage={model.translated.sourceMedium}
-                        onSelect={sourceMedium =>
-                            onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
-                        }
-                    />
-                </div>
-            </Columns>
-        </>
+        <AddContentSection
+            translationLang={translation.lang}
+            termLang={term.lang}
+            description={t('translationExample.source.WEBPAGE.description')}
+            originalHeading={t('translationExample.source.WEBPAGE.titleOriginal')}
+            originalColumn={
+                <WebPageSearch
+                    label={t('translationExample.source.WEBPAGE.searchOriginal')}
+                    lang={term.lang}
+                    selectedPage={model.original.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, original: { ...prev.original, sourceMedium } }))
+                    }
+                />
+            }
+            translatedHeading={t('translationExample.source.WEBPAGE.titleTranslated')}
+            translatedColumn={
+                <WebPageSearch
+                    label={t('translationExample.source.WEBPAGE.searchTranslation')}
+                    lang={translation.lang}
+                    selectedPage={model.translated.sourceMedium}
+                    onSelect={sourceMedium =>
+                        onChange(prev => ({ ...prev, translated: { ...prev.translated, sourceMedium } }))
+                    }
+                />
+            }
+        />
     );
 }
-
 function AddSnippet({ term, translation, model, onChange }: StepProps) {
     return (
-        <>
-            <Columns>
+        <AddContentSection
+            translationLang={translation.lang}
+            termLang={term.lang}
+            originalHeading={
+                <Trans
+                    i18nKey="translationExample.snippet.description"
+                    values={{ title: model.original.sourceMedium?.title }}
+                    components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
+                />
+            }
+            originalColumn={
                 <SnippetSelection
-                    term={term}
                     showPageNumber={model.type === 'BOOK'}
                     snippet={model.original}
                     onChange={updater => onChange(prev => ({ ...prev, original: updater(prev.original) }))}
                 />
+            }
+            translatedHeading={
+                <Trans
+                    i18nKey="translationExample.snippet.description"
+                    values={{ title: model.translated.sourceMedium?.title }}
+                    components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
+                />
+            }
+            translatedColumn={
                 <SnippetSelection
-                    term={translation}
                     showPageNumber={model.type === 'BOOK'}
                     snippet={model.translated}
                     onChange={updater => onChange(prev => ({ ...prev, translated: updater(prev.translated) }))}
                 />
-            </Columns>
-        </>
+            }
+        />
     );
 }
 
 function SnippetSelection({
-    term,
     showPageNumber,
     snippet,
     onChange,
 }: {
-    term: Term | Translation;
     showPageNumber?: boolean;
     snippet: SnippetModel;
     onChange: (updater: (prev: SnippetModel) => SnippetModel) => void;
 }) {
     const { t } = useTranslation();
+
     return (
         <div>
-            <h3 className={s.inputFieldHeading}>
-                <Trans
-                    i18nKey="translationExample.snippet.description"
-                    values={{ title: snippet.sourceMedium?.title }}
-                    components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
-                />
-            </h3>
             <InputContainer>
                 <Textarea
                     label={t('translationExample.snippet.label')}
@@ -398,6 +407,41 @@ function SnippetSelection({
                 )}
             </InputContainer>
         </div>
+    );
+}
+
+function AddContentSection({
+    translationLang,
+    termLang,
+    description,
+    originalHeading,
+    originalColumn,
+    translatedHeading,
+    translatedColumn,
+}: {
+    translationLang: Lang;
+    termLang: Lang;
+    description?: React.ReactNode;
+    originalHeading: React.ReactNode;
+    originalColumn: React.ReactNode;
+    translatedHeading: React.ReactNode;
+    translatedColumn: React.ReactNode;
+}) {
+    return (
+        <>
+            {description && <p className={s.sourceDescription}>{description}</p>}
+
+            <Columns>
+                <div className={getDominantLanguageClass(termLang)}>
+                    <h3 className={s.inputFieldHeading}>{originalHeading}</h3>
+                    {originalColumn}
+                </div>
+                <div className={getDominantLanguageClass(translationLang)}>
+                    <h3 className={s.inputFieldHeading}>{translatedHeading}</h3>
+                    {translatedColumn}
+                </div>
+            </Columns>
+        </>
     );
 }
 
