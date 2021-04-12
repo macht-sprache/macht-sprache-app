@@ -18,6 +18,7 @@ import { ModalDialog } from '../ModalDialog';
 import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
+import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { WrappedInLangColor } from '../TermWithLang';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { Source, Term, Translation, TranslationExample } from '../types';
@@ -43,7 +44,11 @@ export default function TranslationPageWrapper() {
     const getTranslationExamples = useCollection(getTranslationExamplesRef(translationRef));
     const getSources = useCollection(getSourcesRef(translationRef));
     const props = { getTerm, getTranslation, getTranslationExamples, getSources };
-    return <TranslationPage {...props} />;
+    return (
+        <SidebarTermRedirectWrapper getTerm={getTerm}>
+            <TranslationPage {...props} />
+        </SidebarTermRedirectWrapper>
+    );
 }
 
 function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getSources }: Props) {

@@ -9,7 +9,7 @@ import { useUserProperties } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
-import { ABOUT, ADMIN, ADMIN_CONTENT, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERM, TERMS } from '../routes';
+import { ABOUT, ADMIN, ADMIN_CONTENT, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS, TERM_SIDEBAR } from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -177,7 +177,10 @@ function SidebarNav({ links }: { links: { to: string; label: string }[] }) {
 function SidebarTerms() {
     const getTerms = useCollection(collections.terms.where('adminTags.showInSidebar', '==', true));
     const sidebarTerms = [...getTerms()].sort((termA, termB) => termA.value.localeCompare(termB.value, termA.lang));
-    const links = sidebarTerms.map(term => ({ label: term.value, to: generatePath(TERM, { termId: term.id }) }));
+    const links = sidebarTerms.map(term => ({
+        label: term.value,
+        to: generatePath(TERM_SIDEBAR, { termId: term.id }),
+    }));
 
     return <SidebarNav links={links} />;
 }

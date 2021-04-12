@@ -79,16 +79,31 @@ function AppRouter() {
                             <LaunchedRoute path={routes.TERM} exact>
                                 <TermPage />
                             </LaunchedRoute>
+                            <LaunchedRoute path={routes.TERM_SIDEBAR} exact>
+                                <TermPage />
+                            </LaunchedRoute>
                             <LoggedInRoute path={routes.TRANSLATION_ADD} exact>
+                                <AddTranslationPage />
+                            </LoggedInRoute>
+                            <LoggedInRoute path={routes.TRANSLATION_ADD_SIDEBAR} exact>
                                 <AddTranslationPage />
                             </LoggedInRoute>
                             <LaunchedRoute path={routes.TRANSLATION} exact>
                                 <TranslationPage />
                             </LaunchedRoute>
+                            <LaunchedRoute path={routes.TRANSLATION_SIDEBAR} exact>
+                                <TranslationPage />
+                            </LaunchedRoute>
                             <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD} exact>
                                 <AddTranslationExamplePage />
                             </LoggedInRoute>
+                            <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD_SIDEBAR} exact>
+                                <AddTranslationExamplePage />
+                            </LoggedInRoute>
                             <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
+                                <TranslationExamplePage />
+                            </LaunchedRoute>
+                            <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_SIDEBAR} exact>
                                 <TranslationExamplePage />
                             </LaunchedRoute>
                             <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_REDIRECT} exact>

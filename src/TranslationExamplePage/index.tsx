@@ -10,6 +10,7 @@ import { collections } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
+import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { DocReference, Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
@@ -32,7 +33,11 @@ export default function TranslationExamplePageWrapper() {
     const getTranslation = useDocument(collections.translations.doc(translationId));
     const getTranslationExample = useDocument(collections.translationExamples.doc(translationExampleId));
     const props = { getTerm, getTranslation, getTranslationExample };
-    return <TranslationExamplePage {...props} />;
+    return (
+        <SidebarTermRedirectWrapper getTerm={getTerm}>
+            <TranslationExamplePage {...props} />
+        </SidebarTermRedirectWrapper>
+    );
 }
 
 function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample }: Props) {

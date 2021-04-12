@@ -10,6 +10,7 @@ import { addTranslation, collections } from '../hooks/data';
 import { useDocument } from '../hooks/fetch';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
+import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 
 type Model = {
@@ -40,7 +41,7 @@ export default function AddTranslationPage() {
     };
 
     return (
-        <>
+        <SidebarTermRedirectWrapper getTerm={getTerm}>
             <Header
                 topHeading={[
                     {
@@ -98,6 +99,6 @@ export default function AddTranslationPage() {
                     </Button>
                 </ButtonContainer>
             </form>
-        </>
+        </SidebarTermRedirectWrapper>
     );
 }

@@ -19,6 +19,7 @@ import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicato
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import SavingState from '../SavingState';
+import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import { SourceMediaForType, SourceType, Term, Translation } from '../types';
 import s from './style.module.css';
@@ -375,7 +376,11 @@ export default function AddTranslationExamplePage() {
     const getTerm = useDocument(collections.terms.doc(termId));
     const getTranslation = useDocument(collections.translations.doc(translationId));
 
-    return <AddTranslationExample getTerm={getTerm} getTranslation={getTranslation} />;
+    return (
+        <SidebarTermRedirectWrapper getTerm={getTerm}>
+            <AddTranslationExample getTerm={getTerm} getTranslation={getTranslation} />
+        </SidebarTermRedirectWrapper>
+    );
 }
 
 const Section = ({ children }: { children: React.ReactNode }) => <div className={s.section}>{children}</div>;

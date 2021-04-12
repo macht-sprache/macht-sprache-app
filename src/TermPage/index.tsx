@@ -17,6 +17,7 @@ import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
 import { Redact, useRedacted } from '../RedactSensitiveTerms';
+import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
 import { Lang, Source, Term, Translation } from '../types';
@@ -37,7 +38,11 @@ export default function TermPageWrapper() {
     const getTerm = useDocument(termRef);
     const getTranslations = useCollection(getTranslationsRef(termRef));
     const getSources = useCollection(getSourcesRef(termRef));
-    return <TermPage getTerm={getTerm} getTranslations={getTranslations} getSources={getSources} />;
+    return (
+        <SidebarTermRedirectWrapper getTerm={getTerm}>
+            <TermPage getTerm={getTerm} getTranslations={getTranslations} getSources={getSources} />;
+        </SidebarTermRedirectWrapper>
+    );
 }
 
 function TermPage({ getTerm, getTranslations, getSources }: Props) {
