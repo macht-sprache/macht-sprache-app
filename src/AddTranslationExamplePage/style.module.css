@@ -1,3 +1,11 @@
-.mediaSearchHeading {
-    margin: 1.5rem 0 0.5rem;
+.inputFieldHeading {
+    margin: 0.5rem 0 0.5rem;
+}
+
+.sectionHeading {
+    margin: 0 0 1rem;
+}
+
+.sourceDescription {
+    font-family: var(--paragraphFont);
 }
