@@ -53,6 +53,24 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
         );
     }, [lang, url]);
 
+    const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setState(prev => ({
+            ...prev,
+            error: null,
+            url: event.target.value,
+            pasted: (event.nativeEvent as InputEvent).inputType === 'insertFromPaste',
+        }));
+    }, []);
+
+    const onKeyDown = useCallback(
+        (event: React.KeyboardEvent) => {
+            if (event.key === 'Enter') {
+                search();
+            }
+        },
+        [search]
+    );
+
     useEffect(() => {
         if (pasted) {
             search();
@@ -83,14 +101,8 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
             <Input
                 label={label}
                 value={url}
-                onChange={event =>
-                    setState(prev => ({
-                        ...prev,
-                        error: null,
-                        url: event.target.value,
-                        pasted: (event.nativeEvent as InputEvent).inputType === 'insertFromPaste',
-                    }))
-                }
+                onChange={onChange}
+                onKeyDown={onKeyDown}
                 busy={searching}
                 disabled={searching}
                 error={getErrorMessage(t, error)}
