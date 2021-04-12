@@ -102,7 +102,7 @@
             "resend": "Resend Verification Email",
             "resent": "Verification Email Sent",
             "continue": "Continue",
-            "welcomeVerified": "Welcome at macht.sprache., your Email has been verified. Click continue to get to the main page."
+            "welcomeVerified": "Welcome to macht.sprache., your email has been verified. Click continue to get to the main page."
         },
         "errors": {
             "name-already-in-use": "This user name is not available.",
@@ -142,10 +142,10 @@
             "de": "Add a German translation for: <Term /",
             "en": "Add an English translation for: <Term />"
         },
-        "addCommentHeading": "on how translate <Term />",
-        "commentPlaceholder": "...on how translate “{{term}}”",
+        "addCommentHeading": "on how to translate <Term />",
+        "commentPlaceholder": "...on how to translate “{{term}}”",
         "deleteHeading": "Delete Term?",
-        "deleteExplanation": "Are you sure you want to delete this term? This cannot be undone!",
+        "deleteExplanation": "Are you sure you want to delete this term? This cannot be undone.",
         "search": "Type to search",
         "variants": {
             "variant": "Variant",
@@ -161,7 +161,7 @@
         "emptyShort": "There are no translations yet",
         "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss.",
         "deleteHeading": "Delete Translation?",
-        "deleteExplanation": "Are you sure you want to delete this translation? This cannot be undone!"
+        "deleteExplanation": "Are you sure you want to delete this translation? This cannot be undone."
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",
@@ -250,7 +250,7 @@
         "heading": "Usage",
         "values": ["Never", "Rarely", "Sometimes", "Regularly", "Always"],
         "rangeInputLabel": "How often would you use \"{{term}}\"? On a scale of {{from}} to {{to}}.",
-        "ratingDistribution": "Usage statistics of all users: ",
+        "ratingDistribution": "Usage statistics of all participants: ",
         "ratingDistributionTimes": "{{times}} times \"{{value}}.\"",
         "scaleDescription": "{{number}} is \"{{value}}\". ",
         "yourRating": "Your Usage: ",
@@ -273,8 +273,8 @@
     "home": {
         "news": "News",
         "about": "About the project",
-        "signUpPreLaunch": "Launch on March 14th – Sign up already!",
-        "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified for the launch event. Optionally, you can also sign up for the poco.lit.-newsletter.",
+        "signUpPreLaunch": "Launch on March 14th – Sign up now!",
+        "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified about the launch event. Optionally, you can also sign up for the poco.lit. newsletter.",
         "termsOfTheWeek": "Terms of the week",
         "termsOfTheWeekDescription": "Every week we pick different terms to focus on. This week:",
         "viewAllTerms": "View all terms",
@@ -318,6 +318,6 @@
     "contentWarning": {
         "title": "Content Warning",
         "button": "Thanks, I understand",
-        "warning": "On macht.sprache., we discuss politically sensitive terminology. With a code of conduct and some terms that are not written out due to their discriminatory content, we try to make macht.sprache. a constructive place for learning and discussion. Nevertheless, it could happen that you are confronted with hurtful language on the platform."
+        "warning": "On macht.sprache., we discuss politically sensitive terminology. With a code of conduct and by not writing out certain terms due to their discriminatory content, the project team works to make macht.sprache. a constructive place for learning and discussion. Nevertheless, it could happen that you are confronted with hurtful language on the platform."
     }
 }
