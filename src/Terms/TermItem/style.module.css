@@ -84,13 +84,13 @@
 
 .smallSummaryTranslationList {
     padding: 0;
-    margin: 0 0 0.5rem;
+    margin: -0.3rem -0.5rem;
     list-style: none;
 }
 
 .smallSummaryTranslationListItem {
     display: inline-block;
-    margin-right: 0.8rem;
+    margin: 0.3rem 0.5rem;
 }
 
 .footer {
@@ -108,7 +108,13 @@
     }
 
     .smallSummaryTranslationList {
-        margin: 0;
+        padding: 0 0.5rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .footer {
+        margin-top: 0.5rem;
     }
 }
 
