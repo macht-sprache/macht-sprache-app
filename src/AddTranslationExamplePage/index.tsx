@@ -242,7 +242,9 @@ function BookSelection({ term, translation, model, onChange }: StepProps<'BOOK'>
             translationLang={translation.lang}
             termLang={term.lang}
             description={t('translationExample.source.BOOK.description')}
-            originalHeading={t('translationExample.source.BOOK.titleOriginal')}
+            originalHeading={`${t('translationExample.source.BOOK.titleOriginal')} (${t(
+                `common.langLabels.${term.lang}` as const
+            )})`}
             originalColumn={
                 <BookSearch
                     label={t('translationExample.source.BOOK.searchOriginal')}
@@ -253,7 +255,9 @@ function BookSelection({ term, translation, model, onChange }: StepProps<'BOOK'>
                     }
                 />
             }
-            translatedHeading={t('translationExample.source.BOOK.titleTranslated')}
+            translatedHeading={`${t('translationExample.source.BOOK.titleTranslated')} (${t(
+                `common.langLabels.${translation.lang}` as const
+            )})`}
             translatedColumn={
                 <BookSearch
                     label={t('translationExample.source.BOOK.searchTranslation')}
@@ -276,7 +280,9 @@ function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE
             translationLang={translation.lang}
             termLang={term.lang}
             description={t('translationExample.source.MOVIE.description')}
-            originalHeading={t('translationExample.source.MOVIE.titleOriginal')}
+            originalHeading={`${t('translationExample.source.MOVIE.titleOriginal')} (${t(
+                `common.langLabels.${term.lang}` as const
+            )})`}
             originalColumn={
                 <MovieSearch
                     label={t('translationExample.source.MOVIE.searchOriginal')}
@@ -287,7 +293,9 @@ function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE
                     }
                 />
             }
-            translatedHeading={t('translationExample.source.MOVIE.titleTranslated')}
+            translatedHeading={`${t('translationExample.source.MOVIE.titleTranslated')} (${t(
+                `common.langLabels.${translation.lang}` as const
+            )})`}
             translatedColumn={
                 <MovieSearch
                     label={t('translationExample.source.MOVIE.searchTranslation')}
@@ -309,7 +317,9 @@ function WebPageSelection({ term, translation, model, onChange }: StepProps<'WEB
             translationLang={translation.lang}
             termLang={term.lang}
             description={t('translationExample.source.WEBPAGE.description')}
-            originalHeading={t('translationExample.source.WEBPAGE.titleOriginal')}
+            originalHeading={`${t('translationExample.source.WEBPAGE.titleOriginal')} (${t(
+                `common.langLabels.${term.lang}` as const
+            )})`}
             originalColumn={
                 <WebPageSearch
                     label={t('translationExample.source.WEBPAGE.searchOriginal')}
@@ -320,7 +330,9 @@ function WebPageSelection({ term, translation, model, onChange }: StepProps<'WEB
                     }
                 />
             }
-            translatedHeading={t('translationExample.source.WEBPAGE.titleTranslated')}
+            translatedHeading={`${t('translationExample.source.WEBPAGE.titleTranslated')} (${t(
+                `common.langLabels.${translation.lang}` as const
+            )})`}
             translatedColumn={
                 <WebPageSearch
                     label={t('translationExample.source.WEBPAGE.searchTranslation')}
