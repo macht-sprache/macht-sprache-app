@@ -1,21 +1,21 @@
 import firebase from 'firebase/app';
 import { useState } from 'react';
-import BookSearch from './MediaSelection/BookSearch';
-import { CommentCreate } from './Comments/CommentCreate';
-import { CommentList } from './Comments/CommentList';
-import { CommentWrapper } from './Comments/CommentWrapper';
-import Button, { ButtonContainer } from './Form/Button';
-import { Input, Select, Textarea } from './Form/Input';
-import InputContainer from './Form/InputContainer';
-import Header from './Header';
-import { collections } from './hooks/data';
-import { MultiStepIndicator, MultiStepIndicatorStep } from './MultiStepIndicator';
-import { Rating } from './Rating';
-import { Book, Comment, Movie, WebPage } from './types';
-import MovieSearch from './MediaSelection/MovieSearch';
-import WebPageSearch from './MediaSelection/WebPageSearch';
-import { Checkbox } from './Form/Checkbox';
-import { InlineInput } from './Form/InlineInput';
+import BookSearch from '../MediaSelection/BookSearch';
+import { CommentCreate } from '../Comments/CommentCreate';
+import { CommentList } from '../Comments/CommentList';
+import { CommentWrapper } from '../Comments/CommentWrapper';
+import Button, { ButtonContainer } from '../Form/Button';
+import { Input, Select, Textarea } from '../Form/Input';
+import InputContainer from '../Form/InputContainer';
+import Header from '../Header';
+import { collections } from '../hooks/data';
+import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
+import { Rating } from '../Rating';
+import { Book, Comment, Movie, WebPage } from '../types';
+import MovieSearch from '../MediaSelection/MovieSearch';
+import WebPageSearch from '../MediaSelection/WebPageSearch';
+import { Checkbox } from '../Form/Checkbox';
+import { InlineInput } from '../Form/InlineInput';
 
 const ref = collections.terms.doc('1');
 const creator = {

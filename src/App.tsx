@@ -5,7 +5,7 @@ import AddTranslationExamplePage from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
 import AdminContentPage from './AdminContentPage';
 import AdminPage from './AdminPage/lazy';
-import ElementTestPage from './ElementTestPage';
+import ElementTestPage from './ElementTestPage/lazy';
 import ErrorBoundary from './ErrorBoundary';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import HomePage from './HomePage';
