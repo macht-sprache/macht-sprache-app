@@ -169,6 +169,7 @@
             "cancelSelection": "Suche einen anderen Film aus"
         },
         "webpage": {
+            "selectButton": "Wähle Webseite",
             "cancelSelection": "Suche eine andere Webseite aus",
             "errorInvalid": "Diese URL is nicht valide",
             "errorNotFound": "Konnte keine Webseite unter dieser URL finden",

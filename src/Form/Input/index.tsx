@@ -2,21 +2,35 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import s from './style.module.css';
 
-interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+type CommonProps = {
     label: React.ReactNode;
     error?: React.ReactNode;
+    inlineButton?: React.ReactNode;
     span?: number;
     busy?: boolean;
     optional?: boolean;
-}
+};
 
-export function Input({ label, value, disabled, span = 4, busy = false, error, optional, ...props }: InputProps) {
+type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & CommonProps;
+
+export function Input({
+    label,
+    value,
+    disabled,
+    span = 4,
+    busy = false,
+    error,
+    inlineButton,
+    optional,
+    ...props
+}: InputProps) {
     const inputProps = { value, disabled, ...props };
 
     return (
         <Container
             busy={busy}
             error={error}
+            inlineButton={inlineButton}
             disabled={disabled}
             span={span}
             label={label}
@@ -29,23 +43,28 @@ export function Input({ label, value, disabled, span = 4, busy = false, error, o
     );
 }
 
-interface SelectProps
-    extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
-    label: React.ReactNode;
-    children: React.ReactNode;
-    span?: number;
-    error?: React.ReactNode;
-    busy?: boolean;
-    optional?: boolean;
-}
+type SelectProps = React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> &
+    CommonProps;
 
-export function Select({ label, span = 4, children, value, disabled, error, busy, optional, ...props }: SelectProps) {
+export function Select({
+    label,
+    span = 4,
+    children,
+    value,
+    disabled,
+    error,
+    inlineButton,
+    busy,
+    optional,
+    ...props
+}: SelectProps) {
     const selectProps = { value, disabled, ...props };
 
     return (
         <Container
             busy={busy}
             error={error}
+            inlineButton={inlineButton}
             disabled={disabled}
             span={span}
             label={label}
@@ -59,15 +78,8 @@ export function Select({ label, span = 4, children, value, disabled, error, busy
     );
 }
 
-interface TextareaProps
-    extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> {
-    label: React.ReactNode;
-    span?: number;
-    error?: React.ReactNode;
-    busy?: boolean;
-    minHeight?: string;
-    optional?: boolean;
-}
+type TextareaProps = React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement> &
+    CommonProps & { minHeight?: string };
 
 export function Textarea({
     label,
@@ -75,6 +87,7 @@ export function Textarea({
     value,
     disabled,
     error,
+    inlineButton,
     busy,
     maxLength,
     minHeight,
@@ -90,6 +103,7 @@ export function Textarea({
         <Container
             busy={busy}
             error={error}
+            inlineButton={inlineButton}
             disabled={disabled}
             span={span}
             label={label}
@@ -113,6 +127,7 @@ const Container = ({
     error,
     span,
     label,
+    inlineButton,
     empty,
     disabled,
     busy,
@@ -123,6 +138,7 @@ const Container = ({
     children: React.ReactNode;
     error?: React.ReactNode;
     span?: number;
+    inlineButton?: React.ReactNode;
     label: React.ReactNode;
     empty: boolean;
     disabled?: boolean;
@@ -147,7 +163,10 @@ const Container = ({
                 {label}
                 {optional && <> ({t('common.optional')})</>}
             </div>
-            {children}
+            <div className={s.inputContainer}>
+                {children}
+                {inlineButton && <div className={s.inlineButton}>{inlineButton}</div>}
+            </div>
             {error && (
                 <div aria-live="assertive" className={s.error}>
                     {error}

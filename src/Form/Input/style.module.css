@@ -48,6 +48,10 @@
     box-shadow: 0 0 0 var(--thickBorder) var(--orange);
 }
 
+.inputContainer {
+    position: relative;
+}
+
 .input {
     width: 100%;
     font-family: inherit;
@@ -72,6 +76,15 @@
     transition: all 0.2s;
     pointer-events: none;
     transform: translateY(0);
+}
+
+.inlineButton {
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
+    bottom: 0;
+    display: flex;
+    align-items: center;
 }
 
 .error {
