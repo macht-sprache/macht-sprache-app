@@ -215,7 +215,7 @@ function SelectType({ model, onChange }: StepProps) {
                 <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
                 <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} />
                 <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} />
-                <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
+                {/* <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled /> */}
             </TypeSelectorContainer>
         </>
     );
