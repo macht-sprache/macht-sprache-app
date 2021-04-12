@@ -139,7 +139,9 @@ export default function MediaSearch<T extends { id: string }>({
                     ))}
                 </ul>
             )}
-            {!results.length && !!query && <div className={s.noResults}>no results</div>}
+            {!results.length && !!query && !searching && (
+                <div className={s.noResults}>{t('mediaSearch.ariaNoResults')}</div>
+            )}
         </div>
     );
 }
