@@ -184,11 +184,13 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
                     {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
 
                     {!!model.type && (
-                        <ButtonContainer>
-                            <Button primary onClick={save} disabled={!isValid}>
-                                {t('common.formNav.save')}
-                            </Button>
-                        </ButtonContainer>
+                        <FullWidthColumn>
+                            <ButtonContainer>
+                                <Button primary onClick={save} disabled={!isValid}>
+                                    {t('common.formNav.save')}
+                                </Button>
+                            </ButtonContainer>
+                        </FullWidthColumn>
                     )}
                 </>
             )}
