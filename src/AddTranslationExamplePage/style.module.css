@@ -1,5 +1,6 @@
 .inputFieldHeading {
     margin: 0.5rem 0 0.5rem;
+    line-height: var(--lineHeightParagraph);
 }
 
 .sectionHeading {
@@ -8,4 +9,20 @@
 
 .sourceDescription {
     font-family: var(--paragraphFont);
+}
+
+.wrapper {
+    background: var(--white);
+    padding: 2rem;
+    border: solid var(--thickBorder) var(--dominantLanguageColor);
+}
+
+.intro {
+    margin: 0 0 2rem;
+}
+
+@media (max-width: 800px) {
+    .wrapper {
+        padding: 1rem;
+    }
 }
