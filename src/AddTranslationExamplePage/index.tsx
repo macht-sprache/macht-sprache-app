@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { TFunction, Trans, useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
 import { SNIPPET_MAX_LENGTH } from '../constants';
 import Button, { ButtonContainer } from '../Form/Button';
@@ -15,7 +15,6 @@ import BookSearch from '../MediaSelection/BookSearch';
 import MovieSearch from '../MediaSelection/MovieSearch';
 import WebPageSearch from '../MediaSelection/WebPageSearch';
 import { TranslationExampleModel } from '../modelTypes';
-import { MultiStepIndicator, MultiStepIndicatorStep } from '../MultiStepIndicator';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION_EXAMPLE } from '../routes';
 import SavingState from '../SavingState';
@@ -38,78 +37,11 @@ type Model<T extends SourceType = SourceType> = {
 };
 
 type StepProps<T extends SourceType = SourceType> = {
-    t: TFunction;
     model: Model<T>;
     term: Term;
     translation: Translation;
     onChange: Dispatch<SetStateAction<Model<T>>>;
 };
-
-type Step = {
-    label: (t: TFunction) => React.ReactNode;
-    body: (props: StepProps) => React.ReactNode;
-    valid: (model: Model) => boolean;
-};
-
-const steps: Step[] = [
-    {
-        label: t => t('translationExample.steps.type.label'),
-        body: ({ t, model, onChange }) => (
-            <Section>
-                <p>{t('translationExample.steps.type.description')}</p>
-                <TypeSelectorContainer
-                    name="type"
-                    value={model.type}
-                    onChange={type => onChange(prev => ({ ...prev, type }))}
-                >
-                    <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
-                    <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} />
-                    <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} />
-                    <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
-                </TypeSelectorContainer>
-            </Section>
-        ),
-        valid: model => !!model.type,
-    },
-    {
-        label: t => t('translationExample.steps.source.label'),
-        body: props => {
-            switch (props.model.type) {
-                case 'BOOK':
-                    return <BookSelection {...(props as StepProps<'BOOK'>)} />;
-                case 'MOVIE':
-                    return <MovieSelection {...(props as StepProps<'MOVIE'>)} />;
-                case 'WEBPAGE':
-                    return <WebPageSelection {...(props as StepProps<'WEBPAGE'>)} />;
-            }
-        },
-        valid: model => !!(model.original.sourceMedium && model.translated.sourceMedium),
-    },
-    {
-        label: t => t('translationExample.steps.example.label'),
-        body: ({ term, translation, model, onChange }) => (
-            <Section>
-                <Columns>
-                    <SnippetSelection
-                        term={term}
-                        showPageNumber={model.type === 'BOOK'}
-                        snippet={model.original}
-                        onChange={updater => onChange(prev => ({ ...prev, original: updater(prev.original) }))}
-                    />
-                    <SnippetSelection
-                        term={translation}
-                        showPageNumber={model.type === 'BOOK'}
-                        snippet={model.translated}
-                        onChange={updater => onChange(prev => ({ ...prev, translated: updater(prev.translated) }))}
-                    />
-                </Columns>
-            </Section>
-        ),
-        valid: model => !!(model.original.text && model.translated.text),
-    },
-];
-
-const getNextStep = (step: Step) => steps[steps.indexOf(step) + 1];
 
 const toTranslationExampleModel = (
     term: Term,
@@ -143,7 +75,159 @@ const toTranslationExampleModel = (
     };
 };
 
-function BookSelection({ t, term, translation, model, onChange }: StepProps<'BOOK'>) {
+export default function AddTranslationExamplePage() {
+    const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
+    const getTerm = useDocument(collections.terms.doc(termId));
+    const getTranslation = useDocument(collections.translations.doc(translationId));
+
+    return (
+        <SidebarTermRedirectWrapper getTerm={getTerm}>
+            <AddTranslationExample getTerm={getTerm} getTranslation={getTranslation} />
+        </SidebarTermRedirectWrapper>
+    );
+}
+
+function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>; getTranslation: Get<Translation> }) {
+    const { t } = useTranslation();
+    const history = useHistory();
+    const [model, onChange] = useState<Model>({ original: {}, translated: {} });
+    const [{ saving, error }, setSaveState] = useState({ saving: false, error: false });
+
+    const term = getTerm();
+    const translation = getTranslation();
+
+    const save = () => {
+        const translationExampleModel = toTranslationExampleModel(term, translation, model);
+
+        if (!translationExampleModel) {
+            console.error('Incomplete TranslationExampleModel', model);
+            return;
+        }
+
+        setSaveState({ saving: true, error: false });
+
+        addTranslationExample(translationExampleModel).then(
+            ({ data }) => {
+                setSaveState({ saving: false, error: false });
+                history.push(
+                    generatePath(TRANSLATION_EXAMPLE, {
+                        termId: term.id,
+                        translationId: translation.id,
+                        translationExampleId: data.translationExampleId,
+                    })
+                );
+            },
+            error => {
+                console.error(error);
+                setSaveState({ saving: false, error: true });
+            }
+        );
+    };
+
+    const stepProps = {
+        model,
+        onChange,
+        term,
+        translation,
+    };
+
+    const isValid =
+        !!(model.original.sourceMedium && model.translated.sourceMedium) &&
+        !!(model.original.text && model.translated.text);
+
+    return (
+        <>
+            <Header
+                mainLang={translation.lang}
+                topHeading={[
+                    {
+                        to: generatePath(TERM, { termId: term.id }),
+                        inner: <Redact>{term.value}</Redact>,
+                        lang: term.lang,
+                    },
+                ]}
+            >
+                <Redact>{translation.value}</Redact>
+            </Header>
+            <p>
+                <Trans
+                    t={t}
+                    i18nKey="translationExample.add"
+                    components={{
+                        Term: <TermWithLang term={term} />,
+                        Translation: <TermWithLang term={translation} />,
+                    }}
+                />
+            </p>
+
+            {saving ? (
+                <SavingState />
+            ) : (
+                <>
+                    <div className={s.steps}>
+                        <h2>{t('translationExample.steps.type.label')}</h2>
+                        <SelectType {...stepProps} />
+
+                        {!!model.type && (
+                            <>
+                                <h2>{t('translationExample.steps.source.label')}</h2>
+                                <SelectMedia {...stepProps} />
+                                <h2>{t('translationExample.steps.example.label')}</h2>
+                                <AddSnippet {...stepProps} />
+                            </>
+                        )}
+
+                        {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
+
+                        {!!model.type && (
+                            <ButtonContainer>
+                                <Button primary onClick={save} disabled={!isValid}>
+                                    {t('common.formNav.save')}
+                                </Button>
+                            </ButtonContainer>
+                        )}
+                    </div>
+                </>
+            )}
+        </>
+    );
+}
+
+function SelectType({ model, onChange }: StepProps) {
+    const { t } = useTranslation();
+    return (
+        <Section>
+            <p>{t('translationExample.steps.type.description')}</p>
+            <TypeSelectorContainer
+                name="type"
+                value={model.type}
+                onChange={type => onChange(() => ({ original: {}, translated: {}, type }))}
+            >
+                <TypeSelector value="BOOK" label={t('translationExample.types.BOOK')} />
+                <TypeSelector value="WEBPAGE" label={t('translationExample.types.WEBSITE')} />
+                <TypeSelector value="MOVIE" label={t('translationExample.types.MOVIE')} />
+                <TypeSelector value="OTHER" label={t('translationExample.types.OTHER')} disabled />
+            </TypeSelectorContainer>
+        </Section>
+    );
+}
+
+function SelectMedia({ ...stepProps }: StepProps) {
+    switch (stepProps.model.type) {
+        case 'BOOK':
+            return <BookSelection {...(stepProps as StepProps<'BOOK'>)} />;
+        case 'MOVIE':
+            return <MovieSelection {...(stepProps as StepProps<'MOVIE'>)} />;
+        case 'WEBPAGE':
+            return <WebPageSelection {...(stepProps as StepProps<'WEBPAGE'>)} />;
+        default:
+            return null;
+    }
+}
+
+function BookSelection({ term, translation, model, onChange }: StepProps<'BOOK'>) {
+    const { t } = useTranslation();
+
     return (
         <>
             <p>{t('translationExample.source.BOOK.description')}</p>
@@ -173,7 +257,9 @@ function BookSelection({ t, term, translation, model, onChange }: StepProps<'BOO
     );
 }
 
-function MovieSelection({ t, term, translation, model, onChange }: StepProps<'MOVIE'>) {
+function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE'>) {
+    const { t } = useTranslation();
+
     return (
         <>
             <p>{t('translationExample.source.MOVIE.description')}</p>
@@ -203,7 +289,9 @@ function MovieSelection({ t, term, translation, model, onChange }: StepProps<'MO
     );
 }
 
-function WebPageSelection({ t, term, translation, model, onChange }: StepProps<'WEBPAGE'>) {
+function WebPageSelection({ term, translation, model, onChange }: StepProps<'WEBPAGE'>) {
+    const { t } = useTranslation();
+
     return (
         <>
             <p>{t('translationExample.source.WEBPAGE.description')}</p>
@@ -230,6 +318,27 @@ function WebPageSelection({ t, term, translation, model, onChange }: StepProps<'
                 />
             </Section>
         </>
+    );
+}
+
+function AddSnippet({ term, translation, model, onChange }: StepProps) {
+    return (
+        <Section>
+            <Columns>
+                <SnippetSelection
+                    term={term}
+                    showPageNumber={model.type === 'BOOK'}
+                    snippet={model.original}
+                    onChange={updater => onChange(prev => ({ ...prev, original: updater(prev.original) }))}
+                />
+                <SnippetSelection
+                    term={translation}
+                    showPageNumber={model.type === 'BOOK'}
+                    snippet={model.translated}
+                    onChange={updater => onChange(prev => ({ ...prev, translated: updater(prev.translated) }))}
+                />
+            </Columns>
+        </Section>
     );
 }
 
@@ -277,109 +386,6 @@ function SnippetSelection({
                 )}
             </InputContainer>
         </div>
-    );
-}
-
-function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>; getTranslation: Get<Translation> }) {
-    const { t } = useTranslation();
-    const history = useHistory();
-    const [step, setStep] = useState(steps[0]);
-    const [model, onChange] = useState<Model>({ original: {}, translated: {} });
-    const [{ saving, error }, setSaveState] = useState({ saving: false, error: false });
-
-    const term = getTerm();
-    const translation = getTranslation();
-
-    const save = () => {
-        const translationExampleModel = toTranslationExampleModel(term, translation, model);
-
-        if (!translationExampleModel) {
-            console.error('Incomplete TranslationExampleModel', model);
-            return;
-        }
-
-        setSaveState({ saving: true, error: false });
-
-        addTranslationExample(translationExampleModel).then(
-            ({ data }) => {
-                setSaveState({ saving: false, error: false });
-                history.push(
-                    generatePath(TRANSLATION_EXAMPLE, {
-                        termId: term.id,
-                        translationId: translation.id,
-                        translationExampleId: data.translationExampleId,
-                    })
-                );
-            },
-            error => {
-                console.error(error);
-                setSaveState({ saving: false, error: true });
-            }
-        );
-    };
-    const goToNext = () => setStep(getNextStep);
-    const isLastStep = steps.indexOf(step) === steps.length - 1;
-
-    return (
-        <>
-            <Header
-                mainLang={translation.lang}
-                topHeading={[
-                    {
-                        to: generatePath(TERM, { termId: term.id }),
-                        inner: <Redact>{term.value}</Redact>,
-                        lang: term.lang,
-                    },
-                ]}
-            >
-                <Redact>{translation.value}</Redact>
-            </Header>
-            <p>
-                <Trans
-                    t={t}
-                    i18nKey="translationExample.add"
-                    components={{
-                        Term: <TermWithLang term={term} />,
-                        Translation: <TermWithLang term={translation} />,
-                    }}
-                />
-            </p>
-
-            {saving ? (
-                <SavingState />
-            ) : (
-                <>
-                    <MultiStepIndicator>
-                        {steps.map((currentStep, index) => (
-                            <MultiStepIndicatorStep key={index} active={currentStep === step}>
-                                {currentStep.label(t)}
-                            </MultiStepIndicatorStep>
-                        ))}
-                    </MultiStepIndicator>
-                    <div className={s.steps}>
-                        {step.body({ t, term, translation, model, onChange })}
-                        {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
-                        <ButtonContainer>
-                            <Button primary onClick={isLastStep ? save : goToNext} disabled={!step.valid(model)}>
-                                {isLastStep ? t('common.formNav.save') : t('common.formNav.next')}
-                            </Button>
-                        </ButtonContainer>
-                    </div>
-                </>
-            )}
-        </>
-    );
-}
-
-export default function AddTranslationExamplePage() {
-    const { termId, translationId } = useParams<{ termId: string; translationId: string }>();
-    const getTerm = useDocument(collections.terms.doc(termId));
-    const getTranslation = useDocument(collections.translations.doc(translationId));
-
-    return (
-        <SidebarTermRedirectWrapper getTerm={getTerm}>
-            <AddTranslationExample getTerm={getTerm} getTranslation={getTranslation} />
-        </SidebarTermRedirectWrapper>
     );
 }
 
