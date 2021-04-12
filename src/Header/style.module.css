@@ -71,7 +71,7 @@
 
 @media (min-width: 600px) {
     .header {
-        min-height: 8rem;
+        min-height: calc(var(--sidebarWidth) - 2rem);
         margin-bottom: 5rem;
     }
 }
