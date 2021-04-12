@@ -11,7 +11,7 @@ type ModalDialogProps = {
     title: React.ReactNode;
     children: React.ReactNode;
     isDismissable?: boolean;
-    width?: 'medium' | 'wide';
+    width?: 'medium' | 'wide' | 'wider';
 };
 
 export function ModalDialog({ title, children, onClose, isDismissable = true, width = 'medium' }: ModalDialogProps) {

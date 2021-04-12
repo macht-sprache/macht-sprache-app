@@ -8,16 +8,15 @@ import { ErrorBox } from '../Form/ErrorBox';
 import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { addTranslationExample } from '../functions';
-import Header from '../Header';
 import { collections } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
 import { Columns, FullWidthColumn } from '../Layout/Columns';
 import BookSearch from '../MediaSelection/BookSearch';
 import MovieSearch from '../MediaSelection/MovieSearch';
 import WebPageSearch from '../MediaSelection/WebPageSearch';
+import { ModalDialog } from '../ModalDialog';
 import { TranslationExampleModel } from '../modelTypes';
-import { Redact } from '../RedactSensitiveTerms';
-import { TERM, TRANSLATION_EXAMPLE } from '../routes';
+import { TRANSLATION_EXAMPLE } from '../routes';
 import SavingState from '../SavingState';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
@@ -138,35 +137,27 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
         !!(model.original.text && model.translated.text);
 
     return (
-        <>
-            <Header
-                mainLang={translation.lang}
-                topHeading={[
-                    {
-                        to: generatePath(TERM, { termId: term.id }),
-                        inner: <Redact>{term.value}</Redact>,
-                        lang: term.lang,
-                    },
-                ]}
-            >
-                <Redact>{translation.value}</Redact>
-            </Header>
-
+        <ModalDialog
+            title={
+                <Trans
+                    t={t}
+                    i18nKey="translationExample.add"
+                    components={{
+                        Term: <TermWithLang term={term} />,
+                        Translation: <TermWithLang term={translation} />,
+                    }}
+                />
+            }
+            onClose={() => {
+                history.goBack();
+            }}
+            width="wider"
+        >
             <div className={clsx(s.wrapper, getDominantLanguageClass(translation.lang))}>
                 {saving ? (
                     <SavingState />
                 ) : (
                     <>
-                        <p className={s.intro}>
-                            <Trans
-                                t={t}
-                                i18nKey="translationExample.add"
-                                components={{
-                                    Term: <TermWithLang term={term} />,
-                                    Translation: <TermWithLang term={translation} />,
-                                }}
-                            />
-                        </p>
                         <FullWidthColumn>
                             <Heading>{t('translationExample.steps.type.label')}</Heading>
                             <SelectType {...stepProps} />
@@ -186,19 +177,24 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
 
                         {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
 
-                        {!!model.type && (
-                            <FullWidthColumn>
-                                <ButtonContainer>
-                                    <Button primary onClick={save} disabled={!isValid}>
-                                        {t('common.formNav.save')}
-                                    </Button>
-                                </ButtonContainer>
-                            </FullWidthColumn>
-                        )}
+                        <FullWidthColumn>
+                            <ButtonContainer>
+                                <Button
+                                    onClick={() => {
+                                        history.goBack();
+                                    }}
+                                >
+                                    {t('common.formNav.cancel')}
+                                </Button>
+                                <Button primary onClick={save} disabled={!isValid}>
+                                    {t('common.formNav.save')}
+                                </Button>
+                            </ButtonContainer>
+                        </FullWidthColumn>
                     </>
                 )}
             </div>
-        </>
+        </ModalDialog>
     );
 }
 
@@ -279,7 +275,7 @@ function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE
         <AddContentSection
             translationLang={translation.lang}
             termLang={term.lang}
-            description={t('translationExample.source.MOVIE.description')}
+            // description={t('translationExample.source.MOVIE.description')}
             originalHeading={`${t('translationExample.source.MOVIE.titleOriginal')} (${t(
                 `common.langLabels.${term.lang}` as const
             )})`}
@@ -439,7 +435,7 @@ function AddContentSection({
 }) {
     return (
         <>
-            {description && <p className={s.sourceDescription}>{description}</p>}
+            {/* {description && <p className={s.sourceDescription}>{description}</p>} */}
 
             <Columns>
                 <div className={getDominantLanguageClass(termLang)}>
