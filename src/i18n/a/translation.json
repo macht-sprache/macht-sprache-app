@@ -220,7 +220,7 @@
             }
         },
         "snippet": {
-            "description": "Sample text of <Title>{{title}}</Title> containing <Term />",
+            "description": "Sample text containing <Term />",
             "label": "Sample Text",
             "pageNumber": "Page Number"
         },

@@ -216,7 +216,7 @@
             }
         },
         "snippet": {
-            "description": "Beispieltext aus <Title>{{title}}</Title> mit <Term />",
+            "description": "Beispieltext mit <Term />",
             "label": "Beispieltext",
             "pageNumber": "Seitennummer"
         },
