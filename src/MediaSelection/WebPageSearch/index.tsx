@@ -22,7 +22,7 @@ type State = {
     searching: boolean;
     pasted: boolean;
     result: WebPage | null;
-    error: null | unknown;
+    error: null | { code?: string };
 };
 
 export default function WebPageSearch({ label, lang, selectedPage, onSelect }: Props) {
@@ -36,6 +36,14 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
     });
 
     const search = useCallback(() => {
+        if (!url) {
+            return;
+        }
+
+        if (!isValidUrl(url)) {
+            return setState(prev => ({ ...prev, error: { code: 'invalid-url' }, pasted: false }));
+        }
+
         setState(prev => ({ ...prev, searching: true, error: null }));
         findWebPage(url, lang).then(
             page => {
@@ -45,10 +53,8 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
         );
     }, [lang, url]);
 
-    const isValid = !url || isValidUrl(url);
-
     useEffect(() => {
-        if (pasted && url && isValidUrl(url)) {
+        if (pasted) {
             search();
         }
     }, [lang, pasted, search, url]);
@@ -87,7 +93,7 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
                 }
                 busy={searching}
                 disabled={searching}
-                error={getErrorMessage(t, isValid, error)}
+                error={getErrorMessage(t, error)}
                 inlineButton={
                     url &&
                     !pasted && (
@@ -132,13 +138,13 @@ function getMeta(page: WebPage) {
     );
 }
 
-function getErrorMessage(t: TFunction<'translation'>, isValid: boolean, error: any) {
-    if (!isValid) {
-        return t('mediaSearch.webpage.errorInvalid');
-    }
-
+function getErrorMessage(t: TFunction<'translation'>, error: State['error']) {
     if (!error) {
         return null;
+    }
+
+    if (error.code === 'invalid-url') {
+        return t('mediaSearch.webpage.errorInvalid');
     }
 
     if (error.code === 'not-found') {
