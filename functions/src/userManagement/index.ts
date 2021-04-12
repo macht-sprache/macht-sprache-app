@@ -199,7 +199,6 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
         terms.forEach(term => {
             const data = term.data();
             delete data.weekHighlight;
-            delete data.adminComment;
             t.set(term.ref, mergeDeepRight(termDefaults, data));
         });
     });
