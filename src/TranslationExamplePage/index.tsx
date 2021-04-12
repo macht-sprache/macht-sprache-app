@@ -2,12 +2,15 @@ import clsx from 'clsx';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../Comments';
+import ConfirmModal from '../ConfirmModal';
 import { CoverIcon } from '../CoverIcon';
 import { ExampleText } from '../ExampleText';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
+import { useAppContext } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
+import LinkButton from '../LinkButton';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
@@ -42,6 +45,7 @@ export default function TranslationExamplePageWrapper() {
 
 function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample }: Props) {
     const { t } = useTranslation();
+    const { userProperties } = useAppContext();
     const term = getTerm();
     const translation = getTranslation();
     const translationExample = getTranslationExample();
@@ -51,6 +55,8 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
 
     const originalSource = getOriginalSource();
     const translatedSource = getTranslatedSource();
+
+    const canDelete = userProperties?.admin;
 
     return (
         <>
@@ -79,6 +85,12 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
                         />
                         <br />
                         <ExampleSubLine source={originalSource} />
+                        {canDelete && (
+                            <>
+                                {' | '}
+                                <DeleteTranslationExample translationExample={translationExample} />
+                            </>
+                        )}
                     </p>
                 }
             >
@@ -205,3 +217,18 @@ const DefintionListItem = ({ definition, children }: { definition: React.ReactNo
         <dd className={s.definitionListValue}>{children}</dd>
     </>
 );
+
+function DeleteTranslationExample({ translationExample }: { translationExample: TranslationExample }) {
+    const { t } = useTranslation();
+
+    return (
+        <ConfirmModal
+            title={t('translationExample.deleteHeading')}
+            body={<p>{t('translationExample.deleteExplanation')}</p>}
+            confirmLabel={t('common.formNav.delete')}
+            onConfirm={() => collections.translationExamples.doc(translationExample.id).delete()}
+        >
+            {onClick => <LinkButton onClick={onClick}>{t('common.formNav.delete')}</LinkButton>}
+        </ConfirmModal>
+    );
+}

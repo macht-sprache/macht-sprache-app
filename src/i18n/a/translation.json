@@ -245,7 +245,9 @@
                 "WEBPAGE": "Website on {{domain}}. Published <Date />."
             }
         },
-        "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one."
+        "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one.",
+        "deleteHeading": "Delete Translation Example?",
+        "deleteExplanation": "Are you sure you want to delete this Translation Example? This cannot be undone."
     },
     "rating": {
         "heading": "Usage",

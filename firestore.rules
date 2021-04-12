@@ -156,6 +156,7 @@ service cloud.firestore {
 
     match /translationExamples/{translationExample} {
       allow read: if true;
+      allow delete: if isValidatedUser() && isAdmin();
     }
 
     match /sources/{book} {

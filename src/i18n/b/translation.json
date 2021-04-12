@@ -241,7 +241,9 @@
                 "WEBPAGE": "Website: {{domain}}. Veröffentlicht: <Date />."
             }
         },
-        "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen."
+        "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen.",
+        "deleteHeading": "Beispielübersetzung löschen?",
+        "deleteExplanation": "Bist du dir sicher, diese Beispielübersetzung zu löschen? Löschungen können nicht rückgängig gemacht werden."
     },
     "rating": {
         "heading": "Benutzung",
