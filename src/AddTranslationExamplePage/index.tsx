@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory, useParams } from 'react-router-dom';
 import { SNIPPET_MAX_LENGTH } from '../constants';
@@ -10,7 +10,7 @@ import { addTranslationExample } from '../functions';
 import Header from '../Header';
 import { collections } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
-import { ColumnHeading, Columns, FullWidthColumn } from '../Layout/Columns';
+import { Columns, FullWidthColumn } from '../Layout/Columns';
 import BookSearch from '../MediaSelection/BookSearch';
 import MovieSearch from '../MediaSelection/MovieSearch';
 import WebPageSearch from '../MediaSelection/WebPageSearch';
@@ -165,17 +165,17 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
             ) : (
                 <>
                     <FullWidthColumn>
-                        <ColumnHeading>{t('translationExample.steps.type.label')}</ColumnHeading>
+                        <Heading>{t('translationExample.steps.type.label')}</Heading>
                         <SelectType {...stepProps} />
                     </FullWidthColumn>
                     {!!model.type && (
                         <>
                             <FullWidthColumn>
-                                <ColumnHeading>{t('translationExample.steps.source.label')}</ColumnHeading>
+                                <Heading>{t('translationExample.steps.source.label')}</Heading>
                                 <SelectMedia {...stepProps} />{' '}
                             </FullWidthColumn>
                             <FullWidthColumn>
-                                <ColumnHeading>{t('translationExample.steps.example.label')}</ColumnHeading>
+                                <Heading>{t('translationExample.steps.example.label')}</Heading>
                                 <AddSnippet {...stepProps} />{' '}
                             </FullWidthColumn>
                         </>
@@ -202,7 +202,7 @@ function SelectType({ model, onChange }: StepProps) {
     const { t } = useTranslation();
     return (
         <>
-            <p>{t('translationExample.steps.type.description')}</p>
+            <p className={s.sourceDescription}>{t('translationExample.steps.type.description')}</p>
             <TypeSelectorContainer
                 name="type"
                 value={model.type}
@@ -235,11 +235,11 @@ function BookSelection({ term, translation, model, onChange }: StepProps<'BOOK'>
 
     return (
         <>
-            <p>{t('translationExample.source.BOOK.description')}</p>
+            <p className={s.sourceDescription}>{t('translationExample.source.BOOK.description')}</p>
 
             <Columns>
                 <div>
-                    <h3 className={s.mediaSearchHeading}>{t('translationExample.source.BOOK.titleOriginal')}</h3>
+                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.BOOK.titleOriginal')}</h3>
                     <BookSearch
                         label={t('translationExample.source.BOOK.searchOriginal')}
                         lang={term.lang}
@@ -250,7 +250,7 @@ function BookSelection({ term, translation, model, onChange }: StepProps<'BOOK'>
                     />
                 </div>
                 <div>
-                    <h3 className={s.mediaSearchHeading}>{t('translationExample.source.BOOK.titleTranslated')}</h3>
+                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.BOOK.titleTranslated')}</h3>
                     <BookSearch
                         label={t('translationExample.source.BOOK.searchTranslation')}
                         lang={translation.lang}
@@ -270,10 +270,10 @@ function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE
 
     return (
         <>
-            <p>{t('translationExample.source.MOVIE.description')}</p>
+            <p className={s.sourceDescription}>{t('translationExample.source.MOVIE.description')}</p>
             <Columns>
                 <div>
-                    <h3 className={s.mediaSearchHeading}>{t('translationExample.source.MOVIE.titleOriginal')}</h3>
+                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.MOVIE.titleOriginal')}</h3>
                     <MovieSearch
                         label={t('translationExample.source.MOVIE.searchOriginal')}
                         lang={term.lang}
@@ -284,7 +284,7 @@ function MovieSelection({ term, translation, model, onChange }: StepProps<'MOVIE
                     />
                 </div>
                 <div>
-                    <h3 className={s.mediaSearchHeading}>{t('translationExample.source.MOVIE.titleTranslated')}</h3>
+                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.MOVIE.titleTranslated')}</h3>
                     <MovieSearch
                         label={t('translationExample.source.MOVIE.searchTranslation')}
                         lang={translation.lang}
@@ -304,10 +304,10 @@ function WebPageSelection({ term, translation, model, onChange }: StepProps<'WEB
 
     return (
         <>
-            <p>{t('translationExample.source.WEBPAGE.description')}</p>
+            <p className={s.sourceDescription}>{t('translationExample.source.WEBPAGE.description')}</p>
             <Columns>
                 <div>
-                    <h3 className={s.mediaSearchHeading}>{t('translationExample.source.WEBPAGE.titleOriginal')}</h3>
+                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.WEBPAGE.titleOriginal')}</h3>
                     <WebPageSearch
                         label={t('translationExample.source.WEBPAGE.searchOriginal')}
                         lang={term.lang}
@@ -318,7 +318,7 @@ function WebPageSelection({ term, translation, model, onChange }: StepProps<'WEB
                     />
                 </div>
                 <div>
-                    <h3 className={s.mediaSearchHeading}>{t('translationExample.source.WEBPAGE.titleTranslated')}</h3>
+                    <h3 className={s.inputFieldHeading}>{t('translationExample.source.WEBPAGE.titleTranslated')}</h3>
                     <WebPageSearch
                         label={t('translationExample.source.WEBPAGE.searchTranslation')}
                         lang={translation.lang}
@@ -368,13 +368,13 @@ function SnippetSelection({
     const { t } = useTranslation();
     return (
         <div>
-            <p>
+            <h3 className={s.inputFieldHeading}>
                 <Trans
                     i18nKey="translationExample.snippet.description"
                     values={{ title: snippet.sourceMedium?.title }}
                     components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
                 />
-            </p>
+            </h3>
             <InputContainer>
                 <Textarea
                     label={t('translationExample.snippet.label')}
@@ -399,4 +399,8 @@ function SnippetSelection({
             </InputContainer>
         </div>
     );
+}
+
+function Heading({ children }: { children: React.ReactNode }) {
+    return <h2 className={s.sectionHeading}>{children}</h2>;
 }
