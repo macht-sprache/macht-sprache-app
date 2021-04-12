@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { TFunction, useTranslation } from 'react-i18next';
 import { Input } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import { FormatDate } from '../../FormatDate';
@@ -25,7 +25,7 @@ type State = {
 
 export default function WebPageSearch({ label, lang, selectedPage, onSelect }: Props) {
     const { t } = useTranslation();
-    const [{ url, searching, result }, setState] = useState<State>({
+    const [{ url, searching, result, error }, setState] = useState<State>({
         url: '',
         searching: false,
         error: null,
@@ -72,7 +72,7 @@ export default function WebPageSearch({ label, lang, selectedPage, onSelect }: P
                 onChange={event => setState(prev => ({ ...prev, url: event.target.value }))}
                 busy={searching}
                 disabled={searching}
-                error={isValid ? undefined : 'URL INVALID'}
+                error={getErrorMessage(t, isValid, error)}
             />
         </InputContainer>
     );
@@ -107,4 +107,20 @@ function getMeta(page: WebPage) {
             )}
         </>
     );
+}
+
+function getErrorMessage(t: TFunction<'translation'>, isValid: boolean, error: any) {
+    if (!isValid) {
+        return t('mediaSearch.webpage.errorInvalid');
+    }
+
+    if (!error) {
+        return null;
+    }
+
+    if (error.code === 'not-found') {
+        return t('mediaSearch.webpage.errorNotFound');
+    }
+
+    return t('mediaSearch.webpage.errorGeneric');
 }

@@ -2,6 +2,7 @@ import type metascraper from 'metascraper';
 import fetch from 'node-fetch';
 import { langA, langB } from '../../../src/languages';
 import { Lang, WebPage } from '../../../src/types';
+import { HttpsError } from '../firebase';
 
 const scraper = (require('metascraper') as typeof metascraper)([
     require('metascraper-author')(),
@@ -34,7 +35,10 @@ const fetchPage = async (url: string) => {
     const response = await fetch(url, { headers: { 'user-agent': 'MachtSprache/Bot Googlebot' } });
 
     if (!response.ok) {
-        throw new Error('Response not ok.');
+        if (response.status === 404) {
+            throw new HttpsError('not-found', 'Page not found');
+        }
+        throw new HttpsError('unavailable', 'Fetching page failed');
     }
 
     const html = await response.text();

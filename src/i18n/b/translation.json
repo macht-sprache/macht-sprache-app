@@ -168,7 +168,10 @@
             "cancelSelection": "Suche einen anderen Film aus"
         },
         "webpage": {
-            "cancelSelection": "Suche eine andere Webseite aus"
+            "cancelSelection": "Suche eine andere Webseite aus",
+            "errorInvalid": "Diese URL is nicht valide",
+            "errorNotFound": "Konnte keine Webseite unter dieser URL finden",
+            "errorGeneric": "Konnte Webseite nicht laden"
         }
     },
     "translationExample": {

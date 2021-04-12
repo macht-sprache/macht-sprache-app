@@ -172,7 +172,10 @@
             "cancelSelection": "Select a different movie"
         },
         "webpage": {
-            "cancelSelection": "Select a different website"
+            "cancelSelection": "Select a different website",
+            "errorInvalid": "This URL is not valid",
+            "errorNotFound": "Could not find a website at this URL",
+            "errorGeneric": "Could not load website"
         }
     },
     "translationExample": {
