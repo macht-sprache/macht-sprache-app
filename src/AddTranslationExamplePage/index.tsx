@@ -368,7 +368,7 @@ function AddSnippet({ term, translation, model, onChange }: StepProps) {
             translatedHeading={
                 <Trans
                     i18nKey="translationExample.snippet.description"
-                    components={{ Term: <TermWithLang term={term} /> }}
+                    components={{ Term: <TermWithLang term={translation} /> }}
                 />
             }
             translatedColumn={
