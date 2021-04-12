@@ -17,6 +17,12 @@
     object-fit: cover;
 }
 
+@media (max-width: 600px) {
+    .image {
+        max-width: 33vw;
+    }
+}
+
 .topBar {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
