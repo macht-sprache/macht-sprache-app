@@ -3,7 +3,8 @@
         "langLabels": {
             "language": "Sprache",
             "en": "Englisch",
-            "de": "Deutsch"
+            "de": "Deutsch",
+            "switchLang": "Sprache zu Englisch wechseln"
         },
         "entities": {
             "term": {

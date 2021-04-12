@@ -42,8 +42,13 @@ export function TopMenu() {
 }
 
 function LanguageSwitcher() {
+    const { t } = useTranslation();
     const [lang, setLang] = useLang();
     const otherLang = lang === langA ? langB : langA;
 
-    return <LinkButton onClick={() => setLang(otherLang)}>{otherLang}</LinkButton>;
+    return (
+        <LinkButton onClick={() => setLang(otherLang)} title={t('common.langLabels.switchLang')}>
+            {otherLang}
+        </LinkButton>
+    );
 }

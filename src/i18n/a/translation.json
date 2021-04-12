@@ -3,7 +3,8 @@
         "langLabels": {
             "language": "Language",
             "en": "English",
-            "de": "German"
+            "de": "German",
+            "switchLang": "Change language to German"
         },
         "entities": {
             "term": {
