@@ -136,7 +136,7 @@
     },
     "term": {
         "add": "Begriff hinzufügen",
-        "addTermDescription": "Füge einen Begriff hinzu, dessen Übersetzung du gerne diskutieren würdest. Handelt es sich um einen grammatikalisch gegenderten Begriff (z.B. Student*in oder Studierende)? Wenn möglich, gib eine genderinklusive oder genderfreie Variante ein. Mehr zum Thema gibt es auf der Seite "what about gender? ",
+        "addTermDescription": "Füge einen Begriff hinzu, dessen Übersetzung du gerne diskutieren würdest. Handelt es sich um einen grammatikalisch gegenderten Begriff (z.B. Student*in oder Studierende)? Wenn möglich, gib eine genderinklusive oder genderfreie Variante ein. Mehr zum Thema gibt es auf der Seite \"what about gender?\".",
         "registerToAdd": "Um einen Begriff hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "addTranslation": {
             "de": "Füge eine deutsche Übersetzung hinzu für: <Term /> ",
