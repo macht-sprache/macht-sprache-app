@@ -23,6 +23,7 @@ import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import { Lang, SourceMediaForType, SourceType, Term, Translation } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import { trimString } from '../utils';
 import s from './style.module.css';
 import { TypeSelector, TypeSelectorContainer } from './TypeSelector';
 
@@ -354,8 +355,7 @@ function AddSnippet({ term, translation, model, onChange }: StepProps) {
             originalHeading={
                 <Trans
                     i18nKey="translationExample.snippet.description"
-                    values={{ title: model.original.sourceMedium?.title }}
-                    components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
+                    components={{ Term: <TermWithLang term={term} /> }}
                 />
             }
             originalColumn={
@@ -368,8 +368,7 @@ function AddSnippet({ term, translation, model, onChange }: StepProps) {
             translatedHeading={
                 <Trans
                     i18nKey="translationExample.snippet.description"
-                    values={{ title: model.translated.sourceMedium?.title }}
-                    components={{ Term: <TermWithLang term={term} />, Title: <em /> }}
+                    components={{ Term: <TermWithLang term={term} /> }}
                 />
             }
             translatedColumn={
