@@ -1,10 +1,11 @@
 import { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
+import { getSourceRefWithConverter } from '../../hooks/data';
 import { Get, useDocument } from '../../hooks/fetch';
 import { Redact } from '../../RedactSensitiveTerms';
 import { TERM, TRANSLATION, TRANSLATION_EXAMPLE_REDIRECT } from '../../routes';
-import { Comment, DocReference, Source, Term, Translation, TranslationExample, UserMini } from '../../types';
+import { Comment, DocReference, Term, Translation, TranslationExample, UserMini } from '../../types';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { CommentItem } from '../CommentItem';
 import s from './style.module.css';
@@ -83,7 +84,7 @@ function LinkToTranslation({ translation, translationId }: { translation: Transl
 }
 
 function LinkToTranslationExample({ example, exampleId }: { example: TranslationExample; exampleId: string }) {
-    const getOriginalSource = useDocument(example.original.source as DocReference<Source>);
+    const getOriginalSource = useDocument(getSourceRefWithConverter(example.original.source));
     const original = getOriginalSource();
 
     return (

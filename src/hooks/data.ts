@@ -137,7 +137,7 @@ const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
             refs,
         } = data;
         const type: SourceType = data.type;
-        const base = { id, lang, title, terms, translations, refs };
+        const base = { id, lang, title: title ?? '', terms, translations, refs };
         switch (type) {
             case 'BOOK':
                 return { ...base, type, coverUrl, authors, year, isbn };
@@ -227,6 +227,8 @@ export const getCommentsRef = (ref: Comment['ref']) =>
 
 export const getLikesRef = (commentId: string) =>
     collections.comments.doc(commentId).collection('likes').withConverter(LikeConverter);
+
+export const getSourceRefWithConverter = (ref: DocReference<Source>) => ref.withConverter(SourceConverter);
 
 export async function addTerm(user: User, value: string, lang: Lang, comment?: string) {
     const termRef = collections.terms.doc();

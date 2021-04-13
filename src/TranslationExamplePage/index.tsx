@@ -8,13 +8,13 @@ import { ExampleText } from '../ExampleText';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { useAppContext } from '../hooks/appContext';
-import { collections } from '../hooks/data';
+import { collections, getSourceRefWithConverter } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
-import { DocReference, Source, Term, Translation, TranslationExample } from '../types';
+import { Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import { extractRootDomain, trimString } from '../utils';
@@ -50,8 +50,8 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
     const translation = getTranslation();
     const translationExample = getTranslationExample();
 
-    const getOriginalSource = useDocument(translationExample.original.source as DocReference<Source>);
-    const getTranslatedSource = useDocument(translationExample.translated.source as DocReference<Source>);
+    const getOriginalSource = useDocument(getSourceRefWithConverter(translationExample.original.source));
+    const getTranslatedSource = useDocument(getSourceRefWithConverter(translationExample.translated.source));
 
     const originalSource = getOriginalSource();
     const translatedSource = getTranslatedSource();
