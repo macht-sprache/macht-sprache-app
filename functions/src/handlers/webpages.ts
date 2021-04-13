@@ -2,6 +2,7 @@ import type metascraper from 'metascraper';
 import fetch from 'node-fetch';
 import { langA, langB } from '../../../src/languages';
 import { Lang, WebPage } from '../../../src/types';
+import { extractRootDomain } from '../../../src/utils';
 import { HttpsError } from '../firebase';
 
 const scraper = (require('metascraper') as typeof metascraper)([
@@ -52,7 +53,7 @@ export const searchWebPage = async (url: string, lang: Lang): Promise<WebPage> =
     return {
         id: toSourceId(url, lang),
         lang,
-        title: meta.title,
+        title: meta.title || extractRootDomain(meta.url),
         description: meta.description || undefined,
         author: meta.author || undefined,
         publisher: meta.publisher || undefined,
