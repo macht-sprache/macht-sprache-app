@@ -14,6 +14,8 @@ type CommentListProps = {
 };
 
 export function CommentList({ comments }: CommentListProps) {
+    if (!comments.length) return null;
+
     return (
         <div className={s.container}>
             {comments.map(comment => {
