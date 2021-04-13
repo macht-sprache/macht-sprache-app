@@ -6,6 +6,7 @@
 
 .comments {
     grid-column: 3 / -3;
+    margin-top: 2rem;
 }
 
 .bookContainer {

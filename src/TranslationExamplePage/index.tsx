@@ -113,6 +113,8 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
                     <Comments
                         entityRef={collections.translationExamples.doc(translationExample.id)}
                         commentCount={translationExample.commentCount}
+                        headingHint={t('translationExample.addCommentHeading')}
+                        placeholder={t('translationExample.commentPlaceholder')}
                     />
                 </div>
             </div>

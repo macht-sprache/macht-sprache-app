@@ -184,6 +184,8 @@
         "empty": "There are no examples for <Term /> translated as <Translation /> yet.",
         "example": "e.g. a book, a website, or a movie",
         "add": "Add an example for this translation: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
+        "addCommentHeading": "Discussion about the example above",
+        "commentPlaceholder": "...about the example above",
         "steps": {
             "type": {
                 "label": "Type",

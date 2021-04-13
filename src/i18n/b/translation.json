@@ -180,6 +180,8 @@
         "empty": "Es gibt noch keine Bespiele, in denen <Term /> mit <Translation /> übersetzt wurde.",
         "example": "z.B. ein Buch, eine Website oder ein Film",
         "add": "Füge eine Beispielübersetzung hinzu für: <Term>{{term}}</Term> → <Translation>{{translation}}</Translation>",
+        "addCommentHeading": "Diskussion über die obige Beispielübersetzung",
+        "commentPlaceholder": "...über die obige Beispielübersetzung",
         "steps": {
             "type": {
                 "label": "Art",
