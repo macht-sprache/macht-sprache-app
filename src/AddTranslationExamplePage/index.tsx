@@ -148,8 +148,11 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
                     }}
                 />
             }
+            isDismissable={false}
             onClose={() => {
-                history.goBack();
+                if (!model.type) {
+                    history.goBack();
+                }
             }}
             width="wider"
         >
