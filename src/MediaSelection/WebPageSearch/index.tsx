@@ -7,7 +7,7 @@ import InputContainer from '../../Form/InputContainer';
 import { FormatDate } from '../../FormatDate';
 import { findWebPage } from '../../functions';
 import { Lang, WebPage } from '../../types';
-import { isValidUrl } from '../../utils';
+import { isValidUrl, trimString } from '../../utils';
 import SelectedItem from '../SelectedItem';
 
 type Props = {
@@ -124,19 +124,19 @@ function getMeta(page: WebPage) {
         <>
             {page.description && (
                 <>
-                    {page.description}
+                    {trimString(page.description, 200)}
                     <br />
                 </>
             )}
             {page.author && (
                 <>
-                    {page.author}
+                    {trimString(page.author)}
                     <br />
                 </>
             )}
             {page.publisher && (
                 <>
-                    {page.publisher}
+                    {trimString(page.publisher)}
                     <br />
                 </>
             )}

@@ -95,7 +95,7 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
                 }
             >
                 {t('translationExample.page.heading')}
-                {originalSource.title}
+                <Redact>{trimString(originalSource.title, 300)}</Redact>
             </Header>
 
             <div className={s.body}>
@@ -156,14 +156,19 @@ function ExampleSubLine({ source }: { source: Source }) {
 }
 
 function MediaSummary({ source, isOriginal = false }: { source: Source; isOriginal?: boolean }) {
+    const trimLength = 100;
     return (
         <div className={clsx(s.bookContainer, { [s.original]: isOriginal, [s.translated]: !isOriginal })}>
             <div className={s.bookIconContainer}>
                 <CoverIcon item={source} className={s.bookIcon} />
             </div>
             <div className={s.meta}>
-                <h3 className={s.heading} lang={source.lang}>
-                    {trimString(source.title)}
+                <h3
+                    className={s.heading}
+                    lang={source.lang}
+                    title={source.title.length > trimLength ? source.title : undefined}
+                >
+                    <Redact>{trimString(source.title, trimLength)}</Redact>
                 </h3>
                 <dl className={s.definitionList}>
                     <MediaMetaData source={source} />

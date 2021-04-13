@@ -6,7 +6,7 @@ export function extractRootDomain(url: string) {
     }
 }
 
-export function trimString(string?: string, length = 50) {
+export function trimString(string?: string, length = 60) {
     if (!string) return '';
     return string.length > length ? string.substring(0, length - 3) + '…' : string;
 }
