@@ -26,13 +26,16 @@ export default function Comments({ entityRef: ref, commentCount, headingHint, pl
     return (
         <CommentWrapper>
             <ColumnHeading>
-                {commentCount} {t('common.entities.comment.value', { count: commentCount })}
-                {headingHint && (
-                    <>
-                        {' '}
-                        <span className={s.headingHint}>{headingHint}</span>
-                    </>
-                )}
+                <div className={s.heading}>
+                    <div className={s.headingMain}>
+                        {commentCount} {t('common.entities.comment.value', { count: commentCount })}
+                    </div>
+                    {headingHint && (
+                        <>
+                            <span className={s.headingHint}>{headingHint}</span>
+                        </>
+                    )}
+                </div>
             </ColumnHeading>
             <Suspense fallback={null}>
                 <CommentListWrapped getComments={getComments} />

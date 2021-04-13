@@ -3,3 +3,13 @@
     font-style: italic;
     color: var(--disabledGrey);
 }
+
+.heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.headingMain {
+    margin-right: 0.5rem;
+}
