@@ -40,7 +40,7 @@ export default function TermPageWrapper() {
     const getSources = useCollection(getSourcesRef(termRef));
     return (
         <SidebarTermRedirectWrapper getTerm={getTerm}>
-            <TermPage getTerm={getTerm} getTranslations={getTranslations} getSources={getSources} />;
+            <TermPage getTerm={getTerm} getTranslations={getTranslations} getSources={getSources} />
         </SidebarTermRedirectWrapper>
     );
 }
