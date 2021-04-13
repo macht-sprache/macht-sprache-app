@@ -1,11 +1,15 @@
 .logos {
     display: flex;
     flex-wrap: wrap;
-    margin: -2rem;
+    margin-top: -2rem;
+}
+
+.logoContainer:not(:last-child) {
+    margin-right: 4rem;
 }
 
 .logoContainer {
-    margin: 2rem;
+    margin-top: 2rem;
 }
 
 .logoImg {
