@@ -240,7 +240,10 @@
             "subLine": {
                 "BOOK": "Buch von {{author}}. Veröffentlicht bei {{publisher}} {{year}}.",
                 "MOVIE": "Film aus dem Jahr {{year}}. Regie: {{director}}.",
-                "WEBPAGE": "Website: {{domain}}. Veröffentlicht: <Date />."
+                "WEBPAGE": {
+                    "website": "Website: {{domain}}.",
+                    "date": "Veröffentlicht: <Date />."
+                }
             }
         },
         "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen.",
