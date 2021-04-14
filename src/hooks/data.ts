@@ -135,12 +135,13 @@ const SourceConverter: firebase.firestore.FirestoreDataConverter<Source> = {
             logoUrl,
             imageUrl,
             refs,
+            publisher,
         } = data;
         const type: SourceType = data.type;
         const base = { id, lang, title: title ?? '', terms, translations, refs };
         switch (type) {
             case 'BOOK':
-                return { ...base, type, coverUrl, authors, year, isbn };
+                return { ...base, type, coverUrl, authors, year, isbn, publisher };
             case 'MOVIE':
                 return { ...base, type, coverUrl, directors, year };
             case 'WEBPAGE':
