@@ -129,11 +129,19 @@ function ExampleSubLine({ source }: { source: Source }) {
         case 'BOOK':
             return (
                 <>
-                    {t('translationExample.page.subLine.BOOK', {
-                        author: source.authors.join(', '),
-                        year: source.year,
-                        publisher: source.publisher,
-                    })}
+                    {source.authors.length &&
+                        t('translationExample.page.subLine.BOOK.author', {
+                            author: source.authors.join(', '),
+                        })}
+                    {(source.publisher || source.year) && t('translationExample.page.subLine.BOOK.published')}
+                    {source.publisher &&
+                        t('translationExample.page.subLine.BOOK.publishedBy', {
+                            publisher: source.publisher,
+                        })}
+                    {source.year &&
+                        t('translationExample.page.subLine.BOOK.year', {
+                            year: source.year,
+                        })}
                 </>
             );
         case 'MOVIE':

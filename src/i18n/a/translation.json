@@ -242,7 +242,12 @@
         "page": {
             "heading": "Example: ",
             "subLine": {
-                "BOOK": "Book by {{author}}. Published by {{publisher}} in {{year}}.",
+                "BOOK": {
+                    "author": "Book by {{author}}. ",
+                    "published": "Published",
+                    "publishedBy": "by {{publisher}}",
+                    "year": " in {{year}}"
+                },
                 "MOVIE": "Film directed by {{director}}. Released {{year}}.",
                 "WEBPAGE": {
                     "website": "Website on {{domain}}.",
