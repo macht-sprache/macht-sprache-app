@@ -152,11 +152,14 @@ function ExampleSubLine({ source }: { source: Source }) {
                         domain: extractRootDomain(source.url),
                     })}
                     {source.date && (
-                        <Trans
-                            t={t}
-                            i18nKey="translationExample.page.subLine.WEBPAGE.website"
-                            components={{ Date: <FormatDate date={new Date(source.date)} /> }}
-                        />
+                        <>
+                            {' '}
+                            <Trans
+                                t={t}
+                                i18nKey="translationExample.page.subLine.WEBPAGE.date"
+                                components={{ Date: <FormatDate date={new Date(source.date)} /> }}
+                            />
+                        </>
                     )}
                 </>
             );
