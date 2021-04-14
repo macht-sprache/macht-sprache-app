@@ -157,7 +157,7 @@
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>. Füge eine hinzu:",
         "emptyShort": "Es gibt noch keine Übersetzung",
-        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest. [paragraph break]Handelt es sich um einen grammatikalisch gegenderten Begriff (z.B. Student*in oder Studierende)? Wenn möglich, gib eine genderinklusive oder genderfreie Variante ein. Mehr zum Thema gibt es auf der Seite »What about Gender?«."
+        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest. <br /><br />Handelt es sich um einen grammatikalisch gegenderten Begriff (z.B. Student*in oder Studierende)? Wenn möglich, gib eine genderinklusive oder genderfreie Variante ein. Mehr zum Thema gibt es auf der Seite »What about Gender?«."
     },
     "mediaSearch": {
         "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
