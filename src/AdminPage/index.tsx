@@ -148,7 +148,7 @@ function UserItem({
 }) {
     const [lang] = useLang();
     const setAdmin = (admin: boolean) => collections.userProperties.doc(user.id).set({ admin }, { merge: true });
-    // console.log(authInfo?.creationTime, authInfo?.creationTime && new Date(authInfo?.creationTime));
+
     return (
         <li key={user.id} className={s.userItem}>
             <div className={s.userInfo}>
