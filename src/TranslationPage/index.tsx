@@ -19,7 +19,7 @@ import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
-import { WrappedInLangColor } from '../TermWithLang';
+import { TermWithLang } from '../TermWithLang';
 import TranslationExamplesList from '../TranslationExamplesList';
 import { Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
@@ -106,13 +106,9 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                         i18nKey={
                             term.adminTags.translationsAsVariants ? 'term.variants.usage' : 'rating.overlayHeading'
                         }
-                        values={{
-                            translation: translation.value,
-                            term: term.value,
-                        }}
                         components={{
-                            Term: <WrappedInLangColor lang={term.lang} />,
-                            Translation: <WrappedInLangColor lang={translation.lang} />,
+                            Term: <TermWithLang term={term} />,
+                            Translation: <TermWithLang term={translation} />,
                         }}
                     />
                 </p>
