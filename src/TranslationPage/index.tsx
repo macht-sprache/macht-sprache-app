@@ -98,6 +98,16 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
             >
                 <Redact>{translation.value}</Redact>
             </Header>
+            {!term.adminTags.disableExamples && (
+                <Suspense fallback={null}>
+                    <TranslationExamplesList
+                        term={term}
+                        translation={translation}
+                        getTranslationExamples={getTranslationExamples}
+                        getSources={getSources}
+                    />
+                </Suspense>
+            )}
             <SingleColumn>
                 <ColumnHeading>{t('rating.heading')}</ColumnHeading>
                 <p>
@@ -118,16 +128,6 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                     </div>
                 </div>
             </SingleColumn>
-            {!term.adminTags.disableExamples && (
-                <Suspense fallback={null}>
-                    <TranslationExamplesList
-                        term={term}
-                        translation={translation}
-                        getTranslationExamples={getTranslationExamples}
-                        getSources={getSources}
-                    />
-                </Suspense>
-            )}
             {term.adminTags.enableCommentsOnTranslations && (
                 <SingleColumn>
                     <div className={clsx(s.comments, getDominantLanguageClass(translation.lang))}>
