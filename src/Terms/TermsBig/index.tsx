@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonLink } from '../../Form/Button';
+import { ButtonContainer, ButtonLink } from '../../Form/Button';
 import { InlineInput } from '../../Form/InlineInput';
 import { useUser } from '../../hooks/appContext';
 import { GetList } from '../../hooks/fetch';
+import { LoginHint } from '../../LoginHint';
 import { TERM_ADD } from '../../routes';
 import { Lang, Term } from '../../types';
 import { useLang } from '../../useLang';
@@ -47,10 +48,23 @@ export function TermsBig({ getTerms }: Props) {
                     </ButtonLink>
                 )}
             </div>
+            {!user && (
+                <div className={s.loginHint}>
+                    <LoginHint i18nKey="term.registerToAdd" />
+                </div>
+            )}
+
             <div className={s.terms}>
                 {sortedTerms.map(term => (
                     <TermItem key={term.id} term={term} size="small" />
                 ))}
+            </div>
+            <div className={s.addButtonBottom}>
+                <LoginHint i18nKey="term.registerToAdd">
+                    <ButtonContainer align="left">
+                        <ButtonLink to={TERM_ADD}>{t('common.entities.term.add')}</ButtonLink>
+                    </ButtonContainer>
+                </LoginHint>
             </div>
         </>
     );

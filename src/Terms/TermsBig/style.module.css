@@ -30,3 +30,11 @@
         height: auto;
     }
 }
+
+.loginHint {
+    margin-bottom: 1rem;
+}
+
+.addButtonBottom {
+    margin-top: 2rem;
+}
