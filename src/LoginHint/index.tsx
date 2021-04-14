@@ -7,7 +7,7 @@ import s from './style.module.css';
 
 type LoginHintProps = {
     i18nKey: TFuncKey<'translation'>;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 };
 
 export function LoginHint({ i18nKey, children }: LoginHintProps) {
