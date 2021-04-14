@@ -235,12 +235,16 @@ function MediaMetaData({ source }: { source: Source }) {
     }
 }
 
-const DefintionListItem = ({ definition, children }: { definition: React.ReactNode; children: React.ReactNode }) => (
-    <>
-        <dt className={s.definitionListKey}>{definition}</dt>
-        <dd className={s.definitionListValue}>{children}</dd>
-    </>
-);
+const DefintionListItem = ({ definition, children }: { definition: React.ReactNode; children: React.ReactNode }) => {
+    if (!children) return null;
+
+    return (
+        <>
+            <dt className={s.definitionListKey}>{definition}</dt>
+            <dd className={s.definitionListValue}>{children}</dd>
+        </>
+    );
+};
 
 function DeleteTranslationExample({ translationExample }: { translationExample: TranslationExample }) {
     const { t } = useTranslation();
