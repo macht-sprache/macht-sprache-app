@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
+import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
 import { Select } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
+import { formatDate } from '../FormatDate';
 import Header from '../Header';
 import { collections } from '../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
@@ -11,11 +13,12 @@ import { useRequestState } from '../hooks/useRequestState';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { Terms } from '../Terms/TermsSmall';
 import { GlobalSettings, User, UserProperties } from '../types';
+import { useLang } from '../useLang';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
-type AuthUserInfo = { email: string; verified: boolean };
-type AuthUserInfos = Partial<Record<string, { email: string; verified: boolean }>>;
+type AuthUserInfo = { email: string; verified: boolean; creationTime: string };
+type AuthUserInfos = Partial<Record<string, { email: string; verified: boolean; creationTime: string }>>;
 
 type UserListProps = {
     getUsers: GetList<User>;
@@ -74,10 +77,25 @@ export default function AdminPage() {
 }
 
 function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListProps) {
-    const users = [...getUsers()].sort((a, b) => a.displayName.localeCompare(b.displayName));
+    const [sortBy, setSortBy] = useState('name');
+    const authUserInfos = useAuthUserInfos();
+    const users = [...getUsers()].sort((a, b) => {
+        if (sortBy === 'name') {
+            return a.displayName.localeCompare(b.displayName);
+        } else {
+            const dateA = authUserInfos[a.id]?.creationTime;
+            const dateB = authUserInfos[b.id]?.creationTime;
+            if (dateA && dateB) {
+                return new Date(dateA) > new Date(dateB) ? -1 : 1;
+            } else {
+                return 0;
+            }
+        }
+    });
     const userProperties = getUserProperties();
     const globalSettings = getGlobalSettings(true) || { enableNewUsers: true };
-    const authUserInfos = useAuthUserInfos();
+
+    const filters = ['name', 'date'];
 
     return (
         <>
@@ -88,6 +106,22 @@ function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListPr
 
             <FullWidthColumn>
                 <ColumnHeading>Users</ColumnHeading>
+                <div className={s.sortBy}>
+                    <div>Sort by:</div>
+                    <HorizontalRadioContainer>
+                        {filters.map(filter => (
+                            <HorizontalRadio
+                                label={filter}
+                                key={filter}
+                                value={filter}
+                                checked={filter === sortBy}
+                                onChange={() => {
+                                    setSortBy(filter);
+                                }}
+                            />
+                        ))}
+                    </HorizontalRadioContainer>
+                </div>
                 <ul className={s.userList}>
                     {users.map(user => (
                         <UserItem
@@ -112,7 +146,9 @@ function UserItem({
     properties?: UserProperties;
     authInfo?: AuthUserInfo;
 }) {
+    const [lang] = useLang();
     const setAdmin = (admin: boolean) => collections.userProperties.doc(user.id).set({ admin }, { merge: true });
+    // console.log(authInfo?.creationTime, authInfo?.creationTime && new Date(authInfo?.creationTime));
     return (
         <li key={user.id} className={s.userItem}>
             <div className={s.userInfo}>
@@ -134,7 +170,8 @@ function UserItem({
                 <br />
                 {authInfo && (
                     <>
-                        {authInfo.email} ({authInfo.verified ? 'Verified' : 'Not Verified'})
+                        {authInfo.email} ({authInfo.verified ? 'Verified' : 'Not Verified'})<br />
+                        <div title="Registration Date">{formatDate(new Date(authInfo.creationTime), lang)}</div>
                     </>
                 )}
             </div>

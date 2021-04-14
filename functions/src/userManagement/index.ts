@@ -107,15 +107,19 @@ export const getAuthUserInfos = functions.https.onCall(async (_, context) => {
     await verifyAdmin(userId);
 
     const { users } = await auth.listUsers();
-    return users.reduce<Partial<Record<string, { email: string; verified: boolean }>>>((acc, user) => {
-        if (user.email) {
-            acc[user.uid] = {
-                email: user.email,
-                verified: user.emailVerified,
-            };
-        }
-        return acc;
-    }, {});
+    return users.reduce<Partial<Record<string, { email: string; verified: boolean; creationTime: string }>>>(
+        (acc, user) => {
+            if (user.email) {
+                acc[user.uid] = {
+                    email: user.email,
+                    verified: user.emailVerified,
+                    creationTime: user.metadata.creationTime,
+                };
+            }
+            return acc;
+        },
+        {}
+    );
 });
 
 export const deleteAllContentOfUser = functions.https.onCall(async ({ userId }: { userId: string }, context) => {
