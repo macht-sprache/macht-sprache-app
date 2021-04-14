@@ -1,5 +1,5 @@
 import { FormEventHandler, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory } from 'react-router-dom';
 import { useUser } from '../hooks/appContext';
 import { addTerm } from '../hooks/data';
@@ -40,7 +40,9 @@ export default function AddTermPage() {
     return (
         <>
             <Header>{t('term.add')}</Header>
-            <p>{t('term.addTermDescription')}</p>
+            <p>
+                <Trans t={t} i18nKey="term.addTermDescription" />
+            </p>
             <form style={{ maxWidth: '500px' }} onSubmit={onSubmit}>
                 <InputContainer>
                     <Input

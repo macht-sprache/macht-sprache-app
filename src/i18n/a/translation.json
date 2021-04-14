@@ -136,7 +136,7 @@
     },
     "term": {
         "add": "Add Term",
-        "addTermDescription": "Add a term for which you would like to discuss possible translations. [paragraph break] Is the term grammatically gendered, e.g. Student or Studentin? Consider a gender-inclusive version (e.g. Studierende). For more on this topic, check out “What about Gender?”.",
+        "addTermDescription": "Add a term for which you would like to discuss possible translations. <br /><br /> Is the term grammatically gendered, e.g. Student or Studentin? Consider a gender-inclusive version (e.g. Studierende). For more on this topic, check out “What about Gender?”.",
         "registerToAdd": "To add a term, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "addTranslation": {
             "de": "Add a German translation for: <Term /",
