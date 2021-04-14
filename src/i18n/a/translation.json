@@ -268,6 +268,7 @@
         "scaleDescription": "{{number}} is \"{{value}}\". ",
         "yourRating": "Your Usage: ",
         "dragToSet": "Drag the orange dot to set your usage.",
+        "loginHint": "To set your usage, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
         "clickToSet": "Click to set your usage",
         "overlayHeading": "How often would you translate <Term>{{term}}</Term> as <Translation>{{translation}}</Translation>?",
         "noData": "No ratings yet."

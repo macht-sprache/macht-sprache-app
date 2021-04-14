@@ -6,6 +6,7 @@ import { RATING_STEPS } from '../constants';
 import { useUser } from '../hooks/appContext';
 import { getRatingRef, setRating } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
+import { LoginHint } from '../LoginHint';
 import { useRedacted } from '../RedactSensitiveTerms';
 import { Rating as RatingType, Term, Translation, User } from '../types';
 import { useDomId } from '../useDomId';
@@ -82,35 +83,32 @@ export function Rating({
                 ))}
                 {sumOfAllRatings === 0 && <div className={s.emtpyMessage}>{t('rating.noData')}</div>}
             </div>
-            {onChange && (
-                <>
-                    <label htmlFor={id('ratingSlider')} lang={globalLang} className={s.hiddenLabel}>
-                        {sliderLabel}
-                    </label>
-                    <input
-                        type="range"
-                        id={id('ratingSlider')}
-                        min={1}
-                        max={ratings.length}
-                        step={0.1}
-                        className={clsx(s.rangeInput, { [s.unset]: rating === undefined })}
-                        value={rating === undefined ? (RATING_STEPS + 1) / 2 : toSliderValue(rating)}
-                        onChange={event => onChange(fromSliderValue(parseFloat(event.target.value)))}
-                        disabled={size === 'small'}
-                    />
-                    {size !== 'small' && (
-                        <div className={s.userUsageDisplay} lang={globalLang}>
-                            {rating === undefined ? (
-                                <>{t('rating.dragToSet')}</>
-                            ) : (
-                                <>
-                                    {t('rating.yourRating')}
-                                    {t('rating.values', { returnObjects: true })[Math.round(toSliderValue(rating)) - 1]}
-                                </>
-                            )}
-                        </div>
+
+            <label htmlFor={id('ratingSlider')} lang={globalLang} className={s.hiddenLabel}>
+                {sliderLabel}
+            </label>
+            <input
+                type="range"
+                id={id('ratingSlider')}
+                min={1}
+                max={ratings.length}
+                step={0.1}
+                className={clsx(s.rangeInput, { [s.unset]: rating === undefined })}
+                value={rating === undefined ? (RATING_STEPS + 1) / 2 : toSliderValue(rating)}
+                onChange={onChange ? event => onChange(fromSliderValue(parseFloat(event.target.value))) : undefined}
+                disabled={size === 'small' || !onChange}
+            />
+            {size !== 'small' && (
+                <div className={s.userUsageDisplay} lang={globalLang}>
+                    {rating === undefined ? (
+                        <LoginHint i18nKey="rating.loginHint">{t('rating.dragToSet')}</LoginHint>
+                    ) : (
+                        <>
+                            {t('rating.yourRating')}
+                            {t('rating.values', { returnObjects: true })[Math.round(toSliderValue(rating)) - 1]}
+                        </>
                     )}
-                </>
+                </div>
             )}
         </div>
     );

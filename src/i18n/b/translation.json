@@ -264,6 +264,7 @@
         "scaleDescription": "{{number}} bedeutet \"{{value}}\". ",
         "yourRating": "Deine Benutzung: ",
         "dragToSet": "Schiebe den orangen Punkt, um eine Aussage über deine Nutzung der Übersetzung zu treffen.",
+        "loginHint": "Um deine Benutzung festzulegen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "clickToSet": "Klick, um deine Benutzung fest zu legen.",
         "overlayHeading": "Wie oft würdest du <Term>{{term}}</Term> zu <Translation>{{translation}}</Translation> übersetzen?",
         "noData": "Bisher gibt es noch keine Bewertungen."

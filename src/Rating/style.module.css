@@ -124,7 +124,8 @@
     --thumbOpacity: 0.5;
 }
 
-.small .rangeInput.unset {
+.small .rangeInput.unset,
+.medium .rangeInput:disabled {
     --thumbOpacity: 0;
 }
 
