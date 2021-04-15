@@ -4,6 +4,7 @@ import AddTermPage from './AddTermPage';
 import AddTranslationExamplePage from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
 import AdminContentPage from './AdminContentPage/lazy';
+import AdminCommentsPage from './AdminCommentsPage/lazy';
 import AdminPage from './AdminPage/lazy';
 import ElementTestPage from './ElementTestPage/lazy';
 import ErrorBoundary from './ErrorBoundary';
@@ -117,6 +118,9 @@ function AppRouter() {
                             </AdminRoute>
                             <AdminRoute path={routes.ADMIN_CONTENT} exact>
                                 <AdminContentPage />
+                            </AdminRoute>
+                            <AdminRoute path={routes.ADMIN_COMMENTS} exact>
+                                <AdminCommentsPage />
                             </AdminRoute>
                             <LaunchedRoute path={routes.NEWS} exact>
                                 <NewsPage />
