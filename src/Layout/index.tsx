@@ -9,7 +9,18 @@ import { useUserProperties } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
-import { ABOUT, ADMIN, ADMIN_CONTENT, CODE_OF_CONDUCT, IMPRINT, NEWS, PRIVACY, TERMS, TERM_SIDEBAR } from '../routes';
+import {
+    ABOUT,
+    ADMIN,
+    ADMIN_COMMENTS,
+    ADMIN_CONTENT,
+    CODE_OF_CONDUCT,
+    IMPRINT,
+    NEWS,
+    PRIVACY,
+    TERMS,
+    TERM_SIDEBAR,
+} from '../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../useDomId';
 import { useLaunched } from '../useLaunched';
@@ -127,6 +138,10 @@ function Sidebar() {
             {
                 to: ADMIN,
                 label: 'admin – users',
+            },
+            {
+                to: ADMIN_COMMENTS,
+                label: 'admin – comments',
             },
             {
                 to: ADMIN_CONTENT,
