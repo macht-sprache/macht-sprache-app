@@ -1,4 +1,4 @@
-.term {
+.inner {
     border: solid var(--dominantLanguageColor) var(--thickBorder);
     background: var(--dominantLanguageColor);
     background: var(--white);
@@ -9,12 +9,16 @@
     position: relative;
 }
 
-.term.medium {
+.medium .inner {
     height: 25rem;
 }
 
-.term:hover {
+.inner:hover {
     --dominantLanguageColor: var(--orange);
+}
+
+.meta {
+    margin-bottom: 0.3rem;
 }
 
 .body,
@@ -98,7 +102,7 @@
 }
 
 @media (min-width: 700px) {
-    .term.small {
+    .small .inner {
         flex-direction: row;
     }
 
