@@ -15,6 +15,7 @@ import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../routes
 import { TermWithLang } from '../TermWithLang';
 import { Source, Term, Translation } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
+import { UserInlineDisplay } from '../UserInlineDisplay';
 import { stopPropagation } from '../utils';
 import s from './style.module.css';
 
@@ -91,16 +92,18 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
     );
 }
 
-function TranslationItem({
+export function TranslationItem({
     translation,
     term,
-    size,
+    size = 'small',
     sources = [],
+    showMeta = false,
 }: {
     translation: Translation;
     term: Term;
-    size: 'small' | 'medium';
-    sources: Source[];
+    size?: 'small' | 'medium';
+    sources?: Source[];
+    showMeta?: boolean;
 }) {
     const { t } = useTranslation();
     const history = useHistory();
@@ -112,69 +115,84 @@ function TranslationItem({
             className={clsx(getDominantLanguageClass(translation.lang), s.item)}
             onClick={() => history.push(link)}
         >
-            <header className={s.header}>
-                <Link to={link} onClick={stopPropagation} className={s.link} lang={translation.lang}>
-                    <h1 className={s.value}>
-                        <Redact>{translation.value}</Redact>
-                    </h1>
-                </Link>
-                <div className={s.rating}>
-                    <RatingContainer term={term} translation={translation} size="small" />
-                </div>
-            </header>
-            {size === 'medium' && (
-                <div className={s.body}>
-                    {!term.adminTags.translationsAsVariants && (
-                        <>
-                            {!sources.length ? (
-                                <div className={s.noExample}>
-                                    <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
-                                    <span className={s.noExampleText}>
-                                        <Trans
-                                            t={t}
-                                            i18nKey={'translationExample.translationListNoExample'}
-                                            components={{
-                                                Link: (
-                                                    <Link
-                                                        onClick={e => {
-                                                            e.stopPropagation();
-                                                        }}
-                                                        to={addExampleLink}
-                                                    />
-                                                ),
-                                            }}
-                                        />
-                                    </span>
-                                </div>
-                            ) : (
-                                <ul className={s.translationExampleList}>
-                                    <li className={s.translationExampleListItem}>
-                                        <AddExampleButton to={addExampleLink} />
-                                    </li>
-                                    {sources
-                                        .filter(source => source.lang === term.lang)
-                                        .map(source => (
-                                            <li key={source.id} className={s.translationExampleListItem}>
-                                                <CoverIcon className={s.exampleIcon} item={source} />
-                                            </li>
-                                        ))}
-                                </ul>
-                            )}
-                        </>
-                    )}
-                    <footer className={s.footer}>
-                        {term.adminTags.enableCommentsOnTranslations && (
-                            <div className={s.comments}>
-                                {t('common.entities.comment.withCount', { count: translation.commentCount })}
-                            </div>
-                        )}
-
-                        <div className={s.date}>
-                            <FormatDate date={translation.createdAt} />
-                        </div>
-                    </footer>
+            {showMeta && (
+                <div className={s.itemMeta}>
+                    <Redact>{term.value}</Redact>:{' '}
+                    <Trans
+                        t={t}
+                        i18nKey="common.addedOn"
+                        components={{
+                            User: <UserInlineDisplay {...term.creator} />,
+                            FormatDate: <FormatDate date={term.createdAt.toDate()} />,
+                        }}
+                    />
                 </div>
             )}
+            <div className={s.itemInner}>
+                <header className={s.header}>
+                    <Link to={link} onClick={stopPropagation} className={s.link} lang={translation.lang}>
+                        <h1 className={s.value}>
+                            <Redact>{translation.value}</Redact>
+                        </h1>
+                    </Link>
+                    <div className={s.rating}>
+                        <RatingContainer term={term} translation={translation} size="small" />
+                    </div>
+                </header>
+                {size === 'medium' && (
+                    <div className={s.body}>
+                        {!term.adminTags.translationsAsVariants && (
+                            <>
+                                {!sources.length ? (
+                                    <div className={s.noExample}>
+                                        <AddExampleButton to={addExampleLink} className={s.noExampleButton} />
+                                        <span className={s.noExampleText}>
+                                            <Trans
+                                                t={t}
+                                                i18nKey={'translationExample.translationListNoExample'}
+                                                components={{
+                                                    Link: (
+                                                        <Link
+                                                            onClick={e => {
+                                                                e.stopPropagation();
+                                                            }}
+                                                            to={addExampleLink}
+                                                        />
+                                                    ),
+                                                }}
+                                            />
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <ul className={s.translationExampleList}>
+                                        <li className={s.translationExampleListItem}>
+                                            <AddExampleButton to={addExampleLink} />
+                                        </li>
+                                        {sources
+                                            .filter(source => source.lang === term.lang)
+                                            .map(source => (
+                                                <li key={source.id} className={s.translationExampleListItem}>
+                                                    <CoverIcon className={s.exampleIcon} item={source} />
+                                                </li>
+                                            ))}
+                                    </ul>
+                                )}
+                            </>
+                        )}
+                        <footer className={s.footer}>
+                            {term.adminTags.enableCommentsOnTranslations && (
+                                <div className={s.comments}>
+                                    {t('common.entities.comment.withCount', { count: translation.commentCount })}
+                                </div>
+                            )}
+
+                            <div className={s.date}>
+                                <FormatDate date={translation.createdAt} />
+                            </div>
+                        </footer>
+                    </div>
+                )}
+            </div>
         </article>
     );
 }

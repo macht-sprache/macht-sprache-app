@@ -6,7 +6,7 @@
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-.item {
+.itemInner {
     --mainColor: var(--dominantLanguageColor);
 
     display: flex;
@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 
-.item:hover {
+.itemInner:hover {
     --mainColor: var(--orange);
 }
 
@@ -130,4 +130,8 @@
 .small h2 {
     font-size: var(--fontSizeM);
     margin: 0 0 0.5rem;
+}
+
+.itemMeta {
+    margin-bottom: 0.3rem;
 }
