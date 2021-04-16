@@ -1,4 +1,6 @@
 import LinkifyIt from 'linkify-it';
+import { removeHttpsWwwPageParams, trimString } from '../utils';
+import s from './style.module.css';
 
 const linkify = new LinkifyIt();
 
@@ -11,8 +13,8 @@ export default function Linkify({ children }: Props) {
         const prevIndex = array[index - 1]?.lastIndex || 0;
         acc.push(
             children.substring(prevIndex, cur.index),
-            <a key={index} href={cur.url} rel="noopener noreferrer">
-                {cur.text}
+            <a key={index} target="_blank" href={cur.url} rel="noopener noreferrer" className={s.link}>
+                {trimString(removeHttpsWwwPageParams(cur.url))}
             </a>
         );
 
