@@ -1,4 +1,5 @@
 import LinkifyIt from 'linkify-it';
+import { memo } from 'react';
 import { removeHttpsWwwPageParams, trimString } from '../utils';
 import s from './style.module.css';
 
@@ -8,7 +9,7 @@ type Props = {
     children: string;
 };
 
-export default function Linkify({ children }: Props) {
+function Linkify({ children }: Props) {
     const parts = (linkify.match(children) || []).reduce<React.ReactNode[]>((acc, cur, index, array) => {
         const prevIndex = array[index - 1]?.lastIndex || 0;
         acc.push(
@@ -26,3 +27,5 @@ export default function Linkify({ children }: Props) {
     }, []);
     return <>{parts.length ? parts : children}</>;
 }
+
+export default memo(Linkify);
