@@ -8,6 +8,7 @@ import { useAppContext } from '../../hooks/appContext';
 import { addLike, deleteComment, getLikesRef, updateComment } from '../../hooks/data';
 import { useCollection, useDocument } from '../../hooks/fetch';
 import LinkButton from '../../LinkButton';
+import Linkify from '../../Linkify';
 import { ModalDialog } from '../../ModalDialog';
 import { Comment, User } from '../../types';
 import { useLang } from '../../useLang';
@@ -51,7 +52,7 @@ export function CommentItem({
 
     return (
         <div className={clsx(s.comment, s[size])}>
-            <div className={s.body}>{size === 'medium' ? comment : trimString(comment, 100)}</div>
+            <div className={s.body}>{size === 'medium' ? <Linkify>{comment}</Linkify> : trimString(comment, 100)}</div>
             <div className={s.footer}>
                 <span className={s.meta}>
                     {size === 'medium' && (
