@@ -20,7 +20,7 @@ export function removeHttpsWwwPageParams(url?: string) {
 
     try {
         const parsedUrl = new URL(url);
-        return parsedUrl.hostname.replace(/^www\./, '') + parsedUrl.pathname;
+        return parsedUrl.hostname.replace(/^www\./, '') + parsedUrl.pathname.replace(/\/$/, '');
     } catch {
         return url;
     }
