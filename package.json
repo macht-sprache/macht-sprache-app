@@ -25,6 +25,7 @@
         "firebase-tools": "^9.2.2",
         "i18next": "^19.8.5",
         "i18next-browser-languagedetector": "^6.0.1",
+        "linkify-it": "^3.0.2",
         "lodash.deburr": "^4.1.0",
         "lodash.escaperegexp": "^4.1.2",
         "lodash.isequal": "^4.5.0",
@@ -68,5 +69,8 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@types/linkify-it": "^3.0.1"
     }
 }
