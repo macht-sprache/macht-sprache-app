@@ -113,7 +113,10 @@ export function TranslationItem({
     return (
         <article
             className={clsx(getDominantLanguageClass(translation.lang), s.item)}
-            onClick={() => history.push(link)}
+            onClick={e => {
+                history.push(link);
+                e.stopPropagation();
+            }}
         >
             {showMeta && (
                 <div className={s.itemMeta}>
@@ -151,14 +154,7 @@ export function TranslationItem({
                                                 t={t}
                                                 i18nKey={'translationExample.translationListNoExample'}
                                                 components={{
-                                                    Link: (
-                                                        <Link
-                                                            onClick={e => {
-                                                                e.stopPropagation();
-                                                            }}
-                                                            to={addExampleLink}
-                                                        />
-                                                    ),
+                                                    Link: <Link onClick={stopPropagation} to={addExampleLink} />,
                                                 }}
                                             />
                                         </span>
