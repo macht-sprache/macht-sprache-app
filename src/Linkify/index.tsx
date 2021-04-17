@@ -1,6 +1,11 @@
 import LinkifyIt from 'linkify-it';
-import { memo, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { memo, Suspense, useMemo } from 'react';
+import { Link, matchPath } from 'react-router-dom';
+import { collections } from '../hooks/data';
+import { useDocument } from '../hooks/fetch';
+import { TERM, TERM_SIDEBAR, TRANSLATION, TRANSLATION_SIDEBAR } from '../routes';
+import { TermWithLang } from '../TermWithLang';
+import { DocReference, Term, Translation } from '../types';
 import { removeHttpsWwwPageParams, trimString } from '../utils';
 import s from './style.module.css';
 
@@ -35,11 +40,22 @@ function LinkWrapper(props: { url: string }) {
     const linkText = trimString(removeHttpsWwwPageParams(props.url));
 
     if (url?.origin === window.location.origin) {
-        return (
+        const defaultLink = (
             <InternalLink url={url} className={s.link}>
                 {linkText}
             </InternalLink>
         );
+        const entityRef = getEntityRef(url.pathname);
+
+        if (entityRef) {
+            return (
+                <Suspense fallback={defaultLink}>
+                    <EntityLink url={url} fallback={defaultLink} entityRef={entityRef} />
+                </Suspense>
+            );
+        }
+
+        return defaultLink;
     } else {
         return (
             <a target="_blank" href={props.url} rel="noopener noreferrer" className={s.link}>
@@ -49,10 +65,51 @@ function LinkWrapper(props: { url: string }) {
     }
 }
 
-const InternalLink: React.FC<{ url: URL; className: string }> = ({ url, className, children }) => (
+const InternalLink: React.FC<{ url: URL; className?: string }> = ({ url, className, children }) => (
     <Link to={url.toString().replace(url.origin, '')} className={className}>
         {children}
     </Link>
 );
+
+function EntityLink({
+    url,
+    fallback,
+    entityRef,
+}: {
+    url: URL;
+    fallback: React.ReactNode;
+    entityRef: DocReference<Term | Translation>;
+}) {
+    const getEntity = useDocument(entityRef);
+    const entity = getEntity(true);
+
+    if (!entity) {
+        return <>{fallback}</>;
+    }
+
+    return (
+        <InternalLink url={url}>
+            <TermWithLang term={entity} />
+        </InternalLink>
+    );
+}
+
+const getEntityRef = (path: string) => {
+    const termMatch =
+        matchPath<{ termId: string }>(path, { path: TERM, exact: true }) ||
+        matchPath<{ termId: string }>(path, { path: TERM_SIDEBAR, exact: true });
+
+    if (termMatch) {
+        return collections.terms.doc(termMatch.params.termId);
+    }
+
+    const translationMatch =
+        matchPath<{ translationId: string }>(path, { path: TRANSLATION, exact: true }) ||
+        matchPath<{ translationId: string }>(path, { path: TRANSLATION_SIDEBAR, exact: true });
+
+    if (translationMatch) {
+        return collections.translations.doc(translationMatch.params.translationId);
+    }
+};
 
 export default memo(Linkify);
