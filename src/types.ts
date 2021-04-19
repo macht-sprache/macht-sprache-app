@@ -199,7 +199,7 @@ export interface GlobalSettings {
     enableNewUsers: boolean;
 }
 
-export interface Notification {
+export interface BaseNotification {
     actor: UserMini;
     createdAt: Timestamp;
 
@@ -211,26 +211,32 @@ export interface Notification {
     parentName: string;
 }
 
-export interface CommentAddedNotification extends Notification {
+export interface CommentAddedNotification extends BaseNotification {
     type: 'CommentAddedNotification';
     entityRef: DocReference<Comment>;
 }
-export interface CommentLikedNotification extends Notification {
+export interface CommentLikedNotification extends BaseNotification {
     type: 'CommentLikedNotification';
     entityRef: DocReference<Comment>;
 }
 
-export interface TranslationAddedNotification extends Notification {
+export interface TranslationAddedNotification extends BaseNotification {
     type: 'TranslationAddedNotification';
     entityRef: DocReference<Translation>;
     parentRef: DocReference<Term>;
 }
 
-export interface TranslationExampleAddedNotification extends Notification {
+export interface TranslationExampleAddedNotification extends BaseNotification {
     type: 'TranslationExampleAddedNotification';
     entityRef: DocReference<TranslationExample>;
     parentRef: DocReference<Translation>;
 }
+
+export type Notification =
+    | CommentAddedNotification
+    | CommentLikedNotification
+    | TranslationAddedNotification
+    | TranslationExampleAddedNotification;
 
 export interface Subscription {
     creator: UserMini;
