@@ -329,5 +329,12 @@
         "title": "Inhaltliche Warnung",
         "button": "Danke, verstanden",
         "warning": "Auf macht.sprache. werden politisch sensible Begriffe diskutiert. Mit einem Code of Conduct und einigen Begriffen, die auf Grund ihres diskriminierenden Inhalts nicht ausgeschrieben werden, versuchen wir macht.sprache. zu einem konstruktiven Lern- und Diskussionsort zu machen. Dennoch könnte es passieren, dass ihr auf der Plattform mit verletzender Sprache konfrontiert werdet. "
+    },
+    "contentItem": {
+        "userAdded": {
+            "Translation": "<User /> fügte am <Date /> eine Übersetzung hinzu:",
+            "TranslationExample": "<User /> fügter am <Date /> ein Übersetzungsbeispiel hinzu:",
+            "Term": "<User /> fügte am <Date /> einen Begriff hinzu:"
+        }
     }
 }
