@@ -42,14 +42,26 @@ service cloud.firestore {
       allow get: if true;
       allow list: if isAdmin();
       allow update: if isValidatedUser() && isUser(user) && isValidUserUpdate();
-    }
 
-    function isValidUserUpdate() {
-      let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['externalProfiles', 'bio']) &&
-        data.externalProfiles.instagram is string &&
-        data.externalProfiles.twitter is string &&
-        data.externalProfiles.website is string
+      function isValidUserUpdate() {
+        let data = request.resource.data;
+        return data.diff(resource.data).affectedKeys().hasOnly(['externalProfiles', 'bio']) &&
+          data.externalProfiles.instagram is string &&
+          data.externalProfiles.twitter is string &&
+          data.externalProfiles.website is string;
+      }
+
+      match /notifications/{notificationId} {
+        allow read: if isUser(user);
+        allow update: if isValidatedUser() && isUser(user) && isValidNotificationUpdate();
+
+        function isValidNotificationUpdate() {
+          let data = request.resource.data;
+          return data.diff(resource.data).affectedKeys().hasOnly(['seenAt', 'readAt']) &&
+            (data.seenAt == null || data.seenAt is timestamp) &&
+            (data.readAt == null || data.readAt is timestamp);
+        }
+      }
     }
 
     function isValidUserSettings() {
