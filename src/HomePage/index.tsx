@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CommentListWithLinks } from '../Comments/CommentList';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
+import { useUser } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import { ColumnHeading, Columns } from '../Layout/Columns';
@@ -21,7 +22,7 @@ const ABOUT_SLUGS = {
 export default function Home() {
     const { t } = useTranslation();
     const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
-    const { response } = useWpPage(ABOUT_SLUGS);
+    const user = useUser();
 
     return (
         <>
@@ -32,11 +33,13 @@ export default function Home() {
             </Columns>
             <Columns>
                 <div>
-                    <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <WpStyle body={response?.body} />
-                    <ButtonContainer align="left">
-                        <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
-                    </ButtonContainer>
+                    {user ? (
+                        <Suspense fallback={null}>
+                            <LatestComments />
+                        </Suspense>
+                    ) : (
+                        <About />
+                    )}
                 </div>
                 <div>
                     <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
@@ -48,19 +51,43 @@ export default function Home() {
                             </ButtonContainer>
                         </div>
                     </Suspense>
-                    <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
-                    <Suspense fallback={null}>
-                        <LatestComments />
-                    </Suspense>
+                    {user ? (
+                        <About />
+                    ) : (
+                        <Suspense fallback={null}>
+                            <LatestComments />
+                        </Suspense>
+                    )}
                 </div>
             </Columns>
         </>
     );
 }
 
+function About() {
+    const { response } = useWpPage(ABOUT_SLUGS);
+    const { t } = useTranslation();
+
+    return (
+        <>
+            <ColumnHeading>{t('home.about')}</ColumnHeading>
+            <WpStyle body={response?.body} />
+            <ButtonContainer align="left">
+                <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
+            </ButtonContainer>
+        </>
+    );
+}
+
 function LatestComments() {
+    const { t } = useTranslation();
     const getComments = useCollection(collections.comments.orderBy('createdAt', 'desc').limit(5));
     const comments = getComments();
 
-    return <CommentListWithLinks comments={comments} />;
+    return (
+        <>
+            <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
+            <CommentListWithLinks comments={comments} />
+        </>
+    );
 }
