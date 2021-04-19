@@ -19,7 +19,7 @@ import s from './style.module.css';
 
 const EMPTY_ARRAY: never[] = [];
 
-type TermItemProps = { term: Term; size?: 'small' | 'medium'; showMeta?: boolean };
+type TermItemProps = { term: Term; size?: 'small' | 'medium' | 'tiny'; showMeta?: boolean };
 
 export function TermItem({ term, size = 'medium', showMeta = false }: TermItemProps) {
     const termRef = collections.terms.doc(term.id);
@@ -78,7 +78,7 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                             </Suspense>
                         </>
                     )}
-                    {size === 'small' && (
+                    {(size === 'small' || size === 'tiny') && (
                         <div className={s.smallSummary}>
                             <div className={s.smallSummaryTranslation}>
                                 {translations.length ? (
@@ -93,9 +93,12 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                                     <div className={s.smallSummaryEmpty}>{t('translation.emptyShort')}</div>
                                 )}
                             </div>
-                            <footer className={s.footer}>
-                                {term.commentCount} {t('common.entities.comment.value', { count: term.commentCount })}
-                            </footer>
+                            {size === 'small' && (
+                                <footer className={s.footer}>
+                                    {term.commentCount}{' '}
+                                    {t('common.entities.comment.value', { count: term.commentCount })}
+                                </footer>
+                            )}
                         </div>
                     )}
                 </div>
