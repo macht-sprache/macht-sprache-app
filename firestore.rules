@@ -124,6 +124,27 @@ service cloud.firestore {
       allow update: if isValidatedUser() &&
         ((isAdmin() && isValidTermUpdateAdmin()) || (isCreator() && isValidTermUpdate()));
       allow delete: if isValidatedUser() && isAdmin();
+
+      match /subscriptions/{user} {
+        allow read: if isUser(user);
+        allow create: if isValidatedUser() && isUser(user) && isCreator() && isValidSubscription();
+        allow update: if isValidatedUser() && isUser(user) && isCreator() && isValidSubscriptionUpdate();
+
+        function isValidSubscription() {
+          let data = request.resource.data;
+          return data.keys().hasOnly(['creator', 'createdAt',  'updatedAt', 'active']) &&
+            data.createdAt == request.time &&
+            data.updatedAt == null &&
+            data.active is bool;
+        }
+
+        function isValidSubscriptionUpdate() {
+          let data = request.resource.data;
+          return data.diff(resource.data).affectedKeys().hasOnly(['updatedAt', 'active']) &&
+            data.updatedAt == request.time &&
+            data.active is bool;
+        }
+      }
     }
 
     function isValidTranslation() {
