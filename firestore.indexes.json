@@ -27,6 +27,48 @@
                     "order": "ASCENDING"
                 }
             ]
+        },
+        {
+            "collectionGroup": "terms",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "creator.id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "translationExamples",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "creator.id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "translations",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "creator.id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
         }
     ],
     "fieldOverrides": []
