@@ -2,30 +2,92 @@ import React, { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { CommentItem } from '../Comments/CommentItem';
-import { getSourceRefWithConverter } from '../hooks/data';
+import { FormatDate } from '../FormatDate';
+import { useUser } from '../hooks/appContext';
+import { collections, getSourceRefWithConverter } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION, TRANSLATION_EXAMPLE_REDIRECT } from '../routes';
+import { TermItem } from '../Terms/TermItem';
+import { TranslationItem } from '../TranslationsList';
 import { Comment, DocReference, Term, Translation, TranslationExample, UserMini } from '../types';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
 
-export function ContentItemLinkWrapper({ comment }: { comment: Comment }) {
+export function CommentItemLinkWrapper({ comment }: { comment: Comment }) {
     const getDocument = useDocument(comment.ref);
 
     return (
-        <div className={s.container}>
-            <div className={s.linkToDocument}>
+        <LinkWrapper
+            meta={
                 <Suspense fallback={<LinkHeading creator={comment.creator} />}>
-                    <LinkToDocument getDocument={getDocument} documentRef={comment.ref} creator={comment.creator} />
+                    <LinkToDocumentFromComment
+                        getDocument={getDocument}
+                        documentRef={comment.ref}
+                        creator={comment.creator}
+                    />
                 </Suspense>
-            </div>
+            }
+        >
             <CommentItem comment={comment} />
+        </LinkWrapper>
+    );
+}
+
+export function TermItemLinkWrapper({ term }: { term: Term }) {
+    return (
+        <LinkWrapper meta={<DocumentMeta date={term.createdAt.toDate()} type="Term" />}>
+            <TermItem term={term} size="small" />
+        </LinkWrapper>
+    );
+}
+
+export function TranslationItemLinkWrapper({ translation }: { translation: Translation }) {
+    const getTerm = useDocument(collections.terms.doc(translation.term.id));
+
+    return (
+        <LinkWrapper meta={<DocumentMeta date={translation.createdAt.toDate()} type="Translation" />}>
+            <TranslationItem translation={translation} term={getTerm()} />
+        </LinkWrapper>
+    );
+}
+
+export function TranslationExampleItemLinkWrapper({ translationExample }: { translationExample: TranslationExample }) {
+    return (
+        <LinkWrapper meta={<DocumentMeta date={translationExample.createdAt.toDate()} type="TranslationExample" />}>
+            <Link to={generatePath(TRANSLATION_EXAMPLE_REDIRECT, { translationExampleId: translationExample.id })}>
+                TODO: ADD EXAMPLE
+            </Link>
+        </LinkWrapper>
+    );
+}
+
+function LinkWrapper({ children, meta }: { children: React.ReactNode; meta: React.ReactNode }) {
+    return (
+        <div className={s.container}>
+            <div className={s.meta}>{meta}</div>
+            {children}
         </div>
     );
 }
 
-function LinkToDocument({
+function DocumentMeta({ date, type }: { date: Date; type: 'Translation' | 'TranslationExample' | 'Term' }) {
+    const user = useUser();
+    const { t } = useTranslation();
+
+    return (
+        <Trans
+            t={t}
+            i18nKey={`contentItem.userAdded.${type}` as const}
+            components={{
+                User: user && <UserInlineDisplay displayName={user?.displayName} id={user.id} />,
+                Date: <FormatDate date={date} />,
+            }}
+        />
+    );
+}
+
+function LinkToDocumentFromComment({
     getDocument,
     documentRef,
     creator,

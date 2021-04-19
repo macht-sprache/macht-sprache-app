@@ -96,7 +96,7 @@ function Comments({ user }: { user: User }) {
         collections.comments.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(10)
     );
 
-    return <ContentItemList items={getComments()} />;
+    return <ContentItemList comments={getComments()} />;
 }
 
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {

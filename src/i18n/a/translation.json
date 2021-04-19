@@ -333,5 +333,12 @@
         "title": "Content Warning",
         "button": "Thanks, I understand",
         "warning": "On macht.sprache., we discuss politically sensitive terminology. With a code of conduct and by not writing out certain terms due to their discriminatory content, the project team works to make macht.sprache. a constructive place for learning and discussion. Nevertheless, it could happen that you are confronted with hurtful language on the platform."
+    },
+    "contentItem": {
+        "userAdded": {
+            "Translation": "<User /> added a Translation on <Date />:",
+            "TranslationExample": "<User /> added a TranslationExample on <Date />:",
+            "Term": "<User /> added a Term on <Date />:"
+        }
     }
 }

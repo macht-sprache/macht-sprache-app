@@ -35,7 +35,7 @@ export default function Home() {
                 <div>
                     {user ? (
                         <Suspense fallback={null}>
-                            <LatestComments />
+                            <LatestActivity />
                         </Suspense>
                     ) : (
                         <About />
@@ -55,7 +55,7 @@ export default function Home() {
                         <About />
                     ) : (
                         <Suspense fallback={null}>
-                            <LatestComments />
+                            <LatestActivity />
                         </Suspense>
                     )}
                 </div>
@@ -79,15 +79,22 @@ function About() {
     );
 }
 
-function LatestComments() {
+function LatestActivity() {
     const { t } = useTranslation();
-    const getComments = useCollection(collections.comments.orderBy('createdAt', 'desc').limit(5));
-    const comments = getComments();
+    const getComments = useCollection(collections.comments.orderBy('createdAt', 'desc').limit(10));
+    const getTerms = useCollection(collections.terms.orderBy('createdAt', 'desc').limit(5));
+    const getTranslations = useCollection(collections.translations.orderBy('createdAt', 'desc').limit(5));
+    const getTranslationExamples = useCollection(collections.translationExamples.orderBy('createdAt', 'desc').limit(5));
 
     return (
         <>
             <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
-            <ContentItemList items={comments} />
+            <ContentItemList
+                comments={getComments()}
+                terms={getTerms()}
+                translations={getTranslations()}
+                translationExamples={getTranslationExamples()}
+            />
         </>
     );
 }
