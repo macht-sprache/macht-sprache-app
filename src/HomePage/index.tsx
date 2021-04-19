@@ -88,7 +88,7 @@ function LatestActivity() {
 
     return (
         <>
-            <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
+            <ColumnHeading>{t('common.activity')}</ColumnHeading>
             <ContentItemList
                 comments={getComments()}
                 terms={getTerms()}
