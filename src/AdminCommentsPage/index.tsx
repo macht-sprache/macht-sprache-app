@@ -11,7 +11,7 @@ export default function AdminCommentsPage() {
             <Header>Administration – comments</Header>
             <SingleColumn>
                 <ColumnHeading>Comments (latest 100)</ColumnHeading>
-                <ContentItemList items={getComments()} />
+                <ContentItemList comments={getComments()} />
             </SingleColumn>
         </>
     );
