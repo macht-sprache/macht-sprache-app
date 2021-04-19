@@ -30,6 +30,7 @@ export function useLangCssVars() {
     }, []);
 }
 
-export function getDominantLanguageClass(lang: Lang) {
+export function getDominantLanguageClass(lang?: Lang) {
+    if (!lang) return '';
     return `${DOMINANT_LANG_CLASS_NAME}-${lang}`;
 }

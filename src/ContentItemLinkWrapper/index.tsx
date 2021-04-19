@@ -9,6 +9,7 @@ import { Get, useDocument } from '../hooks/fetch';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION, TRANSLATION_EXAMPLE_REDIRECT } from '../routes';
 import { TermItem } from '../Terms/TermItem';
+import { TranslationExampleItem } from '../TranslationExamplesList';
 import { TranslationItem } from '../TranslationsList';
 import { Comment, DocReference, Term, Translation, TranslationExample, UserMini } from '../types';
 import { UserInlineDisplay } from '../UserInlineDisplay';
@@ -37,7 +38,7 @@ export function CommentItemLinkWrapper({ comment }: { comment: Comment }) {
 export function TermItemLinkWrapper({ term }: { term: Term }) {
     return (
         <LinkWrapper meta={<DocumentMeta date={term.createdAt.toDate()} type="Term" />}>
-            <TermItem term={term} size="small" />
+            <TermItem term={term} size="tiny" />
         </LinkWrapper>
     );
 }
@@ -53,11 +54,11 @@ export function TranslationItemLinkWrapper({ translation }: { translation: Trans
 }
 
 export function TranslationExampleItemLinkWrapper({ translationExample }: { translationExample: TranslationExample }) {
+    const getOriginalSource = useDocument(getSourceRefWithConverter(translationExample.original.source));
+
     return (
         <LinkWrapper meta={<DocumentMeta date={translationExample.createdAt.toDate()} type="TranslationExample" />}>
-            <Link to={generatePath(TRANSLATION_EXAMPLE_REDIRECT, { translationExampleId: translationExample.id })}>
-                TODO: ADD EXAMPLE
-            </Link>
+            <TranslationExampleItem example={translationExample} originalSource={getOriginalSource()} />
         </LinkWrapper>
     );
 }
