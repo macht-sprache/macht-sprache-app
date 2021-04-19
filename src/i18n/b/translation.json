@@ -334,7 +334,7 @@
     "contentItem": {
         "userAdded": {
             "Translation": "<User /> fügte am <Date /> eine Übersetzung hinzu:",
-            "TranslationExample": "<User /> fügter am <Date /> ein Übersetzungsbeispiel hinzu:",
+            "TranslationExample": "<User /> fügte am <Date /> ein Übersetzungsbeispiel hinzu:",
             "Term": "<User /> fügte am <Date /> einen Begriff hinzu:"
         }
     }
