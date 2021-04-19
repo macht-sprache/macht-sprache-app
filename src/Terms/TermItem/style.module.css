@@ -102,7 +102,8 @@
 }
 
 @media (min-width: 700px) {
-    .small .inner {
+    .small .inner,
+    .tiny .inner {
         flex-direction: row;
     }
 
