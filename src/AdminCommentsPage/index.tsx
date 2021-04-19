@@ -1,4 +1,4 @@
-import { CommentListWithLinks } from '../Comments/CommentList';
+import { ContentItemList } from '../ContentItemList';
 import Header from '../Header';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
@@ -11,7 +11,7 @@ export default function AdminCommentsPage() {
             <Header>Administration – comments</Header>
             <SingleColumn>
                 <ColumnHeading>Comments (latest 100)</ColumnHeading>
-                <CommentListWithLinks comments={getComments()} />
+                <ContentItemList items={getComments()} />
             </SingleColumn>
         </>
     );
