@@ -82,7 +82,7 @@ function UserPage({ getUser }: { getUser: Get<User> }) {
                 <div>
                     <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
                     <Suspense fallback={null}>
-                        <Comments user={user} />
+                        <Activity user={user} />
                     </Suspense>
                 </div>
             </Columns>
@@ -91,12 +91,28 @@ function UserPage({ getUser }: { getUser: Get<User> }) {
     );
 }
 
-function Comments({ user }: { user: User }) {
+function Activity({ user }: { user: User }) {
     const getComments = useCollection(
         collections.comments.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(10)
     );
+    const getTerms = useCollection(
+        collections.terms.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(5)
+    );
+    const getTranslations = useCollection(
+        collections.translations.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(5)
+    );
+    const getTranslationExamples = useCollection(
+        collections.translationExamples.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(5)
+    );
 
-    return <ContentItemList comments={getComments()} />;
+    return (
+        <ContentItemList
+            comments={getComments()}
+            terms={getTerms()}
+            translations={getTranslations()}
+            translationExamples={getTranslationExamples()}
+        />
+    );
 }
 
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
