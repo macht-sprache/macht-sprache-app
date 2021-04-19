@@ -88,7 +88,7 @@ function EntityLink({
     }
 
     return (
-        <InternalLink url={url}>
+        <InternalLink url={url} className={s.entityLink}>
             <TermWithLang term={entity} />
         </InternalLink>
     );
