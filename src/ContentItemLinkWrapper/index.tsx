@@ -3,7 +3,6 @@ import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { CommentItem } from '../Comments/CommentItem';
 import { FormatDate } from '../FormatDate';
-import { useUser } from '../hooks/appContext';
 import { collections, getSourceRefWithConverter } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
 import { Redact } from '../RedactSensitiveTerms';
@@ -37,7 +36,7 @@ export function CommentItemLinkWrapper({ comment }: { comment: Comment }) {
 
 export function TermItemLinkWrapper({ term }: { term: Term }) {
     return (
-        <LinkWrapper meta={<DocumentMeta date={term.createdAt.toDate()} type="Term" />}>
+        <LinkWrapper meta={<DocumentMeta user={term.creator} date={term.createdAt.toDate()} type="Term" />}>
             <TermItem term={term} size="tiny" />
         </LinkWrapper>
     );
@@ -47,7 +46,9 @@ export function TranslationItemLinkWrapper({ translation }: { translation: Trans
     const getTerm = useDocument(collections.terms.doc(translation.term.id));
 
     return (
-        <LinkWrapper meta={<DocumentMeta date={translation.createdAt.toDate()} type="Translation" />}>
+        <LinkWrapper
+            meta={<DocumentMeta user={translation.creator} date={translation.createdAt.toDate()} type="Translation" />}
+        >
             <TranslationItem translation={translation} term={getTerm()} />
         </LinkWrapper>
     );
@@ -57,7 +58,15 @@ export function TranslationExampleItemLinkWrapper({ translationExample }: { tran
     const getOriginalSource = useDocument(getSourceRefWithConverter(translationExample.original.source));
 
     return (
-        <LinkWrapper meta={<DocumentMeta date={translationExample.createdAt.toDate()} type="TranslationExample" />}>
+        <LinkWrapper
+            meta={
+                <DocumentMeta
+                    user={translationExample.creator}
+                    date={translationExample.createdAt.toDate()}
+                    type="TranslationExample"
+                />
+            }
+        >
             <TranslationExampleItem example={translationExample} originalSource={getOriginalSource()} />
         </LinkWrapper>
     );
@@ -72,8 +81,15 @@ function LinkWrapper({ children, meta }: { children: React.ReactNode; meta: Reac
     );
 }
 
-function DocumentMeta({ date, type }: { date: Date; type: 'Translation' | 'TranslationExample' | 'Term' }) {
-    const user = useUser();
+function DocumentMeta({
+    date,
+    type,
+    user,
+}: {
+    date: Date;
+    type: 'Translation' | 'TranslationExample' | 'Term';
+    user: UserMini;
+}) {
     const { t } = useTranslation();
 
     return (
@@ -81,7 +97,7 @@ function DocumentMeta({ date, type }: { date: Date; type: 'Translation' | 'Trans
             t={t}
             i18nKey={`contentItem.userAdded.${type}` as const}
             components={{
-                User: user && <UserInlineDisplay displayName={user?.displayName} id={user.id} />,
+                User: <UserInlineDisplay {...user} />,
                 Date: <FormatDate date={date} />,
             }}
         />
