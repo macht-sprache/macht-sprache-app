@@ -1,12 +1,8 @@
 import { generatePath } from 'react-router';
 import { Link } from 'react-router-dom';
 import { USER } from '../routes';
+import { UserMini } from '../types';
 
-type UserInlineDisplayProps = {
-    displayName: string;
-    id: string;
-};
-
-export function UserInlineDisplay({ displayName, id }: UserInlineDisplayProps) {
+export function UserInlineDisplay({ displayName, id }: UserMini) {
     return <Link to={generatePath(USER, { userId: id })}>{displayName}</Link>;
 }
