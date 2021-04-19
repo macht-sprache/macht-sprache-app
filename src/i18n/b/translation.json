@@ -61,7 +61,8 @@
         "settings": "Einstellungen",
         "viewAll": "alle anzeigen",
         "optional": "optional",
-        "newsletter": "Newsletter"
+        "newsletter": "Newsletter",
+        "activity": "Aktivität"
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",

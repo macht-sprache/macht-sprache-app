@@ -80,7 +80,7 @@ function UserPage({ getUser }: { getUser: Get<User> }) {
                 <UserInfo user={user} edit={edit} />
                 {loggedInUser && loggedInUserIsCurrentUser && <EditUserSettings user={loggedInUser} />}
                 <div>
-                    <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
+                    <ColumnHeading>{t('common.activity')}</ColumnHeading>
                     <Suspense fallback={null}>
                         <Activity user={user} />
                     </Suspense>
