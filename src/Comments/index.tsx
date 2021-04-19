@@ -7,7 +7,6 @@ import { ColumnHeading } from '../Layout/Columns';
 import { Comment } from '../types';
 import { CommentCreate } from './CommentCreate';
 import { CommentList } from './CommentList';
-import { CommentWrapper } from './CommentWrapper';
 import s from './style.module.css';
 
 type Props = {
@@ -24,7 +23,7 @@ export default function Comments({ entityRef: ref, commentCount, headingHint, pl
     const onCreate = async (comment: string) => user && addComment(user, ref, comment);
 
     return (
-        <CommentWrapper>
+        <div>
             <ColumnHeading>
                 <div className={s.heading}>
                     <div className={s.headingMain}>
@@ -41,7 +40,7 @@ export default function Comments({ entityRef: ref, commentCount, headingHint, pl
                 <CommentListWrapped getComments={getComments} />
                 <CommentCreate placeholder={placeholder} onCreate={onCreate} />
             </Suspense>
-        </CommentWrapper>
+        </div>
     );
 }
 

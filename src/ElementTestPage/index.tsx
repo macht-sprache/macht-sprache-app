@@ -3,7 +3,6 @@ import { useState } from 'react';
 import BookSearch from '../MediaSelection/BookSearch';
 import { CommentCreate } from '../Comments/CommentCreate';
 import { CommentList } from '../Comments/CommentList';
-import { CommentWrapper } from '../Comments/CommentWrapper';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
@@ -204,10 +203,8 @@ export default function ElementTestPage() {
 
             <Heading>Comments</Heading>
 
-            <CommentWrapper>
-                <CommentList comments={comments} />
-                <CommentCreate onCreate={onCreate} />
-            </CommentWrapper>
+            <CommentList comments={comments} />
+            <CommentCreate onCreate={onCreate} />
 
             <Heading>Multi Step Indicator</Heading>
             <MultiStepIndicator>
