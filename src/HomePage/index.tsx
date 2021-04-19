@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CommentListWithLinks } from '../Comments/CommentList';
+import { ContentItemList } from '../ContentItemList';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { useUser } from '../hooks/appContext';
 import { collections } from '../hooks/data';
@@ -87,7 +87,7 @@ function LatestComments() {
     return (
         <>
             <ColumnHeading>{t('common.entities.comment.value_plural')}</ColumnHeading>
-            <CommentListWithLinks comments={comments} />
+            <ContentItemList items={comments} />
         </>
     );
 }

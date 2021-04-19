@@ -1,7 +1,7 @@
 import { Suspense, useCallback, useState } from 'react';
 import { TFuncKey, Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { CommentListWithLinks } from '../Comments/CommentList';
+import { ContentItemList } from '../ContentItemList';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Checkbox } from '../Form/Checkbox';
 import { Input, Textarea } from '../Form/Input';
@@ -96,7 +96,7 @@ function Comments({ user }: { user: User }) {
         collections.comments.where('creator.id', '==', user.id).orderBy('createdAt', 'desc').limit(10)
     );
 
-    return <CommentListWithLinks comments={getComments()} />;
+    return <ContentItemList items={getComments()} />;
 }
 
 function UserInfo({ user, edit }: { user: User; edit?: () => void }) {
