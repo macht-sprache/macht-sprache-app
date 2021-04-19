@@ -10,6 +10,7 @@
 }
 
 .link {
+    display: block;
     text-decoration: none;
     border: var(--dominantLanguageColor) solid var(--thickBorder);
     padding: 0.5rem;

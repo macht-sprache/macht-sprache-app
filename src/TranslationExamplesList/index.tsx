@@ -6,7 +6,7 @@ import { CoverIcon } from '../CoverIcon';
 import { FormatDate } from '../FormatDate';
 import { GetList } from '../hooks/fetch';
 import { ColumnHeading, FullWidthColumn } from '../Layout/Columns';
-import { TRANSLATION_EXAMPLE, TRANSLATION_EXAMPLE_ADD } from '../routes';
+import { TRANSLATION_EXAMPLE_ADD, TRANSLATION_EXAMPLE_REDIRECT } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
@@ -42,10 +42,8 @@ export default function TranslationExamplesList({ term, translation, getTranslat
             )}
             <div className={s.list}>
                 {translationExamples.map(translationExample => (
-                    <TranslationExampleArticle
+                    <TranslationExampleItem
                         key={translationExample.id}
-                        term={term}
-                        translation={translation}
                         example={translationExample}
                         originalSource={sources.find(source => source.id === translationExample.original.source.id)}
                     />
@@ -64,32 +62,26 @@ export default function TranslationExamplesList({ term, translation, getTranslat
     );
 }
 
-function TranslationExampleArticle({
+export function TranslationExampleItem({
     example,
     originalSource,
-    term,
-    translation,
 }: {
     example: TranslationExample;
     originalSource?: Source;
-    term: Term;
-    translation: Translation;
 }) {
     const { t } = useTranslation();
     const cover = <CoverIcon item={originalSource} className={s.cover} />;
 
     return (
         <Link
-            to={generatePath(TRANSLATION_EXAMPLE, {
-                termId: term.id,
-                translationId: translation.id,
+            to={generatePath(TRANSLATION_EXAMPLE_REDIRECT, {
                 translationExampleId: example.id,
             })}
-            className={clsx(s.link, getDominantLanguageClass(translation.lang))}
+            className={clsx(s.link, getDominantLanguageClass(originalSource?.lang))}
         >
             <article className={s.example}>
                 {originalSource && getSurtitle(originalSource)}
-                <h1 className={s.headingOriginal} lang={term.lang}>
+                <h1 className={s.headingOriginal} lang={originalSource?.lang}>
                     {trimString(originalSource?.title)}
                 </h1>
                 {cover && <div className={s.coverContainer}>{cover}</div>}
@@ -97,7 +89,7 @@ function TranslationExampleArticle({
                 <footer className={s.footer}>
                     <div>{t('common.entities.comment.withCount', { count: example.commentCount })}</div>
                     <div>
-                        <FormatDate date={translation.createdAt} />
+                        <FormatDate date={example.createdAt} />
                     </div>
                 </footer>
             </article>
