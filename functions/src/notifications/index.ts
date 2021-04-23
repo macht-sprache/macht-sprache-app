@@ -1,17 +1,22 @@
 import {
     Comment,
+    CommentAddedNotification,
     CommentLikedNotification,
     DocReference,
     Like,
     Notification,
     Source,
+    Subscription,
     Term,
     Translation,
     TranslationExample,
 } from '../../../src/types';
 import { convertRef, convertRefToAdmin, db, functions, logger, WithoutId } from '../firebase';
 
-const getEntityName = async (t: FirebaseFirestore.Transaction, entity: Term | Translation | TranslationExample) => {
+type ParentEntity = Term | Translation | TranslationExample;
+type ParentEntityRef = FirebaseFirestore.DocumentReference<ParentEntity>;
+
+const getEntityName = async (t: FirebaseFirestore.Transaction, entity: ParentEntity) => {
     if ('value' in entity) {
         return entity.value;
     }
@@ -23,6 +28,31 @@ const getEntityName = async (t: FirebaseFirestore.Transaction, entity: Term | Tr
     }
 
     return originalSource.title;
+};
+
+const getTermRefForParent = async (
+    t: FirebaseFirestore.Transaction,
+    parentRef: ParentEntityRef,
+    parentEntity: ParentEntity
+): Promise<FirebaseFirestore.DocumentReference<Term> | undefined> => {
+    if ('term' in parentEntity) {
+        return convertRefToAdmin(parentEntity.term);
+    }
+
+    if ('translation' in parentEntity) {
+        const translation = (await t.get(convertRefToAdmin(parentEntity.translation))).data();
+        return translation && convertRefToAdmin(translation.term);
+    }
+
+    return parentRef as FirebaseFirestore.DocumentReference<Term>;
+};
+
+const getSubscriptions = async (
+    t: FirebaseFirestore.Transaction,
+    termRef: FirebaseFirestore.DocumentReference<Term>
+): Promise<Subscription[]> => {
+    const snap = await t.get(termRef.collection('subscriptions'));
+    return snap.docs.map(doc => doc.data() as Subscription);
 };
 
 const saveNotification = (t: FirebaseFirestore.Transaction, userId: string, notification: Notification) => {
@@ -72,6 +102,49 @@ export const createCommentLikedNotification = functions.firestore
             };
 
             saveNotification(t, comment.creator.id, notification);
+        });
+    });
+
+export const createCommentAddedNotification = functions.firestore
+    .document('/comments/{commentId}')
+    .onCreate(async snap => {
+        db.runTransaction(async t => {
+            const comment = snap.data() as WithoutId<Comment>;
+            const parentRef = convertRefToAdmin(comment.ref);
+            const parentEntity = (await t.get(parentRef)).data();
+            if (!parentEntity) {
+                return logger.info(`Parent ${parentRef} deleted`);
+            }
+
+            const parentName = await getEntityName(t, parentEntity);
+            if (!parentName) {
+                return logger.info(`Couldn't get name for ${parentRef}`);
+            }
+
+            const termForParent = await getTermRefForParent(t, parentRef, parentEntity);
+            if (!termForParent) {
+                return logger.info(`Couldn't get term for ${parentRef}`);
+            }
+
+            const notification: CommentAddedNotification = {
+                type: 'CommentAddedNotification',
+                actor: comment.creator,
+                createdAt: comment.createdAt,
+                seenAt: null,
+                readAt: null,
+
+                entityRef: convertRef(snap.ref),
+                parentRef: comment.ref,
+                parentName,
+            };
+
+            const subscriptions = await getSubscriptions(t, termForParent);
+
+            logger.info(`Notifying ${subscriptions.length} users about ${comment.ref}`);
+
+            subscriptions.forEach(subscription => {
+                saveNotification(t, subscription.creator.id, notification);
+            });
         });
     });
 
