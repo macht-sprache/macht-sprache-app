@@ -16,5 +16,8 @@
         "subject": "Dein macht.sprache. Konto wurde aktiviert",
         "message": "Du kannst jetzt anfangen dein macht.sprache. Konto zu benutzen!",
         "button": "Gehe zu macht.sprache."
+    },
+    "weeklyDigest": {
+        "intro": "hier ist eine Zusammenfassung, was die letzte Woche bei macht.sprache. passiert ist:"
     }
 }

@@ -4,7 +4,7 @@ import { Lang } from '../../../src/types';
 import { REGISTER_POST, FORGOT_PASSWORD } from '../../../src/routes';
 import config from '../config';
 import { auth, db, functions } from '../firebase';
-import { getActivationMail, getResetEmail, getVerifyEmailTemplate } from './templates';
+import { getActivationMail, getResetEmail, getVerifyEmailTemplate, getWeeklyDigestMail } from './templates';
 import { langA } from '../../../src/languages';
 
 type MailOptions = {
@@ -110,3 +110,13 @@ export const sendActivationMail = functions.firestore
 
         await sendMail({ html, subject, to: authUser.email! });
     });
+
+export const sendWeeklyDigestMail = () => {
+    const { html, subject } = getWeeklyDigestMail({
+        recipientName: 'Peter',
+        lang: langA,
+        link: config.origin.main,
+    });
+
+    return sendMail({ html, subject, to: 'some@user.de' });
+};

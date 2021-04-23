@@ -12,6 +12,7 @@ import {
     UserSettings,
 } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
+import { sendWeeklyDigestMail } from '../mails';
 
 const verifyAdmin = async (userId: string) => {
     const snap = await db.collection('userProperties').doc(userId).get();
@@ -220,4 +221,10 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
             t.set(comment.ref, { ...commentDefaults, ...comment.data() });
         });
     });
+});
+
+export const sendWeeklyDigest = functions.https.onCall(async (_, context) => {
+    const currentUserId = verifyUser(context);
+    await verifyAdmin(currentUserId);
+    await sendWeeklyDigestMail();
 });

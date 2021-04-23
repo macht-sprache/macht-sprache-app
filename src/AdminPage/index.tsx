@@ -41,6 +41,7 @@ const useAuthUserInfos = () => {
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
+const sendWeeklyDigest = () => functions.httpsCallable('userManagement-sendWeeklyDigest')();
 
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
@@ -57,6 +58,8 @@ export default function AdminPage() {
     return (
         <>
             <Header>Administration</Header>
+
+            <WeeklyDigest />
             <UserList {...userListProps} />
 
             <SingleColumn>
@@ -73,6 +76,25 @@ export default function AdminPage() {
                 </ButtonContainer>
             </SingleColumn>
         </>
+    );
+}
+
+function WeeklyDigest() {
+    const [state, setState] = useState<'sending' | 'sent' | undefined>();
+
+    const send = () => {
+        setState('sending');
+        sendWeeklyDigest().then(() => {
+            setState('sent');
+        });
+    };
+
+    return (
+        <SingleColumn>
+            <ColumnHeading>Weekly digest mail</ColumnHeading>
+            <p>{state}</p>
+            <Button onClick={send}>send</Button>
+        </SingleColumn>
     );
 }
 
