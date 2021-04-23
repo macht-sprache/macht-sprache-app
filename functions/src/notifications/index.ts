@@ -9,7 +9,9 @@ import {
     Subscription,
     Term,
     Translation,
+    TranslationAddedNotification,
     TranslationExample,
+    TranslationExampleAddedNotification,
 } from '../../../src/types';
 import { convertRef, convertRefToAdmin, db, functions, logger, WithoutId } from '../firebase';
 
@@ -108,7 +110,7 @@ export const createCommentLikedNotification = functions.firestore
 export const createCommentAddedNotification = functions.firestore
     .document('/comments/{commentId}')
     .onCreate(async snap => {
-        db.runTransaction(async t => {
+        await db.runTransaction(async t => {
             const comment = snap.data() as WithoutId<Comment>;
             const parentRef = convertRefToAdmin(comment.ref);
             const parentEntity = (await t.get(parentRef)).data();
@@ -140,7 +142,85 @@ export const createCommentAddedNotification = functions.firestore
 
             const subscriptions = await getSubscriptions(t, termForParent);
 
-            logger.info(`Notifying ${subscriptions.length} users about ${comment.ref}`);
+            logger.info(`Notifying ${subscriptions.length} users about ${snap.ref}`);
+
+            subscriptions.forEach(subscription => {
+                saveNotification(t, subscription.creator.id, notification);
+            });
+        });
+    });
+
+export const createTranslationAddedNotification = functions.firestore
+    .document('/translations/{translationId}')
+    .onCreate(async snap => {
+        await db.runTransaction(async t => {
+            const translationRef = snap.ref;
+            const translation = snap.data() as WithoutId<Translation>;
+            const termRef = convertRefToAdmin(translation.term);
+            const term = (await t.get(termRef)).data();
+            if (!term) {
+                return logger.info(`Term ${termRef} deleted`);
+            }
+
+            const notification: TranslationAddedNotification = {
+                type: 'TranslationAddedNotification',
+                actor: translation.creator,
+                createdAt: translation.createdAt,
+                seenAt: null,
+                readAt: null,
+
+                entityRef: convertRef(translationRef),
+                parentRef: translation.term,
+                parentName: term.value,
+            };
+
+            const subscriptions = await getSubscriptions(t, termRef);
+
+            logger.info(`Notifying ${subscriptions.length} users about ${translationRef}`);
+
+            subscriptions.forEach(subscription => {
+                saveNotification(t, subscription.creator.id, notification);
+            });
+        });
+    });
+
+export const createTranslationExampleAddedNotification = functions.firestore
+    .document('/translationExamples/{translationExampleId}')
+    .onCreate(async snap => {
+        await db.runTransaction(async t => {
+            const translationExample = snap.data() as WithoutId<TranslationExample>;
+            const parentRef = convertRefToAdmin(translationExample.translation);
+
+            const parentEntity = (await t.get(parentRef)).data();
+            if (!parentEntity) {
+                return logger.info(`Parent ${parentRef} deleted`);
+            }
+
+            const parentName = await getEntityName(t, parentEntity);
+            if (!parentName) {
+                return logger.info(`Couldn't get name for ${parentRef}`);
+            }
+
+            const termForParent = await getTermRefForParent(t, parentRef, parentEntity);
+            if (!termForParent) {
+                return logger.info(`Couldn't get term for ${parentRef}`);
+            }
+
+            const notification: TranslationExampleAddedNotification = {
+                type: 'TranslationExampleAddedNotification',
+                actor: translationExample.creator,
+                createdAt: translationExample.createdAt,
+                seenAt: null,
+                readAt: null,
+
+                entityRef: convertRef(snap.ref),
+                parentRef: convertRef(parentRef),
+                parentName,
+            };
+
+            const subscriptions = await getSubscriptions(t, termForParent);
+
+            logger.info(`Notifying ${subscriptions.length} users about ${snap.ref}`);
 
             subscriptions.forEach(subscription => {
                 saveNotification(t, subscription.creator.id, notification);
