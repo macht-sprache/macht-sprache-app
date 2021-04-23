@@ -337,5 +337,13 @@
             "TranslationExample": "<User /> fügte am <Date /> ein Übersetzungsbeispiel hinzu:",
             "Term": "<User /> fügte am <Date /> einen Begriff hinzu:"
         }
+    },
+    "notifications": {
+        "messages": {
+            "COMMENT": "<i>{{user}}</i> kommentierte <i>{{item}}</i>",
+            "TERM": "<i>{{user}}</i> fügte die Übersetzung <i>{{item}}</i> hinzu",
+            "TRANSLATION": "<i>{{user}}</i> fügte den Begriff <i>{{item}}</i> hinzu",
+            "LIKE": "<i>{{user}}</i> hat deinen Kommentar geliked"
+        }
     }
 }

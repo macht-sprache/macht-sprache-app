@@ -1,0 +1,66 @@
+.container {
+    position: relative;
+    display: inline-block;
+}
+
+.button {
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    vertical-align: text-top;
+    margin: -0.75ch -0.75ch -0.75ch 0.75ch;
+    padding: 0.75ch;
+}
+
+.button svg {
+    height: 1rem;
+    width: 1rem;
+}
+
+.unreadDot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 0.7rem;
+    width: 0.7rem;
+    border-radius: 100%;
+    background: var(--red);
+    border: var(--white) var(--thickBorder) solid;
+}
+
+.overlay {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: min(calc(100vw - 2rem), 300px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: var(--thickBorder) solid currentColor;
+}
+
+.empty {
+    font-style: italic;
+}
+
+.date {
+    font-size: var(--fontSizeS);
+    font-style: italic;
+}
+
+.notificationList {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 0.5rem;
+}
+
+.notification {
+    text-decoration: none;
+}
+
+.notification:hover {
+    text-decoration: underline;
+}

@@ -9,6 +9,7 @@ import { useUserProperties } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
+import Notifications from '../Notifications';
 import {
     ABOUT,
     ADMIN,
@@ -82,6 +83,7 @@ function Layout({ children }: Props) {
                     </div>
                     <div className={s.topRightMenu}>
                         <TopMenu />
+                        <Notifications />
                     </div>
                     <Sidebar />
                 </div>

@@ -341,5 +341,13 @@
             "TranslationExample": "<User /> added a Translation Example on <Date />:",
             "Term": "<User /> added a Term on <Date />:"
         }
+    },
+    "notifications": {
+        "messages": {
+            "COMMENT": "<i>{{user}}</i> commented on <i>{{item}}</i>",
+            "TERM": "<i>{{user}}</i> added the term <i>{{item}}</i>",
+            "TRANSLATION": "<i>{{user}}</i> added the term <i>{{item}}</i>",
+            "LIKE": "<i>{{user}}</i> liked your comment"
+        }
     }
 }
