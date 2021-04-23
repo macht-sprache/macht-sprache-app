@@ -45,6 +45,12 @@ const head: MJMLJsonObject = {
                     },
                 },
                 {
+                    tagName: 'mj-section',
+                    attributes: {
+                        padding: '10px 0',
+                    },
+                },
+                {
                     tagName: 'mj-style',
                     attributes: {},
                     content: '.button { color: red !important; text-decoration: underline !important; }',
