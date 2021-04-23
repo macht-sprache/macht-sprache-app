@@ -1,3 +1,7 @@
 .link {
     overflow-wrap: break-word;
 }
+
+.entityLink {
+    margin: 0 0.2em;
+}
