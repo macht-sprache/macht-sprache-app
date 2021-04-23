@@ -99,7 +99,7 @@ export default function Notifications() {
         setIsOpen(false);
     }, [location]);
 
-    const onOpen = () => {
+    const onButtonClick = () => {
         setHasUnread(false);
         setIsOpen(!isOpen);
     };
@@ -113,7 +113,7 @@ export default function Notifications() {
     return (
         <div className={s.container} ref={containerEl}>
             <button
-                onClick={onOpen}
+                onClick={onButtonClick}
                 className={s.button}
                 aria-expanded={isOpen}
                 aria-controls={id('overlay')}
