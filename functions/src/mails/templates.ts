@@ -236,31 +236,46 @@ export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions
 
 export const getWeeklyDigestMail = ({ recipientName, lang }: TemplateOptions): RenderedMailTemplate => {
     const t = translate(lang);
+
     const { html } = mjml2html(
         withBaseTemplate(
             [getText(t('greeting', { recipientName })), getText(t('weeklyDigest.intro'))],
             [
                 getSectionColumn([
                     getActivityItemTerm(
-                        `<a class="link" href="">Peter</a> added <a class="link" href="">Homeless person</a>`,
+                        t('weeklyDigest.newTerm', {
+                            userUrl: '#',
+                            userName: 'Peter',
+                        }),
                         `homeless person`,
                         '#',
                         langA
                     ),
                     getActivityItemTerm(
-                        `<a class="link" href="">Peter</a> added <a class="link" href="">Obdachloser</a>`,
+                        t('weeklyDigest.newTranslation', {
+                            userUrl: '#',
+                            userName: 'Peter',
+                            termUrl: '#',
+                            term: 'homeless person',
+                        }),
                         `Obdachloser`,
                         '#',
                         langB
                     ),
                     getActivityItemComment(
-                        `<a class="link" href="">Peter</a> commented on <a class="link" href="">they</a>`,
+                        t('weeklyDigest.newComment', {
+                            userUrl: '#',
+                            userName: 'Peter',
+                            termUrl: '#',
+                            term: 'they',
+                        }),
                         'Ich bin nicht-binär und hab mir extra als neuen Namen was einsilbiges ausgesucht, damit der Name gleichzeitig auch als Pronomen genommen werden kann',
                         '#'
                     ),
                 ]),
+                getSectionColumn([getText(t('weeklyDigest.unsubscribe'))]),
             ]
         )
     );
-    return { html, subject: t('activation.subject') };
+    return { html, subject: t('weeklyDigest.subject') };
 };
