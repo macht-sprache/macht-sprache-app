@@ -54,7 +54,7 @@ export default function Notifications() {
     const location = useLocation();
     const [hasUnread, setHasUnread] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
-    const overlay = useRef<HTMLDivElement>(null);
+    const containerEl = useRef<HTMLDivElement>(null);
     const notifications = NOTIFICATION_DUMMIES;
 
     const handleKeyDown = useCallback(
@@ -68,7 +68,7 @@ export default function Notifications() {
 
     const handleWindowClick = useCallback(
         (event: MouseEvent) => {
-            const clickInside = overlay.current?.contains(event.target as Node);
+            const clickInside = containerEl.current?.contains(event.target as Node);
             if (!clickInside) {
                 setIsOpen(false);
             }
@@ -102,13 +102,13 @@ export default function Notifications() {
     };
 
     return (
-        <div className={s.container}>
+        <div className={s.container} ref={containerEl}>
             <button onClick={onOpen} className={s.button}>
                 <Bell />
                 {hasUnread && <div className={s.unreadDot} />}
             </button>
             {isOpen && (
-                <div ref={overlay} className={s.overlay}>
+                <div className={s.overlay}>
                     {notifications.length ? (
                         <NotificationList notifications={notifications} />
                     ) : (
