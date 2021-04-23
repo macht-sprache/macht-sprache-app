@@ -1,3 +1,5 @@
+import { QueryDocumentSnapshot } from '@google-cloud/firestore';
+import { Change } from 'firebase-functions';
 import {
     Comment,
     CommentAddedNotification,
@@ -228,14 +230,39 @@ export const createTranslationExampleAddedNotification = functions.firestore
         });
     });
 
-export const handleDeletedComment = functions.firestore.document('/comments/{commentId}').onDelete(async snap => {
-    const commentRef = snap.ref;
+const handleDeletedEntity = async ({ ref }: FirebaseFirestore.QueryDocumentSnapshot) => {
     await db.runTransaction(async t => {
-        const queryRef = db.collectionGroup('notifications').where('entityRef', '==', commentRef);
+        const queryRef = db.collectionGroup('notifications').where('entityRef', '==', ref);
         const querySnap = await t.get(queryRef);
         querySnap.forEach(docSnap => t.delete(docSnap.ref));
     });
-});
+};
+
+export const handleDeletedComment = functions.firestore.document('/comments/{commentId}').onDelete(handleDeletedEntity);
+export const handleDeletedTranslation = functions.firestore
+    .document('/translations/{translationId}')
+    .onDelete(handleDeletedEntity);
+export const handleDeletedTranslationExample = functions.firestore
+    .document('/translationExamples/{translationExampleId}')
+    .onDelete(handleDeletedEntity);
+
+const handleRenamedParent = async (change: Change<QueryDocumentSnapshot>) => {
+    const parentRef = change.after.ref;
+    const parentName = change.after.data().value;
+    if (change.before.data().value === parentName) {
+        return;
+    }
+
+    await db.runTransaction(async t => {
+        const notificationsSnap = await t.get(db.collectionGroup('notifications').where('parentRef', '==', parentRef));
+        logger.info(`Updating ${notificationsSnap.size} notifications for ${parentRef}`);
+        notificationsSnap.forEach(doc => t.update(doc.ref, { parentName }));
+    });
+};
+export const handleRenamedTerm = functions.firestore.document('/terms/{termId').onUpdate(handleRenamedParent);
+export const handleRenamedTranslation = functions.firestore
+    .document('/translations/{translationId')
+    .onUpdate(handleRenamedParent);
 
 export const handleDeletedLike = functions.firestore
     .document('/comments/{commentId}/likes/{actorId}')
