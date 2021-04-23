@@ -127,7 +127,7 @@ export default function Notifications() {
                     {notifications.length ? (
                         <NotificationList notifications={notifications} />
                     ) : (
-                        <div className={s.empty}>no notifcations</div>
+                        <div className={s.empty}>{t('notifications.noNotifications')}</div>
                     )}
                 </div>
             )}

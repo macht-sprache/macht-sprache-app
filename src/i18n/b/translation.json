@@ -348,6 +348,7 @@
         "buttonLabel": {
             "label": "Benachrichtigungen",
             "unread": " – einige sind ungelesen"
-        }
+        },
+        "noNotifications": "Keine Benachrichtigungen"
     }
 }
