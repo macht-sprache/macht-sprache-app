@@ -348,6 +348,10 @@
             "TERM": "<i>{{user}}</i> added the term <i>{{item}}</i>",
             "TRANSLATION": "<i>{{user}}</i> added the term <i>{{item}}</i>",
             "LIKE": "<i>{{user}}</i> liked your comment"
+        },
+        "buttonLabel": {
+            "label": "Notifications",
+            "unread": " – some are unread"
         }
     }
 }

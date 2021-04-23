@@ -344,6 +344,10 @@
             "TERM": "<i>{{user}}</i> fügte die Übersetzung <i>{{item}}</i> hinzu",
             "TRANSLATION": "<i>{{user}}</i> fügte den Begriff <i>{{item}}</i> hinzu",
             "LIKE": "<i>{{user}}</i> hat deinen Kommentar geliked"
+        },
+        "buttonLabel": {
+            "label": "Benachrichtigungen",
+            "unread": " – einige sind ungelesen"
         }
     }
 }

@@ -5,6 +5,7 @@ import { UserMini } from '../types';
 import { FormatDate } from '../FormatDate';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
+import { useDomId } from '../useDomId';
 
 type Notification = {
     type: 'TERM' | 'TRANSLATION' | 'COMMENT' | 'LIKE';
@@ -52,6 +53,8 @@ const NOTIFICATION_DUMMIES: Notification[] = [
 
 export default function Notifications() {
     const location = useLocation();
+    const { t } = useTranslation();
+    const id = useDomId();
     const [hasUnread, setHasUnread] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
     const containerEl = useRef<HTMLDivElement>(null);
@@ -101,14 +104,26 @@ export default function Notifications() {
         setIsOpen(!isOpen);
     };
 
+    let buttonLabel = t('notifications.buttonLabel.label');
+
+    if (hasUnread) {
+        buttonLabel += t('notifications.buttonLabel.unread');
+    }
+
     return (
         <div className={s.container} ref={containerEl}>
-            <button onClick={onOpen} className={s.button}>
+            <button
+                onClick={onOpen}
+                className={s.button}
+                aria-expanded={isOpen}
+                aria-controls={id('overlay')}
+                aria-label={buttonLabel}
+            >
                 <Bell />
                 {hasUnread && <div className={s.unreadDot} />}
             </button>
             {isOpen && (
-                <div className={s.overlay}>
+                <div className={s.overlay} id={id('overlay')}>
                     {notifications.length ? (
                         <NotificationList notifications={notifications} />
                     ) : (
