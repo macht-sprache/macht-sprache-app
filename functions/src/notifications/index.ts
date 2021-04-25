@@ -259,9 +259,9 @@ const handleRenamedParent = async (change: Change<QueryDocumentSnapshot>) => {
         notificationsSnap.forEach(doc => t.update(doc.ref, { parentName }));
     });
 };
-export const handleRenamedTerm = functions.firestore.document('/terms/{termId').onUpdate(handleRenamedParent);
+export const handleRenamedTerm = functions.firestore.document('/terms/{termId}').onUpdate(handleRenamedParent);
 export const handleRenamedTranslation = functions.firestore
-    .document('/translations/{translationId')
+    .document('/translations/{translationId}')
     .onUpdate(handleRenamedParent);
 
 export const handleDeletedLike = functions.firestore
