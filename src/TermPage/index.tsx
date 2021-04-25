@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import firebase from 'firebase/app';
+import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Comments from '../Comments';
@@ -10,7 +11,7 @@ import InputContainer from '../Form/InputContainer';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { useAppContext } from '../hooks/appContext';
-import { collections, getSourcesRef, getTranslationsRef } from '../hooks/data';
+import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../hooks/data';
 import { Get, GetList, useCollection, useDocument } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
@@ -20,7 +21,7 @@ import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
-import { Lang, Source, Term, Translation } from '../types';
+import { Lang, Source, Term, Translation, User } from '../types';
 import { useLang } from '../useLang';
 import { getDominantLanguageClass } from '../useLangCssVars';
 import { UserInlineDisplay } from '../UserInlineDisplay';
@@ -83,6 +84,12 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                 <DeleteTerm term={term} />
                             </>
                         )}
+                        {user && (
+                            <Suspense fallback={null}>
+                                {' | '}
+                                <SubscribeTerm term={term} user={user} />
+                            </Suspense>
+                        )}
                     </>
                 }
                 mainLang={term.lang}
@@ -126,6 +133,32 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
             </SingleColumn>
         </>
     );
+}
+
+function SubscribeTerm({ term, user }: { term: Term; user: User }) {
+    const subscriptionRef = getSubscriptionRef(user.id, term.id);
+    const getSubscription = useDocument(subscriptionRef);
+    const subscription = getSubscription(true);
+    const active = !!subscription?.active;
+    const toggleSubscription = () => {
+        if (subscription) {
+            subscriptionRef.update({
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                active: !active,
+            });
+        } else {
+            subscriptionRef.set({
+                creator: {
+                    id: user.id,
+                    displayName: user.displayName,
+                },
+                createdAt: firebase.firestore.FieldValue.serverTimestamp() as firebase.firestore.Timestamp,
+                updatedAt: null,
+                active: !active,
+            });
+        }
+    };
+    return <LinkButton onClick={toggleSubscription}>{active ? 'Unsubscribe' : 'Subscribe'}</LinkButton>;
 }
 
 function DeleteTerm({ term }: { term: Term }) {

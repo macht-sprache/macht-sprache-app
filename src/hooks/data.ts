@@ -12,6 +12,7 @@ import {
     SensitiveTerms,
     Source,
     SourceType,
+    Subscription,
     Term,
     Translation,
     TranslationExample,
@@ -190,6 +191,16 @@ const LikeConverter: firebase.firestore.FirestoreDataConverter<Like> = {
     },
 };
 
+const SubscriptionConverter: firebase.firestore.FirestoreDataConverter<Subscription> = {
+    toFirestore: (subscription: Subscription) => {
+        return subscription;
+    },
+    fromFirestore: (snapshot): Subscription => {
+        const { creator, createdAt, updatedAt, active } = snapshot.data(defaultSnapshotOptions);
+        return { creator, createdAt, updatedAt, active };
+    },
+};
+
 const GlobalSettingsConverter: firebase.firestore.FirestoreDataConverter<GlobalSettings> = {
     toFirestore: (globalSettings: GlobalSettings) => globalSettings,
     fromFirestore: (snapshot): GlobalSettings => {
@@ -228,6 +239,9 @@ export const getCommentsRef = (ref: Comment['ref']) =>
 
 export const getLikesRef = (commentId: string) =>
     collections.comments.doc(commentId).collection('likes').withConverter(LikeConverter);
+
+export const getSubscriptionRef = (userId: string, termId: string) =>
+    collections.terms.doc(termId).collection('subscriptions').withConverter(SubscriptionConverter).doc(userId);
 
 export const getSourceRefWithConverter = (ref: DocReference<Source>) => ref.withConverter(SourceConverter);
 
