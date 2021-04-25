@@ -207,8 +207,11 @@ export interface BaseNotification {
     readAt: Timestamp | null;
 
     entityRef: DocReference<Comment | Translation | TranslationExample>;
-    parentRef: DocReference<Term | Translation | TranslationExample>;
-    parentName: string;
+    parent: {
+        ref: DocReference<Term | Translation | TranslationExample>;
+        name: string;
+        lang: Lang;
+    };
 }
 
 export interface CommentAddedNotification extends BaseNotification {
@@ -223,13 +226,21 @@ export interface CommentLikedNotification extends BaseNotification {
 export interface TranslationAddedNotification extends BaseNotification {
     type: 'TranslationAddedNotification';
     entityRef: DocReference<Translation>;
-    parentRef: DocReference<Term>;
+    parent: {
+        ref: DocReference<Term>;
+        name: string;
+        lang: Lang;
+    };
 }
 
 export interface TranslationExampleAddedNotification extends BaseNotification {
     type: 'TranslationExampleAddedNotification';
     entityRef: DocReference<TranslationExample>;
-    parentRef: DocReference<Translation>;
+    parent: {
+        ref: DocReference<Translation>;
+        name: string;
+        lang: Lang;
+    };
 }
 
 export type Notification =

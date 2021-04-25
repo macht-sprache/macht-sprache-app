@@ -1,10 +1,12 @@
 import { QueryDocumentSnapshot } from '@google-cloud/firestore';
 import { Change } from 'firebase-functions';
+import { equals } from 'rambdax';
 import {
     Comment,
     CommentAddedNotification,
     CommentLikedNotification,
     DocReference,
+    Lang,
     Like,
     Notification,
     Source,
@@ -20,9 +22,15 @@ import { convertRef, convertRefToAdmin, db, functions, logger, WithoutId } from 
 type ParentEntity = Term | Translation | TranslationExample;
 type ParentEntityRef = FirebaseFirestore.DocumentReference<ParentEntity>;
 
-const getEntityName = async (t: FirebaseFirestore.Transaction, entity: ParentEntity) => {
+const getEntityInfo = async (
+    t: FirebaseFirestore.Transaction,
+    entity: ParentEntity
+): Promise<{ name: string; lang: Lang } | null> => {
     if ('value' in entity) {
-        return entity.value;
+        return {
+            name: entity.value,
+            lang: entity.lang,
+        };
     }
 
     const originalSource = (await t.get(convertRefToAdmin(entity.original.source as DocReference<Source>))).data();
@@ -31,7 +39,10 @@ const getEntityName = async (t: FirebaseFirestore.Transaction, entity: ParentEnt
         return null;
     }
 
-    return originalSource.title;
+    return {
+        name: originalSource.title,
+        lang: originalSource.lang,
+    };
 };
 
 const getTermRefForParent = async (
@@ -87,10 +98,9 @@ export const createCommentLikedNotification = functions.firestore
                 return logger.info(`Parent ${parentRef} deleted`);
             }
 
-            const parentName = await getEntityName(t, parentEntity);
-
-            if (!parentName) {
-                return logger.info(`Couldn't get name for ${parentRef}`);
+            const parentInfo = await getEntityInfo(t, parentEntity);
+            if (!parentInfo) {
+                return logger.info(`Couldn't get info for ${parentRef}`);
             }
 
             const notification: CommentLikedNotification = {
@@ -101,8 +111,10 @@ export const createCommentLikedNotification = functions.firestore
                 readAt: null,
 
                 entityRef: convertRef(commentRef),
-                parentRef: convertRef(parentRef),
-                parentName,
+                parent: {
+                    ...parentInfo,
+                    ref: convertRef(parentRef),
+                },
             };
 
             saveNotification(t, comment.creator.id, notification);
@@ -120,9 +132,9 @@ export const createCommentAddedNotification = functions.firestore
                 return logger.info(`Parent ${parentRef} deleted`);
             }
 
-            const parentName = await getEntityName(t, parentEntity);
-            if (!parentName) {
-                return logger.info(`Couldn't get name for ${parentRef}`);
+            const parentInfo = await getEntityInfo(t, parentEntity);
+            if (!parentInfo) {
+                return logger.info(`Couldn't get info for ${parentRef}`);
             }
 
             const termForParent = await getTermRefForParent(t, parentRef, parentEntity);
@@ -138,8 +150,10 @@ export const createCommentAddedNotification = functions.firestore
                 readAt: null,
 
                 entityRef: convertRef(snap.ref),
-                parentRef: comment.ref,
-                parentName,
+                parent: {
+                    ...parentInfo,
+                    ref: convertRef(parentRef),
+                },
             };
 
             const subscriptions = await getSubscriptions(t, termForParent);
@@ -172,8 +186,11 @@ export const createTranslationAddedNotification = functions.firestore
                 readAt: null,
 
                 entityRef: convertRef(translationRef),
-                parentRef: translation.term,
-                parentName: term.value,
+                parent: {
+                    ref: translation.term,
+                    name: term.value,
+                    lang: term.lang,
+                },
             };
 
             const subscriptions = await getSubscriptions(t, termRef);
@@ -198,9 +215,9 @@ export const createTranslationExampleAddedNotification = functions.firestore
                 return logger.info(`Parent ${parentRef} deleted`);
             }
 
-            const parentName = await getEntityName(t, parentEntity);
-            if (!parentName) {
-                return logger.info(`Couldn't get name for ${parentRef}`);
+            const parentInfo = await getEntityInfo(t, parentEntity);
+            if (!parentInfo) {
+                return logger.info(`Couldn't get info for ${parentRef}`);
             }
 
             const termForParent = await getTermRefForParent(t, parentRef, parentEntity);
@@ -216,8 +233,10 @@ export const createTranslationExampleAddedNotification = functions.firestore
                 readAt: null,
 
                 entityRef: convertRef(snap.ref),
-                parentRef: convertRef(parentRef),
-                parentName,
+                parent: {
+                    ...parentInfo,
+                    ref: convertRef(parentRef),
+                },
             };
 
             const subscriptions = await getSubscriptions(t, termForParent);
@@ -246,23 +265,32 @@ export const handleDeletedTranslationExample = functions.firestore
     .document('/translationExamples/{translationExampleId}')
     .onDelete(handleDeletedEntity);
 
-const handleRenamedParent = async (change: Change<QueryDocumentSnapshot>) => {
-    const parentRef = change.after.ref;
-    const parentName = change.after.data().value;
-    if (change.before.data().value === parentName) {
+const handleChanged = async (change: Change<QueryDocumentSnapshot>) => {
+    const newData = change.after.data();
+    const oldData = change.before.data();
+    const ref = change.after.ref;
+    const newParentInfo = {
+        name: newData.value,
+        lang: newData.lang,
+    };
+    const oldParentInfo = {
+        name: oldData.value,
+        lang: oldData.lang,
+    };
+    if (equals(oldParentInfo, newParentInfo)) {
         return;
     }
 
     await db.runTransaction(async t => {
-        const notificationsSnap = await t.get(db.collectionGroup('notifications').where('parentRef', '==', parentRef));
-        logger.info(`Updating ${notificationsSnap.size} notifications for ${parentRef}`);
-        notificationsSnap.forEach(doc => t.update(doc.ref, { parentName }));
+        const notificationsSnap = await t.get(db.collectionGroup('notifications').where('parent.ref', '==', ref));
+        logger.info(`Updating ${notificationsSnap.size} notifications for ${ref}`);
+        notificationsSnap.forEach(doc => t.update(doc.ref, { parent: { ...newParentInfo, ref: ref } }));
     });
 };
-export const handleRenamedTerm = functions.firestore.document('/terms/{termId}').onUpdate(handleRenamedParent);
-export const handleRenamedTranslation = functions.firestore
+export const handleChangedTerm = functions.firestore.document('/terms/{termId}').onUpdate(handleChanged);
+export const handleChangedTranslation = functions.firestore
     .document('/translations/{translationId}')
-    .onUpdate(handleRenamedParent);
+    .onUpdate(handleChanged);
 
 export const handleDeletedLike = functions.firestore
     .document('/comments/{commentId}/likes/{actorId}')
