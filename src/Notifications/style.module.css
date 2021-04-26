@@ -49,6 +49,7 @@
 .date {
     font-size: var(--fontSizeS);
     font-style: italic;
+    font-weight: normal;
 }
 
 .notificationList {
@@ -63,4 +64,9 @@
 
 .notification:hover {
     text-decoration: underline;
+}
+
+.unreadNotification {
+    composes: notification;
+    font-weight: bold;
 }

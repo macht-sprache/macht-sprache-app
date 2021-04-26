@@ -92,16 +92,21 @@ function NotificationList({ userId, notifications }: { notifications: Notificati
     return (
         <div className={s.notificationList}>
             {notifications.map(notification => (
-                <NotificationItem key={notification.id} notification={notification} />
+                <NotificationItem key={notification.id} userId={userId} notification={notification} />
             ))}
         </div>
     );
 }
 
-function NotificationItem({ notification }: { notification: Notification }) {
+function NotificationItem({ userId, notification }: { notification: Notification; userId: string }) {
     const { t } = useTranslation();
+    const markRead = useMarkRead(userId, notification);
     return (
-        <Link to={getLink(notification)} className={s.notification}>
+        <Link
+            to={getLink(notification)}
+            onClick={markRead}
+            className={notification.readAt ? s.notification : s.unreadNotification}
+        >
             <div className={s.date}>
                 <FormatDate date={notification.createdAt} />
             </div>
@@ -177,6 +182,14 @@ function useMarkSeen(userId: string, notifications: Notification[]) {
         unseen.forEach(notification => batch.update(collectionRef.doc(notification.id), { seenAt }));
         batch.commit();
     }, [notifications, userId]);
+}
+
+function useMarkRead(userId: string, notification: Notification) {
+    return useCallback(() => {
+        if (!notification.readAt) {
+            getNotificationsRef(userId).doc(notification.id).update({ readAt: Timestamp.now() });
+        }
+    }, [notification.id, notification.readAt, userId]);
 }
 
 function getLink(notification: Notification) {
