@@ -74,6 +74,7 @@ function Layout({ children }: Props) {
                     >
                         Menu
                     </LinkButton>
+                    <Notifications />
                 </div>
                 <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
                     <div className={s.header}>
