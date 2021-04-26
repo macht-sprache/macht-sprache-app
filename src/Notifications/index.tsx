@@ -1,12 +1,13 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { generatePath, Link, useLocation } from 'react-router-dom';
 import { db, Timestamp } from '../firebase';
 import { FormatDate } from '../FormatDate';
 import { getNotificationsRef } from '../hooks/data';
 import { GetList, useCollection } from '../hooks/fetch';
+import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT } from '../routes';
 import { TermWithLang } from '../TermWithLang';
-import { Notification } from '../types';
+import { DocReference, Notification, Term, Translation, TranslationExample } from '../types';
 import { useDomId } from '../useDomId';
 import { ReactComponent as Bell } from './bell-regular.svg';
 import s from './style.module.css';
@@ -100,7 +101,7 @@ function NotificationList({ userId, notifications }: { notifications: Notificati
 function NotificationItem({ notification }: { notification: Notification }) {
     const { t } = useTranslation();
     return (
-        <Link to="TODO" className={s.notification}>
+        <Link to={getLink(notification)} className={s.notification}>
             <div className={s.date}>
                 <FormatDate date={notification.createdAt} />
             </div>
@@ -176,4 +177,29 @@ function useMarkSeen(userId: string, notifications: Notification[]) {
         unseen.forEach(notification => batch.update(collectionRef.doc(notification.id), { seenAt }));
         batch.commit();
     }, [notifications, userId]);
+}
+
+function getLink(notification: Notification) {
+    switch (notification.type) {
+        case 'CommentAddedNotification':
+        case 'CommentLikedNotification':
+            return getLinkForRef(notification.parent.ref);
+        case 'TranslationAddedNotification':
+        case 'TranslationExampleAddedNotification':
+            return getLinkForRef(notification.entityRef);
+    }
+}
+
+function getLinkForRef(ref: DocReference<Term | Translation | TranslationExample>) {
+    switch (ref.parent.id) {
+        case 'terms':
+            return generatePath(TERM, { termId: ref.id });
+        case 'translations':
+            return generatePath(TRANSLATION_REDIRECT, { translationId: ref.id });
+        case 'translationExamples':
+            return generatePath(TRANSLATION_EXAMPLE_REDIRECT, { translationExampleId: ref.id });
+        default:
+            console.error(`Unexpected parentId ${ref.parent.id}`);
+            return '';
+    }
 }

@@ -11,6 +11,7 @@ export const HOME = '/',
     TRANSLATION_ADD_SIDEBAR = '/sidebar-term/:termId/translation/add',
     TRANSLATION = '/term/:termId/translation/:translationId',
     TRANSLATION_SIDEBAR = '/sidebar-term/:termId/translation/:translationId',
+    TRANSLATION_REDIRECT = '/translation/:translationId',
     TRANSLATION_EXAMPLE = '/term/:termId/translation/:translationId/translation-example/:translationExampleId',
     TRANSLATION_EXAMPLE_SIDEBAR =
         '/sidebar-term/:termId/translation/:translationId/translation-example/:translationExampleId',
