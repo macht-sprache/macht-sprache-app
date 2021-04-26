@@ -29,6 +29,20 @@
             ]
         },
         {
+            "collectionGroup": "notifications",
+            "queryScope": "COLLECTION_GROUP",
+            "fields": [
+                {
+                    "fieldPath": "actor.id",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "entityRef",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
             "collectionGroup": "terms",
             "queryScope": "COLLECTION",
             "fields": [
