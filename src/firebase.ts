@@ -29,4 +29,6 @@ if (process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT) {
     functions.useEmulator(window.location.hostname, parseInt(process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT));
 }
 
-export { app, auth, db, functions };
+const Timestamp = firebase.firestore.Timestamp;
+
+export { app, auth, db, functions, Timestamp };

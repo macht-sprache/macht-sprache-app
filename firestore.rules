@@ -42,14 +42,26 @@ service cloud.firestore {
       allow get: if true;
       allow list: if isAdmin();
       allow update: if isValidatedUser() && isUser(user) && isValidUserUpdate();
-    }
 
-    function isValidUserUpdate() {
-      let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['externalProfiles', 'bio']) &&
-        data.externalProfiles.instagram is string &&
-        data.externalProfiles.twitter is string &&
-        data.externalProfiles.website is string
+      function isValidUserUpdate() {
+        let data = request.resource.data;
+        return data.diff(resource.data).affectedKeys().hasOnly(['externalProfiles', 'bio']) &&
+          data.externalProfiles.instagram is string &&
+          data.externalProfiles.twitter is string &&
+          data.externalProfiles.website is string;
+      }
+
+      match /notifications/{notificationId} {
+        allow read: if isUser(user);
+        allow update: if isValidatedUser() && isUser(user) && isValidNotificationUpdate();
+
+        function isValidNotificationUpdate() {
+          let data = request.resource.data;
+          return data.diff(resource.data).affectedKeys().hasOnly(['seenAt', 'readAt']) &&
+            (data.seenAt == null || data.seenAt is timestamp) &&
+            (data.readAt == null || data.readAt is timestamp);
+        }
+      }
     }
 
     function isValidUserSettings() {
@@ -112,6 +124,27 @@ service cloud.firestore {
       allow update: if isValidatedUser() &&
         ((isAdmin() && isValidTermUpdateAdmin()) || (isCreator() && isValidTermUpdate()));
       allow delete: if isValidatedUser() && isAdmin();
+
+      match /subscriptions/{user} {
+        allow read: if isUser(user);
+        allow create: if isValidatedUser() && isUser(user) && isCreator() && isValidSubscription();
+        allow update: if isValidatedUser() && isUser(user) && isCreator() && isValidSubscriptionUpdate();
+
+        function isValidSubscription() {
+          let data = request.resource.data;
+          return data.keys().hasOnly(['creator', 'createdAt',  'updatedAt', 'active']) &&
+            data.createdAt == request.time &&
+            data.updatedAt == null &&
+            data.active is bool;
+        }
+
+        function isValidSubscriptionUpdate() {
+          let data = request.resource.data;
+          return data.diff(resource.data).affectedKeys().hasOnly(['updatedAt', 'active']) &&
+            data.updatedAt == request.time &&
+            data.active is bool;
+        }
+      }
     }
 
     function isValidTranslation() {

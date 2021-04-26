@@ -337,5 +337,19 @@
             "TranslationExample": "<User /> fügte am <Date /> ein Übersetzungsbeispiel hinzu:",
             "Term": "<User /> fügte am <Date /> einen Begriff hinzu:"
         }
+    },
+    "notifications": {
+        "messages": {
+            "CommentAddedNotification": "<i>{{user}}</i> kommentierte <Parent />",
+            "CommentLikedNotification": "<i>{{user}}</i> gefällt dein Kommentar zu <Parent />",
+            "TranslationAddedNotification": "<i>{{user}}</i> hat eine Übersetzung für <Parent /> hinzugefügt",
+            "TranslationExampleAddedNotification": "<i>{{user}}</i> hat ein Beispiel für <Parent /> hinzugefügt"
+        },
+        "buttonLabel": {
+            "label": "Benachrichtigungen",
+            "unread": " – einige sind ungelesen"
+        },
+        "noNotifications": "Keine Benachrichtigungen",
+        "subscribe": "Begriff abonnieren"
     }
 }

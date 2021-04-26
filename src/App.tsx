@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 're
 import AddTermPage from './AddTermPage';
 import AddTranslationExamplePage from './AddTranslationExamplePage';
 import AddTranslationPage from './AddTranslationPage';
-import AdminContentPage from './AdminContentPage/lazy';
 import AdminCommentsPage from './AdminCommentsPage/lazy';
+import AdminContentPage from './AdminContentPage/lazy';
 import AdminPage from './AdminPage/lazy';
 import ElementTestPage from './ElementTestPage/lazy';
 import ErrorBoundary from './ErrorBoundary';
@@ -28,6 +28,7 @@ import { TermsPage } from './TermsPage';
 import TranslationExamplePage from './TranslationExamplePage';
 import TranslationExampleRedirect from './TranslationExampleRedirect';
 import TranslationPage from './TranslationPage';
+import TranslationRedirect from './TranslationRedirect';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
@@ -94,6 +95,9 @@ function AppRouter() {
                             </LaunchedRoute>
                             <LaunchedRoute path={routes.TRANSLATION_SIDEBAR} exact>
                                 <TranslationPage />
+                            </LaunchedRoute>
+                            <LaunchedRoute path={routes.TRANSLATION_REDIRECT} exact>
+                                <TranslationRedirect />
                             </LaunchedRoute>
                             <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD} exact>
                                 <AddTranslationExamplePage />

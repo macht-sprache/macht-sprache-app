@@ -1,9 +1,9 @@
 import { Redact } from '../RedactSensitiveTerms';
-import { Lang, Term, Translation } from '../types';
+import { Lang } from '../types';
 import s from './style.module.css';
 
 type TermWithLangProps = {
-    term: Term | Translation;
+    term: { value: string; lang: Lang };
 };
 
 export function TermWithLang({ term }: TermWithLangProps) {

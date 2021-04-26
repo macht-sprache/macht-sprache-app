@@ -198,3 +198,61 @@ export interface SensitiveTerms {
 export interface GlobalSettings {
     enableNewUsers: boolean;
 }
+
+export interface BaseNotification {
+    id: string;
+    actor: UserMini;
+    createdAt: Timestamp;
+
+    seenAt: Timestamp | null;
+    readAt: Timestamp | null;
+
+    entityRef: DocReference<Comment | Translation | TranslationExample>;
+    parent: {
+        ref: DocReference<Term | Translation | TranslationExample>;
+        name: string;
+        lang: Lang;
+    };
+}
+
+export interface CommentAddedNotification extends BaseNotification {
+    type: 'CommentAddedNotification';
+    entityRef: DocReference<Comment>;
+}
+export interface CommentLikedNotification extends BaseNotification {
+    type: 'CommentLikedNotification';
+    entityRef: DocReference<Comment>;
+}
+
+export interface TranslationAddedNotification extends BaseNotification {
+    type: 'TranslationAddedNotification';
+    entityRef: DocReference<Translation>;
+    parent: {
+        ref: DocReference<Term>;
+        name: string;
+        lang: Lang;
+    };
+}
+
+export interface TranslationExampleAddedNotification extends BaseNotification {
+    type: 'TranslationExampleAddedNotification';
+    entityRef: DocReference<TranslationExample>;
+    parent: {
+        ref: DocReference<Translation>;
+        name: string;
+        lang: Lang;
+    };
+}
+
+export type Notification =
+    | CommentAddedNotification
+    | CommentLikedNotification
+    | TranslationAddedNotification
+    | TranslationExampleAddedNotification;
+
+export interface Subscription {
+    creator: UserMini;
+    createdAt: Timestamp;
+    updatedAt: Timestamp | null;
+    active: boolean;
+}
