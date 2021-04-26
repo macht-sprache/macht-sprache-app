@@ -85,8 +85,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </>
                         )}
                         {user && (
-                            <Suspense fallback={null}>
-                                {' | '}
+                            <Suspense fallback={<Checkbox disabled label={t('notifications.subscribe')} />}>
                                 <SubscribeTerm term={term} user={user} />
                             </Suspense>
                         )}
@@ -136,6 +135,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
 }
 
 function SubscribeTerm({ term, user }: { term: Term; user: User }) {
+    const { t } = useTranslation();
     const subscriptionRef = getSubscriptionRef(user.id, term.id);
     const getSubscription = useDocument(subscriptionRef);
     const subscription = getSubscription(true);
@@ -158,7 +158,7 @@ function SubscribeTerm({ term, user }: { term: Term; user: User }) {
             });
         }
     };
-    return <LinkButton onClick={toggleSubscription}>{active ? 'Unsubscribe' : 'Subscribe'}</LinkButton>;
+    return <Checkbox label={t('notifications.subscribe')} checked={active} onChange={toggleSubscription} />;
 }
 
 function DeleteTerm({ term }: { term: Term }) {

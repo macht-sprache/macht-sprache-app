@@ -353,6 +353,7 @@
             "label": "Notifications",
             "unread": " – some are unread"
         },
-        "noNotifications": "No notifications"
+        "noNotifications": "No notifications",
+        "subscribe": "Subscribe"
     }
 }
