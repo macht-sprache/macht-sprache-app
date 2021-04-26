@@ -1,127 +1,50 @@
-import s from './style.module.css';
-import { ReactComponent as Bell } from './bell-regular.svg';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { UserMini } from '../types';
-import { FormatDate } from '../FormatDate';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
+import { FormatDate } from '../FormatDate';
+import { getNotificationsRef } from '../hooks/data';
+import { GetList, useCollection } from '../hooks/fetch';
+import { TermWithLang } from '../TermWithLang';
+import { Notification } from '../types';
 import { useDomId } from '../useDomId';
+import { ReactComponent as Bell } from './bell-regular.svg';
+import s from './style.module.css';
 
-type Notification = {
-    type: 'TERM' | 'TRANSLATION' | 'COMMENT' | 'LIKE';
-    value?: string;
-    user: UserMini;
-    date: Date;
-    id: number;
-    link: string;
+type Props = {
+    userId: string;
 };
 
-const NOTIFICATION_DUMMIES: Notification[] = [
-    {
-        user: {
-            id: 'dfsdf',
-            displayName: 'Lucy',
-        },
-        type: 'TERM',
-        value: 'Obdachloser',
-        id: 1,
-        date: new Date('Fri Apr 23 2021 17:17:22 GMT+0200 (Central European Summer Time)'),
-        link: '/',
-    },
-    {
-        user: {
-            id: 'dfsdf',
-            displayName: 'Kolja',
-        },
-        type: 'LIKE',
-        id: 2,
-        date: new Date('Fri Apr 23 2021 12:11:22 GMT+0200 (Central European Summer Time)'),
-        link: '/',
-    },
-    {
-        user: {
-            id: 'dfsdf',
-            displayName: 'Anna',
-        },
-        type: 'COMMENT',
-        value: 'Obdachloser',
-        id: 3,
-        date: new Date('Fri Apr 22 2021 17:32:22 GMT+0200 (Central European Summer Time)'),
-        link: '/',
-    },
-];
+type MenuProps = {
+    userId: string;
+    getNotifications: GetList<Notification>;
+};
 
-export default function Notifications() {
-    const location = useLocation();
+export default function Notifications({ userId }: Props) {
+    const getNotifications = useCollection(getNotificationsRef(userId));
+    return (
+        <Suspense fallback={<NotificationButton />}>
+            <NotificationsMenu userId={userId} getNotifications={getNotifications} />
+        </Suspense>
+    );
+}
+
+function NotificationsMenu({ userId, getNotifications }: MenuProps) {
+    const notifications = getNotifications();
+    const hasUnseen = useHasUnseen(notifications);
+
     const { t } = useTranslation();
     const id = useDomId();
-    const [hasUnread, setHasUnread] = useState(true);
-    const [isOpen, setIsOpen] = useState(true);
-    const containerEl = useRef<HTMLDivElement>(null);
-    const notifications = NOTIFICATION_DUMMIES;
 
-    const handleKeyDown = useCallback(
-        (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                setIsOpen(false);
-            }
-        },
-        [setIsOpen]
-    );
-
-    const handleWindowClick = useCallback(
-        (event: MouseEvent) => {
-            const clickInside = containerEl.current?.contains(event.target as Node);
-            if (!clickInside) {
-                setIsOpen(false);
-            }
-        },
-        [setIsOpen]
-    );
-
-    useEffect(() => {
-        if (isOpen) {
-            window.addEventListener('keydown', handleKeyDown);
-            window.addEventListener('mousedown', handleWindowClick);
-        }
-        if (!isOpen) {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('mousedown', handleWindowClick);
-        }
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('mousedown', handleWindowClick);
-        };
-    }, [isOpen, handleKeyDown, handleWindowClick]);
-
-    useEffect(() => {
-        setIsOpen(false);
-    }, [location]);
-
-    const onButtonClick = () => {
-        setHasUnread(false);
-        setIsOpen(!isOpen);
-    };
-
-    let buttonLabel = t('notifications.buttonLabel.label');
-
-    if (hasUnread) {
-        buttonLabel += t('notifications.buttonLabel.unread');
-    }
+    const { isOpen, toggleIsOpen, ref } = useMenuOpenState();
 
     return (
-        <div className={s.container} ref={containerEl}>
-            <button
-                onClick={onButtonClick}
-                className={s.button}
-                aria-expanded={isOpen}
-                aria-controls={id('overlay')}
-                aria-label={buttonLabel}
-            >
-                <Bell />
-                {hasUnread && <div className={s.unreadDot} />}
-            </button>
+        <div className={s.container} ref={ref}>
+            <NotificationButton
+                unseen={hasUnseen}
+                isOpen={isOpen}
+                ariaControls={id('overlay')}
+                onClick={toggleIsOpen}
+            />
             {isOpen && (
                 <div className={s.overlay} id={id('overlay')}>
                     {notifications.length ? (
@@ -135,30 +58,106 @@ export default function Notifications() {
     );
 }
 
+function NotificationButton({
+    unseen,
+    isOpen,
+    ariaControls,
+    onClick,
+}: {
+    unseen?: boolean;
+    isOpen?: boolean;
+    ariaControls?: string;
+    onClick?: () => void;
+}) {
+    const { t } = useTranslation();
+    return (
+        <button
+            onClick={onClick}
+            disabled={!onClick}
+            className={s.button}
+            aria-expanded={isOpen}
+            aria-controls={ariaControls}
+            aria-label={`${t('notifications.buttonLabel.label')}${unseen ? t('notifications.buttonLabel.unread') : ''}`}
+        >
+            <Bell />
+            {unseen && <div className={s.unreadDot} />}
+        </button>
+    );
+}
+
 function NotificationList({ notifications }: { notifications: Notification[] }) {
     return (
         <div className={s.notificationList}>
             {notifications.map(notification => (
-                <NotificationItem key={notification.id} {...notification} />
+                <NotificationItem key={notification.id} notification={notification} />
             ))}
         </div>
     );
 }
 
-function NotificationItem({ type, user, date, link, value }: Notification) {
+function NotificationItem({ notification }: { notification: Notification }) {
     const { t } = useTranslation();
     return (
-        <Link to={link} className={s.notification}>
+        <Link to="TODO" className={s.notification}>
             <div className={s.date}>
-                <FormatDate date={date} />
+                <FormatDate date={notification.createdAt} />
             </div>
             <div>
                 <Trans
                     t={t}
-                    i18nKey={`notifications.messages.${type}` as const}
-                    values={{ user: user.displayName, item: value }}
+                    i18nKey={`notifications.messages.${notification.type}` as const}
+                    values={{ user: notification.actor.displayName }}
+                    components={{
+                        Parent: (
+                            <TermWithLang term={{ value: notification.parent.name, lang: notification.parent.lang }} />
+                        ),
+                    }}
                 />
             </div>
         </Link>
     );
+}
+
+function useMenuOpenState() {
+    const location = useLocation();
+    const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    const toggleIsOpen = useCallback(() => setIsOpen(prev => !prev), []);
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            setIsOpen(false);
+        }
+    }, []);
+    const handleWindowClick = useCallback((event: MouseEvent) => {
+        const clickInside = event.target instanceof Node && ref.current?.contains(event.target);
+        if (!clickInside) {
+            setIsOpen(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isOpen) {
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('mousedown', handleWindowClick);
+        } else {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('mousedown', handleWindowClick);
+        }
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('mousedown', handleWindowClick);
+        };
+    }, [isOpen, handleKeyDown, handleWindowClick]);
+
+    useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
+
+    return { isOpen, toggleIsOpen, ref };
+}
+
+function useHasUnseen(notifications: Notification[]) {
+    return useMemo(() => notifications.some(notification => notification.seenAt === null), [notifications]);
 }

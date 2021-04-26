@@ -200,6 +200,7 @@ export interface GlobalSettings {
 }
 
 export interface BaseNotification {
+    id: string;
     actor: UserMini;
     createdAt: Timestamp;
 

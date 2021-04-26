@@ -5,7 +5,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ContentWarning } from '../ContentWarning';
-import { useUserProperties } from '../hooks/appContext';
+import { useUser, useUserProperties } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
@@ -40,6 +40,7 @@ function Layout({ children }: Props) {
     const [menuOpen, setMenuOpen] = useState(false);
     const history = useHistory();
     const location = useLocation();
+    const user = useUser();
     const { trackPageView } = useMatomo();
 
     useEffect(() => {
@@ -74,7 +75,7 @@ function Layout({ children }: Props) {
                     >
                         Menu
                     </LinkButton>
-                    <Notifications />
+                    {user && <Notifications userId={user.id} />}
                 </div>
                 <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
                     <div className={s.header}>
@@ -84,7 +85,7 @@ function Layout({ children }: Props) {
                     </div>
                     <div className={s.topRightMenu}>
                         <TopMenu />
-                        <Notifications />
+                        {user && <Notifications userId={user.id} />}
                     </div>
                     <Sidebar />
                 </div>

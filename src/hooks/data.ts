@@ -8,6 +8,7 @@ import {
     GlobalSettings,
     Lang,
     Like,
+    Notification,
     Rating,
     SensitiveTerms,
     Source,
@@ -201,6 +202,53 @@ const SubscriptionConverter: firebase.firestore.FirestoreDataConverter<Subscript
     },
 };
 
+const NotificationConverter: firebase.firestore.FirestoreDataConverter<Notification> = {
+    toFirestore: ({ id, ...notification }: Notification) => {
+        return notification;
+    },
+    fromFirestore: (snapshot): Notification => {
+        const data = snapshot.data(defaultSnapshotOptions);
+        const base: Pick<Notification, 'id' | 'type' | 'actor' | 'createdAt' | 'seenAt' | 'readAt'> = {
+            id: snapshot.id,
+            type: data.type,
+            actor: data.actor,
+            createdAt: data.createdAt,
+            seenAt: data.seenAt,
+            readAt: data.readAt,
+        };
+        switch (base.type) {
+            case 'CommentAddedNotification':
+                return {
+                    ...base,
+                    type: base.type,
+                    entityRef: addConverterToRef(data.entityRef),
+                    parent: { ...data.parent, ref: addConverterToRef(data.parent.ref) },
+                };
+            case 'CommentLikedNotification':
+                return {
+                    ...base,
+                    type: base.type,
+                    entityRef: addConverterToRef(data.entityRef),
+                    parent: { ...data.parent, ref: addConverterToRef(data.parent.ref) },
+                };
+            case 'TranslationAddedNotification':
+                return {
+                    ...base,
+                    type: base.type,
+                    entityRef: addConverterToRef(data.entityRef),
+                    parent: { ...data.parent, ref: addConverterToRef(data.parent.ref) },
+                };
+            case 'TranslationExampleAddedNotification':
+                return {
+                    ...base,
+                    type: base.type,
+                    entityRef: addConverterToRef(data.entityRef),
+                    parent: { ...data.parent, ref: addConverterToRef(data.parent.ref) },
+                };
+        }
+    },
+};
+
 const GlobalSettingsConverter: firebase.firestore.FirestoreDataConverter<GlobalSettings> = {
     toFirestore: (globalSettings: GlobalSettings) => globalSettings,
     fromFirestore: (snapshot): GlobalSettings => {
@@ -220,6 +268,26 @@ export const collections = {
     sensitiveTerms: db.collection('sensitiveTerms').withConverter(SensitiveTermsConverter),
     comments: db.collection('comments').withConverter(CommentConverter),
     settings: db.collection('settings').withConverter(GlobalSettingsConverter),
+};
+
+const addConverterToRef = <T extends Term | Translation | TranslationExample | Source | Comment>(
+    ref: DocReference<T>
+): DocReference<T> => {
+    switch (ref.parent.id) {
+        case 'terms':
+            return ref.withConverter(TermConverter) as DocReference<T>;
+        case 'translations':
+            return ref.withConverter(TranslationConverter) as DocReference<T>;
+        case 'translationExamples':
+            return ref.withConverter(TranslationExampleConverter) as DocReference<T>;
+        case 'sources':
+            return ref.withConverter(SourceConverter) as DocReference<T>;
+        case 'comments':
+            return ref.withConverter(CommentConverter) as DocReference<T>;
+        default:
+            console.error(`Unknown parent ${ref.parent.id}`);
+            return ref;
+    }
 };
 
 export const getTranslationsRef = (termRef: firebase.firestore.DocumentReference<Term>) =>
@@ -242,6 +310,9 @@ export const getLikesRef = (commentId: string) =>
 
 export const getSubscriptionRef = (userId: string, termId: string) =>
     collections.terms.doc(termId).collection('subscriptions').withConverter(SubscriptionConverter).doc(userId);
+
+export const getNotificationsRef = (userId: string) =>
+    collections.users.doc(userId).collection('notifications').withConverter(NotificationConverter);
 
 export const getSourceRefWithConverter = (ref: DocReference<Source>) => ref.withConverter(SourceConverter);
 

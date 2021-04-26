@@ -340,10 +340,10 @@
     },
     "notifications": {
         "messages": {
-            "COMMENT": "<i>{{user}}</i> kommentierte <i>{{item}}</i>",
-            "TERM": "<i>{{user}}</i> fügte die Übersetzung <i>{{item}}</i> hinzu",
-            "TRANSLATION": "<i>{{user}}</i> fügte den Begriff <i>{{item}}</i> hinzu",
-            "LIKE": "<i>{{user}}</i> hat deinen Kommentar geliked"
+            "CommentAddedNotification": "<i>{{user}}</i> kommentierte <Parent />",
+            "CommentLikedNotification": "<i>{{user}}</i> gefällt dein Kommentar zu <Parent />",
+            "TranslationAddedNotification": "<i>{{user}}</i> hat eine Übersetzung für <Parent /> hinzugefügt",
+            "TranslationExampleAddedNotification": "<i>{{user}}</i> hat ein Beispiel für <Parent /> hinzugefügt"
         },
         "buttonLabel": {
             "label": "Benachrichtigungen",

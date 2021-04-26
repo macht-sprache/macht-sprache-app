@@ -344,10 +344,10 @@
     },
     "notifications": {
         "messages": {
-            "COMMENT": "<i>{{user}}</i> commented on <i>{{item}}</i>",
-            "TERM": "<i>{{user}}</i> added the term <i>{{item}}</i>",
-            "TRANSLATION": "<i>{{user}}</i> added the term <i>{{item}}</i>",
-            "LIKE": "<i>{{user}}</i> liked your comment"
+            "CommentAddedNotification": "<i>{{user}}</i> commented on <Parent />",
+            "CommentLikedNotification": "<i>{{user}}</i> liked your comment on <Parent />",
+            "TranslationAddedNotification": "<i>{{user}}</i> added a translation for <Parent />",
+            "TranslationExampleAddedNotification": "<i>{{user}}</i> added an example for <Parent />"
         },
         "buttonLabel": {
             "label": "Notifications",

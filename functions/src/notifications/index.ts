@@ -70,7 +70,7 @@ const getSubscriptions = async (
     return snap.docs.map(doc => doc.data() as Subscription);
 };
 
-const saveNotification = (t: FirebaseFirestore.Transaction, userId: string, notification: Notification) => {
+const saveNotification = (t: FirebaseFirestore.Transaction, userId: string, notification: WithoutId<Notification>) => {
     if (userId === notification.actor.id) {
         return logger.info(`Not notifiying user ${userId} about own action`);
     }
@@ -103,7 +103,7 @@ export const createCommentLikedNotification = functions.firestore
                 return logger.info(`Couldn't get info for ${parentRef}`);
             }
 
-            const notification: CommentLikedNotification = {
+            const notification: WithoutId<CommentLikedNotification> = {
                 type: 'CommentLikedNotification',
                 actor: like.creator,
                 createdAt: like.createdAt,
@@ -142,7 +142,7 @@ export const createCommentAddedNotification = functions.firestore
                 return logger.info(`Couldn't get term for ${parentRef}`);
             }
 
-            const notification: CommentAddedNotification = {
+            const notification: WithoutId<CommentAddedNotification> = {
                 type: 'CommentAddedNotification',
                 actor: comment.creator,
                 createdAt: comment.createdAt,
@@ -178,7 +178,7 @@ export const createTranslationAddedNotification = functions.firestore
                 return logger.info(`Term ${termRef} deleted`);
             }
 
-            const notification: TranslationAddedNotification = {
+            const notification: WithoutId<TranslationAddedNotification> = {
                 type: 'TranslationAddedNotification',
                 actor: translation.creator,
                 createdAt: translation.createdAt,
@@ -225,7 +225,7 @@ export const createTranslationExampleAddedNotification = functions.firestore
                 return logger.info(`Couldn't get term for ${parentRef}`);
             }
 
-            const notification: TranslationExampleAddedNotification = {
+            const notification: WithoutId<TranslationExampleAddedNotification> = {
                 type: 'TranslationExampleAddedNotification',
                 actor: translationExample.creator,
                 createdAt: translationExample.createdAt,
