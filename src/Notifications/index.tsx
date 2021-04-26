@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
+import { db, Timestamp } from '../firebase';
 import { FormatDate } from '../FormatDate';
 import { getNotificationsRef } from '../hooks/data';
 import { GetList, useCollection } from '../hooks/fetch';
@@ -48,7 +49,7 @@ function NotificationsMenu({ userId, getNotifications }: MenuProps) {
             {isOpen && (
                 <div className={s.overlay} id={id('overlay')}>
                     {notifications.length ? (
-                        <NotificationList notifications={notifications} />
+                        <NotificationList userId={userId} notifications={notifications} />
                     ) : (
                         <div className={s.empty}>{t('notifications.noNotifications')}</div>
                     )}
@@ -85,7 +86,8 @@ function NotificationButton({
     );
 }
 
-function NotificationList({ notifications }: { notifications: Notification[] }) {
+function NotificationList({ userId, notifications }: { notifications: Notification[]; userId: string }) {
+    useMarkSeen(userId, notifications);
     return (
         <div className={s.notificationList}>
             {notifications.map(notification => (
@@ -160,4 +162,18 @@ function useMenuOpenState() {
 
 function useHasUnseen(notifications: Notification[]) {
     return useMemo(() => notifications.some(notification => notification.seenAt === null), [notifications]);
+}
+
+function useMarkSeen(userId: string, notifications: Notification[]) {
+    useEffect(() => {
+        const unseen = notifications.filter(notification => notification.seenAt === null);
+        if (!unseen.length) {
+            return;
+        }
+        const batch = db.batch();
+        const collectionRef = getNotificationsRef(userId);
+        const seenAt = Timestamp.now();
+        unseen.forEach(notification => batch.update(collectionRef.doc(notification.id), { seenAt }));
+        batch.commit();
+    }, [notifications, userId]);
 }
