@@ -21,7 +21,7 @@ type MenuProps = {
 };
 
 export default function Notifications({ userId }: Props) {
-    const getNotifications = useCollection(getNotificationsRef(userId));
+    const getNotifications = useCollection(getNotificationsRef(userId).orderBy('createdAt', 'desc').limit(25));
     return (
         <Suspense fallback={<NotificationButton />}>
             <NotificationsMenu userId={userId} getNotifications={getNotifications} />
