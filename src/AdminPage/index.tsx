@@ -41,7 +41,7 @@ const useAuthUserInfos = () => {
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
-const sendWeeklyDigest = () => functions.httpsCallable('userManagement-sendWeeklyDigest')();
+const sendWeeklyDigest = () => functions.httpsCallable('userManagement-sendWeeklyDigestTest')();
 
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');

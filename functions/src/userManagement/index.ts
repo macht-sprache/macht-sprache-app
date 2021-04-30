@@ -1,6 +1,6 @@
 import { mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
-import { langA } from '../../../src/languages';
+import { langA, langB } from '../../../src/languages';
 import {
     Comment,
     GlobalSettings,
@@ -223,8 +223,19 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     });
 });
 
-export const sendWeeklyDigest = functions.https.onCall(async (_, context) => {
+export const sendWeeklyDigestTest = functions.https.onCall(async (_, context) => {
     const currentUserId = verifyUser(context);
     await verifyAdmin(currentUserId);
-    await sendWeeklyDigestMail();
+
+    const authUser = await auth.getUser(currentUserId);
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+    await sendWeeklyDigestMail(
+        [
+            { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langA },
+            { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langB },
+        ],
+        since,
+        20
+    );
 });

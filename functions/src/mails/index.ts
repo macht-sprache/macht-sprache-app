@@ -1,11 +1,14 @@
 import { htmlToText } from 'html-to-text';
 import nodemailer from 'nodemailer';
-import { Lang } from '../../../src/types';
+import { Lang, UserMini } from '../../../src/types';
 import { REGISTER_POST, FORGOT_PASSWORD } from '../../../src/routes';
 import config from '../config';
 import { auth, db, functions } from '../firebase';
 import { getActivationMail, getResetEmail, getVerifyEmailTemplate, getWeeklyDigestMail } from './templates';
 import { langA } from '../../../src/languages';
+import { getDigestContent } from './digestMail';
+
+export type Recipent = UserMini & { email: string; lang: Lang };
 
 type MailOptions = {
     html: string;
@@ -111,12 +114,18 @@ export const sendActivationMail = functions.firestore
         await sendMail({ html, subject, to: authUser.email! });
     });
 
-export const sendWeeklyDigestMail = () => {
-    const { html, subject } = getWeeklyDigestMail({
-        recipientName: 'Peter',
-        lang: langA,
-        link: config.origin.main,
-    });
+export const sendWeeklyDigestMail = async (recipients: Recipent[], since: Date, limit: number) => {
+    const digestContent = await getDigestContent(since, limit);
 
-    return sendMail({ html, subject, to: 'some@user.de' });
+    for (const recipient of recipients) {
+        const { html, subject } = getWeeklyDigestMail(
+            {
+                recipientName: recipient.displayName,
+                lang: recipient.lang,
+                link: config.origin.main,
+            },
+            digestContent[recipient.lang]
+        );
+        await sendMail({ html, subject, to: recipient.email });
+    }
 };

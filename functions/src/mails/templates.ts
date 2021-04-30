@@ -65,7 +65,7 @@ const head: MJMLJsonObject = {
                 color: inherit
             }
             .userContent {
-                font-family: -apple-system,BlinkMacSystemFont, sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, sans-serif;
                 font-size: 1.1rem;
                 line-height: 1.3;
             }
@@ -100,7 +100,7 @@ const getSectionColumn = (children: MJMLJsonObject[]): MJMLJsonObject => ({
         {
             tagName: 'mj-column',
             attributes: {},
-            children: [...children],
+            children,
         },
     ],
 });
@@ -128,7 +128,7 @@ const getActivityItem = (head: string, body: string, link: string, lang?: Lang):
     };
 };
 
-const getActivityItemTerm = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
+export const getActivityItemTerm = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
     return getActivityItem(
         head,
         `<div style="
@@ -144,7 +144,7 @@ const getActivityItemTerm = (head: string, body: string, link: string, lang?: La
     );
 };
 
-const getActivityItemComment = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
+export const getActivityItemComment = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
     return getActivityItem(
         head,
         `<div class="userContent" style="padding: 10px">
@@ -240,47 +240,16 @@ export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions
     return { html, subject: t('activation.subject') };
 };
 
-export const getWeeklyDigestMail = ({ recipientName, lang }: TemplateOptions): RenderedMailTemplate => {
+export const getWeeklyDigestMail = (
+    { recipientName, lang }: TemplateOptions,
+    content: MJMLJsonObject[]
+): RenderedMailTemplate => {
     const t = translate(lang);
 
     const { html } = mjml2html(
         withBaseTemplate(
             [getText(t('greeting', { recipientName })), getText(t('weeklyDigest.intro'))],
-            [
-                getSectionColumn([
-                    getActivityItemTerm(
-                        t('weeklyDigest.newTerm', {
-                            userUrl: '#',
-                            userName: 'Peter',
-                        }),
-                        `homeless person`,
-                        '#',
-                        langA
-                    ),
-                    getActivityItemTerm(
-                        t('weeklyDigest.newTranslation', {
-                            userUrl: '#',
-                            userName: 'Peter',
-                            termUrl: '#',
-                            term: 'homeless person',
-                        }),
-                        `Obdachloser`,
-                        '#',
-                        langB
-                    ),
-                    getActivityItemComment(
-                        t('weeklyDigest.newComment', {
-                            userUrl: '#',
-                            userName: 'Peter',
-                            termUrl: '#',
-                            term: 'they',
-                        }),
-                        'Ich bin nicht-binär und hab mir extra als neuen Namen was einsilbiges ausgesucht, damit der Name gleichzeitig auch als Pronomen genommen werden kann',
-                        '#'
-                    ),
-                ]),
-                getSectionColumn([getText(t('weeklyDigest.unsubscribe'))]),
-            ]
+            [getSectionColumn(content), getSectionColumn([getText(t('weeklyDigest.unsubscribe'))])]
         )
     );
     return { html, subject: t('weeklyDigest.subject') };

@@ -36,7 +36,8 @@
         "mjml": "^4.9.0",
         "node-fetch": "^2.6.1",
         "nodemailer": "^6.5.0",
-        "rambdax": "^7.2.0"
+        "rambdax": "^7.2.0",
+        "react-router": "^5.2.0"
     },
     "devDependencies": {
         "@types/html-to-text": "^6.0.0",
