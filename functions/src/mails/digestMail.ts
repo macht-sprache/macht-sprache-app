@@ -9,6 +9,7 @@ import config from '../config';
 import { db, WithoutId } from '../firebase';
 import { translate } from './i18n';
 import { getActivityItemComment, getActivityItemTerm } from './templates';
+import escape from 'lodash.escape';
 
 type TFunc = ReturnType<typeof translate>;
 type Redact = ReturnType<typeof getRedact>;
@@ -84,7 +85,7 @@ const getTermContent = async (t: TFunc, redact: Redact, termSnap: DocSnap<Term>)
             userUrl: generateUrl(USER, { userId: term.creator.id }),
             userName: term.creator.displayName,
         }),
-        redact(term.value),
+        escape(redact(term.value)),
         getLinkForRef(termSnap.ref),
         term.lang
     );
@@ -100,7 +101,7 @@ const getTranslationContent = async (t: TFunc, redact: Redact, translationSnap: 
             termUrl: getLinkForRef(translation.term),
             term: redact(term?.value || ''),
         }),
-        redact(translation.value),
+        escape(redact(translation.value)),
         getLinkForRef(translationSnap.ref),
         translation.lang
     );
@@ -119,7 +120,7 @@ const getCommentContent = async (t: TFunc, redact: Redact, commentSnap: DocSnap<
             termUrl: getLinkForRef(comment.ref),
             term: redact(parentName ?? ''),
         }),
-        comment.comment,
+        escape(comment.comment),
         getLinkForRef(comment.ref)
     );
 };
