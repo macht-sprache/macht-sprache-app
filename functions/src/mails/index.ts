@@ -1,10 +1,16 @@
 import { htmlToText } from 'html-to-text';
 import nodemailer from 'nodemailer';
 import { Lang, UserMini } from '../../../src/types';
-import { REGISTER_POST, FORGOT_PASSWORD } from '../../../src/routes';
+import { REGISTER_POST, FORGOT_PASSWORD, USER } from '../../../src/routes';
 import config from '../config';
 import { auth, db, functions } from '../firebase';
-import { getActivationMail, getResetEmail, getVerifyEmailTemplate, getWeeklyDigestMail } from './templates';
+import {
+    generateUrl,
+    getActivationMail,
+    getResetEmail,
+    getVerifyEmailTemplate,
+    getWeeklyDigestMail,
+} from './templates';
 import { langA } from '../../../src/languages';
 import { getDigestContent } from './digestMail';
 
@@ -122,7 +128,7 @@ export const sendWeeklyDigestMail = async (recipients: Recipent[], since: Date, 
             {
                 recipientName: recipient.displayName,
                 lang: recipient.lang,
-                link: config.origin.main,
+                link: generateUrl(USER, { userId: recipient.id }),
             },
             digestContent[recipient.lang]
         );

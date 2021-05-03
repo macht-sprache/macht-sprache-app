@@ -1,15 +1,13 @@
+import escape from 'lodash.escape';
 import type { MJMLJsonObject } from 'mjml-core';
-import { compile } from 'path-to-regexp';
 import { reverse, sortBy, take } from 'rambdax';
 import { langA, langB } from '../../../src/languages';
 import { getRedact } from '../../../src/RedactSensitiveTerms/service';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT, USER } from '../../../src/routes';
 import { Comment, DocReference, Lang, Term, Translation } from '../../../src/types';
-import config from '../config';
 import { db, WithoutId } from '../firebase';
 import { translate } from './i18n';
-import { getActivityItemComment, getActivityItemTerm } from './templates';
-import escape from 'lodash.escape';
+import { generateUrl, getActivityItemComment, getActivityItemTerm } from './templates';
 
 type TFunc = ReturnType<typeof translate>;
 type Redact = ReturnType<typeof getRedact>;
@@ -138,8 +136,6 @@ function getLinkForRef(ref: DocReference<unknown> | FirebaseFirestore.DocumentRe
             return '';
     }
 }
-
-const generateUrl = (route: string, params: object) => `${config.origin.main}${compile(route)(params)}`;
 
 const assertNever = (t: never) => {
     throw new Error(`Unexpected ${t}`);

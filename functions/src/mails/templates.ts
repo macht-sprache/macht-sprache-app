@@ -1,7 +1,9 @@
 import mjml2html from 'mjml';
 import type { MJMLJsonObject } from 'mjml-core';
+import { compile } from 'path-to-regexp';
 import { langA, langB } from '../../../src/languages';
 import { Lang } from '../../../src/types';
+import config from '../config';
 import { translate } from './i18n';
 
 type TemplateOptions = {
@@ -241,7 +243,7 @@ export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions
 };
 
 export const getWeeklyDigestMail = (
-    { recipientName, lang }: TemplateOptions,
+    { recipientName, lang, link }: TemplateOptions,
     content: MJMLJsonObject[]
 ): RenderedMailTemplate => {
     const t = translate(lang);
@@ -249,8 +251,10 @@ export const getWeeklyDigestMail = (
     const { html } = mjml2html(
         withBaseTemplate(
             [getText(t('greeting', { recipientName })), getText(t('weeklyDigest.intro'))],
-            [getSectionColumn(content), getSectionColumn([getText(t('weeklyDigest.unsubscribe'))])]
+            [getSectionColumn(content), getSectionColumn([getText(t('weeklyDigest.unsubscribe', { url: link }))])]
         )
     );
     return { html, subject: t('weeklyDigest.subject') };
 };
+
+export const generateUrl = (route: string, params: object) => `${config.origin.main}${compile(route)(params)}`;
