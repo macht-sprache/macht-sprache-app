@@ -1,10 +1,11 @@
 import type { MJMLJsonObject } from 'mjml-core';
+import { compile } from 'path-to-regexp';
 import { reverse, sortBy, take } from 'rambdax';
-import { generatePath } from 'react-router';
 import { langA, langB } from '../../../src/languages';
 import { getRedact } from '../../../src/RedactSensitiveTerms/service';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT, USER } from '../../../src/routes';
 import { Comment, DocReference, Lang, Term, Translation } from '../../../src/types';
+import config from '../config';
 import { db, WithoutId } from '../firebase';
 import { translate } from './i18n';
 import { getActivityItemComment, getActivityItemTerm } from './templates';
@@ -80,7 +81,7 @@ const getTermContent = async (t: TFunc, redact: Redact, termSnap: DocSnap<Term>)
     const term = termSnap.data();
     return getActivityItemTerm(
         t('weeklyDigest.newTerm', {
-            userUrl: generatePath(USER, { userId: term.creator.id }),
+            userUrl: generateUrl(USER, { userId: term.creator.id }),
             userName: term.creator.displayName,
         }),
         redact(term.value),
@@ -94,7 +95,7 @@ const getTranslationContent = async (t: TFunc, redact: Redact, translationSnap: 
     const term = (await translation.term.get()).data();
     return getActivityItemTerm(
         t('weeklyDigest.newTranslation', {
-            userUrl: generatePath(USER, { userId: translation.creator.id }),
+            userUrl: generateUrl(USER, { userId: translation.creator.id }),
             userName: translation.creator.displayName,
             termUrl: getLinkForRef(translation.term),
             term: redact(term?.value || ''),
@@ -113,7 +114,7 @@ const getCommentContent = async (t: TFunc, redact: Redact, commentSnap: DocSnap<
 
     return getActivityItemComment(
         t('weeklyDigest.newComment', {
-            userUrl: generatePath(USER, { userId: comment.creator.id }),
+            userUrl: generateUrl(USER, { userId: comment.creator.id }),
             userName: comment.creator.displayName,
             termUrl: getLinkForRef(comment.ref),
             term: redact(parentName ?? ''),
@@ -126,16 +127,18 @@ const getCommentContent = async (t: TFunc, redact: Redact, commentSnap: DocSnap<
 function getLinkForRef(ref: DocReference<unknown> | FirebaseFirestore.DocumentReference) {
     switch (ref.parent.id) {
         case 'terms':
-            return generatePath(TERM, { termId: ref.id });
+            return generateUrl(TERM, { termId: ref.id });
         case 'translations':
-            return generatePath(TRANSLATION_REDIRECT, { translationId: ref.id });
+            return generateUrl(TRANSLATION_REDIRECT, { translationId: ref.id });
         case 'translationExamples':
-            return generatePath(TRANSLATION_EXAMPLE_REDIRECT, { translationExampleId: ref.id });
+            return generateUrl(TRANSLATION_EXAMPLE_REDIRECT, { translationExampleId: ref.id });
         default:
             console.error(`Unexpected parentId ${ref.parent.id}`);
             return '';
     }
 }
+
+const generateUrl = (route: string, params: object) => `${config.origin.main}${compile(route)(params)}`;
 
 const assertNever = (t: never) => {
     throw new Error(`Unexpected ${t}`);
