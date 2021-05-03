@@ -3,7 +3,7 @@ import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
-import { Select } from '../Form/Input';
+import { Input, Select } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { formatDate } from '../FormatDate';
 import Header from '../Header';
@@ -11,6 +11,7 @@ import { collections } from '../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
 import { useRequestState } from '../hooks/useRequestState';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
+import { ModalDialog } from '../ModalDialog';
 import { Terms } from '../Terms/TermsSmall';
 import { GlobalSettings, User, UserProperties } from '../types';
 import { useLang } from '../useLang';
@@ -41,7 +42,8 @@ const useAuthUserInfos = () => {
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
-const sendWeeklyDigest = () => functions.httpsCallable('userManagement-sendWeeklyDigestTest')();
+const sendWeeklyDigestTest = (params: { from: string; to: string; limit: number }) =>
+    functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
 
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
@@ -80,21 +82,79 @@ export default function AdminPage() {
 }
 
 function WeeklyDigest() {
-    const [state, setState] = useState<'sending' | 'sent' | undefined>();
-
-    const send = () => {
-        setState('sending');
-        sendWeeklyDigest().then(() => {
-            setState('sent');
-        });
-    };
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <SingleColumn>
-            <ColumnHeading>Weekly digest mail</ColumnHeading>
-            <p>{state}</p>
-            <Button onClick={send}>send</Button>
+            <ColumnHeading>Digest Mail</ColumnHeading>
+            <Button onClick={() => setShowModal(true)}>Send or test digest mail…</Button>
+            {showModal && <WeeklyDigestModal onClose={() => setShowModal(false)} />}
         </SingleColumn>
+    );
+}
+
+function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
+    const [testMailState, setTestMailState] = useRequestState();
+    const [model, setModel] = useState({
+        from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        to: new Date(),
+        limit: 25,
+    });
+    const disabled = testMailState === 'IN_PROGRESS';
+
+    const updateModel = (update: Partial<typeof model>) => {
+        setTestMailState('INIT');
+        setModel(prev => ({ ...prev, ...update }));
+    };
+
+    const sendTestMail = () => {
+        setTestMailState('IN_PROGRESS');
+        sendWeeklyDigestTest({ from: model.from.toISOString(), to: model.to.toISOString(), limit: model.limit }).then(
+            () => setTestMailState('DONE'),
+            error => setTestMailState('ERROR', error)
+        );
+    };
+
+    return (
+        <ModalDialog onClose={onClose} title="Weekly Digest">
+            <p>
+                A mail to all users (that didn't unsubscribe) with all activity (up to the limit) in the specifed
+                time-range. Send a test mail to yourself first by clicking the "Send Test Mail"-button.
+            </p>
+            <InputContainer>
+                <Input
+                    span={4}
+                    disabled={disabled}
+                    type="datetime-local"
+                    label="From"
+                    onChange={event => updateModel({ from: new Date(event.target.value) })}
+                    value={dateToDateTimeLocal(model.from)}
+                />
+                <Input
+                    span={3}
+                    disabled={disabled}
+                    type="datetime-local"
+                    label="To"
+                    onChange={event => updateModel({ to: new Date(event.target.value) })}
+                    value={dateToDateTimeLocal(model.to)}
+                />
+                <Input
+                    span={1}
+                    disabled={disabled}
+                    type="number"
+                    label="Limit"
+                    onChange={event => updateModel({ limit: parseInt(event.target.value) })}
+                    value={model.limit}
+                />
+            </InputContainer>
+            <ButtonContainer>
+                <Button disabled={disabled || testMailState === 'DONE'} onClick={sendTestMail}>
+                    {testMailState === 'INIT' && 'Send Test Mail'}
+                    {testMailState === 'IN_PROGRESS' && 'Sending Test Mail…'}
+                    {testMailState === 'DONE' && 'Sent Test Mail!'}
+                </Button>
+            </ButtonContainer>
+        </ModalDialog>
     );
 }
 
@@ -384,3 +444,10 @@ function EnableNewUsersSetting({ globalSettings }: { globalSettings?: GlobalSett
         </InputContainer>
     );
 }
+
+const dateToDateTimeLocal = (date: Date) =>
+    `${padNumberZero(date.getFullYear(), 4)}-${padNumberZero(date.getMonth() + 1)}-${padNumberZero(
+        date.getDate()
+    )}T${padNumberZero(date.getHours())}:${padNumberZero(date.getMinutes())}`;
+
+const padNumberZero = (number: number, maxLength = 2) => number.toString().padStart(maxLength, '0');

@@ -120,8 +120,8 @@ export const sendActivationMail = functions.firestore
         await sendMail({ html, subject, to: authUser.email! });
     });
 
-export const sendWeeklyDigestMail = async (recipients: Recipent[], since: Date, limit: number) => {
-    const digestContent = await getDigestContent(since, limit);
+export const sendWeeklyDigestMail = async (recipients: Recipent[], from: Date, to: Date, limit: number) => {
+    const digestContent = await getDigestContent(from, to, limit);
 
     for (const recipient of recipients) {
         const { html, subject } = getWeeklyDigestMail(

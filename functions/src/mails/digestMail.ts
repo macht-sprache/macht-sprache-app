@@ -27,12 +27,16 @@ type Item =
           doc: DocSnap<Translation>;
       };
 
-export async function getDigestContent(since: Date, limit: number): Promise<{ [lang in Lang]: MJMLJsonObject[] }> {
+export async function getDigestContent(
+    from: Date,
+    to: Date,
+    limit: number
+): Promise<{ [lang in Lang]: MJMLJsonObject[] }> {
     const [sensitiveTermsSnap, commentsSnap, termsSnap, translationsSnap] = await Promise.all([
         db.collection('sensitiveTerms').doc('global').get(),
-        db.collection('comments').where('createdAt', '>=', since).get(),
-        db.collection('terms').where('createdAt', '>=', since).get(),
-        db.collection('translations').where('createdAt', '>=', since).get(),
+        db.collection('comments').where('createdAt', '>=', from).get(),
+        db.collection('terms').where('createdAt', '>=', from).get(),
+        db.collection('translations').where('createdAt', '>=', from).get(),
     ]);
 
     const sensitiveTerms: Set<string> = new Set(
@@ -48,7 +52,7 @@ export async function getDigestContent(since: Date, limit: number): Promise<{ [l
                 ...termsSnap.docs.map(doc => ({ type: 'Term', doc } as Item)),
                 ...translationsSnap.docs.map(doc => ({ type: 'Translation', doc } as Item)),
             ])
-        )
+        ).filter(item => item.doc.data().createdAt.toMillis() <= to.getTime())
     );
 
     const getContentForLang = (lang: Lang) => {

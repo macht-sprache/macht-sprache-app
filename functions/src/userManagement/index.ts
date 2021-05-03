@@ -223,19 +223,21 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     });
 });
 
-export const sendWeeklyDigestTest = functions.https.onCall(async (_, context) => {
-    const currentUserId = verifyUser(context);
-    await verifyAdmin(currentUserId);
+export const sendWeeklyDigestTest = functions.https.onCall(
+    async ({ from, to, limit }: { from: string; to: string; limit: number }, context) => {
+        const currentUserId = verifyUser(context);
+        await verifyAdmin(currentUserId);
 
-    const authUser = await auth.getUser(currentUserId);
-    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const authUser = await auth.getUser(currentUserId);
 
-    await sendWeeklyDigestMail(
-        [
-            { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langA },
-            { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langB },
-        ],
-        since,
-        20
-    );
-});
+        await sendWeeklyDigestMail(
+            [
+                { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langA },
+                { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langB },
+            ],
+            new Date(from),
+            new Date(to),
+            limit
+        );
+    }
+);
