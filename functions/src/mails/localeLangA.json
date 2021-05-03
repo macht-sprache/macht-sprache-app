@@ -19,7 +19,7 @@
     },
     "weeklyDigest": {
         "subject": "Weekly summary of activity on macht.sprache.",
-        "intro": "here is a summary of what happened this week on macht.sprache.:",
+        "intro": "Here is a summary of what happened this week on macht.sprache.:",
         "newComment": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> commented on <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a>",
         "newTerm": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> added a term",
         "newTranslation": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> added a translation for <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a>",

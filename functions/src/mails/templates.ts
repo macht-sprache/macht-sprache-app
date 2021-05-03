@@ -17,6 +17,12 @@ type RenderedMailTemplate = {
     html: string;
 };
 
+const colors = {
+    font: '#1e5166',
+    langA: '#9cdcb2',
+    langB: '#ceb9d2',
+};
+
 const head: MJMLJsonObject = {
     tagName: 'mj-head',
     attributes: {},
@@ -26,24 +32,10 @@ const head: MJMLJsonObject = {
             attributes: {},
             children: [
                 {
-                    tagName: 'mj-class',
-                    attributes: {
-                        name: 'black',
-                        color: 'black',
-                    },
-                },
-                {
-                    tagName: 'mj-class',
-                    attributes: {
-                        name: 'big',
-                        'font-size': '20px',
-                    },
-                },
-                {
                     tagName: 'mj-all',
                     attributes: {
                         'font-family': 'Courier New, Courier',
-                        color: '#1e5166',
+                        color: colors.font,
                     },
                 },
                 {
@@ -52,11 +44,6 @@ const head: MJMLJsonObject = {
                         padding: '10px 0',
                     },
                 },
-                {
-                    tagName: 'mj-style',
-                    attributes: {},
-                    content: '.button { color: red !important; text-decoration: underline !important; }',
-                },
             ],
         },
         {
@@ -64,7 +51,7 @@ const head: MJMLJsonObject = {
             attributes: { inline: 'inline' },
             content: `
             .link {
-                color: inherit
+                color: ${colors.font};
             }
             .userContent {
                 font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -79,7 +66,6 @@ const head: MJMLJsonObject = {
 const getButton = (content: string, href: string): MJMLJsonObject => ({
     tagName: 'mj-button',
     attributes: {
-        'css-class': 'button',
         href,
         'background-color': 'white',
         color: 'black',
@@ -115,7 +101,7 @@ const getActivityItem = (head: string, body: string, link: string, lang?: Lang):
         <a
             href="${link}"
             style="
-                color: currentColor;
+                color: ${colors.font};
                 display: block;
                 border: solid 2px ${getLangColor(lang)};
                 text-decoration: none;">
@@ -159,12 +145,12 @@ export const getActivityItemComment = (head: string, body: string, link: string,
 
 const getLangColor = (lang?: Lang) => {
     if (lang === langA) {
-        return '#9cdcb2';
+        return colors.langA;
     }
     if (lang === langB) {
-        return '#ceb9d2';
+        return colors.langB;
     }
-    return 'currentColor';
+    return colors.font;
 };
 
 const withBaseTemplate = (firstColumnContent: MJMLJsonObject[], columns: MJMLJsonObject[] = []): MJMLJsonObject => ({
