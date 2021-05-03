@@ -104,10 +104,7 @@ const getActivityItem = (head: string, body: string, link: string, lang?: Lang):
                 color: ${colors.font};
                 display: block;
                 border: solid 2px ${getLangColor(lang)};
-                text-decoration: none;">
-            ${body}
-        </a>
-    `;
+                text-decoration: none;">${body}</a>`;
 
     return {
         tagName: 'mj-text',
@@ -135,9 +132,7 @@ export const getActivityItemTerm = (head: string, body: string, link: string, la
 export const getActivityItemComment = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
     return getActivityItem(
         head,
-        `<div class="userContent" style="padding: 10px">
-            ${body}
-        </div>`,
+        `<div class="userContent" style="padding: 10px">${body.replace(/\r?\n/g, '<br>')}</div>`,
         link,
         lang
     );
