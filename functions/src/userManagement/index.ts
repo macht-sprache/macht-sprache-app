@@ -224,7 +224,15 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
 });
 
 export const sendWeeklyDigestTest = functions.https.onCall(
-    async ({ from, to, limit }: { from: string; to: string; limit: number }, context) => {
+    async (
+        {
+            from,
+            to,
+            limit,
+            intro,
+        }: { from: string; to: string; limit: number; intro: { [langA]: string; [langB]: string } },
+        context
+    ) => {
         const currentUserId = verifyUser(context);
         await verifyAdmin(currentUserId);
 
@@ -235,9 +243,12 @@ export const sendWeeklyDigestTest = functions.https.onCall(
                 { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langA },
                 { id: currentUserId, displayName: authUser.displayName!, email: authUser.email!, lang: langB },
             ],
-            new Date(from),
-            new Date(to),
-            limit
+            {
+                from: new Date(from),
+                to: new Date(to),
+                limit,
+                intro,
+            }
         );
     }
 );

@@ -23,6 +23,7 @@
         "html-to-text": "^7.0.0",
         "i18next": "^19.9.2",
         "lodash.escape": "^4.0.1",
+        "markdown-it": "^12.0.6",
         "metascraper": "^5.18.12",
         "metascraper-author": "^5.18.12",
         "metascraper-date": "^5.18.12",
@@ -43,6 +44,7 @@
     "devDependencies": {
         "@types/html-to-text": "^6.0.0",
         "@types/lodash.escape": "^4.0.6",
+        "@types/markdown-it": "^12.0.1",
         "@types/mjml": "^4.7.0",
         "@types/node-fetch": "^2.5.8",
         "@types/nodemailer": "^6.4.0",

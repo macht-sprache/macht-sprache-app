@@ -11,7 +11,7 @@ import {
     getVerifyEmailTemplate,
     getWeeklyDigestMail,
 } from './templates';
-import { langA } from '../../../src/languages';
+import { langA, langB } from '../../../src/languages';
 import { getDigestContent } from './digestMail';
 
 export type Recipent = UserMini & { email: string; lang: Lang };
@@ -120,8 +120,18 @@ export const sendActivationMail = functions.firestore
         await sendMail({ html, subject, to: authUser.email! });
     });
 
-export const sendWeeklyDigestMail = async (recipients: Recipent[], from: Date, to: Date, limit: number) => {
-    const digestContent = await getDigestContent(from, to, limit);
+type DigestMailConfig = {
+    from: Date;
+    to: Date;
+    limit: number;
+    intro: {
+        [langA]: string;
+        [langB]: string;
+    };
+};
+
+export const sendWeeklyDigestMail = async (recipients: Recipent[], config: DigestMailConfig) => {
+    const digestContent = await getDigestContent(config.from, config.to, config.limit);
 
     for (const recipient of recipients) {
         const { html, subject } = getWeeklyDigestMail(
@@ -130,6 +140,7 @@ export const sendWeeklyDigestMail = async (recipients: Recipent[], from: Date, t
                 lang: recipient.lang,
                 link: generateUrl(USER, { userId: recipient.id }),
             },
+            config.intro[recipient.lang],
             digestContent[recipient.lang]
         );
         await sendMail({ html, subject, to: recipient.email });

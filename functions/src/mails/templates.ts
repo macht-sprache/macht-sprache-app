@@ -1,3 +1,4 @@
+import MarkdownIt from 'markdown-it';
 import mjml2html from 'mjml';
 import type { MJMLJsonObject } from 'mjml-core';
 import { compile } from 'path-to-regexp';
@@ -50,7 +51,15 @@ const head: MJMLJsonObject = {
             tagName: 'mj-style',
             attributes: { inline: 'inline' },
             content: `
-            .link {
+            .intro p {
+                font-family: Courier New, Courier;
+                color: ${colors.font};
+                margin: 0 0 1rem;
+            }
+            .intro p + .intro p {
+                margin-top: 1rem;
+            }
+            .link, .intro a {
                 color: ${colors.font};
             }
             .userContent {
@@ -75,9 +84,11 @@ const getButton = (content: string, href: string): MJMLJsonObject => ({
     content,
 });
 
-const getText = (content: string): MJMLJsonObject => ({
+const getText = (content: string, className?: string): MJMLJsonObject => ({
     tagName: 'mj-text',
-    attributes: {},
+    attributes: {
+        'css-class': className,
+    },
     content,
 });
 
@@ -225,13 +236,18 @@ export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions
 
 export const getWeeklyDigestMail = (
     { recipientName, lang, link }: TemplateOptions,
+    intro: string,
     content: MJMLJsonObject[]
 ): RenderedMailTemplate => {
     const t = translate(lang);
+    const md = new MarkdownIt();
 
     const { html } = mjml2html(
         withBaseTemplate(
-            [getText(t('greeting', { recipientName })), getText(t('weeklyDigest.intro'))],
+            [
+                getText(t('greeting', { recipientName })),
+                getText(intro ? md.render(intro) : t('weeklyDigest.intro'), 'intro'),
+            ],
             [getSectionColumn(content), getSectionColumn([getText(t('weeklyDigest.unsubscribe', { url: link }))])]
         )
     );

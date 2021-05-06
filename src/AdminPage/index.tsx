@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
-import { Input, Select } from '../Form/Input';
+import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { formatDate } from '../FormatDate';
 import Header from '../Header';
 import { collections } from '../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
 import { useRequestState } from '../hooks/useRequestState';
+import { langA, langB } from '../languages';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { ModalDialog } from '../ModalDialog';
 import { Terms } from '../Terms/TermsSmall';
@@ -42,8 +44,15 @@ const useAuthUserInfos = () => {
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
-const sendWeeklyDigestTest = (params: { from: string; to: string; limit: number }) =>
-    functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
+const sendWeeklyDigestTest = (params: {
+    from: string;
+    to: string;
+    limit: number;
+    intro: {
+        [langA]: string;
+        [langB]: string;
+    };
+}) => functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
 
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
@@ -94,11 +103,14 @@ function WeeklyDigest() {
 }
 
 function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation();
     const [testMailState, setTestMailState] = useRequestState();
     const [model, setModel] = useState({
         from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         to: new Date(),
         limit: 25,
+        introLangA: '',
+        introLangB: '',
     });
     const disabled = testMailState === 'IN_PROGRESS';
 
@@ -109,14 +121,22 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
 
     const sendTestMail = () => {
         setTestMailState('IN_PROGRESS');
-        sendWeeklyDigestTest({ from: model.from.toISOString(), to: model.to.toISOString(), limit: model.limit }).then(
+        sendWeeklyDigestTest({
+            from: model.from.toISOString(),
+            to: model.to.toISOString(),
+            limit: model.limit,
+            intro: {
+                [langA]: model.introLangA,
+                [langB]: model.introLangB,
+            },
+        }).then(
             () => setTestMailState('DONE'),
             error => setTestMailState('ERROR', error)
         );
     };
 
     return (
-        <ModalDialog onClose={onClose} title="Weekly Digest">
+        <ModalDialog onClose={onClose} isDismissable={false} title="Weekly Digest">
             <p>
                 A mail to all users (that didn't unsubscribe) with all activity (up to the limit) in the specifed
                 time-range. Send a test mail to yourself first by clicking the "Send Test Mail"-button.
@@ -146,9 +166,22 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
                     onChange={event => updateModel({ limit: parseInt(event.target.value) })}
                     value={model.limit}
                 />
+                <Textarea
+                    label={`Intro ${t(`common.langLabels.${langA}` as const)}`}
+                    placeholder="Leave blank for default intro"
+                    value={model.introLangA}
+                    onChange={event => updateModel({ introLangA: event.target.value })}
+                />
+                <Textarea
+                    label={`Intro ${t(`common.langLabels.${langB}` as const)}`}
+                    placeholder="Leave blank for default intro"
+                    value={model.introLangB}
+                    onChange={event => updateModel({ introLangB: event.target.value })}
+                />
             </InputContainer>
             <ButtonContainer>
-                <Button disabled={disabled || testMailState === 'DONE'} onClick={sendTestMail}>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button disabled={disabled || testMailState === 'DONE'} onClick={sendTestMail} primary>
                     {testMailState === 'INIT' && 'Send Test Mail'}
                     {testMailState === 'IN_PROGRESS' && 'Sending Test Mail…'}
                     {testMailState === 'DONE' && 'Sent Test Mail!'}
