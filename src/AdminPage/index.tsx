@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
@@ -374,12 +374,31 @@ function UserItem({
     );
 }
 
+function useNewsletterCsvObjectUrl(users: User[], authUserInfos: AuthUserInfos) {
+    const csvHeader = 'Email,Name';
+    const getCsvRow = (user: User) => `${authUserInfos[user.id]?.email ?? ''},${user.displayName}`;
+    const csv = [csvHeader, ...users.map(getCsvRow), ''].join('\n');
+    const objectUrl = useMemo(() => URL.createObjectURL(new Blob([csv])), [csv]);
+
+    useEffect(() => {
+        if (objectUrl) {
+            return () => URL.revokeObjectURL(objectUrl);
+        }
+    }, [objectUrl]);
+
+    return objectUrl;
+}
+
 function UserStats({ getUsers, getUserProperties, getUserSettings, authUserInfos }: UserStatsProps) {
     const users = getUsers();
     const userSettings = getUserSettings();
     const verifiedUsers = users.filter(user => authUserInfos[user.id]?.verified);
     const newsletterSubscribers = verifiedUsers.filter(user => userSettings[user.id]?.newsletter);
+    const newsletterUnsubscribers = verifiedUsers.filter(user => !userSettings[user.id]?.newsletter);
     const digestSubscribers = verifiedUsers.filter(user => userSettings[user.id]?.digestMail);
+
+    const newsletterSubscribersUrl = useNewsletterCsvObjectUrl(newsletterSubscribers, authUserInfos);
+    const newsletterUnsubscribersUrl = useNewsletterCsvObjectUrl(newsletterUnsubscribers, authUserInfos);
 
     return (
         <SingleColumn>
@@ -398,6 +417,13 @@ function UserStats({ getUsers, getUserProperties, getUserSettings, authUserInfos
                 {digestSubscribers.length}
                 <br />
             </p>
+            <a href={newsletterSubscribersUrl} download="newsletter-subscribe.csv">
+                Newsletter Subscribe List
+            </a>
+            {' | '}
+            <a href={newsletterUnsubscribersUrl} download="newsletter-unsubscribe.csv">
+                Newsletter Unsubscribe List
+            </a>
         </SingleColumn>
     );
 }
