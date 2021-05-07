@@ -56,9 +56,6 @@ const head: MJMLJsonObject = {
                 color: ${colors.font};
                 margin: 0 0 1rem;
             }
-            .intro p + .intro p {
-                margin-top: 1rem;
-            }
             .link, .intro a {
                 color: ${colors.font};
             }
@@ -112,7 +109,7 @@ const getActivityItem = (head: string, body: string, link: string, lang?: Lang):
         <a
             href="${link}"
             style="
-                color: ${colors.font};
+                color: ${lang ? 'black' : colors.font};
                 display: block;
                 border: solid 2px ${getLangColor(lang)};
                 text-decoration: none;">${body}</a>`;
