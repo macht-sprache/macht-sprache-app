@@ -13,8 +13,9 @@ import {
 } from './templates';
 import { langA, langB } from '../../../src/languages';
 import { getDigestContent } from './digestMail';
+import { logger } from 'firebase-functions';
 
-export type Recipent = UserMini & { email: string; lang: Lang };
+export type Recipient = UserMini & { email: string; lang: Lang };
 
 type MailOptions = {
     html: string;
@@ -130,10 +131,11 @@ type DigestMailConfig = {
     };
 };
 
-export const sendWeeklyDigestMail = async (recipients: Recipent[], config: DigestMailConfig) => {
+export const sendWeeklyDigestMail = async (recipients: Recipient[], config: DigestMailConfig) => {
     const digestContent = await getDigestContent(config.from, config.to, config.limit);
 
     for (const recipient of recipients) {
+        logger.info(`Sending digest mail to user ${recipient.id}`);
         const { html, subject } = getWeeklyDigestMail(
             {
                 recipientName: recipient.displayName,

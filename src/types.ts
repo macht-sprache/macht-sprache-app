@@ -183,6 +183,7 @@ export interface UserSettings {
     lang: Lang;
     showRedacted: boolean;
     newsletter: boolean;
+    digestMail: boolean;
 }
 
 export interface UserProperties {

@@ -1,4 +1,4 @@
-import { mergeDeepRight } from 'rambdax';
+import { Dictionary, mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
 import {
@@ -12,7 +12,7 @@ import {
     UserSettings,
 } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
-import { sendWeeklyDigestMail } from '../mails';
+import { Recipient, sendWeeklyDigestMail } from '../mails';
 
 const verifyAdmin = async (userId: string) => {
     const snap = await db.collection('userProperties').doc(userId).get();
@@ -76,6 +76,7 @@ export const postRegistrationHandler = functions.https.onCall(
                 lang,
                 newsletter,
                 showRedacted: false,
+                digestMail: true,
             };
 
             const userProperties: UserProperties = {
@@ -155,7 +156,12 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
     for (const authUser of authUsers) {
         const displayName = authUser.displayName || '';
         const defaultUser: WithoutId<User> = { displayName, displayNameLowerCase: displayName.toLowerCase() };
-        const defaultUserSettings: UserSettings = { lang: langA, newsletter: false, showRedacted: false };
+        const defaultUserSettings: UserSettings = {
+            lang: langA,
+            newsletter: false,
+            showRedacted: false,
+            digestMail: true,
+        };
         const defaultUserProperties: UserProperties = {
             admin: false,
             enabled: true,
@@ -223,16 +229,15 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     });
 });
 
+type DigestMailParams = {
+    from: string;
+    to: string;
+    limit: number;
+    intro: { [langA]: string; [langB]: string };
+};
+
 export const sendWeeklyDigestTest = functions.https.onCall(
-    async (
-        {
-            from,
-            to,
-            limit,
-            intro,
-        }: { from: string; to: string; limit: number; intro: { [langA]: string; [langB]: string } },
-        context
-    ) => {
+    async ({ from, to, limit, intro }: DigestMailParams, context) => {
         const currentUserId = verifyUser(context);
         await verifyAdmin(currentUserId);
 
@@ -250,5 +255,46 @@ export const sendWeeklyDigestTest = functions.https.onCall(
                 intro,
             }
         );
+    }
+);
+
+export const sendWeeklyDigest = functions.https.onCall(
+    async ({ from, to, limit, intro }: DigestMailParams, context) => {
+        const currentUserId = verifyUser(context);
+        await verifyAdmin(currentUserId);
+
+        const userSettingsSnap = await db.collection('userSettings').where('digestMail', '==', true).get();
+        const userSettingsById = userSettingsSnap.docs.reduce<Dictionary<UserSettings>>(
+            (acc, cur) => ({
+                ...acc,
+                [cur.id]: cur.data() as UserSettings,
+            }),
+            {}
+        );
+        const userIdentifiers = userSettingsSnap.docs.map(doc => ({ uid: doc.id }));
+        const { users: authUsers } = await auth.getUsers(userIdentifiers);
+        const recipients = authUsers
+            .filter(authUser => authUser.emailVerified)
+            .map(
+                (authUser): Partial<Recipient> => ({
+                    id: authUser.uid,
+                    displayName: authUser.displayName,
+                    email: authUser.email,
+                    lang: userSettingsById[authUser.uid]?.lang,
+                })
+            )
+            .filter(
+                (recipient): recipient is Recipient =>
+                    !!(recipient.id && recipient.displayName && recipient.email && recipient.lang)
+            );
+
+        logger.info(`Sending digest mail to ${recipients.length} recipients`);
+
+        await sendWeeklyDigestMail(recipients, {
+            from: new Date(from),
+            to: new Date(to),
+            limit,
+            intro,
+        });
     }
 );

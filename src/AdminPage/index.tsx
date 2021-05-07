@@ -44,7 +44,8 @@ const useAuthUserInfos = () => {
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
-const sendWeeklyDigestTest = (params: {
+
+type WeeklyDigestParams = {
     from: string;
     to: string;
     limit: number;
@@ -52,7 +53,11 @@ const sendWeeklyDigestTest = (params: {
         [langA]: string;
         [langB]: string;
     };
-}) => functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
+};
+const sendWeeklyDigestTest = (params: WeeklyDigestParams) =>
+    functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
+const sendWeeklyDigest = (params: WeeklyDigestParams) =>
+    functions.httpsCallable('userManagement-sendWeeklyDigest')(params);
 
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
@@ -105,6 +110,7 @@ function WeeklyDigest() {
 function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
     const { t } = useTranslation();
     const [testMailState, setTestMailState] = useRequestState();
+    const [realMailState, setRealMailState] = useRequestState();
     const [model, setModel] = useState({
         from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         to: new Date(),
@@ -112,10 +118,15 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
         introLangA: '',
         introLangB: '',
     });
-    const disabled = testMailState === 'IN_PROGRESS';
+    const disabled = testMailState === 'IN_PROGRESS' || realMailState === 'IN_PROGRESS';
 
     const updateModel = (update: Partial<typeof model>) => {
-        setTestMailState('INIT');
+        if (testMailState !== 'INIT') {
+            setTestMailState('INIT');
+        }
+        if (realMailState !== 'INIT') {
+            setRealMailState('INIT');
+        }
         setModel(prev => ({ ...prev, ...update }));
     };
 
@@ -132,6 +143,22 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
         }).then(
             () => setTestMailState('DONE'),
             error => setTestMailState('ERROR', error)
+        );
+    };
+
+    const sendRealMail = () => {
+        setRealMailState('IN_PROGRESS');
+        sendWeeklyDigest({
+            from: model.from.toISOString(),
+            to: model.to.toISOString(),
+            limit: model.limit,
+            intro: {
+                [langA]: model.introLangA,
+                [langB]: model.introLangB,
+            },
+        }).then(
+            () => setRealMailState('DONE'),
+            error => setRealMailState('ERROR', error)
         );
     };
 
@@ -182,9 +209,18 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
                 <Button disabled={disabled || testMailState === 'DONE'} onClick={sendTestMail} primary>
-                    {testMailState === 'INIT' && 'Send Test Mail'}
+                    {(testMailState === 'INIT' || testMailState === 'ERROR') && 'Send Test Mail'}
                     {testMailState === 'IN_PROGRESS' && 'Sending Test Mail…'}
                     {testMailState === 'DONE' && 'Sent Test Mail!'}
+                </Button>
+                <Button
+                    disabled={disabled || testMailState !== 'DONE' || realMailState === 'DONE'}
+                    onClick={sendRealMail}
+                    primary
+                >
+                    {(realMailState === 'INIT' || realMailState === 'ERROR') && 'Send to All Subscribers'}
+                    {realMailState === 'IN_PROGRESS' && 'Sending to All Subscribers…'}
+                    {realMailState === 'DONE' && 'Sent Mail to All!'}
                 </Button>
             </ButtonContainer>
         </ModalDialog>
