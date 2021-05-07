@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
@@ -15,7 +15,7 @@ import { langA, langB } from '../languages';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import { ModalDialog } from '../ModalDialog';
 import { Terms } from '../Terms/TermsSmall';
-import { GlobalSettings, User, UserProperties } from '../types';
+import { GlobalSettings, User, UserProperties, UserSettings } from '../types';
 import { useLang } from '../useLang';
 import { UserInlineDisplay } from '../UserInlineDisplay';
 import s from './style.module.css';
@@ -26,7 +26,11 @@ type AuthUserInfos = Partial<Record<string, { email: string; verified: boolean; 
 type UserListProps = {
     getUsers: GetList<User>;
     getUserProperties: GetListById<UserProperties>;
-    getGlobalSettings: Get<GlobalSettings>;
+    authUserInfos: AuthUserInfos;
+};
+
+type UserStatsProps = UserListProps & {
+    getUserSettings: GetListById<UserSettings>;
 };
 
 const useAuthUserInfos = () => {
@@ -67,16 +71,24 @@ const deleteAllContentOfUser = (userId: string) => {
 export default function AdminPage() {
     const getUsers = useCollection(collections.users);
     const getUserProperties = useCollectionById(collections.userProperties);
+    const getUserSettings = useCollectionById(collections.userSettings);
     const getGlobalSettings = useDocument(collections.settings.doc('global'));
-    const userListProps = { getUsers, getUserProperties, getGlobalSettings };
     const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', true));
+    const authUserInfos = useAuthUserInfos();
+
+    const userListProps = { getUsers, getUserProperties, authUserInfos };
 
     return (
         <>
             <Header>Administration</Header>
 
             <WeeklyDigest />
+
+            <GlobalSetting getGlobalSettings={getGlobalSettings} />
+
             <UserList {...userListProps} />
+
+            <UserStats {...userListProps} getUserSettings={getUserSettings} />
 
             <SingleColumn>
                 <ColumnHeading>Hidden Terms</ColumnHeading>
@@ -227,9 +239,18 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
     );
 }
 
-function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListProps) {
+function GlobalSetting({ getGlobalSettings }: { getGlobalSettings: Get<GlobalSettings> }) {
+    const globalSettings = getGlobalSettings(true) || { enableNewUsers: true };
+    return (
+        <SingleColumn>
+            <ColumnHeading>Global Settings</ColumnHeading>
+            <EnableNewUsersSetting globalSettings={globalSettings} />
+        </SingleColumn>
+    );
+}
+
+function UserList({ getUsers, getUserProperties, authUserInfos }: UserListProps) {
     const [sortBy, setSortBy] = useState('name');
-    const authUserInfos = useAuthUserInfos();
     const users = [...getUsers()].sort((a, b) => {
         if (sortBy === 'name') {
             return a.displayName.localeCompare(b.displayName);
@@ -244,47 +265,38 @@ function UserList({ getUsers, getUserProperties, getGlobalSettings }: UserListPr
         }
     });
     const userProperties = getUserProperties();
-    const globalSettings = getGlobalSettings(true) || { enableNewUsers: true };
-
     const filters = ['name', 'date'];
 
     return (
-        <>
-            <SingleColumn>
-                <ColumnHeading>Global Settings</ColumnHeading>
-                <EnableNewUsersSetting globalSettings={globalSettings} />
-            </SingleColumn>
-
-            <FullWidthColumn>
-                <ColumnHeading>Users</ColumnHeading>
-                <div className={s.sortBy}>
-                    <div>Sort by:</div>
-                    <HorizontalRadioContainer>
-                        {filters.map(filter => (
-                            <HorizontalRadio
-                                label={filter}
-                                key={filter}
-                                value={filter}
-                                checked={filter === sortBy}
-                                onChange={() => {
-                                    setSortBy(filter);
-                                }}
-                            />
-                        ))}
-                    </HorizontalRadioContainer>
-                </div>
-                <ul className={s.userList}>
-                    {users.map(user => (
-                        <UserItem
-                            key={user.id}
-                            user={user}
-                            properties={userProperties[user.id]}
-                            authInfo={authUserInfos[user.id]}
+        <FullWidthColumn>
+            <ColumnHeading>Users</ColumnHeading>
+            <div className={s.sortBy}>
+                <div>Sort by:</div>
+                <HorizontalRadioContainer>
+                    {filters.map(filter => (
+                        <HorizontalRadio
+                            label={filter}
+                            key={filter}
+                            value={filter}
+                            checked={filter === sortBy}
+                            onChange={() => {
+                                setSortBy(filter);
+                            }}
                         />
                     ))}
-                </ul>
-            </FullWidthColumn>
-        </>
+                </HorizontalRadioContainer>
+            </div>
+            <ul className={s.userList}>
+                {users.map(user => (
+                    <UserItem
+                        key={user.id}
+                        user={user}
+                        properties={userProperties[user.id]}
+                        authInfo={authUserInfos[user.id]}
+                    />
+                ))}
+            </ul>
+        </FullWidthColumn>
     );
 }
 
@@ -359,6 +371,60 @@ function UserItem({
                 <DeleteContentButton user={user} />
             </ButtonContainer>
         </li>
+    );
+}
+
+function useNewsletterCsvObjectUrl(users: User[], authUserInfos: AuthUserInfos) {
+    const csvHeader = 'Email,Name';
+    const getCsvRow = (user: User) => `${authUserInfos[user.id]?.email ?? ''},${user.displayName}`;
+    const csv = [csvHeader, ...users.map(getCsvRow), ''].join('\n');
+    const objectUrl = useMemo(() => URL.createObjectURL(new Blob([csv])), [csv]);
+
+    useEffect(() => {
+        if (objectUrl) {
+            return () => URL.revokeObjectURL(objectUrl);
+        }
+    }, [objectUrl]);
+
+    return objectUrl;
+}
+
+function UserStats({ getUsers, getUserProperties, getUserSettings, authUserInfos }: UserStatsProps) {
+    const users = getUsers();
+    const userSettings = getUserSettings();
+    const verifiedUsers = users.filter(user => authUserInfos[user.id]?.verified);
+    const newsletterSubscribers = verifiedUsers.filter(user => userSettings[user.id]?.newsletter);
+    const newsletterUnsubscribers = verifiedUsers.filter(user => !userSettings[user.id]?.newsletter);
+    const digestSubscribers = verifiedUsers.filter(user => userSettings[user.id]?.digestMail);
+
+    const newsletterSubscribersUrl = useNewsletterCsvObjectUrl(newsletterSubscribers, authUserInfos);
+    const newsletterUnsubscribersUrl = useNewsletterCsvObjectUrl(newsletterUnsubscribers, authUserInfos);
+
+    return (
+        <SingleColumn>
+            <ColumnHeading>User Stats</ColumnHeading>
+            <p>
+                <strong>Users: </strong>
+                {users.length}
+                <br />
+                <strong>Verified Users: </strong>
+                {verifiedUsers.length}
+                <br />
+                <strong>Newsletter Subscribers: </strong>
+                {newsletterSubscribers.length}
+                <br />
+                <strong>Digest Subscribers: </strong>
+                {digestSubscribers.length}
+                <br />
+            </p>
+            <a href={newsletterSubscribersUrl} download="newsletter-subscribe.csv">
+                Newsletter Subscribe List
+            </a>
+            {' | '}
+            <a href={newsletterUnsubscribersUrl} download="newsletter-unsubscribe.csv">
+                Newsletter Unsubscribe List
+            </a>
+        </SingleColumn>
     );
 }
 
