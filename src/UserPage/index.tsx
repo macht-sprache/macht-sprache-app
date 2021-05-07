@@ -283,6 +283,14 @@ function EditUserSettings({ user }: { user: User }) {
                 onChange={event => onChange({ newsletter: event.target.checked })}
                 label={t('auth.register.newsletter')}
             />
+
+            <h3>{t('common.notifications')}</h3>
+
+            <Checkbox
+                checked={userSettings.digestMail}
+                onChange={event => onChange({ digestMail: event.target.checked })}
+                label={t('userPage.notifications.digest')}
+            />
         </div>
     );
 }

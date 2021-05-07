@@ -62,6 +62,7 @@
         "viewAll": "show all",
         "optional": "optional",
         "newsletter": "Newsletter",
+        "notifications": "Notifications",
         "activity": "Activity"
     },
     "nav": {
@@ -305,6 +306,9 @@
         "hideRedactedHeading": "Sensitive terms",
         "hideRedactedDescription": "By default, <i>macht.sprache.</i> hides obviously offensive terms (e.g. n***o). If you would prefer to see them for the sake of clarity, you can disable this feature here.",
         "hideRedacted": "Hide offensive terms",
+        "notifications": {
+            "digest": "Send me a weekly summary of what happened on macht.sprache."
+        },
         "bio": "Bio",
         "addBio": "You can add a little bio about yourself <AddDescription>here</AddDescription>",
         "editInfo": "Edit your profile information",

@@ -1,11 +1,21 @@
 import { htmlToText } from 'html-to-text';
 import nodemailer from 'nodemailer';
-import { Lang } from '../../../src/types';
-import { REGISTER_POST, FORGOT_PASSWORD } from '../../../src/routes';
+import { Lang, UserMini } from '../../../src/types';
+import { REGISTER_POST, FORGOT_PASSWORD, USER } from '../../../src/routes';
 import config from '../config';
 import { auth, db, functions } from '../firebase';
-import { getActivationMail, getResetEmail, getVerifyEmailTemplate } from './templates';
-import { langA } from '../../../src/languages';
+import {
+    generateUrl,
+    getActivationMail,
+    getResetEmail,
+    getVerifyEmailTemplate,
+    getWeeklyDigestMail,
+} from './templates';
+import { langA, langB } from '../../../src/languages';
+import { getDigestContent } from './digestMail';
+import { logger } from 'firebase-functions';
+
+export type Recipient = UserMini & { email: string; lang: Lang };
 
 type MailOptions = {
     html: string;
@@ -110,3 +120,31 @@ export const sendActivationMail = functions.firestore
 
         await sendMail({ html, subject, to: authUser.email! });
     });
+
+type DigestMailConfig = {
+    from: Date;
+    to: Date;
+    limit: number;
+    intro: {
+        [langA]: string;
+        [langB]: string;
+    };
+};
+
+export const sendWeeklyDigestMail = async (recipients: Recipient[], config: DigestMailConfig) => {
+    const digestContent = await getDigestContent(config.from, config.to, config.limit);
+
+    for (const recipient of recipients) {
+        logger.info(`Sending digest mail to user ${recipient.id}`);
+        const { html, subject } = getWeeklyDigestMail(
+            {
+                recipientName: recipient.displayName,
+                lang: recipient.lang,
+                link: generateUrl(USER, { userId: recipient.id }),
+            },
+            config.intro[recipient.lang],
+            digestContent[recipient.lang]
+        );
+        await sendMail({ html, subject, to: recipient.email });
+    }
+};

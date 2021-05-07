@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 import { functions } from '../firebase';
 import Button, { ButtonContainer } from '../Form/Button';
 import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRadio';
-import { Select } from '../Form/Input';
+import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { formatDate } from '../FormatDate';
 import Header from '../Header';
 import { collections } from '../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
 import { useRequestState } from '../hooks/useRequestState';
+import { langA, langB } from '../languages';
 import { ColumnHeading, FullWidthColumn, SingleColumn } from '../Layout/Columns';
+import { ModalDialog } from '../ModalDialog';
 import { Terms } from '../Terms/TermsSmall';
 import { GlobalSettings, User, UserProperties } from '../types';
 import { useLang } from '../useLang';
@@ -42,6 +45,20 @@ const useAuthUserInfos = () => {
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
 
+type WeeklyDigestParams = {
+    from: string;
+    to: string;
+    limit: number;
+    intro: {
+        [langA]: string;
+        [langB]: string;
+    };
+};
+const sendWeeklyDigestTest = (params: WeeklyDigestParams) =>
+    functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
+const sendWeeklyDigest = (params: WeeklyDigestParams) =>
+    functions.httpsCallable('userManagement-sendWeeklyDigest')(params);
+
 const deleteAllContentOfUser = (userId: string) => {
     const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
     return fn({ userId });
@@ -57,6 +74,8 @@ export default function AdminPage() {
     return (
         <>
             <Header>Administration</Header>
+
+            <WeeklyDigest />
             <UserList {...userListProps} />
 
             <SingleColumn>
@@ -73,6 +92,138 @@ export default function AdminPage() {
                 </ButtonContainer>
             </SingleColumn>
         </>
+    );
+}
+
+function WeeklyDigest() {
+    const [showModal, setShowModal] = useState(false);
+
+    return (
+        <SingleColumn>
+            <ColumnHeading>Digest Mail</ColumnHeading>
+            <Button onClick={() => setShowModal(true)}>Send or test digest mail…</Button>
+            {showModal && <WeeklyDigestModal onClose={() => setShowModal(false)} />}
+        </SingleColumn>
+    );
+}
+
+function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
+    const { t } = useTranslation();
+    const [testMailState, setTestMailState] = useRequestState();
+    const [realMailState, setRealMailState] = useRequestState();
+    const [model, setModel] = useState({
+        from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+        to: new Date(),
+        limit: 25,
+        introLangA: '',
+        introLangB: '',
+    });
+    const disabled = testMailState === 'IN_PROGRESS' || realMailState === 'IN_PROGRESS';
+
+    const updateModel = (update: Partial<typeof model>) => {
+        if (testMailState !== 'INIT') {
+            setTestMailState('INIT');
+        }
+        if (realMailState !== 'INIT') {
+            setRealMailState('INIT');
+        }
+        setModel(prev => ({ ...prev, ...update }));
+    };
+
+    const sendTestMail = () => {
+        setTestMailState('IN_PROGRESS');
+        sendWeeklyDigestTest({
+            from: model.from.toISOString(),
+            to: model.to.toISOString(),
+            limit: model.limit,
+            intro: {
+                [langA]: model.introLangA,
+                [langB]: model.introLangB,
+            },
+        }).then(
+            () => setTestMailState('DONE'),
+            error => setTestMailState('ERROR', error)
+        );
+    };
+
+    const sendRealMail = () => {
+        setRealMailState('IN_PROGRESS');
+        sendWeeklyDigest({
+            from: model.from.toISOString(),
+            to: model.to.toISOString(),
+            limit: model.limit,
+            intro: {
+                [langA]: model.introLangA,
+                [langB]: model.introLangB,
+            },
+        }).then(
+            () => setRealMailState('DONE'),
+            error => setRealMailState('ERROR', error)
+        );
+    };
+
+    return (
+        <ModalDialog onClose={onClose} isDismissable={false} title="Weekly Digest">
+            <p>
+                A mail to all users (that didn't unsubscribe) with all activity (up to the limit) in the specifed
+                time-range. Send a test mail to yourself first by clicking the "Send Test Mail"-button.
+            </p>
+            <InputContainer>
+                <Input
+                    span={4}
+                    disabled={disabled}
+                    type="datetime-local"
+                    label="From"
+                    onChange={event => updateModel({ from: new Date(event.target.value) })}
+                    value={dateToDateTimeLocal(model.from)}
+                />
+                <Input
+                    span={3}
+                    disabled={disabled}
+                    type="datetime-local"
+                    label="To"
+                    onChange={event => updateModel({ to: new Date(event.target.value) })}
+                    value={dateToDateTimeLocal(model.to)}
+                />
+                <Input
+                    span={1}
+                    disabled={disabled}
+                    type="number"
+                    label="Limit"
+                    onChange={event => updateModel({ limit: parseInt(event.target.value) })}
+                    value={model.limit}
+                />
+                <Textarea
+                    label={`Intro ${t(`common.langLabels.${langA}` as const)}`}
+                    placeholder="Leave blank for default intro"
+                    value={model.introLangA}
+                    onChange={event => updateModel({ introLangA: event.target.value })}
+                />
+                <Textarea
+                    label={`Intro ${t(`common.langLabels.${langB}` as const)}`}
+                    placeholder="Leave blank for default intro"
+                    value={model.introLangB}
+                    onChange={event => updateModel({ introLangB: event.target.value })}
+                />
+            </InputContainer>
+            <ButtonContainer>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button disabled={disabled || testMailState === 'DONE'} onClick={sendTestMail} primary>
+                    {(testMailState === 'INIT' || testMailState === 'ERROR') && 'Send Test Mail'}
+                    {testMailState === 'IN_PROGRESS' && 'Sending Test Mail…'}
+                    {testMailState === 'DONE' && 'Sent Test Mail!'}
+                </Button>
+                <Button
+                    disabled={disabled || testMailState !== 'DONE' || realMailState === 'DONE'}
+                    onClick={sendRealMail}
+                    primary
+                >
+                    {(realMailState === 'INIT' || realMailState === 'ERROR') && 'Send to All Subscribers'}
+                    {realMailState === 'IN_PROGRESS' && 'Sending to All Subscribers…'}
+                    {realMailState === 'DONE' && 'Sent Mail to All!'}
+                </Button>
+            </ButtonContainer>
+        </ModalDialog>
     );
 }
 
@@ -362,3 +513,10 @@ function EnableNewUsersSetting({ globalSettings }: { globalSettings?: GlobalSett
         </InputContainer>
     );
 }
+
+const dateToDateTimeLocal = (date: Date) =>
+    `${padNumberZero(date.getFullYear(), 4)}-${padNumberZero(date.getMonth() + 1)}-${padNumberZero(
+        date.getDate()
+    )}T${padNumberZero(date.getHours())}:${padNumberZero(date.getMinutes())}`;
+
+const padNumberZero = (number: number, maxLength = 2) => number.toString().padStart(maxLength, '0');

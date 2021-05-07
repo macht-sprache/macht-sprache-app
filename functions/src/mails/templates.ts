@@ -1,6 +1,10 @@
+import MarkdownIt from 'markdown-it';
 import mjml2html from 'mjml';
 import type { MJMLJsonObject } from 'mjml-core';
+import { compile } from 'path-to-regexp';
+import { langA, langB } from '../../../src/languages';
 import { Lang } from '../../../src/types';
+import config from '../config';
 import { translate } from './i18n';
 
 type TemplateOptions = {
@@ -14,6 +18,12 @@ type RenderedMailTemplate = {
     html: string;
 };
 
+const colors = {
+    font: '#1e5166',
+    langA: '#9cdcb2',
+    langB: '#ceb9d2',
+};
+
 const head: MJMLJsonObject = {
     tagName: 'mj-head',
     attributes: {},
@@ -23,32 +33,38 @@ const head: MJMLJsonObject = {
             attributes: {},
             children: [
                 {
-                    tagName: 'mj-class',
-                    attributes: {
-                        name: 'black',
-                        color: 'black',
-                    },
-                },
-                {
-                    tagName: 'mj-class',
-                    attributes: {
-                        name: 'big',
-                        'font-size': '20px',
-                    },
-                },
-                {
                     tagName: 'mj-all',
                     attributes: {
-                        name: 'big',
                         'font-family': 'Courier New, Courier',
+                        color: colors.font,
                     },
                 },
                 {
-                    tagName: 'mj-style',
-                    attributes: {},
-                    content: '.button { color: red !important; text-decoration: underline !important; }',
+                    tagName: 'mj-section',
+                    attributes: {
+                        padding: '10px 0',
+                    },
                 },
             ],
+        },
+        {
+            tagName: 'mj-style',
+            attributes: { inline: 'inline' },
+            content: `
+            .intro p {
+                font-family: Courier New, Courier;
+                color: ${colors.font};
+                margin: 0 0 1rem;
+            }
+            .link, .intro a {
+                color: ${colors.font};
+            }
+            .userContent {
+                font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+                font-size: 1.1rem;
+                line-height: 1.3;
+            }
+            `,
         },
     ],
 };
@@ -56,7 +72,6 @@ const head: MJMLJsonObject = {
 const getButton = (content: string, href: string): MJMLJsonObject => ({
     tagName: 'mj-button',
     attributes: {
-        'css-class': 'button',
         href,
         'background-color': 'white',
         color: 'black',
@@ -66,13 +81,82 @@ const getButton = (content: string, href: string): MJMLJsonObject => ({
     content,
 });
 
-const getText = (content: string): MJMLJsonObject => ({
+const getText = (content: string, className?: string): MJMLJsonObject => ({
     tagName: 'mj-text',
-    attributes: {},
+    attributes: {
+        'css-class': className,
+    },
     content,
 });
 
-const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
+const getSectionColumn = (children: MJMLJsonObject[]): MJMLJsonObject => ({
+    tagName: 'mj-section',
+    attributes: {},
+    children: [
+        {
+            tagName: 'mj-column',
+            attributes: {},
+            children,
+        },
+    ],
+});
+
+const getActivityItem = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
+    let content = `
+        <div style="margin-bottom: 5px; font-style: italic">
+            ${head}
+        </div>
+        <a
+            href="${link}"
+            style="
+                color: ${lang ? 'black' : colors.font};
+                display: block;
+                border: solid 2px ${getLangColor(lang)};
+                text-decoration: none;">${body}</a>`;
+
+    return {
+        tagName: 'mj-text',
+        attributes: {},
+        content,
+    };
+};
+
+export const getActivityItemTerm = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
+    return getActivityItem(
+        head,
+        `<div style="
+                padding: 10px;
+                background: ${getLangColor(lang)};
+                display: inline-block;
+                font-weight: bold;
+                font-size: 1.4em">
+            ${body}
+        </div>`,
+        link,
+        lang
+    );
+};
+
+export const getActivityItemComment = (head: string, body: string, link: string, lang?: Lang): MJMLJsonObject => {
+    return getActivityItem(
+        head,
+        `<div class="userContent" style="padding: 10px">${body.replace(/\r?\n/g, '<br>')}</div>`,
+        link,
+        lang
+    );
+};
+
+const getLangColor = (lang?: Lang) => {
+    if (lang === langA) {
+        return colors.langA;
+    }
+    if (lang === langB) {
+        return colors.langB;
+    }
+    return colors.font;
+};
+
+const withBaseTemplate = (firstColumnContent: MJMLJsonObject[], columns: MJMLJsonObject[] = []): MJMLJsonObject => ({
     tagName: 'mjml',
     attributes: {},
     children: [
@@ -97,11 +181,12 @@ const withBaseTemplate = (children: MJMLJsonObject[]): MJMLJsonObject => ({
                                         alt: 'macht.sprache.',
                                     },
                                 },
-                                ...children,
+                                ...firstColumnContent,
                             ],
                         },
                     ],
                 },
+                ...columns,
             ],
         },
     ],
@@ -145,3 +230,25 @@ export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions
     );
     return { html, subject: t('activation.subject') };
 };
+
+export const getWeeklyDigestMail = (
+    { recipientName, lang, link }: TemplateOptions,
+    intro: string,
+    content: MJMLJsonObject[]
+): RenderedMailTemplate => {
+    const t = translate(lang);
+    const md = new MarkdownIt();
+
+    const { html } = mjml2html(
+        withBaseTemplate(
+            [
+                getText(t('greeting', { recipientName })),
+                getText(intro ? md.render(intro) : t('weeklyDigest.intro'), 'intro'),
+            ],
+            [getSectionColumn(content), getSectionColumn([getText(t('weeklyDigest.unsubscribe', { url: link }))])]
+        )
+    );
+    return { html, subject: t('weeklyDigest.subject') };
+};
+
+export const generateUrl = (route: string, params: object) => `${config.origin.main}${compile(route)(params)}`;

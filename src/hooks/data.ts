@@ -41,8 +41,8 @@ const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
 const UserSettingsConverter: firebase.firestore.FirestoreDataConverter<UserSettings> = {
     toFirestore: (data: UserSettings) => data,
     fromFirestore: (snapshot): UserSettings => {
-        const { lang, showRedacted, newsletter } = snapshot.data(defaultSnapshotOptions);
-        return { lang, showRedacted, newsletter };
+        const { lang, showRedacted, newsletter, digestMail } = snapshot.data(defaultSnapshotOptions);
+        return { lang, showRedacted, newsletter, digestMail };
     },
 };
 
