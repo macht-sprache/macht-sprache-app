@@ -62,11 +62,11 @@ const getTermRefForParent = async (
     return parentRef as FirebaseFirestore.DocumentReference<Term>;
 };
 
-const getSubscriptions = async (
+const getActiveSubscriptions = async (
     t: FirebaseFirestore.Transaction,
     termRef: FirebaseFirestore.DocumentReference<Term>
 ): Promise<Subscription[]> => {
-    const snap = await t.get(termRef.collection('subscriptions'));
+    const snap = await t.get(termRef.collection('subscriptions').where('active', '==', true));
     return snap.docs.map(doc => doc.data() as Subscription);
 };
 
@@ -156,7 +156,7 @@ export const createCommentAddedNotification = functions.firestore
                 },
             };
 
-            const subscriptions = await getSubscriptions(t, termForParent);
+            const subscriptions = await getActiveSubscriptions(t, termForParent);
 
             logger.info(`Notifying ${subscriptions.length} users about ${snap.ref}`);
 
@@ -193,7 +193,7 @@ export const createTranslationAddedNotification = functions.firestore
                 },
             };
 
-            const subscriptions = await getSubscriptions(t, termRef);
+            const subscriptions = await getActiveSubscriptions(t, termRef);
 
             logger.info(`Notifying ${subscriptions.length} users about ${translationRef}`);
 
@@ -239,7 +239,7 @@ export const createTranslationExampleAddedNotification = functions.firestore
                 },
             };
 
-            const subscriptions = await getSubscriptions(t, termForParent);
+            const subscriptions = await getActiveSubscriptions(t, termForParent);
 
             logger.info(`Notifying ${subscriptions.length} users about ${snap.ref}`);
 
