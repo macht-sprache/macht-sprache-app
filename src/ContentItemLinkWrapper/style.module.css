@@ -3,3 +3,7 @@
     font-size: var(--fontSizeS);
     margin-bottom: 0.5rem;
 }
+
+.container {
+    min-width: 0;
+}

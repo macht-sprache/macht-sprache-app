@@ -34,6 +34,14 @@
     background: var(--dominantLanguageColor);
 }
 
+.tiny .header {
+    overflow: hidden;
+}
+
+.tiny .body {
+    min-width: 10rem;
+}
+
 .heading {
     margin: 0;
     font-weight: normal;
