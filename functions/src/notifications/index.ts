@@ -78,6 +78,44 @@ const saveNotification = (t: FirebaseFirestore.Transaction, userId: string, noti
     t.set(db.collection('users').doc(userId).collection('notifications').doc(), notification);
 };
 
+const notifySubscribers = async (
+    t: FirebaseFirestore.Transaction,
+    termRef: FirebaseFirestore.DocumentReference<Term>,
+    notification: WithoutId<Notification>
+) => {
+    const subscriptions = await getActiveSubscriptions(t, termRef);
+    const actorSubSnap = await termRef.collection('subscriptions').doc(notification.actor.id).get();
+
+    if (!actorSubSnap.exists) {
+        logger.info(`Subscribing ${notification.actor.id} to ${termRef.path}`);
+        const subscription: Subscription = {
+            createdAt: notification.createdAt,
+            updatedAt: null,
+            creator: notification.actor,
+            active: true,
+        };
+        t.set(actorSubSnap.ref, subscription);
+    }
+
+    logger.info(`Notifying ${subscriptions.length} users about ${notification.entityRef.path}`);
+
+    subscriptions.forEach(subscription => {
+        saveNotification(t, subscription.creator.id, notification);
+    });
+};
+
+export const subscribeTermCreator = functions.firestore.document('/terms/{termId}').onCreate(async snapshot => {
+    const term = snapshot.data() as WithoutId<Term>;
+    const subscriptionRef = snapshot.ref.collection('subscriptions').doc(term.creator.id);
+    const subscription: Subscription = {
+        createdAt: term.createdAt,
+        updatedAt: null,
+        creator: term.creator,
+        active: true,
+    };
+    await subscriptionRef.set(subscription);
+});
+
 export const createCommentLikedNotification = functions.firestore
     .document('/comments/{commentId}/likes/{userId}')
     .onCreate(async (snapshot, context) => {
@@ -88,19 +126,19 @@ export const createCommentLikedNotification = functions.firestore
             const comment = ((await t.get(commentRef)).data() as WithoutId<Comment>) || undefined;
 
             if (!comment) {
-                return logger.info(`Comment ${commentRef} deleted`);
+                return logger.info(`Comment ${commentRef.path} deleted`);
             }
 
             const parentRef = convertRefToAdmin(comment.ref);
             const parentEntity = (await t.get(parentRef)).data();
 
             if (!parentEntity) {
-                return logger.info(`Parent ${parentRef} deleted`);
+                return logger.info(`Parent ${parentRef.path} deleted`);
             }
 
             const parentInfo = await getEntityInfo(t, parentEntity);
             if (!parentInfo) {
-                return logger.info(`Couldn't get info for ${parentRef}`);
+                return logger.info(`Couldn't get info for ${parentRef.path}`);
             }
 
             const notification: WithoutId<CommentLikedNotification> = {
@@ -129,17 +167,17 @@ export const createCommentAddedNotification = functions.firestore
             const parentRef = convertRefToAdmin(comment.ref);
             const parentEntity = (await t.get(parentRef)).data();
             if (!parentEntity) {
-                return logger.info(`Parent ${parentRef} deleted`);
+                return logger.info(`Parent ${parentRef.path} deleted`);
             }
 
             const parentInfo = await getEntityInfo(t, parentEntity);
             if (!parentInfo) {
-                return logger.info(`Couldn't get info for ${parentRef}`);
+                return logger.info(`Couldn't get info for ${parentRef.path}`);
             }
 
             const termForParent = await getTermRefForParent(t, parentRef, parentEntity);
             if (!termForParent) {
-                return logger.info(`Couldn't get term for ${parentRef}`);
+                return logger.info(`Couldn't get term for ${parentRef.path}`);
             }
 
             const notification: WithoutId<CommentAddedNotification> = {
@@ -156,13 +194,7 @@ export const createCommentAddedNotification = functions.firestore
                 },
             };
 
-            const subscriptions = await getActiveSubscriptions(t, termForParent);
-
-            logger.info(`Notifying ${subscriptions.length} users about ${snap.ref}`);
-
-            subscriptions.forEach(subscription => {
-                saveNotification(t, subscription.creator.id, notification);
-            });
+            await notifySubscribers(t, termForParent, notification);
         });
     });
 
@@ -193,13 +225,7 @@ export const createTranslationAddedNotification = functions.firestore
                 },
             };
 
-            const subscriptions = await getActiveSubscriptions(t, termRef);
-
-            logger.info(`Notifying ${subscriptions.length} users about ${translationRef}`);
-
-            subscriptions.forEach(subscription => {
-                saveNotification(t, subscription.creator.id, notification);
-            });
+            await notifySubscribers(t, termRef, notification);
         });
     });
 
@@ -212,17 +238,17 @@ export const createTranslationExampleAddedNotification = functions.firestore
 
             const parentEntity = (await t.get(parentRef)).data();
             if (!parentEntity) {
-                return logger.info(`Parent ${parentRef} deleted`);
+                return logger.info(`Parent ${parentRef.path} deleted`);
             }
 
             const parentInfo = await getEntityInfo(t, parentEntity);
             if (!parentInfo) {
-                return logger.info(`Couldn't get info for ${parentRef}`);
+                return logger.info(`Couldn't get info for ${parentRef.path}`);
             }
 
             const termForParent = await getTermRefForParent(t, parentRef, parentEntity);
             if (!termForParent) {
-                return logger.info(`Couldn't get term for ${parentRef}`);
+                return logger.info(`Couldn't get term for ${parentRef.path}`);
             }
 
             const notification: WithoutId<TranslationExampleAddedNotification> = {
@@ -239,13 +265,7 @@ export const createTranslationExampleAddedNotification = functions.firestore
                 },
             };
 
-            const subscriptions = await getActiveSubscriptions(t, termForParent);
-
-            logger.info(`Notifying ${subscriptions.length} users about ${snap.ref}`);
-
-            subscriptions.forEach(subscription => {
-                saveNotification(t, subscription.creator.id, notification);
-            });
+            await notifySubscribers(t, termForParent, notification);
         });
     });
 
@@ -283,7 +303,7 @@ const handleChanged = async (change: Change<QueryDocumentSnapshot>) => {
 
     await db.runTransaction(async t => {
         const notificationsSnap = await t.get(db.collectionGroup('notifications').where('parent.ref', '==', ref));
-        logger.info(`Updating ${notificationsSnap.size} notifications for ${ref}`);
+        logger.info(`Updating ${notificationsSnap.size} notifications for ${ref.path}`);
         notificationsSnap.forEach(doc => t.update(doc.ref, { parent: { ...newParentInfo, ref: ref } }));
     });
 };
