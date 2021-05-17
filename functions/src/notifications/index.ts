@@ -5,11 +5,8 @@ import {
     Comment,
     CommentAddedNotification,
     CommentLikedNotification,
-    DocReference,
-    Lang,
     Like,
     Notification,
-    Source,
     Subscription,
     Term,
     Translation,
@@ -18,49 +15,7 @@ import {
     TranslationExampleAddedNotification,
 } from '../../../src/types';
 import { convertRef, convertRefToAdmin, db, functions, logger, WithoutId } from '../firebase';
-
-type ParentEntity = Term | Translation | TranslationExample;
-type ParentEntityRef = FirebaseFirestore.DocumentReference<ParentEntity>;
-
-const getEntityInfo = async (
-    t: FirebaseFirestore.Transaction,
-    entity: ParentEntity
-): Promise<{ name: string; lang: Lang } | null> => {
-    if ('value' in entity) {
-        return {
-            name: entity.value,
-            lang: entity.lang,
-        };
-    }
-
-    const originalSource = (await t.get(convertRefToAdmin(entity.original.source as DocReference<Source>))).data();
-
-    if (!originalSource) {
-        return null;
-    }
-
-    return {
-        name: originalSource.title,
-        lang: originalSource.lang,
-    };
-};
-
-const getTermRefForParent = async (
-    t: FirebaseFirestore.Transaction,
-    parentRef: ParentEntityRef,
-    parentEntity: ParentEntity
-): Promise<FirebaseFirestore.DocumentReference<Term> | undefined> => {
-    if ('term' in parentEntity) {
-        return convertRefToAdmin(parentEntity.term);
-    }
-
-    if ('translation' in parentEntity) {
-        const translation = (await t.get(convertRefToAdmin(parentEntity.translation))).data();
-        return translation && convertRefToAdmin(translation.term);
-    }
-
-    return parentRef as FirebaseFirestore.DocumentReference<Term>;
-};
+import { getEntityInfo, getNewSubscription, getTermRefForParent } from './service';
 
 const getActiveSubscriptions = async (
     t: FirebaseFirestore.Transaction,
@@ -107,13 +62,7 @@ const notifySubscribers = async (
 export const subscribeTermCreator = functions.firestore.document('/terms/{termId}').onCreate(async snapshot => {
     const term = snapshot.data() as WithoutId<Term>;
     const subscriptionRef = snapshot.ref.collection('subscriptions').doc(term.creator.id);
-    const subscription: Subscription = {
-        createdAt: term.createdAt,
-        updatedAt: null,
-        creator: term.creator,
-        active: true,
-    };
-    await subscriptionRef.set(subscription);
+    await subscriptionRef.set(getNewSubscription(term));
 });
 
 export const createCommentLikedNotification = functions.firestore
