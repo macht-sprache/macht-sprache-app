@@ -153,7 +153,8 @@
             "addVariant": "Variante Hinzufügen",
             "addVariantDiscuss": "Füge eine Variante hinzu, die du diskutieren möchtest.",
             "usage": "Wie oft würdest du <Translation>{{translation}}</Translation> in Übersetzungen benutzen?"
-        }
+        },
+        "share": "Diskussion über und Übersetzungen für »{{term}}«\n\n"
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",

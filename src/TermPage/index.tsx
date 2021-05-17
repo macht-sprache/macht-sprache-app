@@ -18,6 +18,7 @@ import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
 import { Redact, useRedacted } from '../RedactSensitiveTerms';
+import Share from '../Share';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import { TranslationsList } from '../TranslationsList';
@@ -89,6 +90,11 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                 <SubscribeTerm term={term} user={user} />
                             </Suspense>
                         )}
+                        <Share
+                            title={`macht.sprache.: ${term.value}`}
+                            text={t('term.share', { term: term.value })}
+                            url="https://www.machtsprache.de/"
+                        />
                     </>
                 }
                 mainLang={term.lang}
