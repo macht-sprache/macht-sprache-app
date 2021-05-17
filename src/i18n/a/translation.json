@@ -155,7 +155,8 @@
             "addVariant": "Add a variant",
             "addVariantDiscuss": "Add a variant that you would like to discuss.",
             "usage": "How often would you use <Translation>{{translation}}</Translation> in translations?"
-        }
+        },
+        "share": "Discussion around and translations for “{{term}}”\n\n"
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
