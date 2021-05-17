@@ -48,6 +48,7 @@ const useAuthUserInfos = () => {
 
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
+const runSeedSubscriptions = () => functions.httpsCallable('userManagement-runSeedSubscriptions')();
 
 type WeeklyDigestParams = {
     from: string;
@@ -101,6 +102,7 @@ export default function AdminPage() {
                 <ButtonContainer align="left">
                     <EnsureValidUserEntitiesButton />
                     <RunContentMigrationsButton />
+                    <RunSeedSubscriptionsButton />
                 </ButtonContainer>
             </SingleColumn>
         </>
@@ -556,6 +558,31 @@ function RunContentMigrationsButton() {
             {onClick => (
                 <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
                     {requestState === 'DONE' ? 'Ran Content Migrations' : 'Run Content Migrations'}
+                </Button>
+            )}
+        </ConfirmModal>
+    );
+}
+
+function RunSeedSubscriptionsButton() {
+    const [requestState, setRequestState] = useRequestState();
+    const onConfirm = useCallback(() => {
+        setRequestState('IN_PROGRESS');
+        runSeedSubscriptions().then(
+            () => setRequestState('DONE'),
+            error => setRequestState('ERROR', error)
+        );
+    }, [setRequestState]);
+    return (
+        <ConfirmModal
+            title="Run Seed Subscriptions?"
+            body={<p>This will add subscriptions for user who already participated in discussions on terms.</p>}
+            confirmLabel="Run"
+            onConfirm={onConfirm}
+        >
+            {onClick => (
+                <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
+                    {requestState === 'DONE' ? 'Ran Seed Subscriptions' : 'Run Seed Subscriptions'}
                 </Button>
             )}
         </ConfirmModal>
