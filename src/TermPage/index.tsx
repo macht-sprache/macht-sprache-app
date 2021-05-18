@@ -90,8 +90,11 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                 <SubscribeTerm term={term} user={user} />
                             </Suspense>
                         )}
-
-                        <Share title={`macht.sprache.: ${term.value}`} text={t('term.share', { term: term.value })} />
+                        <Share
+                            title={`macht.sprache.: ${term.value}`}
+                            text={t('term.share', { term: term.value })}
+                            itemTranslated={t('common.entities.term.value')}
+                        />
                     </>
                 }
                 mainLang={term.lang}

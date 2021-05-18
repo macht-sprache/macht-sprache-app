@@ -154,13 +154,14 @@
             "addVariantDiscuss": "Füge eine Variante hinzu, die du diskutieren möchtest.",
             "usage": "Wie oft würdest du <Translation>{{translation}}</Translation> in Übersetzungen benutzen?"
         },
-        "share": "Diskussion über und Übersetzungen für »{{term}}«\n\n"
+        "share": "Diskussion über und Übersetzungen für »{{term}}« auf #machtsprache"
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
         "empty": "Es gibt noch keine Übersetzung für <TermWithLang>{{term}}</TermWithLang>. Füge eine hinzu:",
         "emptyShort": "Es gibt noch keine Übersetzung",
-        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest. <br /><br />Handelt es sich um einen grammatikalisch gegenderten Begriff (z.B. Student*in oder Studierende)? Wenn möglich, gib eine genderinklusive oder genderfreie Variante ein. Mehr zum Thema gibt es auf der Seite »What about Gender?«."
+        "addTranslation": "Füge eine Übersetzung für <Term>{{term}}</Term> hinzu, die du gern diskutieren würdest. <br /><br />Handelt es sich um einen grammatikalisch gegenderten Begriff (z.B. Student*in oder Studierende)? Wenn möglich, gib eine genderinklusive oder genderfreie Variante ein. Mehr zum Thema gibt es auf der Seite »What about Gender?«.",
+        "share": "Diskussion über “{{translation}}” als Übersetzung für “{{term}}” auf #machtsprache"
     },
     "mediaSearch": {
         "ariaDescription": "Wenn es Ergebnisse gibt, Pfeil hoch / runter benutzen, um diese auszuwählen. Zum Bestätigen Enter drücken.",
@@ -256,7 +257,8 @@
         },
         "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen.",
         "deleteHeading": "Beispielübersetzung löschen?",
-        "deleteExplanation": "Bist du dir sicher, diese Beispielübersetzung zu löschen? Löschungen können nicht rückgängig gemacht werden."
+        "deleteExplanation": "Bist du dir sicher, diese Beispielübersetzung zu löschen? Löschungen können nicht rückgängig gemacht werden.",
+        "share": "Übersetzungsbeispiel: »{{example}}« auf #machtsprache"
     },
     "rating": {
         "heading": "Benutzung",
