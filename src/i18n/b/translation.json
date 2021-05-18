@@ -356,5 +356,9 @@
         },
         "noNotifications": "Keine Benachrichtigungen",
         "subscribe": "Diskussion folgen"
+    },
+    "share": {
+        "NativeShareButton": "Teile via Twitter, WhatsApp, Mail etc.",
+        "LabelDefault": "Teile diese Seite:"
     }
 }
