@@ -2,6 +2,29 @@
     line-height: var(--lineHeightParagraph);
 }
 
+.comment:target {
+    animation-name: blink;
+    animation-iteration-count: 6;
+    animation-timing-function: linear;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes blink {
+    0% {
+        --dominantLanguageColor: var(--dominantLanguageColor);
+    }
+    50% {
+        --dominantLanguageColor: var(--dominantLanguageColor);
+    }
+    51% {
+        --dominantLanguageColor: var(--orange);
+    }
+    100% {
+        --dominantLanguageColor: var(--orange);
+    }
+}
+
 .body {
     border: var(--thickBorder) solid var(--dominantLanguageColor);
     padding: 0.5rem;

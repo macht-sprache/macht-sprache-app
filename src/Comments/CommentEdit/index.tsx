@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 import Button, { ButtonContainer } from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import { useRequestState } from '../../hooks/useRequestState';
+import { getCommentDomId } from '../CommentItem';
 import s from './style.module.css';
 
 type Props = {
@@ -27,6 +29,7 @@ export function CommentEdit({
     const [submitState, setSubmitState] = useRequestState();
     const [comment, setComment] = useState(existingComment);
     const [hasFocus, setHasFocus] = useState(false);
+    const history = useHistory();
 
     const isValid = comment && comment !== existingComment;
 
@@ -34,12 +37,13 @@ export function CommentEdit({
         event?.preventDefault();
         setSubmitState('IN_PROGRESS');
         onSubmit(comment).then(
-            () => {
+            (commentRef: any) => {
                 setSubmitState('INIT');
                 if (!existingComment) {
                     setComment('');
                 }
                 onClose?.();
+                history.replace('#' + getCommentDomId(commentRef.id));
             },
             error => setSubmitState('ERROR', error)
         );
