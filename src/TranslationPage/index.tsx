@@ -18,6 +18,7 @@ import { ModalDialog } from '../ModalDialog';
 import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
+import Share from '../Share';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { TermWithLang } from '../TermWithLang';
 import TranslationExamplesList from '../TranslationExamplesList';
@@ -93,6 +94,11 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                                 <DeleteTranslation translation={translation} />
                             </>
                         )}
+                        <Share
+                            itemTranslated={t('common.entities.translation.value')}
+                            title={`macht.sprache.: ${translation.value}`}
+                            text={t('translation.share', { term: term.value, translation: translation.value })}
+                        />
                     </>
                 }
             >
