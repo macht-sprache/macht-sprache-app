@@ -3,6 +3,10 @@
     vertical-align: text-top;
 }
 
-.container {
+.container.small {
     margin-top: 1rem;
+}
+
+.medium .label {
+    margin-bottom: 1rem;
 }
