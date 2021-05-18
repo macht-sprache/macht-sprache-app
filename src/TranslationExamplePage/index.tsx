@@ -13,6 +13,7 @@ import { Get, useDocument } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
+import Share from '../Share';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
 import { Source, Term, Translation, TranslationExample } from '../types';
 import { getDominantLanguageClass } from '../useLangCssVars';
@@ -74,24 +75,31 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
                     },
                 ]}
                 subLine={
-                    <p>
-                        <Trans
-                            t={t}
-                            i18nKey="common.addedOn"
-                            components={{
-                                User: <UserInlineDisplay {...translationExample.creator} />,
-                                FormatDate: <FormatDate date={translationExample.createdAt} />,
-                            }}
+                    <>
+                        <p>
+                            <Trans
+                                t={t}
+                                i18nKey="common.addedOn"
+                                components={{
+                                    User: <UserInlineDisplay {...translationExample.creator} />,
+                                    FormatDate: <FormatDate date={translationExample.createdAt} />,
+                                }}
+                            />
+                            <br />
+                            <ExampleSubLine source={originalSource} />
+                            {canDelete && (
+                                <>
+                                    {' | '}
+                                    <DeleteTranslationExample translationExample={translationExample} />
+                                </>
+                            )}
+                        </p>
+                        <Share
+                            itemTranslated={t('common.entities.translatioExample.value')}
+                            title={`macht.sprache.: ${translation.value}`}
+                            text={t('translationExample.share', { example: trimString(originalSource.title, 160) })}
                         />
-                        <br />
-                        <ExampleSubLine source={originalSource} />
-                        {canDelete && (
-                            <>
-                                {' | '}
-                                <DeleteTranslationExample translationExample={translationExample} />
-                            </>
-                        )}
-                    </p>
+                    </>
                 }
             >
                 {t('translationExample.page.heading')}
