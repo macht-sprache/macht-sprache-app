@@ -156,7 +156,7 @@
             "addVariantDiscuss": "Add a variant that you would like to discuss.",
             "usage": "How often would you use <Translation>{{translation}}</Translation> in translations?"
         },
-        "share": "Discussion around and translations for “{{term}}”\n\n"
+        "share": "Discussion around and translations for “{{term}}” on #machtsprache"
     },
     "translation": {
         "registerToAdd": "To add a translation, please <LoginLink>log in</LoginLink> or <SignUpLink>sign up</SignUpLink>.",
@@ -164,7 +164,8 @@
         "emptyShort": "There are no translations yet",
         "addTranslation": "Add a translation for <Term>{{term}}</Term> that you would like to discuss. <br /><br /> Is the term grammatically gendered, e.g. Student or Studentin? Consider a gender-inclusive version (e.g. Studierende). For more on this topic, check out “What about Gender?”.",
         "deleteHeading": "Delete Translation?",
-        "deleteExplanation": "Are you sure you want to delete this translation? This cannot be undone."
+        "deleteExplanation": "Are you sure you want to delete this translation? This cannot be undone.",
+        "share": "“{{translation}}” as a translation for “{{term}}” on #machtsprache"
     },
     "mediaSearch": {
         "ariaDescription": "When results are available, use up and down arrow keys to select them. Press enter to confirm selection.",
@@ -260,7 +261,8 @@
         },
         "translationListNoExample": "There is no example yet. Click <Link>here</Link> to add one.",
         "deleteHeading": "Delete Translation Example?",
-        "deleteExplanation": "Are you sure you want to delete this Translation Example? This cannot be undone."
+        "deleteExplanation": "Are you sure you want to delete this Translation Example? This cannot be undone.",
+        "share": "Translation Example: “{{example}}” on #machtsprache"
     },
     "rating": {
         "heading": "Usage",
@@ -363,6 +365,6 @@
     },
     "share": {
         "NativeShareButton": "Share via Twitter, WhatsApp, Mail etc.",
-        "LabelDefault": "Share this:"
+        "LabelDefault": "Share this {{item}}:"
     }
 }

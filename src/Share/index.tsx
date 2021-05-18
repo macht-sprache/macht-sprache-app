@@ -14,30 +14,45 @@ export default function Share({
     title = 'macht.sprache.',
     url = window.location.href,
     label,
+    itemTranslated,
 }: {
     text: string;
     title?: string;
     url?: string;
     label?: React.ReactNode;
+    itemTranslated?: string;
 }) {
     const { t } = useTranslation();
-    const labelDisplayed = label || t('share.LabelDefault');
+    const labelDisplayed = label || t('share.LabelDefault', { item: itemTranslated });
+
+    // to have space between text and the link below
+    const textWithLineBreaks = text + '\n\n';
 
     return (
         <div className={s.container}>
             {labelDisplayed}
             {/* a little weird to look for touch – but this "native" thing is not that useful on desktop usually... */}
             {navigator.share !== undefined && isTouchDevice() ? (
-                <NativeShare text={text} title={title} url={url} />
+                <NativeShare text={textWithLineBreaks} title={title} url={url} />
             ) : (
                 <ButtonContainer align="left">
-                    <ButtonAnchor target="_blank" rel="noopener" size="small" href={getTwitterLink({ text, url })}>
+                    <ButtonAnchor
+                        target="_blank"
+                        rel="noopener"
+                        size="small"
+                        href={getTwitterLink({ text: textWithLineBreaks, url })}
+                    >
                         <TwitterIcon className={s.icon} /> Twitter
                     </ButtonAnchor>
-                    <ButtonAnchor target="_blank" rel="noopener" size="small" href={getFacebookLink({ text, url })}>
+                    <ButtonAnchor
+                        target="_blank"
+                        rel="noopener"
+                        size="small"
+                        href={getFacebookLink({ text: textWithLineBreaks, url })}
+                    >
                         <FacebookIcon className={s.icon} /> Facebook
                     </ButtonAnchor>
-                    <ButtonAnchor size="small" href={getMailLink({ text, url, title })}>
+                    <ButtonAnchor size="small" href={getMailLink({ text: textWithLineBreaks, url, title })}>
                         <MailIcon className={s.icon} /> Mail
                     </ButtonAnchor>
                 </ButtonContainer>
