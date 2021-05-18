@@ -394,7 +394,7 @@ export const setRating = (userId: string, translationId: string, rating: number)
         .set({ rating, updatedAt: firebase.firestore.Timestamp.now() });
 
 export const addComment = (user: User, ref: Comment['ref'], comment: string) => {
-    return collections.comments.doc().set({
+    return collections.comments.add({
         id: '',
         ref,
         creator: {

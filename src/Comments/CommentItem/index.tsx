@@ -51,7 +51,7 @@ export function CommentItem({
     }
 
     return (
-        <div className={clsx(s.comment, s[size])}>
+        <div className={clsx(s.comment, s[size])} id={getCommentDomId(id)}>
             <div className={s.body}>{size === 'medium' ? <Linkify>{comment}</Linkify> : trimString(comment, 100)}</div>
             <div className={s.footer}>
                 <span className={s.meta}>
@@ -97,6 +97,10 @@ export function CommentItem({
             </div>
         </div>
     );
+}
+
+export function getCommentDomId(commentId: string) {
+    return `comment-${commentId}`;
 }
 
 function Likes({ id, user, likeCount }: { id: string; user?: User; likeCount: number }) {
