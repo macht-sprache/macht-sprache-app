@@ -360,5 +360,9 @@
         },
         "noNotifications": "No notifications",
         "subscribe": "Follow discussion"
+    },
+    "share": {
+        "NativeShareButton": "Share via Twitter, WhatsApp, Mail etc.",
+        "LabelDefault": "Share this:"
     }
 }

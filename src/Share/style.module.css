@@ -1,4 +1,8 @@
 .icon {
     height: 1rem;
-    line-height: 1;
+    vertical-align: text-top;
+}
+
+.container {
+    margin-top: 1rem;
 }
