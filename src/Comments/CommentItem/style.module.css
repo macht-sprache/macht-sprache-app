@@ -2,7 +2,8 @@
     line-height: var(--lineHeightParagraph);
 }
 
-.comment:target {
+.comment:target,
+.comment.isTarget {
     animation-name: blink;
     animation-iteration-count: 6;
     animation-timing-function: linear;
