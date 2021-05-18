@@ -279,7 +279,9 @@
         "deleteHeading": "Kommentar löschen?",
         "deleteExplanation": "Bist du sicher, dass du diesen Kommentar löschen möchtest? Löschungen können nicht rückgängig gemacht werden.",
         "userCommented": "<User /> kommentierte",
-        "userCommentedOn": "<User /> kommentierte <DocumentLink />"
+        "userCommentedOn": "<User /> kommentierte <DocumentLink />",
+        "shareLabel": "Danke für deinen Kommentar. Jetzt kannst du andere einladen, auch mitzumachen:",
+        "shareText": "Ich habe gerade ein Kommentar auf #machtsprache geschrieben, nimm auch Teil an der Diskussion: "
     },
     "notFound": {
         "heading": "Seite nicht gefunden",

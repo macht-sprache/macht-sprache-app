@@ -35,3 +35,40 @@
     composes: buttonWrapper;
     --borderFocusColor: var(--orange);
 }
+
+.shareBox {
+    position: relative;
+    border: var(--thickBorder) solid var(--orange);
+    padding: 1rem;
+    background: var(--white);
+}
+
+.shareBoxClose {
+    position: absolute;
+    border: var(--thickBorder) solid var(--orange);
+    background: var(--white);
+    height: 1rem;
+    width: 1rem;
+    top: -0.5rem;
+    right: -0.5rem;
+    cursor: pointer;
+}
+
+.shareBoxClose:before,
+.shareBoxClose:after {
+    content: '';
+    height: var(--thickBorder);
+    width: 80%;
+    position: absolute;
+    background: var(--orange);
+    top: 50%;
+    left: 50%;
+}
+
+.shareBoxClose:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.shareBoxClose:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}

@@ -5,6 +5,7 @@ import Button, { ButtonContainer } from '../../Form/Button';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import { useRequestState } from '../../hooks/useRequestState';
+import Share from '../../Share';
 import { getCommentDomId } from '../CommentItem';
 import s from './style.module.css';
 
@@ -38,7 +39,7 @@ export function CommentEdit({
         setSubmitState('IN_PROGRESS');
         onSubmit(comment).then(
             (commentRef: any) => {
-                setSubmitState('INIT');
+                setSubmitState('DONE');
                 if (!existingComment) {
                     setComment('');
                 }
@@ -54,6 +55,21 @@ export function CommentEdit({
             save();
         }
     };
+
+    if (submitState === 'DONE') {
+        return (
+            <div className={s.shareBox}>
+                <Share size="medium" label={t('comment.shareLabel')} text={t('comment.shareText')} />
+                <Button
+                    className={s.shareBoxClose}
+                    aria-label={t('common.formNav.close')}
+                    onClick={() => {
+                        setSubmitState('INIT');
+                    }}
+                />
+            </div>
+        );
+    }
 
     return (
         <form className={s.form} onSubmit={save}>
