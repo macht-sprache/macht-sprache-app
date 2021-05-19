@@ -284,7 +284,7 @@
         "deleteExplanation": "Are you sure you want to delete this comment? This cannot be undone.",
         "userCommented": "<User /> commented",
         "userCommentedOn": "<User /> commented on <DocumentLink />",
-        "shareLabel": "Thank you for your comment. Now, invite others to participate!",
+        "shareLabel": "Thanks for your comment! Now you could invite others to participate:",
         "shareText": "Check out my comment on #machtsprache and join the discusstion: "
     },
     "notFound": {
