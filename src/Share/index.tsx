@@ -3,10 +3,12 @@ import { ReactComponent as ShareIcon } from './share-alt-solid.svg';
 import { ReactComponent as TwitterIcon } from './twitter-brands.svg';
 import { ReactComponent as FacebookIcon } from './facebook-f-brands.svg';
 import { ReactComponent as MailIcon } from './envelope-regular.svg';
+import { ReactComponent as ClipboardIcon } from './clipboard-regular.svg';
 import s from './style.module.css';
 import { isTouchDevice } from '../utils';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import { useState } from 'react';
 
 const FACEBOOK_APP_ID = '256281597718711';
 
@@ -58,6 +60,7 @@ export default function Share({
                     <ButtonAnchor size={size} href={getMailLink({ text: textWithLineBreaks, url, title })}>
                         <MailIcon className={s.icon} /> Mail
                     </ButtonAnchor>
+                    {navigator.clipboard && <CopyButton text={textWithLineBreaks} url={url} size={size} />}
                 </ButtonContainer>
             )}
         </div>
@@ -88,6 +91,26 @@ function NativeShare({
     return (
         <Button onClick={share} size={size}>
             <ShareIcon className={s.icon} /> {t('share.NativeShareButton')}
+        </Button>
+    );
+}
+
+function CopyButton({ text, url, size }: { text: string; url: string; size?: 'small' | 'medium' }) {
+    const [copied, setCopied] = useState(false);
+    const { t } = useTranslation();
+
+    const copy = () => {
+        navigator.clipboard.writeText(`${text}${url}`);
+        setCopied(true);
+
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
+    };
+
+    return (
+        <Button onClick={copy} size={size}>
+            <ClipboardIcon className={s.icon} /> {copied ? t('share.copyToClipboardDone') : t('share.copyToClipboard')}
         </Button>
     );
 }

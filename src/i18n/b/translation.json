@@ -363,6 +363,8 @@
     },
     "share": {
         "NativeShareButton": "Teile via Twitter, WhatsApp, Mail etc.",
-        "LabelDefault": "Teile diese Seite:"
+        "LabelDefault": "Teile diese Seite:",
+        "copyToClipboard": "In die Zwischenablage",
+        "copyToClipboardDone": "Kopiert!"
     }
 }
