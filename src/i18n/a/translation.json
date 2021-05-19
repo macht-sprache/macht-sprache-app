@@ -367,6 +367,8 @@
     },
     "share": {
         "NativeShareButton": "Share via Twitter, WhatsApp, Mail etc.",
-        "LabelDefault": "Share this {{item}}:"
+        "LabelDefault": "Share this {{item}}:",
+        "copyToClipboard": "Copy to clipboard",
+        "copyToClipboardDone": "Copied!"
     }
 }
