@@ -48,6 +48,7 @@
 
 .shareBox:before {
     content: '';
+    pointer-events: none;
     position: absolute;
     visibility: hidden;
     top: calc(var(--thickBorder) * -1);
