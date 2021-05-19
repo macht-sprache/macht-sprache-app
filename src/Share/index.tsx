@@ -9,8 +9,10 @@ import { isTouchDevice } from '../utils';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { useState } from 'react';
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 
 const FACEBOOK_APP_ID = '256281597718711';
+const MATOMO_CATEGORY = 'share';
 
 export default function Share({
     text,
@@ -29,6 +31,7 @@ export default function Share({
 }) {
     const { t } = useTranslation();
     const labelDisplayed = label || t('share.LabelDefault', { item: itemTranslated });
+    const { trackEvent } = useMatomo();
 
     // to have space between text and the link below
     const textWithLineBreaks = text + '\n\n';
@@ -46,6 +49,9 @@ export default function Share({
                         rel="noopener"
                         size={size}
                         href={getTwitterLink({ text: textWithLineBreaks, url })}
+                        onClick={() => {
+                            trackEvent({ category: MATOMO_CATEGORY, action: 'twitter' });
+                        }}
                     >
                         <TwitterIcon className={s.icon} /> Twitter
                     </ButtonAnchor>
@@ -54,10 +60,19 @@ export default function Share({
                         rel="noopener"
                         size={size}
                         href={getFacebookLink({ text: textWithLineBreaks, url })}
+                        onClick={() => {
+                            trackEvent({ category: MATOMO_CATEGORY, action: 'facebook' });
+                        }}
                     >
                         <FacebookIcon className={s.icon} /> Facebook
                     </ButtonAnchor>
-                    <ButtonAnchor size={size} href={getMailLink({ text: textWithLineBreaks, url, title })}>
+                    <ButtonAnchor
+                        size={size}
+                        href={getMailLink({ text: textWithLineBreaks, url, title })}
+                        onClick={() => {
+                            trackEvent({ category: MATOMO_CATEGORY, action: 'mail' });
+                        }}
+                    >
                         <MailIcon className={s.icon} /> Mail
                     </ButtonAnchor>
                     {navigator.clipboard && <CopyButton text={textWithLineBreaks} url={url} size={size} />}
@@ -79,6 +94,7 @@ function NativeShare({
     size?: 'small' | 'medium';
 }) {
     const { t } = useTranslation();
+    const { trackEvent } = useMatomo();
 
     const share = () => {
         navigator.share({
@@ -86,6 +102,7 @@ function NativeShare({
             text: text,
             url: url,
         });
+        trackEvent({ category: MATOMO_CATEGORY, action: 'native-share' });
     };
 
     return (
@@ -97,11 +114,13 @@ function NativeShare({
 
 function CopyButton({ text, url, size }: { text: string; url: string; size?: 'small' | 'medium' }) {
     const [copied, setCopied] = useState(false);
+    const { trackEvent } = useMatomo();
     const { t } = useTranslation();
 
     const copy = () => {
         navigator.clipboard.writeText(`${text}${url}`);
         setCopied(true);
+        trackEvent({ category: MATOMO_CATEGORY, action: 'copy-to-clipboard' });
 
         setTimeout(() => {
             setCopied(false);
