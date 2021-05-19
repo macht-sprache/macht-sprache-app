@@ -118,13 +118,14 @@ function CopyButton({ text, url, size }: { text: string; url: string; size?: 'sm
     const { t } = useTranslation();
 
     const copy = () => {
-        navigator.clipboard.writeText(`${text}${url}`);
-        setCopied(true);
-        trackEvent({ category: MATOMO_CATEGORY, action: 'copy-to-clipboard' });
+        navigator.clipboard.writeText(`${text}${url}`).then(() => {
+            setCopied(true);
+            trackEvent({ category: MATOMO_CATEGORY, action: 'copy-to-clipboard' });
 
-        setTimeout(() => {
-            setCopied(false);
-        }, 2000);
+            setTimeout(() => {
+                setCopied(false);
+            }, 2000);
+        });
     };
 
     return (
