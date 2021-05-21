@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link, useLocation } from 'react-router-dom';
+import { getCommentDomId } from '../Comments/service';
 import { db, Timestamp } from '../firebase';
 import { FormatDate } from '../FormatDate';
 import { getNotificationsRef } from '../hooks/data';
@@ -196,11 +197,15 @@ function getLink(notification: Notification) {
     switch (notification.type) {
         case 'CommentAddedNotification':
         case 'CommentLikedNotification':
-            return getLinkForRef(notification.parent.ref);
+            return getLinkForComment(notification.parent.ref, notification.entityRef.id);
         case 'TranslationAddedNotification':
         case 'TranslationExampleAddedNotification':
             return getLinkForRef(notification.entityRef);
     }
+}
+
+function getLinkForComment(parentRef: DocReference<Term | Translation | TranslationExample>, commentId: string) {
+    return `${getLinkForRef(parentRef)}#${getCommentDomId(commentId)}`;
 }
 
 function getLinkForRef(ref: DocReference<Term | Translation | TranslationExample>) {

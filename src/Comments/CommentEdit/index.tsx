@@ -6,7 +6,7 @@ import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import { useRequestState } from '../../hooks/useRequestState';
 import Share from '../../Share';
-import { getCommentDomId } from '../CommentItem';
+import { getCommentDomId } from '../service';
 import s from './style.module.css';
 
 type Props = {

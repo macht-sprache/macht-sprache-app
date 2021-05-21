@@ -16,6 +16,7 @@ import { useLang } from '../../useLang';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { trimString } from '../../utils';
 import { CommentEdit } from '../CommentEdit';
+import { getCommentDomId } from '../service';
 import { ReactComponent as HeartEmpty } from './heart-regular.svg';
 import { ReactComponent as HeartSolid } from './heart-solid.svg';
 import { ReactComponent as Pencil } from './pencil-alt-solid.svg';
@@ -111,10 +112,6 @@ export function CommentItem({
             </div>
         </div>
     );
-}
-
-export function getCommentDomId(commentId: string) {
-    return `comment-${commentId}`;
 }
 
 function Likes({ id, user, likeCount }: { id: string; user?: User; likeCount: number }) {
