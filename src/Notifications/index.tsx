@@ -6,6 +6,7 @@ import { db, Timestamp } from '../firebase';
 import { FormatDate } from '../FormatDate';
 import { getNotificationsRef } from '../hooks/data';
 import { GetList, useCollection } from '../hooks/fetch';
+import { useSetNotificationCountForPageTitle } from '../PageTitle';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT } from '../routes';
 import { TermWithLang } from '../TermWithLang';
 import { DocReference, Notification, Term, Translation, TranslationExample } from '../types';
@@ -168,7 +169,15 @@ function useMenuOpenState() {
 }
 
 function useHasUnseen(notifications: Notification[]) {
-    return useMemo(() => notifications.some(notification => notification.seenAt === null), [notifications]);
+    const unseenCount = useMemo(() => notifications.filter(notification => notification.seenAt === null).length, [
+        notifications,
+    ]);
+    const setNotificationCountForPageTitle = useSetNotificationCountForPageTitle();
+
+    useEffect(() => setNotificationCountForPageTitle(unseenCount), [unseenCount, setNotificationCountForPageTitle]);
+    useEffect(() => () => setNotificationCountForPageTitle(0), [setNotificationCountForPageTitle]);
+
+    return !!unseenCount;
 }
 
 function useMarkSeen(userId: string, notifications: Notification[]) {
