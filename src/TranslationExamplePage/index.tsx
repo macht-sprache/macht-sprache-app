@@ -11,6 +11,7 @@ import { useAppContext } from '../hooks/appContext';
 import { collections, getSourceRefWithConverter } from '../hooks/data';
 import { Get, useDocument } from '../hooks/fetch';
 import LinkButton from '../LinkButton';
+import PageTitle from '../PageTitle';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
 import Share from '../Share';
@@ -61,6 +62,7 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
 
     return (
         <>
+            <PageTitle title={`${t('translationExample.page.heading')} ${trimString(originalSource.title, 300)}`} />
             <Header
                 topHeading={[
                     {

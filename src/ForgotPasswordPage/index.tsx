@@ -7,7 +7,7 @@ import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { sendPasswordReset } from '../functions';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { AuthHandlerParams, useAuthHandlerParams, useLogin } from '../hooks/auth';
 import { useContinuePath } from '../hooks/location';
 import { useRequestState } from '../hooks/useRequestState';
@@ -40,7 +40,7 @@ function ResetPassword({ actionCode, continueUrl }: AuthHandlerParams) {
     if (error) {
         return (
             <>
-                <Header>{t('auth.passwordReset.expiredHeading')}</Header>
+                <SimpleHeader>{t('auth.passwordReset.expiredHeading')}</SimpleHeader>
                 <SingleColumn>
                     <Trans
                         t={t}
@@ -76,7 +76,7 @@ function ResetPasswordForm({ email, actionCode, continueUrl }: { email: string }
 
     return (
         <>
-            <Header>{t('auth.passwordReset.heading')}</Header>
+            <SimpleHeader>{t('auth.passwordReset.heading')}</SimpleHeader>
             <SingleColumn>
                 <form onSubmit={onSubmit}>
                     <input type="hidden" autoComplete="username" value={email} />
@@ -123,7 +123,7 @@ function RequestPasswordReset() {
     if (requestState === 'DONE') {
         return (
             <>
-                <Header>{t('auth.passwordReset.requestSuccessHeader')}</Header>
+                <SimpleHeader>{t('auth.passwordReset.requestSuccessHeader')}</SimpleHeader>
                 <SingleColumn>
                     <p>{t('auth.passwordReset.requestSuccessExplanation', { email })}</p>
                 </SingleColumn>
@@ -133,7 +133,7 @@ function RequestPasswordReset() {
 
     return (
         <>
-            <Header>{t('auth.passwordReset.requestLabel')}</Header>
+            <SimpleHeader>{t('auth.passwordReset.requestLabel')}</SimpleHeader>
             <SingleColumn>
                 <p>{t('auth.passwordReset.requestExplanation')}</p>
                 <form onSubmit={onSubmit}>

@@ -15,6 +15,7 @@ import { Get, GetList, useCollection, useDocument } from '../hooks/fetch';
 import { ColumnHeading, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
+import PageTitle from '../PageTitle';
 import { RatingContainer } from '../Rating';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM } from '../routes';
@@ -62,6 +63,7 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
 
     return (
         <>
+            <PageTitle title={translation.value} />
             <Header
                 capitalize
                 mainLang={translation.lang}

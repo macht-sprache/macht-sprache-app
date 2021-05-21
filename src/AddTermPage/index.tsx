@@ -1,12 +1,12 @@
 import { FormEventHandler, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory } from 'react-router-dom';
-import { useUser } from '../hooks/appContext';
-import { addTerm } from '../hooks/data';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
+import { useUser } from '../hooks/appContext';
+import { addTerm } from '../hooks/data';
 import { langA, langB } from '../languages';
 import { TERM } from '../routes';
 import { Lang } from '../types';
@@ -39,7 +39,7 @@ export default function AddTermPage() {
 
     return (
         <>
-            <Header>{t('term.add')}</Header>
+            <SimpleHeader>{t('term.add')}</SimpleHeader>
             <p>
                 <Trans t={t} i18nKey="term.addTermDescription" />
             </p>

@@ -1,12 +1,12 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 
 export function NotFoundPage() {
     const { t } = useTranslation();
     return (
         <>
-            <Header>{t('notFound.heading')}</Header>
+            <SimpleHeader>{t('notFound.heading')}</SimpleHeader>
             <p>
                 <Trans t={t} i18nKey="notFound.paragraph" components={{ Link: <Link to="/" /> }} />
             </p>

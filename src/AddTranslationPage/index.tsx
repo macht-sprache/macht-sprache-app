@@ -8,6 +8,7 @@ import Header from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addTranslation, collections } from '../hooks/data';
 import { useDocument } from '../hooks/fetch';
+import PageTitle from '../PageTitle';
 import { Redact } from '../RedactSensitiveTerms';
 import { TERM, TRANSLATION } from '../routes';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
@@ -40,8 +41,13 @@ export default function AddTranslationPage() {
             .finally(() => setSubmitting(false));
     };
 
+    const title = t(
+        term.adminTags.translationsAsVariants ? 'term.variants.addVariant' : 'common.entities.translation.add'
+    );
+
     return (
         <SidebarTermRedirectWrapper getTerm={getTerm}>
+            <PageTitle title={title} />
             <Header
                 topHeading={[
                     {
@@ -51,11 +57,7 @@ export default function AddTranslationPage() {
                     },
                 ]}
             >
-                {t(
-                    term.adminTags.translationsAsVariants
-                        ? 'term.variants.addVariant'
-                        : 'common.entities.translation.add'
-                )}
+                {title}
             </Header>
             <p>
                 <Trans

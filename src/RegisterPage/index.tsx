@@ -9,7 +9,7 @@ import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { isDisplayNameAvailable, postRegistrationHandler, sendEmailVerification } from '../functions';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { useUser } from '../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { useRequestState } from '../hooks/useRequestState';
@@ -123,7 +123,7 @@ export default function RegisterPage() {
 
     return (
         <>
-            <Header>{t('auth.register.title')}</Header>
+            <SimpleHeader>{t('auth.register.title')}</SimpleHeader>
             <SingleColumn>
                 <p>{t('auth.register.intro')}</p>
                 <form onSubmit={onSubmit}>

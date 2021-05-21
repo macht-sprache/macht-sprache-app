@@ -16,6 +16,7 @@ import MovieSearch from '../MediaSelection/MovieSearch';
 import WebPageSearch from '../MediaSelection/WebPageSearch';
 import { ModalDialog } from '../ModalDialog';
 import { TranslationExampleModel } from '../modelTypes';
+import PageTitle from '../PageTitle';
 import { TRANSLATION_EXAMPLE } from '../routes';
 import SavingState from '../SavingState';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
@@ -137,67 +138,70 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
         !!(model.original.text && model.translated.text);
 
     return (
-        <ModalDialog
-            title={
-                <Trans
-                    t={t}
-                    i18nKey="translationExample.add"
-                    components={{
-                        Term: <TermWithLang term={term} />,
-                        Translation: <TermWithLang term={translation} />,
-                    }}
-                />
-            }
-            isDismissable={false}
-            onClose={() => {
-                if (!model.type) {
-                    history.goBack();
+        <>
+            <PageTitle title={t('common.entities.translatioExample.add')} />
+            <ModalDialog
+                title={
+                    <Trans
+                        t={t}
+                        i18nKey="translationExample.add"
+                        components={{
+                            Term: <TermWithLang term={term} />,
+                            Translation: <TermWithLang term={translation} />,
+                        }}
+                    />
                 }
-            }}
-            width="wider"
-        >
-            <div className={clsx(s.wrapper, getDominantLanguageClass(translation.lang))}>
-                {saving ? (
-                    <SavingState />
-                ) : (
-                    <>
-                        <FullWidthColumn>
-                            <Heading>{t('translationExample.steps.type.label')}</Heading>
-                            <SelectType {...stepProps} />
-                        </FullWidthColumn>
-                        {!!model.type && (
-                            <>
-                                <FullWidthColumn>
-                                    <Heading>{t('translationExample.steps.source.label')}</Heading>
-                                    <SelectMedia {...stepProps} />{' '}
-                                </FullWidthColumn>
-                                <FullWidthColumn>
-                                    <Heading>{t('translationExample.steps.example.label')}</Heading>
-                                    <AddSnippet {...stepProps} />{' '}
-                                </FullWidthColumn>
-                            </>
-                        )}
+                isDismissable={false}
+                onClose={() => {
+                    if (!model.type) {
+                        history.goBack();
+                    }
+                }}
+                width="wider"
+            >
+                <div className={clsx(s.wrapper, getDominantLanguageClass(translation.lang))}>
+                    {saving ? (
+                        <SavingState />
+                    ) : (
+                        <>
+                            <FullWidthColumn>
+                                <Heading>{t('translationExample.steps.type.label')}</Heading>
+                                <SelectType {...stepProps} />
+                            </FullWidthColumn>
+                            {!!model.type && (
+                                <>
+                                    <FullWidthColumn>
+                                        <Heading>{t('translationExample.steps.source.label')}</Heading>
+                                        <SelectMedia {...stepProps} />{' '}
+                                    </FullWidthColumn>
+                                    <FullWidthColumn>
+                                        <Heading>{t('translationExample.steps.example.label')}</Heading>
+                                        <AddSnippet {...stepProps} />{' '}
+                                    </FullWidthColumn>
+                                </>
+                            )}
 
-                        {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
+                            {error && <ErrorBox>{t('common.error.general')}</ErrorBox>}
 
-                        <FullWidthColumn>
-                            <ButtonContainer>
-                                <Button
-                                    onClick={() => {
-                                        history.goBack();
-                                    }}
-                                >
-                                    {t('common.formNav.cancel')}
-                                </Button>
-                                <Button primary onClick={save} disabled={!isValid}>
-                                    {t('common.formNav.save')}
-                                </Button>
-                            </ButtonContainer>
-                        </FullWidthColumn>
-                    </>
-                )}
-            </div>
-        </ModalDialog>
+                            <FullWidthColumn>
+                                <ButtonContainer>
+                                    <Button
+                                        onClick={() => {
+                                            history.goBack();
+                                        }}
+                                    >
+                                        {t('common.formNav.cancel')}
+                                    </Button>
+                                    <Button primary onClick={save} disabled={!isValid}>
+                                        {t('common.formNav.save')}
+                                    </Button>
+                                </ButtonContainer>
+                            </FullWidthColumn>
+                        </>
+                    )}
+                </div>
+            </ModalDialog>
+        </>
     );
 }
 

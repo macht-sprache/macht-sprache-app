@@ -1,4 +1,4 @@
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { collections } from '../hooks/data';
 import { useCollection, useDocument } from '../hooks/fetch';
 import { ColumnHeading, FullWidthColumn } from '../Layout/Columns';
@@ -13,7 +13,7 @@ export default function AdminContentPage() {
 
     return (
         <>
-            <Header>Administration – content</Header>
+            <SimpleHeader>Administration – content</SimpleHeader>
             <FullWidthColumn>
                 <ColumnHeading>Latest 10 Terms</ColumnHeading>
                 <ListTerms terms={getTerms()} />
