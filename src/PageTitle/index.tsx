@@ -21,23 +21,24 @@ export const PageTitleProvider: React.FC = ({ children }) => {
     });
 
     useEffect(() => {
-        document.title = [notifications && `(${notifications})`, title, t('name') !== title && t('name')]
+        document.title = [
+            notifications && `(${notifications})`,
+            [title, t('name') !== title && t('name')].filter(part => !!part).join(' – '),
+        ]
             .filter(part => !!part)
-            .join(' – ');
+            .join(' ');
     }, [notifications, title, t]);
 
     useEffect(() => {
         const faviconLinkSvg = document.getElementById('faviconSvg') as HTMLLinkElement;
         const faviconLinkPng = document.getElementById('faviconPng') as HTMLLinkElement;
 
-        if (faviconLinkSvg && faviconLinkPng) {
-            if (notifications) {
-                faviconLinkSvg.href = '/favicon-notification.svg';
-                faviconLinkPng.href = '/favicon-notification.png';
-            } else {
-                faviconLinkSvg.href = '/favicon.svg';
-                faviconLinkPng.href = '/favicon.png';
-            }
+        if (notifications) {
+            faviconLinkSvg.href = '/favicon-notification.svg';
+            faviconLinkPng.href = '/favicon-notification.png';
+        } else {
+            faviconLinkSvg.href = '/favicon.svg';
+            faviconLinkPng.href = '/favicon.png';
         }
     }, [notifications]);
 
