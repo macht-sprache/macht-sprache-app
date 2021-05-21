@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router';
 import ConfirmModal from '../../ConfirmModal';
 import Button, { ButtonContainer } from '../../Form/Button';
 import { formatDate, FormatDate } from '../../FormatDate';
@@ -26,10 +25,12 @@ import { ReactComponent as Trash } from './trash-alt-regular.svg';
 type CommentItemProps = {
     comment: Comment;
     size?: 'small' | 'medium';
+    isTarget?: boolean;
 };
 
 export function CommentItem({
     comment: { id, comment, createdAt, creator, edited, likeCount },
+    isTarget,
     size = 'medium',
 }: CommentItemProps) {
     const { t } = useTranslation();
@@ -38,15 +39,14 @@ export function CommentItem({
     const [editOpen, setEditOpen] = useState(false);
     const canEdit = creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
-    const location = useLocation();
     const commentDomId = getCommentDomId(id);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (location.hash === '#' + commentDomId) {
-            containerRef?.current?.scrollIntoView();
+        if (isTarget) {
+            containerRef.current?.scrollIntoView();
         }
-    }, [location, commentDomId, containerRef]);
+    }, [isTarget]);
 
     if (user && editOpen) {
         const onSubmit = (newComment: string) => updateComment(user, id, newComment);
@@ -62,11 +62,7 @@ export function CommentItem({
     }
 
     return (
-        <div
-            className={clsx(s.comment, s[size], { [s.isTarget]: location.hash === '#' + commentDomId })}
-            id={commentDomId}
-            ref={containerRef}
-        >
+        <div className={clsx(s.comment, s[size], { [s.isTarget]: isTarget })} id={commentDomId} ref={containerRef}>
             <div className={s.body}>{size === 'medium' ? <Linkify>{comment}</Linkify> : trimString(comment, 100)}</div>
             <div className={s.footer}>
                 <span className={s.meta}>
