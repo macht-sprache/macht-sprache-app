@@ -19,6 +19,7 @@ import LoginPage from './LoginPage';
 import { NewsPage } from './NewsPage';
 import { NotFoundPage } from './NotFoundPage';
 import PageLoadingState from './PageLoadingState';
+import { PageTitleProvider } from './PageTitle';
 import RegisterPage from './RegisterPage';
 import RegisterPostPage from './RegisterPostPage';
 import * as routes from './routes';
@@ -53,110 +54,114 @@ function AppRouter() {
 
     return (
         <Router>
-            <Layout>
-                <ErrorBoundary>
-                    <Suspense fallback={<PageLoadingState />}>
-                        <Switch>
-                            <Route path={routes.HOME} exact>
-                                {launched ? <HomePage /> : <HomePagePreLaunch />}
-                            </Route>
-                            <Route path={routes.REGISTER} exact>
-                                <RegisterPage />
-                            </Route>
-                            <Route path={routes.REGISTER_POST} exact>
-                                <RegisterPostPage />
-                            </Route>
-                            <Route path={routes.LOGIN} exact>
-                                <LoginPage />
-                            </Route>
-                            <Route path={routes.FORGOT_PASSWORD} exact>
-                                <ForgotPasswordPage />
-                            </Route>
-                            <LoggedInRoute path={routes.TERM_ADD} exact>
-                                <AddTermPage />
-                            </LoggedInRoute>
-                            <LaunchedRoute path={routes.TERMS} exact>
-                                <TermsPage />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.TERM} exact>
-                                <TermPage />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.TERM_SIDEBAR} exact>
-                                <TermPage />
-                            </LaunchedRoute>
-                            <LoggedInRoute path={routes.TRANSLATION_ADD} exact>
-                                <AddTranslationPage />
-                            </LoggedInRoute>
-                            <LoggedInRoute path={routes.TRANSLATION_ADD_SIDEBAR} exact>
-                                <AddTranslationPage />
-                            </LoggedInRoute>
-                            <LaunchedRoute path={routes.TRANSLATION} exact>
-                                <TranslationPage />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.TRANSLATION_SIDEBAR} exact>
-                                <TranslationPage />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.TRANSLATION_REDIRECT} exact>
-                                <TranslationRedirect />
-                            </LaunchedRoute>
-                            <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD} exact>
-                                <AddTranslationExamplePage />
-                            </LoggedInRoute>
-                            <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD_SIDEBAR} exact>
-                                <AddTranslationExamplePage />
-                            </LoggedInRoute>
-                            <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
-                                <TranslationExamplePage />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_SIDEBAR} exact>
-                                <TranslationExamplePage />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_REDIRECT} exact>
-                                <TranslationExampleRedirect />
-                            </LaunchedRoute>
-                            <LaunchedRoute path={routes.USER} exact>
-                                <UserPage />
-                            </LaunchedRoute>
-                            <AdminRoute path={routes.ADMIN} exact>
-                                <AdminPage />
-                            </AdminRoute>
-                            <AdminRoute path={routes.ADMIN_CONTENT} exact>
-                                <AdminContentPage />
-                            </AdminRoute>
-                            <AdminRoute path={routes.ADMIN_COMMENTS} exact>
-                                <AdminCommentsPage />
-                            </AdminRoute>
-                            <LaunchedRoute path={routes.NEWS} exact>
-                                <NewsPage />
-                            </LaunchedRoute>
-                            <Route path={routes.ABOUT} exact>
-                                <StaticContentPage slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }} />
-                            </Route>
-                            <Route path={routes.PRIVACY} exact>
-                                <StaticContentPage
-                                    slugs={{ en: 'machtsprache-data-privacy', de: 'machtsprache-datenschutz' }}
-                                />
-                            </Route>
-                            <Route path={routes.CODE_OF_CONDUCT} exact>
-                                <StaticContentPage slugs={{ en: 'code-of-conduct', de: 'code-of-conduct' }} />
-                            </Route>
-                            <Route path={routes.IMPRINT} exact>
-                                <StaticContentPage
-                                    slugs={{ en: 'macht-sprache-imprint', de: 'macht-sprache-imprint' }}
-                                />
-                            </Route>
+            <PageTitleProvider>
+                <Layout>
+                    <ErrorBoundary>
+                        <Suspense fallback={<PageLoadingState />}>
+                            <Switch>
+                                <Route path={routes.HOME} exact>
+                                    {launched ? <HomePage /> : <HomePagePreLaunch />}
+                                </Route>
+                                <Route path={routes.REGISTER} exact>
+                                    <RegisterPage />
+                                </Route>
+                                <Route path={routes.REGISTER_POST} exact>
+                                    <RegisterPostPage />
+                                </Route>
+                                <Route path={routes.LOGIN} exact>
+                                    <LoginPage />
+                                </Route>
+                                <Route path={routes.FORGOT_PASSWORD} exact>
+                                    <ForgotPasswordPage />
+                                </Route>
+                                <LoggedInRoute path={routes.TERM_ADD} exact>
+                                    <AddTermPage />
+                                </LoggedInRoute>
+                                <LaunchedRoute path={routes.TERMS} exact>
+                                    <TermsPage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TERM} exact>
+                                    <TermPage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TERM_SIDEBAR} exact>
+                                    <TermPage />
+                                </LaunchedRoute>
+                                <LoggedInRoute path={routes.TRANSLATION_ADD} exact>
+                                    <AddTranslationPage />
+                                </LoggedInRoute>
+                                <LoggedInRoute path={routes.TRANSLATION_ADD_SIDEBAR} exact>
+                                    <AddTranslationPage />
+                                </LoggedInRoute>
+                                <LaunchedRoute path={routes.TRANSLATION} exact>
+                                    <TranslationPage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TRANSLATION_SIDEBAR} exact>
+                                    <TranslationPage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TRANSLATION_REDIRECT} exact>
+                                    <TranslationRedirect />
+                                </LaunchedRoute>
+                                <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD} exact>
+                                    <AddTranslationExamplePage />
+                                </LoggedInRoute>
+                                <LoggedInRoute path={routes.TRANSLATION_EXAMPLE_ADD_SIDEBAR} exact>
+                                    <AddTranslationExamplePage />
+                                </LoggedInRoute>
+                                <LaunchedRoute path={routes.TRANSLATION_EXAMPLE} exact>
+                                    <TranslationExamplePage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_SIDEBAR} exact>
+                                    <TranslationExamplePage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TRANSLATION_EXAMPLE_REDIRECT} exact>
+                                    <TranslationExampleRedirect />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.USER} exact>
+                                    <UserPage />
+                                </LaunchedRoute>
+                                <AdminRoute path={routes.ADMIN} exact>
+                                    <AdminPage />
+                                </AdminRoute>
+                                <AdminRoute path={routes.ADMIN_CONTENT} exact>
+                                    <AdminContentPage />
+                                </AdminRoute>
+                                <AdminRoute path={routes.ADMIN_COMMENTS} exact>
+                                    <AdminCommentsPage />
+                                </AdminRoute>
+                                <LaunchedRoute path={routes.NEWS} exact>
+                                    <NewsPage />
+                                </LaunchedRoute>
+                                <Route path={routes.ABOUT} exact>
+                                    <StaticContentPage
+                                        slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }}
+                                    />
+                                </Route>
+                                <Route path={routes.PRIVACY} exact>
+                                    <StaticContentPage
+                                        slugs={{ en: 'machtsprache-data-privacy', de: 'machtsprache-datenschutz' }}
+                                    />
+                                </Route>
+                                <Route path={routes.CODE_OF_CONDUCT} exact>
+                                    <StaticContentPage slugs={{ en: 'code-of-conduct', de: 'code-of-conduct' }} />
+                                </Route>
+                                <Route path={routes.IMPRINT} exact>
+                                    <StaticContentPage
+                                        slugs={{ en: 'macht-sprache-imprint', de: 'macht-sprache-imprint' }}
+                                    />
+                                </Route>
 
-                            <Route path="/elementTest" exact>
-                                <ElementTestPage />
-                            </Route>
+                                <Route path="/elementTest" exact>
+                                    <ElementTestPage />
+                                </Route>
 
-                            <Route>
-                                <NotFoundPage />
-                            </Route>
-                        </Switch>
-                    </Suspense>
-                </ErrorBoundary>
-            </Layout>
+                                <Route>
+                                    <NotFoundPage />
+                                </Route>
+                            </Switch>
+                        </Suspense>
+                    </ErrorBoundary>
+                </Layout>
+            </PageTitleProvider>
         </Router>
     );
 }

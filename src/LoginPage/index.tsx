@@ -5,7 +5,7 @@ import Button, { ButtonContainer } from '../Form/Button';
 import { ErrorBox } from '../Form/ErrorBox';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { useLogin } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
 import { SingleColumn } from '../Layout/Columns';
@@ -28,7 +28,7 @@ export default function LoginPage() {
 
     return (
         <>
-            <Header>{t('auth.login')}</Header>
+            <SimpleHeader>{t('auth.login')}</SimpleHeader>
             <SingleColumn>
                 <form onSubmit={onSubmit}>
                     <InputContainer>

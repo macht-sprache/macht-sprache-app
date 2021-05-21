@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import PageTitle from '../PageTitle';
 import { Lang } from '../types';
 import s from './style.module.css';
 
@@ -50,5 +51,14 @@ export default function Header({ children, subLine, mainLang, topHeading, capita
                 <div className={s.subline}>{subLine}</div>
             </div>
         </header>
+    );
+}
+
+export function SimpleHeader({ children }: { children: string }) {
+    return (
+        <>
+            <PageTitle title={children} />
+            <Header>{children}</Header>
+        </>
     );
 }

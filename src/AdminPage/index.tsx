@@ -7,7 +7,7 @@ import { HorizontalRadio, HorizontalRadioContainer } from '../Form/HorizontalRad
 import { Input, Select, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { formatDate } from '../FormatDate';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { collections } from '../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../hooks/fetch';
 import { useRequestState } from '../hooks/useRequestState';
@@ -81,7 +81,7 @@ export default function AdminPage() {
 
     return (
         <>
-            <Header>Administration</Header>
+            <SimpleHeader>Administration</SimpleHeader>
 
             <WeeklyDigest />
 

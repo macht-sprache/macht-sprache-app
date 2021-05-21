@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { auth } from '../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../Form/Button';
 import { postVerifyHandler, sendEmailVerification } from '../functions';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { AccountState, useAppContext } from '../hooks/appContext';
 import { useAuthHandlerParams } from '../hooks/auth';
 import { addContinueParam, useContinuePath } from '../hooks/location';
@@ -77,11 +77,11 @@ function VerifyEmail({
 
     switch (verifyState) {
         case 'VERIFYING':
-            return <Header>Verifying Email…</Header>;
+            return <SimpleHeader>Verifying Email…</SimpleHeader>;
         case 'VERIFIED':
             return (
                 <>
-                    <Header>{t('auth.emailVerification.headingVerified')}</Header>
+                    <SimpleHeader>{t('auth.emailVerification.headingVerified')}</SimpleHeader>
                     <SingleColumn>
                         <p>{t('auth.emailVerification.welcomeVerified')}</p>
                         <ButtonContainer>
@@ -91,7 +91,7 @@ function VerifyEmail({
                 </>
             );
         case 'ERROR':
-            return <Header>{t('common.error.general')}</Header>;
+            return <SimpleHeader>{t('common.error.general')}</SimpleHeader>;
     }
 }
 
@@ -112,7 +112,7 @@ function VerificationRequired({ continuePath, authUser }: { continuePath: string
 
     return (
         <>
-            <Header>{t('auth.emailVerification.headingVerification')}</Header>
+            <SimpleHeader>{t('auth.emailVerification.headingVerification')}</SimpleHeader>
             <SingleColumn>
                 <p>{t('auth.emailVerification.explanation', { email: authUser?.email })}</p>
                 <ButtonContainer>
@@ -131,7 +131,7 @@ function ActivationRequired() {
     const { t } = useTranslation();
     return (
         <>
-            <Header>{t('auth.activation.heading')}</Header>
+            <SimpleHeader>{t('auth.activation.heading')}</SimpleHeader>
             <SingleColumn>
                 <p>{t('auth.activation.explanation')}</p>
             </SingleColumn>

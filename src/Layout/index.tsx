@@ -1,4 +1,3 @@
-import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
 import { Suspense, useEffect, useState } from 'react';
@@ -41,7 +40,6 @@ function Layout({ children }: Props) {
     const history = useHistory();
     const location = useLocation();
     const user = useUser();
-    const { trackPageView } = useMatomo();
 
     useEffect(() => {
         document.body.classList.toggle(s.bodyMenuOpen, menuOpen);
@@ -56,10 +54,6 @@ function Layout({ children }: Props) {
             window.scrollTo(0, 0);
         }
     }, [history.action, location.hash, location.pathname]);
-
-    useEffect(() => {
-        trackPageView({ href: location.pathname });
-    }, [trackPageView, location.pathname]);
 
     return (
         <OverlayProvider>

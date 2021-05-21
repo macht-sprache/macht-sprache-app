@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import Header from '../Header';
+import Header, { SimpleHeader } from '../Header';
 import { SingleColumn } from '../Layout/Columns';
 import PageLoadingState from '../PageLoadingState';
+import PageTitle from '../PageTitle';
 import { useWpPage } from '../useWpHooks';
 import { WpStyle } from '../WpStyle';
 import s from './style.module.css';
@@ -17,7 +18,7 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
     if (error) {
         return (
             <>
-                <Header>{t('common.error.general')}</Header>
+                <SimpleHeader>{t('common.error.general')}</SimpleHeader>
                 {error.message}
             </>
         );
@@ -29,6 +30,7 @@ export function StaticContentPage({ slugs }: StaticContentPageProps) {
 
     return (
         <>
+            <PageTitle title={response.title} />
             <Header>
                 <div className={s.title}>{response.title}</div>
             </Header>

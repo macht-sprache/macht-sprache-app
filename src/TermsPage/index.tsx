@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Header from '../Header';
+import { SimpleHeader } from '../Header';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
 import { FullWidthColumn } from '../Layout/Columns';
@@ -11,7 +11,7 @@ export function TermsPage() {
 
     return (
         <>
-            <Header>{t('common.entities.term.value_plural')}</Header>
+            <SimpleHeader>{t('common.entities.term.value_plural')}</SimpleHeader>
 
             <FullWidthColumn>
                 <TermsBig getTerms={getTerms} />

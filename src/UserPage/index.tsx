@@ -13,6 +13,7 @@ import { Get, useCollection, useDocument } from '../hooks/fetch';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
+import PageTitle from '../PageTitle';
 import { User, UserSettings } from '../types';
 import { isValidUrl, removeHttpsWwwPageParams } from '../utils';
 import s from './style.module.css';
@@ -73,6 +74,7 @@ function UserPage({ getUser }: { getUser: Get<User> }) {
 
     return (
         <>
+            <PageTitle title={user.displayName} />
             <Header topHeading={[{ inner: t('userPage.title') }]} subLine={<UserBio user={user} edit={edit} />}>
                 {user.displayName}
             </Header>

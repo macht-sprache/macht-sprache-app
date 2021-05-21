@@ -18,6 +18,7 @@ import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import Linkify from '../Linkify';
 import { ModalDialog } from '../ModalDialog';
+import PageTitle from '../PageTitle';
 import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import Share from '../Share';
 import SidebarTermRedirectWrapper from '../SidebarTermRedirectWrapper';
@@ -60,6 +61,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
 
     return (
         <>
+            <PageTitle title={term.value} />
             <Header
                 capitalize
                 subLine={
