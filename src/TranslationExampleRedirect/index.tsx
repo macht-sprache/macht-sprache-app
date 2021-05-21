@@ -1,6 +1,7 @@
-import { generatePath, Redirect, useParams } from 'react-router';
+import { generatePath, useParams } from 'react-router';
 import { collections } from '../hooks/data';
 import { useDocument } from '../hooks/fetch';
+import RedirectPath from '../RedirectPath';
 import { TRANSLATION_EXAMPLE } from '../routes';
 
 export default function TranslationExampleRedirect() {
@@ -10,7 +11,7 @@ export default function TranslationExampleRedirect() {
     const getTranslationExample = useDocument(collections.translationExamples.doc(translationExampleId));
     const getTranslation = useDocument(getTranslationExample().translation);
     return (
-        <Redirect
+        <RedirectPath
             to={generatePath(TRANSLATION_EXAMPLE, {
                 termId: getTranslation().term.id,
                 translationId: getTranslationExample().translation.id,
