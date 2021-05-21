@@ -10,7 +10,7 @@ export default function RedirectPath({ to }: Props) {
     const history = useHistory();
 
     useEffect(() => {
-        history.replace(to + location.search + location.hash);
+        setTimeout(() => history.replace(to + location.search + location.hash));
     }, [history, location.hash, location.search, to]);
 
     return null;

@@ -52,10 +52,10 @@ function Layout({ children }: Props) {
     }, [location]);
 
     useEffect(() => {
-        if (history.action === 'PUSH') {
+        if (history.action === 'PUSH' && !location.hash) {
             window.scrollTo(0, 0);
         }
-    }, [history.action, location.pathname]);
+    }, [history.action, location.hash, location.pathname]);
 
     useEffect(() => {
         trackPageView({ href: location.pathname });
