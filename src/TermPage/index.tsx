@@ -16,6 +16,7 @@ import { Get, GetList, useCollection, useDocument } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { FullWidthColumn, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
+import Linkify from '../Linkify';
 import { ModalDialog } from '../ModalDialog';
 import { Redact, useRedacted } from '../RedactSensitiveTerms';
 import Share from '../Share';
@@ -104,7 +105,9 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
 
             {adminComment && (
                 <SingleColumn>
-                    <div className={s.adminComment}>{adminComment}</div>
+                    <div className={s.adminComment}>
+                        <Linkify>{adminComment}</Linkify>
+                    </div>
                 </SingleColumn>
             )}
 
