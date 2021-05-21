@@ -12,50 +12,51 @@ type WpResponse = {
     date: Date;
     excerpt: string;
     link: string;
-    featuredMedua?: any;
     featuredMedia?: WpMedia | undefined;
 };
 
-type StateType = { response?: WpResponse; isLoading: boolean; error?: Error };
+type StateType = { response?: WpResponse; isLoading: boolean; url: string; error?: Error };
 
-export function useWpPage(slugs: { [langA]: string; [langB]: string }) {
+export function useWpPage(slugs: { [langA]: string; [langB]: string }): StateType {
     const [lang] = useLang();
-    const [state, setState] = useState<StateType>({ isLoading: false });
+    const url = `${WP_BASE_URL}pages?lang=${lang}&slug=${slugs[lang]}`;
+    const [state, setState] = useState<StateType>({ isLoading: false, url });
 
     useEffect(() => {
         const controller = new AbortController();
         const signal = controller.signal;
 
-        setState({ isLoading: true });
+        setState({ isLoading: true, url });
 
-        fetch(`${WP_BASE_URL}pages?lang=${lang}&slug=${slugs[lang]}`, { signal })
+        fetch(url, { signal })
             .then(data => data.json())
             .then(data => {
                 if (data.length) {
                     if (!data[0].title.rendered || !data[0].content.rendered) {
-                        setState({ isLoading: false, error: new Error('Response not properly formatted') });
+                        setState({ isLoading: false, url, error: new Error('Response not properly formatted') });
                     }
 
                     setState({
                         response: transformWpPost(data[0]),
                         isLoading: false,
+                        url,
                     });
                 } else {
-                    setState({ isLoading: false, error: new Error('WP query did not give results') });
+                    setState({ isLoading: false, url, error: new Error('WP query did not give results') });
                 }
             })
             .catch(error => {
                 if (error.name !== 'AbortError') {
-                    setState({ isLoading: false, error: error });
+                    setState({ isLoading: false, url, error: error });
                 }
             });
 
         return () => {
             controller.abort();
         };
-    }, [slugs, lang]);
+    }, [url]);
 
-    return state;
+    return url === state.url ? state : { isLoading: false, url };
 }
 
 type PostsStateType = { response?: [WpResponse]; isLoading: boolean; error?: Error };
