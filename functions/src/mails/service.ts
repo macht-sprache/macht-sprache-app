@@ -29,7 +29,7 @@ const addSearchParams = (url: string, params: { [key: string]: string }) => {
 };
 
 export const addTracking = (mailType: TrackingMail) => (url: string) =>
-    addSearchParams(url, { pk_campaign: `Email-${mailType}` });
+    addSearchParams(url, { mtm_campaign: `Email-${mailType}` });
 
 export const generateUrl = (route: string, params: object) => `${config.origin.main}${compile(route)(params)}`;
 
