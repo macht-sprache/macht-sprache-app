@@ -2,15 +2,13 @@ import escape from 'lodash.escape';
 import type { MJMLJsonObject } from 'mjml-core';
 import { reverse, sortBy, take } from 'rambdax';
 import { langA, langB } from '../../../src/languages';
-import { getRedact } from '../../../src/RedactSensitiveTerms/service';
-import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT, USER } from '../../../src/routes';
-import { Comment, DocReference, Lang, Term, Translation } from '../../../src/types';
+import { USER } from '../../../src/routes';
+import { Comment, Lang, Term, Translation } from '../../../src/types';
 import { db, WithoutId } from '../firebase';
-import { translate } from './i18n';
-import { generateUrl, getActivityItemComment, getActivityItemTerm } from './templates';
+import { TFunc, translate } from './i18n';
+import { generateUrl, getRedactSensitiveTerms, getUrlForRef, Redact } from './service';
+import { getActivityItemComment, getActivityItemTerm } from './templates';
 
-type TFunc = ReturnType<typeof translate>;
-type Redact = ReturnType<typeof getRedact>;
 type DocSnap<T> = FirebaseFirestore.QueryDocumentSnapshot<WithoutId<T>>;
 
 type Item =
@@ -32,18 +30,13 @@ export async function getDigestContent(
     to: Date,
     limit: number
 ): Promise<{ [lang in Lang]: MJMLJsonObject[] }> {
-    const [sensitiveTermsSnap, commentsSnap, termsSnap, translationsSnap] = await Promise.all([
-        db.collection('sensitiveTerms').doc('global').get(),
+    const [redact, commentsSnap, termsSnap, translationsSnap] = await Promise.all([
+        getRedactSensitiveTerms(),
         db.collection('comments').where('createdAt', '>=', from).get(),
         db.collection('terms').where('createdAt', '>=', from).get(),
         db.collection('translations').where('createdAt', '>=', from).get(),
     ]);
 
-    const sensitiveTerms: Set<string> = new Set(
-        (sensitiveTermsSnap.data()?.terms || []).map((term: string) => term.toLowerCase())
-    );
-
-    const redact = getRedact(sensitiveTerms);
     const items = take(
         limit,
         reverse(
@@ -88,7 +81,7 @@ const getTermContent = async (t: TFunc, redact: Redact, termSnap: DocSnap<Term>)
             userName: term.creator.displayName,
         }),
         escape(redact(term.value)),
-        getLinkForRef(termSnap.ref),
+        getUrlForRef(termSnap.ref),
         term.lang
     );
 };
@@ -100,11 +93,11 @@ const getTranslationContent = async (t: TFunc, redact: Redact, translationSnap: 
         t('weeklyDigest.newTranslation', {
             userUrl: generateUrl(USER, { userId: translation.creator.id }),
             userName: translation.creator.displayName,
-            termUrl: getLinkForRef(translation.term),
+            termUrl: getUrlForRef(translation.term),
             term: redact(term?.value || ''),
         }),
         escape(redact(translation.value)),
-        getLinkForRef(translationSnap.ref),
+        getUrlForRef(translationSnap.ref),
         translation.lang
     );
 };
@@ -119,27 +112,13 @@ const getCommentContent = async (t: TFunc, redact: Redact, commentSnap: DocSnap<
         t('weeklyDigest.newComment', {
             userUrl: generateUrl(USER, { userId: comment.creator.id }),
             userName: comment.creator.displayName,
-            termUrl: getLinkForRef(comment.ref),
+            termUrl: getUrlForRef(comment.ref),
             term: redact(parentName ?? ''),
         }),
         escape(comment.comment),
-        getLinkForRef(comment.ref)
+        getUrlForRef(comment.ref)
     );
 };
-
-function getLinkForRef(ref: DocReference<unknown> | FirebaseFirestore.DocumentReference) {
-    switch (ref.parent.id) {
-        case 'terms':
-            return generateUrl(TERM, { termId: ref.id });
-        case 'translations':
-            return generateUrl(TRANSLATION_REDIRECT, { translationId: ref.id });
-        case 'translationExamples':
-            return generateUrl(TRANSLATION_EXAMPLE_REDIRECT, { translationExampleId: ref.id });
-        default:
-            console.error(`Unexpected parentId ${ref.parent.id}`);
-            return '';
-    }
-}
 
 const assertNever = (t: never) => {
     throw new Error(`Unexpected ${t}`);

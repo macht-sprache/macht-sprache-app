@@ -208,13 +208,14 @@ const NotificationConverter: firebase.firestore.FirestoreDataConverter<Notificat
     },
     fromFirestore: (snapshot): Notification => {
         const data = snapshot.data(defaultSnapshotOptions);
-        const base: Pick<Notification, 'id' | 'type' | 'actor' | 'createdAt' | 'seenAt' | 'readAt'> = {
+        const base: Pick<Notification, 'id' | 'type' | 'actor' | 'createdAt' | 'seenAt' | 'readAt' | 'notifiedAt'> = {
             id: snapshot.id,
             type: data.type,
             actor: data.actor,
             createdAt: data.createdAt,
             seenAt: data.seenAt,
             readAt: data.readAt,
+            notifiedAt: data.notifiedAt,
         };
         switch (base.type) {
             case 'CommentAddedNotification':

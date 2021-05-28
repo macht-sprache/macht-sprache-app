@@ -26,3 +26,5 @@ i18next.init({
 
 export const translate = (lang: Lang) => (key: TransKey, interpolationMap: Record<string, string> = {}) =>
     i18next.t(key, { lng: lang, ...interpolationMap });
+
+export type TFunc = ReturnType<typeof translate>;

@@ -1,11 +1,13 @@
+import escape from 'lodash.escape';
 import MarkdownIt from 'markdown-it';
 import mjml2html from 'mjml';
 import type { MJMLJsonObject } from 'mjml-core';
-import { compile } from 'path-to-regexp';
+import { Recipient } from '.';
 import { langA, langB } from '../../../src/languages';
+import { USER } from '../../../src/routes';
 import { Lang } from '../../../src/types';
-import config from '../config';
 import { translate } from './i18n';
+import { generateUrl } from './service';
 
 type TemplateOptions = {
     recipientName: string;
@@ -13,7 +15,7 @@ type TemplateOptions = {
     lang: Lang;
 };
 
-type RenderedMailTemplate = {
+export type RenderedMailTemplate = {
     subject: string;
     html: string;
 };
@@ -81,7 +83,7 @@ const getButton = (content: string, href: string): MJMLJsonObject => ({
     content,
 });
 
-const getText = (content: string, className?: string): MJMLJsonObject => ({
+export const getText = (content: string, className?: string): MJMLJsonObject => ({
     tagName: 'mj-text',
     attributes: {
         'css-class': className,
@@ -146,6 +148,13 @@ export const getActivityItemComment = (head: string, body: string, link: string,
     );
 };
 
+export const getTermWithLang = (term: string, lang: Lang) =>
+    `<span style="
+        box-shadow: 0 0 0 0.2rem ${getLangColor(lang)};
+        background-color: ${getLangColor(lang)};
+        color: black;"
+        >${escape(term)}</span>`;
+
 const getLangColor = (lang?: Lang) => {
     if (lang === langA) {
         return colors.langA;
@@ -156,7 +165,10 @@ const getLangColor = (lang?: Lang) => {
     return colors.font;
 };
 
-const withBaseTemplate = (firstColumnContent: MJMLJsonObject[], columns: MJMLJsonObject[] = []): MJMLJsonObject => ({
+export const withBaseTemplate = (
+    firstColumnContent: MJMLJsonObject[],
+    columns: MJMLJsonObject[] = []
+): MJMLJsonObject => ({
     tagName: 'mjml',
     attributes: {},
     children: [
@@ -251,4 +263,18 @@ export const getWeeklyDigestMail = (
     return { html, subject: t('weeklyDigest.subject') };
 };
 
-export const generateUrl = (route: string, params: object) => `${config.origin.main}${compile(route)(params)}`;
+export const getNotificationMail = (recipient: Recipient, content: MJMLJsonObject[]) => {
+    const t = translate(recipient.lang);
+    const { html } = mjml2html(
+        withBaseTemplate(
+            [getText(t('greeting', { recipientName: recipient.displayName })), getText(t('notifications.message'))],
+            [
+                getSectionColumn(content),
+                getSectionColumn([
+                    getText(t('notifications.unsubscribe', { url: generateUrl(USER, { userId: recipient.id }) })),
+                ]),
+            ]
+        )
+    );
+    return { html };
+};

@@ -1,19 +1,21 @@
+import { logger } from 'firebase-functions';
 import { htmlToText } from 'html-to-text';
 import nodemailer from 'nodemailer';
-import { Lang, UserMini } from '../../../src/types';
-import { REGISTER_POST, FORGOT_PASSWORD, USER } from '../../../src/routes';
+import { langA, langB } from '../../../src/languages';
+import { FORGOT_PASSWORD, REGISTER_POST, USER } from '../../../src/routes';
+import { Lang, Notification, UserMini } from '../../../src/types';
 import config from '../config';
 import { auth, db, functions } from '../firebase';
+import { getDigestContent } from './digestMail';
+import { getNotificationMailContent } from './notificationMail';
+import { generateUrl } from './service';
 import {
-    generateUrl,
     getActivationMail,
+    getNotificationMail,
     getResetEmail,
     getVerifyEmailTemplate,
     getWeeklyDigestMail,
 } from './templates';
-import { langA, langB } from '../../../src/languages';
-import { getDigestContent } from './digestMail';
-import { logger } from 'firebase-functions';
 
 export type Recipient = UserMini & { email: string; lang: Lang };
 
@@ -147,4 +149,10 @@ export const sendWeeklyDigestMail = async (recipients: Recipient[], config: Dige
         );
         await sendMail({ html, subject, to: recipient.email });
     }
+};
+
+export const sendNotificationMail = async (recipient: Recipient, notifications: Notification[]) => {
+    const { content, subject } = await getNotificationMailContent(notifications, recipient.lang);
+    const { html } = getNotificationMail(recipient, content);
+    await sendMail({ html, subject, to: recipient.email });
 };

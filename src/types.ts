@@ -207,6 +207,7 @@ export interface BaseNotification {
 
     seenAt: Timestamp | null;
     readAt: Timestamp | null;
+    notifiedAt: Timestamp | null;
 
     entityRef: DocReference<Comment | Translation | TranslationExample>;
     parent: {
