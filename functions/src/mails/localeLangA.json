@@ -24,5 +24,16 @@
         "newTerm": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> added a term",
         "newTranslation": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> added a translation for <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a>",
         "unsubscribe": "If you don't want to receive the weekly summary anymore, unsubscribe in your <a class=\"link\" href=\"{{url}}\">user profile</a>."
+    },
+    "notifications": {
+        "messages": {
+            "CommentAddedNotification": "<i>{{user}}</i> commented on {{- parent}}",
+            "CommentLikedNotification": "<i>{{user}}</i> liked your comment on {{- parent}}",
+            "TranslationAddedNotification": "<i>{{user}}</i> added a translation for {{- parent}}",
+            "TranslationExampleAddedNotification": "<i>{{user}}</i> added an example for {{- parent}}"
+        },
+        "genericSubject": "{{count}} new notifications from macht.sprache.",
+        "message": "There are new notifications for you:",
+        "unsubscribe": "You recieved this mail because you follow or took part in a discussion on macht.sprache. If you no longer want to recieve these mails you can stop following individual terms or unsubscribe from all notification mails on your <a class=\"link\" href=\"{{url}}\">user profile</a>."
     }
 }

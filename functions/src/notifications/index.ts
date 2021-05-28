@@ -96,6 +96,7 @@ export const createCommentLikedNotification = functions.firestore
                 createdAt: like.createdAt,
                 seenAt: null,
                 readAt: null,
+                notifiedAt: null,
 
                 entityRef: convertRef(commentRef),
                 parent: {
@@ -135,6 +136,7 @@ export const createCommentAddedNotification = functions.firestore
                 createdAt: comment.createdAt,
                 seenAt: null,
                 readAt: null,
+                notifiedAt: null,
 
                 entityRef: convertRef(snap.ref),
                 parent: {
@@ -165,6 +167,7 @@ export const createTranslationAddedNotification = functions.firestore
                 createdAt: translation.createdAt,
                 seenAt: null,
                 readAt: null,
+                notifiedAt: null,
 
                 entityRef: convertRef(translationRef),
                 parent: {
@@ -206,6 +209,7 @@ export const createTranslationExampleAddedNotification = functions.firestore
                 createdAt: translationExample.createdAt,
                 seenAt: null,
                 readAt: null,
+                notifiedAt: null,
 
                 entityRef: convertRef(snap.ref),
                 parent: {
@@ -276,3 +280,5 @@ export const handleDeletedLike = functions.firestore
             querySnap.forEach(docSnap => t.delete(docSnap.ref));
         });
     });
+
+export { notificationMailTask } from './task';

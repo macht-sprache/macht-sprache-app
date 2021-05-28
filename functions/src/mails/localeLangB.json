@@ -23,6 +23,17 @@
         "newComment": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> kommentierte <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a>",
         "newTerm": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> fügte einen Begriff hinzu",
         "newTranslation": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> fügte eine Übersetzung für <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a> hinzu",
-        "unsubscribe": "Wenn du die wöchtentliche Zusammenfassung nicht erhalten möchtest, kannst du auf deinem <a class=\"link\" href=\"{{url}}\">Nutzerprofil</a> abbestellen."
+        "unsubscribe": "Wenn du die wöchtentliche Zusammenfassung nicht erhalten möchtest, kannst du auf deinem <a class=\"link\" href=\"{{url}}\">Nutzer:innenprofil</a> abbestellen."
+    },
+    "notifications": {
+        "messages": {
+            "CommentAddedNotification": "<i>{{user}}</i> kommentierte {{- parent}}",
+            "CommentLikedNotification": "<i>{{user}}</i> gefällt dein Kommentar zu {{- parent}}",
+            "TranslationAddedNotification": "<i>{{user}}</i> hat eine Übersetzung für {{- parent}} hinzugefügt",
+            "TranslationExampleAddedNotification": "<i>{{user}}</i> hat ein Beispiel für {{- parent}} hinzugefügt"
+        },
+        "genericSubject": "{{count}} neue Benachrichtigungen von macht.sprache.",
+        "message": "es gibt neue Benachrichtigungen für dich:",
+        "unsubscribe": "Du bekommst diese Mail weil du einer Diskussion auf macht.sprache. folgst. Wenn du diese Mails nicht mehr bekommen möchtest kannst du einzelnen Begriffen entfolgen oder alle Benachrichtigungen auf deinem <a class=\"link\" href=\"{{url}}\">Nutzer:innenprofil</a> abbestellen."
     }
 }
