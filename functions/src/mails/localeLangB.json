@@ -23,7 +23,7 @@
         "newComment": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> kommentierte <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a>",
         "newTerm": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> fügte einen Begriff hinzu",
         "newTranslation": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> fügte eine Übersetzung für <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a> hinzu",
-        "unsubscribe": "Wenn du die wöchtentliche Zusammenfassung nicht erhalten möchtest, kannst du auf deinem <a class=\"link\" href=\"{{url}}\">Nutzer:innenprofil</a> abbestellen."
+        "unsubscribe": "Wenn du die wöchtentliche Zusammenfassung nicht erhalten möchtest, kannst du sie auf deinem <a class=\"link\" href=\"{{url}}\">Nutzer:innenprofil</a> abbestellen."
     },
     "notifications": {
         "messages": {

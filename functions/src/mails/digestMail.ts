@@ -6,7 +6,7 @@ import { USER } from '../../../src/routes';
 import { Comment, Lang, Term, Translation } from '../../../src/types';
 import { db, WithoutId } from '../firebase';
 import { TFunc, translate } from './i18n';
-import { generateUrl, getRedactSensitiveTerms, getUrlForRef, Redact } from './service';
+import { addTracking, generateUrl, getRedactSensitiveTerms, getUrlForComment, getUrlForRef, Redact } from './service';
 import { getActivityItemComment, getActivityItemTerm } from './templates';
 
 type DocSnap<T> = FirebaseFirestore.QueryDocumentSnapshot<WithoutId<T>>;
@@ -77,11 +77,11 @@ const getTermContent = async (t: TFunc, redact: Redact, termSnap: DocSnap<Term>)
     const term = termSnap.data();
     return getActivityItemTerm(
         t('weeklyDigest.newTerm', {
-            userUrl: generateUrl(USER, { userId: term.creator.id }),
+            userUrl: track(generateUrl(USER, { userId: term.creator.id })),
             userName: term.creator.displayName,
         }),
         escape(redact(term.value)),
-        getUrlForRef(termSnap.ref),
+        track(getUrlForRef(termSnap.ref)),
         term.lang
     );
 };
@@ -91,13 +91,13 @@ const getTranslationContent = async (t: TFunc, redact: Redact, translationSnap: 
     const term = (await translation.term.get()).data();
     return getActivityItemTerm(
         t('weeklyDigest.newTranslation', {
-            userUrl: generateUrl(USER, { userId: translation.creator.id }),
+            userUrl: track(generateUrl(USER, { userId: translation.creator.id })),
             userName: translation.creator.displayName,
-            termUrl: getUrlForRef(translation.term),
+            termUrl: track(getUrlForRef(translation.term)),
             term: redact(term?.value || ''),
         }),
         escape(redact(translation.value)),
-        getUrlForRef(translationSnap.ref),
+        track(getUrlForRef(translationSnap.ref)),
         translation.lang
     );
 };
@@ -110,16 +110,18 @@ const getCommentContent = async (t: TFunc, redact: Redact, commentSnap: DocSnap<
 
     return getActivityItemComment(
         t('weeklyDigest.newComment', {
-            userUrl: generateUrl(USER, { userId: comment.creator.id }),
+            userUrl: track(generateUrl(USER, { userId: comment.creator.id })),
             userName: comment.creator.displayName,
-            termUrl: getUrlForRef(comment.ref),
+            termUrl: track(getUrlForRef(comment.ref)),
             term: redact(parentName ?? ''),
         }),
         escape(comment.comment),
-        getUrlForRef(comment.ref)
+        track(getUrlForComment(comment.ref, commentSnap.ref.id))
     );
 };
 
 const assertNever = (t: never) => {
     throw new Error(`Unexpected ${t}`);
 };
+
+const track = addTracking('Digest');
