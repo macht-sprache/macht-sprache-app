@@ -269,7 +269,7 @@ export const getNotificationMail = (recipient: Recipient, content: MJMLJsonObjec
         withBaseTemplate(
             [getText(t('greeting', { recipientName: recipient.displayName })), getText(t('notifications.message'))],
             [
-                getSectionColumn(content),
+                ...content,
                 getSectionColumn([
                     getText(t('notifications.unsubscribe', { url: generateUrl(USER, { userId: recipient.id }) })),
                 ]),

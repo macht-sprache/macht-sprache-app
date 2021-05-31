@@ -15,7 +15,7 @@ export async function getNotificationMailContent(
     const redact = await getRedactSensitiveTerms();
     return {
         subject: getSubject(t, redact, notifications),
-        content: notifications.map(getNotificationItem(t, redact, lang)),
+        content: [getWrapper(notifications.map(getNotificationItem(t, redact, lang)))],
     };
 }
 
@@ -32,9 +32,27 @@ const getSubject = (t: TFunc, redact: Redact, notifications: Notification[]) => 
     return t('notifications.genericSubject', { count: notifications.length.toString() });
 };
 
+const getWrapper = (children: MJMLJsonObject[]): MJMLJsonObject => ({
+    tagName: 'mj-section',
+    attributes: {
+        padding: '0 25px',
+    },
+    children: [
+        {
+            tagName: 'mj-column',
+            attributes: {
+                border: '2px solid black',
+                padding: '8px 16px',
+            },
+            children,
+        },
+    ],
+});
+
 const getNotificationItem = (t: TFunc, redact: Redact, lang: Lang) => (notification: Notification): MJMLJsonObject => ({
     tagName: 'mj-text',
     attributes: {
+        padding: '8px 0',
         'line-height': 1.5,
     },
     content: `<a class="link" href="${track(getUrlForNotification(notification))}">
