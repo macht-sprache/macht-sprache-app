@@ -17,11 +17,12 @@ import { getTermWithLang } from './templates';
 export async function getNotificationMailContent(
     notifications: Notification[],
     lang: Lang
-): Promise<{ subject: string; content: MJMLJsonObject[] }> {
+): Promise<{ subject: string; message: string; content: MJMLJsonObject[] }> {
     const t = translate(lang);
     const redact = await getRedactSensitiveTerms();
     return {
         subject: getSubject(t, redact, notifications),
+        message: notifications.length === 1 ? t('notifications.message') : t('notifications.message_plural'),
         content: [getWrapper(notifications.map(getNotificationItem(t, redact, lang)))],
     };
 }
