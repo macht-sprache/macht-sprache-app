@@ -4,7 +4,14 @@ import type { MJMLJsonObject } from 'mjml-core';
 import { Lang, Notification } from '../../../src/types';
 import { formatDate } from '../../../src/FormatDate/service';
 import { TFunc, translate } from './i18n';
-import { addTracking, getRedactSensitiveTerms, getUrlForComment, getUrlForRef, Redact } from './service';
+import {
+    addTracking,
+    getRedactSensitiveTerms,
+    getUrlForComment,
+    getUrlForRef,
+    Redact,
+    addSearchParams,
+} from './service';
 import { getTermWithLang } from './templates';
 
 export async function getNotificationMailContent(
@@ -55,7 +62,9 @@ const getNotificationItem = (t: TFunc, redact: Redact, lang: Lang) => (notificat
         padding: '8px 0',
         'line-height': 1.5,
     },
-    content: `<a class="link" href="${track(getUrlForNotification(notification))}">
+    content: `<a class="link" href="${track(
+        addSearchParams(getUrlForNotification(notification), { notification: notification.id })
+    )}">
     <span style="display: inline-block; text-decoration: none">
         ${formatDate(notification.createdAt, lang)}
     </span><br>

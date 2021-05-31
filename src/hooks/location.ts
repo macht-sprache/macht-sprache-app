@@ -10,17 +10,21 @@ export const useContinuePath = () => {
     return continueParam ? decodeURIComponent(continueParam) : HOME;
 };
 
+export const addSearchParam = (url: string, [name, value]: [string, string]) => {
+    const newUrl = new URL(url, window.location.origin);
+    newUrl.searchParams.append(name, value);
+    return newUrl.toString().replace(window.location.origin, '');
+};
+
 export const addContinueParam = (url: string, continuePath?: string) => {
     if (!continuePath || continuePath === url || continuePath === HOME) {
         return url;
     }
 
-    const newUrl = new URL(url, window.location.origin);
-    newUrl.searchParams.append(CONTINUE_PARAM, encodeURIComponent(continuePath));
-    return newUrl.toString().replace(window.location.origin, '');
+    return addSearchParam(url, [CONTINUE_PARAM, encodeURIComponent(continuePath)]);
 };
 
-export const useAddContinueParam = (customPath?: string) => {
+export const useAddContinueParam = () => {
     const { pathname } = useLocation();
 
     return useCallback((url: string) => addContinueParam(url, pathname), [pathname]);
