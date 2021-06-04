@@ -152,7 +152,7 @@ export const sendWeeklyDigestMail = async (recipients: Recipient[], config: Dige
 };
 
 export const sendNotificationMail = async (recipient: Recipient, notifications: Notification[]) => {
-    const { content, subject } = await getNotificationMailContent(notifications, recipient.lang);
-    const { html } = getNotificationMail(recipient, content);
+    const { content, subject, message } = await getNotificationMailContent(notifications, recipient.lang);
+    const { html } = getNotificationMail(recipient, message, content);
     await sendMail({ html, subject, to: recipient.email });
 };

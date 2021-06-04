@@ -263,13 +263,13 @@ export const getWeeklyDigestMail = (
     return { html, subject: t('weeklyDigest.subject') };
 };
 
-export const getNotificationMail = (recipient: Recipient, content: MJMLJsonObject[]) => {
+export const getNotificationMail = (recipient: Recipient, message: string, content: MJMLJsonObject[]) => {
     const t = translate(recipient.lang);
     const { html } = mjml2html(
         withBaseTemplate(
-            [getText(t('greeting', { recipientName: recipient.displayName })), getText(t('notifications.message'))],
+            [getText(t('greeting', { recipientName: recipient.displayName })), getText(message)],
             [
-                getSectionColumn(content),
+                ...content,
                 getSectionColumn([
                     getText(t('notifications.unsubscribe', { url: generateUrl(USER, { userId: recipient.id }) })),
                 ]),

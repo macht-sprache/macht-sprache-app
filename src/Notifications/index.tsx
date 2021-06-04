@@ -6,6 +6,7 @@ import { db, Timestamp } from '../firebase';
 import { FormatDate } from '../FormatDate';
 import { getNotificationsRef } from '../hooks/data';
 import { GetList, useCollection } from '../hooks/fetch';
+import { addSearchParam } from '../hooks/location';
 import { useSetNotificationCountForPageTitle } from '../PageTitle';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT } from '../routes';
 import { TermWithLang } from '../TermWithLang';
@@ -23,6 +24,8 @@ type MenuProps = {
     getNotifications: GetList<Notification>;
 };
 
+const NOTIFICATION_PARAM = 'notification';
+
 export default function Notifications({ userId }: Props) {
     const getNotifications = useCollection(getNotificationsRef(userId).orderBy('createdAt', 'desc').limit(25));
     return (
@@ -35,6 +38,7 @@ export default function Notifications({ userId }: Props) {
 function NotificationsMenu({ userId, getNotifications }: MenuProps) {
     const notifications = getNotifications();
     const hasUnseen = useHasUnseen(notifications);
+    useMarkRead(userId, notifications);
 
     const { t } = useTranslation();
     const id = useDomId();
@@ -94,21 +98,16 @@ function NotificationList({ userId, notifications }: { notifications: Notificati
     return (
         <div className={s.notificationList}>
             {notifications.map(notification => (
-                <NotificationItem key={notification.id} userId={userId} notification={notification} />
+                <NotificationItem key={notification.id} notification={notification} />
             ))}
         </div>
     );
 }
 
-function NotificationItem({ userId, notification }: { notification: Notification; userId: string }) {
+function NotificationItem({ notification }: { notification: Notification }) {
     const { t } = useTranslation();
-    const markRead = useMarkRead(userId, notification);
     return (
-        <Link
-            to={getLink(notification)}
-            onClick={markRead}
-            className={notification.readAt ? s.notification : s.unreadNotification}
-        >
+        <Link to={getLink(notification)} className={notification.readAt ? s.notification : s.unreadNotification}>
             <div className={s.date}>
                 <FormatDate date={notification.createdAt} />
             </div>
@@ -194,15 +193,33 @@ function useMarkSeen(userId: string, notifications: Notification[]) {
     }, [notifications, userId]);
 }
 
-function useMarkRead(userId: string, notification: Notification) {
-    return useCallback(() => {
-        if (!notification.readAt) {
-            getNotificationsRef(userId).doc(notification.id).update({ readAt: Timestamp.now() });
+function useMarkRead(userId: string, notifications: Notification[]) {
+    const { search } = useLocation();
+    const notification = useMemo(() => {
+        const notificationId = new URLSearchParams(search).get(NOTIFICATION_PARAM);
+        return (notificationId && notifications.find(notification => notification.id === notificationId)) || null;
+    }, [notifications, search]);
+
+    useEffect(() => {
+        if (!notification || (notification.seenAt && notification.readAt)) {
+            return;
         }
-    }, [notification.id, notification.readAt, userId]);
+
+        const now = Timestamp.now();
+        const update: Partial<Notification> = {
+            seenAt: notification.seenAt || now,
+            readAt: notification.readAt || now,
+        };
+
+        getNotificationsRef(userId).doc(notification.id).update(update);
+    }, [notification, userId]);
 }
 
 function getLink(notification: Notification) {
+    return addSearchParam(getBaseLink(notification), [NOTIFICATION_PARAM, notification.id]);
+}
+
+function getBaseLink(notification: Notification) {
     switch (notification.type) {
         case 'CommentAddedNotification':
         case 'CommentLikedNotification':

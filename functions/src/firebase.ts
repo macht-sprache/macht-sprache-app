@@ -13,7 +13,7 @@ const functions = firebaseFunctions.region(config.functions.region);
 const { logger } = firebaseFunctions;
 const { HttpsError } = firebaseFunctions.https;
 
-export { auth, db, functions, logger, HttpsError };
+export { app, auth, db, functions, logger, HttpsError };
 
 export const convertRef = <T>(ref: admin.firestore.DocumentReference) => (ref as unknown) as DocReference<T>;
 export const convertRefToAdmin = <T>(ref: DocReference<T>) => (ref as unknown) as admin.firestore.DocumentReference<T>;

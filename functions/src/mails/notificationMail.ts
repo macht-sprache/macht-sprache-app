@@ -4,18 +4,26 @@ import type { MJMLJsonObject } from 'mjml-core';
 import { Lang, Notification } from '../../../src/types';
 import { formatDate } from '../../../src/FormatDate/service';
 import { TFunc, translate } from './i18n';
-import { addTracking, getRedactSensitiveTerms, getUrlForComment, getUrlForRef, Redact } from './service';
+import {
+    addTracking,
+    getRedactSensitiveTerms,
+    getUrlForComment,
+    getUrlForRef,
+    Redact,
+    addSearchParams,
+} from './service';
 import { getTermWithLang } from './templates';
 
 export async function getNotificationMailContent(
     notifications: Notification[],
     lang: Lang
-): Promise<{ subject: string; content: MJMLJsonObject[] }> {
+): Promise<{ subject: string; message: string; content: MJMLJsonObject[] }> {
     const t = translate(lang);
     const redact = await getRedactSensitiveTerms();
     return {
         subject: getSubject(t, redact, notifications),
-        content: notifications.map(getNotificationItem(t, redact, lang)),
+        message: notifications.length === 1 ? t('notifications.message') : t('notifications.message_plural'),
+        content: [getWrapper(notifications.map(getNotificationItem(t, redact, lang)))],
     };
 }
 
@@ -32,12 +40,32 @@ const getSubject = (t: TFunc, redact: Redact, notifications: Notification[]) => 
     return t('notifications.genericSubject', { count: notifications.length.toString() });
 };
 
+const getWrapper = (children: MJMLJsonObject[]): MJMLJsonObject => ({
+    tagName: 'mj-section',
+    attributes: {
+        padding: '0 25px',
+    },
+    children: [
+        {
+            tagName: 'mj-column',
+            attributes: {
+                border: '2px solid black',
+                padding: '8px 16px',
+            },
+            children,
+        },
+    ],
+});
+
 const getNotificationItem = (t: TFunc, redact: Redact, lang: Lang) => (notification: Notification): MJMLJsonObject => ({
     tagName: 'mj-text',
     attributes: {
+        padding: '8px 0',
         'line-height': 1.5,
     },
-    content: `<a class="link" href="${track(getUrlForNotification(notification))}">
+    content: `<a class="link" href="${track(
+        addSearchParams(getUrlForNotification(notification), { notification: notification.id })
+    )}">
     <span style="display: inline-block; text-decoration: none">
         ${formatDate(notification.createdAt, lang)}
     </span><br>

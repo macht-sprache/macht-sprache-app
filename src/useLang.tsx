@@ -40,7 +40,7 @@ const useLangContext = (): LangContextValue => {
     const setLang = useCallback(
         (newLang: Lang) => {
             if (user && userSettings) {
-                collections.userSettings.doc(user.id).set({ ...userSettings, lang: newLang });
+                collections.userSettings.doc(user.id).update({ lang: newLang });
             } else {
                 i18n.changeLanguage(newLang);
             }

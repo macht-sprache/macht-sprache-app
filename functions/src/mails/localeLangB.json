@@ -33,7 +33,8 @@
             "TranslationExampleAddedNotification": "<i>{{user}}</i> hat ein Beispiel für {{- parent}} hinzugefügt"
         },
         "genericSubject": "{{count}} neue Benachrichtigungen von macht.sprache.",
-        "message": "es gibt neue Benachrichtigungen für dich:",
-        "unsubscribe": "Du bekommst diese Mail weil du einer Diskussion auf macht.sprache. folgst. Wenn du diese Mails nicht mehr bekommen möchtest kannst du einzelnen Begriffen entfolgen oder alle Benachrichtigungen auf deinem <a class=\"link\" href=\"{{url}}\">Nutzer:innenprofil</a> abbestellen."
+        "message": "es gibt eine neue Benachrichtigung für dich:",
+        "message_plural": "es gibt neue Benachrichtigungen für dich:",
+        "unsubscribe": "Du bekommst diese Mail, weil du einer Diskussion auf macht.sprache. folgst. Wenn du diese Mails nicht mehr bekommen möchtest, kannst du einzelnen Begriffen entfolgen oder alle Benachrichtigungen auf deinem <a class=\"link\" href=\"{{url}}\">Nutzer:innenprofil</a> abbestellen."
     }
 }

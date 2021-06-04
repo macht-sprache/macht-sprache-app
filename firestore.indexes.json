@@ -43,6 +43,24 @@
             ]
         },
         {
+            "collectionGroup": "notifications",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
+                    "fieldPath": "notifiedAt",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "seenAt",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "ASCENDING"
+                }
+            ]
+        },
+        {
             "collectionGroup": "terms",
             "queryScope": "COLLECTION",
             "fields": [

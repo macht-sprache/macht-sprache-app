@@ -22,7 +22,7 @@ const addHash = (url: string, hash: string) => {
     return newUrl.toString();
 };
 
-const addSearchParams = (url: string, params: { [key: string]: string }) => {
+export const addSearchParams = (url: string, params: { [key: string]: string }) => {
     const newUrl = new URL(url);
     Object.entries(params).forEach(([name, value]) => newUrl.searchParams.append(name, value));
     return newUrl.toString();

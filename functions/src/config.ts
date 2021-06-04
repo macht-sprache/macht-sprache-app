@@ -6,6 +6,7 @@ type Config = {
     };
     functions: {
         region: string;
+        auth?: string;
     };
     tmdb: {
         key: string;
@@ -40,6 +41,7 @@ const config: Config = {
     },
     functions: {
         region: functionsRegion,
+        auth: firebaseFunctions.config().functions?.auth,
     },
     tmdb: {
         key: tmdbApikey,
