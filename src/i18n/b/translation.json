@@ -309,7 +309,8 @@
         "hideRedactedDescription": "Standardmäßig versteckt <i>macht.sprache.</i> sensible Begriffe (z.B. n***r). Wenn du diese Begriffe trotzdem ausgeschrieben sehen möchtest, kannst du sie hier anzeigen lassen. ",
         "hideRedacted": "Diskrimminierende Begriffe verstecken",
         "notifications": {
-            "digest": "Schickt mir eine wöchentliche Zusammenfassung der Aktivität auf macht.sprache."
+            "digest": "Schickt mir eine wöchentliche Zusammenfassung der Aktivität auf macht.sprache.",
+            "notification": "Informiert mich per Email über neue Benachrichtigungen"
         },
         "bio": "Biografie",
         "addBio": "Klicke <AddDescription>hier</AddDescription> um eine Biographie über dich hinzuzufügen.",
