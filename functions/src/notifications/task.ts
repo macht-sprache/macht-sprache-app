@@ -21,6 +21,15 @@ export const notificationMailTask = functions.https.onRequest(async (req, res) =
     }
 
     const [userSettings, authUser] = await Promise.all([getUserSettings(userId), auth.getUser(userId)]);
+
+    if (!userSettings.notificationMail) {
+        logger.info(
+            `Notification mails for user ${userId} are disabled. Skipping ${notifications.length} notifications.`
+        );
+        res.send(200).send();
+        return;
+    }
+
     logger.info(`Notifying user ${userId} about ${notifications.length} notifications`);
 
     await sendNotificationMail(
@@ -45,7 +54,7 @@ const getNotificationsAndMarkAsNotified = (userId: string, notificationId: strin
         const notifications = notificationSnap.docs.map(doc => ({ ...doc.data(), id: doc.id } as Notification));
 
         if (notifications[notifications.length - 1]?.id !== notificationId) {
-            logger.info(`Notification ${notificationId} is not the most recent`);
+            logger.info(`Notification ${notificationId} for user ${userId} is not the most recent`);
             return [];
         }
 
