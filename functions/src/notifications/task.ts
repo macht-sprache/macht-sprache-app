@@ -12,11 +12,16 @@ export const notificationMailTask = functions.https.onRequest(async (req, res) =
         return;
     }
 
+    handleNotificationMailTask(userId, notificationId);
+
+    res.status(200).send();
+});
+
+const handleNotificationMailTask = async (userId: string, notificationId: string) => {
     const notifications = await getNotificationsAndMarkAsNotified(userId, notificationId);
 
     if (!notifications.length) {
         logger.info('No notifications to notify about');
-        res.status(200).send();
         return;
     }
 
@@ -26,7 +31,6 @@ export const notificationMailTask = functions.https.onRequest(async (req, res) =
         logger.info(
             `Notification mails for user ${userId} are disabled. Skipping ${notifications.length} notifications.`
         );
-        res.send(200).send();
         return;
     }
 
@@ -36,9 +40,7 @@ export const notificationMailTask = functions.https.onRequest(async (req, res) =
         { id: userId, displayName: authUser.displayName!, email: authUser.email!, lang: userSettings.lang },
         notifications
     );
-
-    res.status(200).send();
-});
+};
 
 const getNotificationsAndMarkAsNotified = (userId: string, notificationId: string) =>
     db.runTransaction(async t => {
