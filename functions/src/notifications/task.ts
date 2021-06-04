@@ -32,7 +32,7 @@ const handleEnqueueNotificationMailTask = async (userId: string, notificationId:
             },
         },
         scheduleTime: {
-            seconds: debounceSeconds,
+            seconds: Date.now() / 1000 + debounceSeconds,
         },
     };
 
