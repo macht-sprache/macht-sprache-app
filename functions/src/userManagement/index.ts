@@ -1,16 +1,8 @@
-import { Dictionary, mergeDeepRight } from 'rambdax';
+import { Timestamp } from '@google-cloud/firestore';
+import { Dictionary } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
-import {
-    Comment,
-    GlobalSettings,
-    Lang,
-    Term,
-    Translation,
-    User,
-    UserProperties,
-    UserSettings,
-} from '../../../src/types';
+import { GlobalSettings, Lang, User, UserProperties, UserSettings } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 import { Recipient, sendWeeklyDigestMail } from '../mails';
 import { seedSubscriptions } from '../notifications/seedSubscriptions';
@@ -162,6 +154,7 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
             newsletter: false,
             showRedacted: false,
             digestMail: true,
+            notificationMail: true,
         };
         const defaultUserProperties: UserProperties = {
             admin: false,
@@ -189,43 +182,11 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     const currentUserId = verifyUser(context);
     await verifyAdmin(currentUserId);
 
-    const termDefaults: Partial<Term> = {
-        adminComment: {
-            langA: '',
-            langB: '',
-        },
-        adminTags: {
-            hideFromList: false,
-            showInSidebar: false,
-            hightlightLandingPage: false,
-            disableExamples: false,
-            enableCommentsOnTranslations: false,
-            translationsAsVariants: false,
-        },
-    };
-    const translationDefaults: Partial<Translation> = { ratings: null };
-    const commentDefaults: Partial<Comment> = { likeCount: 0 };
-
     await db.runTransaction(async t => {
-        const terms = await t.get(db.collection('terms'));
-        terms.forEach(term => {
-            const data = term.data();
-            delete data.weekHighlight;
-            t.set(term.ref, mergeDeepRight(termDefaults, data));
-        });
-    });
-
-    await db.runTransaction(async t => {
-        const translations = await t.get(db.collection('translations'));
-        translations.forEach(translation => {
-            t.set(translation.ref, { ...translationDefaults, ...translation.data() });
-        });
-    });
-
-    await db.runTransaction(async t => {
-        const comments = await t.get(db.collection('comments'));
-        comments.forEach(comment => {
-            t.set(comment.ref, { ...commentDefaults, ...comment.data() });
+        const notifications = await t.get(db.collectionGroup('notifications'));
+        notifications.forEach(doc => {
+            const data = doc.data();
+            t.set(doc.ref, { ...data, notifiedAt: data.notifiedAt ?? new Timestamp(0, 0) });
         });
     });
 });
