@@ -260,8 +260,8 @@ function EditUserSettings({ user }: { user: User }) {
     const userSettings = useUserSettings()!;
 
     const onChange = useCallback(
-        (update: Partial<UserSettings>) => collections.userSettings.doc(user.id).set({ ...userSettings, ...update }),
-        [user.id, userSettings]
+        (update: Partial<UserSettings>) => collections.userSettings.doc(user.id).update(update),
+        [user.id]
     );
 
     return (

@@ -184,6 +184,7 @@ export interface UserSettings {
     showRedacted: boolean;
     newsletter: boolean;
     digestMail: boolean;
+    notificationMail?: boolean;
 }
 
 export interface UserProperties {
