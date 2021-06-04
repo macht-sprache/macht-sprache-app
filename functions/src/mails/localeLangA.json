@@ -35,6 +35,6 @@
         "genericSubject": "{{count}} new notifications from macht.sprache.",
         "message": "There is a new notification for you:",
         "message_plural": "There are new notifications for you:",
-        "unsubscribe": "You recieved this mail because you follow or took part in a discussion on macht.sprache. If you no longer want to recieve these mails you can stop following individual terms or unsubscribe from all notification mails on your <a class=\"link\" href=\"{{url}}\">user profile</a>."
+        "unsubscribe": "You’re receiving this mail because you followed or participated in a discussion on macht.sprache. If you don’t want to receive these mails any more, you can unfollow individual terms or unsubscribe from all notification mails in your <a class=\"link\" href=\"{{url}}\">user profile</a>."
     }
 }
