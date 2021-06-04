@@ -281,4 +281,4 @@ export const handleDeletedLike = functions.firestore
         });
     });
 
-export { notificationMailTask } from './task';
+export * from './task';
