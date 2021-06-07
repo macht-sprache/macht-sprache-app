@@ -8,7 +8,7 @@ import config from '../config';
 
 const queueName = 'notifications';
 const taskName = 'notifications-notificationMailTask';
-const debounceSeconds = 60 * 15;
+const debounceSeconds = 60 * 30;
 
 export const enqueueNotificationMailTask = functions.firestore
     .document('/users/{userId}/notifications/{notificationId}')
