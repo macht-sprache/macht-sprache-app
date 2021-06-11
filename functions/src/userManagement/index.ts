@@ -70,6 +70,7 @@ export const postRegistrationHandler = functions.https.onCall(
                 newsletter,
                 showRedacted: false,
                 digestMail: true,
+                notificationMail: true,
             };
 
             const userProperties: UserProperties = {
