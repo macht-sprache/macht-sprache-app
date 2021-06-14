@@ -1,5 +1,6 @@
-import { generatePath, matchPath, Redirect, useLocation } from 'react-router-dom';
+import { generatePath, matchPath, useLocation } from 'react-router-dom';
 import { Get } from '../hooks/fetch';
+import RedirectPath from '../RedirectPath';
 import { TERM, TERM_SIDEBAR } from '../routes';
 import { Term } from '../types';
 
@@ -15,9 +16,9 @@ const SidebarTermRedirectWrapper: React.FC<Props> = ({ children, getTerm }) => {
     const { pathname } = useLocation();
 
     if (term.adminTags.showInSidebar && matchPath(pathname, { path: TERM })) {
-        return <Redirect to={replacePath(pathname, term.id, TERM, TERM_SIDEBAR)} />;
+        return <RedirectPath to={replacePath(pathname, term.id, TERM, TERM_SIDEBAR)} />;
     } else if (!term.adminTags.showInSidebar && matchPath(pathname, { path: TERM_SIDEBAR })) {
-        return <Redirect to={replacePath(pathname, term.id, TERM_SIDEBAR, TERM)} />;
+        return <RedirectPath to={replacePath(pathname, term.id, TERM_SIDEBAR, TERM)} />;
     }
 
     return <>{children}</>;
