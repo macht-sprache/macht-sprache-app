@@ -23,11 +23,11 @@ const BookSchema = {
 
 const isValidBook = (book: object): book is Book => isValid({ input: book, schema: BookSchema });
 
-const volumeToBook = ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => {
+const volumeToBook = (fallbackLang?: Lang) => ({ id, volumeInfo }: books_v1.Schema$Volume): Partial<Book> => {
     const year = volumeInfo?.publishedDate?.match(/^\d+/)?.[0];
     return {
         id: id ? makeSourceId(id) : undefined,
-        lang: ([langA, langB] as const).find(lang => lang === volumeInfo?.language),
+        lang: ([langA, langB] as const).find(lang => lang === volumeInfo?.language) || fallbackLang,
         title: volumeInfo?.title,
         authors: volumeInfo?.authors,
         publisher: volumeInfo?.publisher,
@@ -52,13 +52,13 @@ export const searchBooks = async (query: string, lang: Lang) => {
         orderBy: 'relevance',
     });
     const volumes = data.items || [];
-    const books = take(10, volumes.map(volumeToBook).filter(isValidBook));
+    const books = take(10, volumes.map(volumeToBook(lang)).filter(isValidBook));
     return books;
 };
 
 export const getBook = async (sourceId: string) => {
     const { data } = await booksApi.volumes.get({ volumeId: makeVolumeId(sourceId) });
-    const maybeBook = volumeToBook(data);
+    const maybeBook = volumeToBook(langA)(data);
 
     if (isValidBook(maybeBook)) {
         return maybeBook;
