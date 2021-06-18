@@ -1,6 +1,4 @@
 import { logger } from 'firebase-functions';
-import { htmlToText } from 'html-to-text';
-import nodemailer from 'nodemailer';
 import { langA, langB } from '../../../src/languages';
 import { FORGOT_PASSWORD, REGISTER_POST, USER } from '../../../src/routes';
 import { Lang, Notification, UserMini } from '../../../src/types';
@@ -8,6 +6,7 @@ import config from '../config';
 import { auth, db, functions } from '../firebase';
 import { getDigestContent } from './digestMail';
 import { getNotificationMailContent } from './notificationMail';
+import { sendMail } from './sendMail';
 import { generateUrl } from './service';
 import {
     getActivationMail,
@@ -19,32 +18,7 @@ import {
 
 export type Recipient = UserMini & { email: string; lang: Lang };
 
-type MailOptions = {
-    html: string;
-    subject: string;
-    to: string;
-};
-
 type AuthHandlerParams = { origin: string; continuePath: string; lang: Lang };
-
-const sendMail = async ({ html, subject, to }: MailOptions) => {
-    const transport = nodemailer.createTransport({
-        host: config.smtp.host,
-        port: config.smtp.port,
-        auth: {
-            user: config.smtp.user,
-            pass: config.smtp.password,
-        },
-    });
-
-    await transport.sendMail({
-        from: config.smtp.from,
-        subject,
-        to,
-        html,
-        text: htmlToText(html),
-    });
-};
 
 export const sendEmailVerification = functions.https.onCall(
     async ({ origin, continuePath, lang }: AuthHandlerParams, context) => {
@@ -71,7 +45,7 @@ export const sendEmailVerification = functions.https.onCall(
             link: url.toString(),
         });
 
-        await sendMail({ html, subject, to: user.email });
+        await sendMail({ html, subject, to: { email: user.email, id: userId } });
     }
 );
 
@@ -97,7 +71,7 @@ export const sendPasswordResetMail = functions.https.onCall(
             link: url.toString(),
         });
 
-        await sendMail({ html, subject, to: user.email! });
+        await sendMail({ html, subject, to: { email: user.email!, id: user.uid } });
     }
 );
 
@@ -120,7 +94,7 @@ export const sendActivationMail = functions.firestore
             link: config.origin.main,
         });
 
-        await sendMail({ html, subject, to: authUser.email! });
+        await sendMail({ html, subject, to: { email: authUser.email!, id: userId } });
     });
 
 type DigestMailConfig = {
@@ -147,12 +121,12 @@ export const sendWeeklyDigestMail = async (recipients: Recipient[], config: Dige
             config.intro[recipient.lang],
             digestContent[recipient.lang]
         );
-        await sendMail({ html, subject, to: recipient.email });
+        await sendMail({ html, subject, to: recipient });
     }
 };
 
 export const sendNotificationMail = async (recipient: Recipient, notifications: Notification[]) => {
     const { content, subject, message } = await getNotificationMailContent(notifications, recipient.lang);
     const { html } = getNotificationMail(recipient, message, content);
-    await sendMail({ html, subject, to: recipient.email });
+    await sendMail({ html, subject, to: recipient });
 };
