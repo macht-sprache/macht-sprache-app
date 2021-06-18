@@ -54,7 +54,7 @@ export const notificationMailTask = functions.https.onRequest(async (req, res) =
         return;
     }
 
-    handleNotificationMailTask(userId, notificationId);
+    await handleNotificationMailTask(userId, notificationId);
 
     res.status(200).send();
 });
