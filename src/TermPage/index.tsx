@@ -61,7 +61,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
 
     return (
         <>
-            <PageTitle title={term.value} />
+            <PageTitle title={term.value} lang={term.lang} />
             <Header
                 capitalize
                 subLine={

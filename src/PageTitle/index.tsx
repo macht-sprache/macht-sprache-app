@@ -1,11 +1,13 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { useEffect, createContext, useState, useCallback, useMemo, useContext } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { langColors } from '../languages';
 import { useRedacted } from '../RedactSensitiveTerms';
+import { Lang } from '../types';
 
 const pageTitleContext = createContext<{
-    setPageTitle: (title: string, pathname: string) => void;
+    setPageTitle: (title: string, pathname: string, lang?: Lang) => void;
     setNotificationCount: (count: number) => void;
 }>({ setPageTitle: () => {}, setNotificationCount: () => {} });
 
@@ -14,10 +16,16 @@ export const useSetNotificationCountForPageTitle = () => useContext(pageTitleCon
 export const PageTitleProvider: React.FC = ({ children }) => {
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
-    const [{ title, notifications, pathname }, setState] = useState({
+    const [{ title, notifications, pathname, lang }, setState] = useState<{
+        title: string;
+        pathname: string;
+        notifications: number;
+        lang?: Lang;
+    }>({
         title: '',
-        notifications: 0,
         pathname: '',
+        notifications: 0,
+        lang: undefined,
     });
 
     useEffect(() => {
@@ -28,6 +36,12 @@ export const PageTitleProvider: React.FC = ({ children }) => {
             .filter(part => !!part)
             .join(' ');
     }, [notifications, title, t]);
+
+    useEffect(() => {
+        const metaEl = document.head.querySelector('[name="theme-color"]');
+        const color = lang ? langColors[lang] : '#fff';
+        metaEl?.setAttribute('content', color);
+    }, [lang]);
 
     useEffect(() => {
         const faviconLinkSvg = document.getElementById('faviconSvg') as HTMLLinkElement;
@@ -57,7 +71,7 @@ export const PageTitleProvider: React.FC = ({ children }) => {
     }, [pathname]);
 
     const setPageTitle = useCallback(
-        (title: string, pathname: string) => setState(prev => ({ ...prev, title, pathname })),
+        (title: string, pathname: string, lang?: Lang) => setState(prev => ({ ...prev, title, pathname, lang })),
         []
     );
 
@@ -73,17 +87,18 @@ export const PageTitleProvider: React.FC = ({ children }) => {
 
 type Props = {
     title: string;
+    lang?: Lang;
 };
 
-export default function PageTitle({ title }: Props) {
+export default function PageTitle({ title, lang }: Props) {
     const { pathname } = useLocation();
     const { setPageTitle } = useContext(pageTitleContext);
     const pageTitle = useRedacted(title, true);
 
     useEffect(() => {
-        setPageTitle(pageTitle, pathname);
+        setPageTitle(pageTitle, pathname, lang);
         return () => setPageTitle('', pathname);
-    }, [pageTitle, pathname, setPageTitle]);
+    }, [lang, pageTitle, pathname, setPageTitle]);
 
     return null;
 }

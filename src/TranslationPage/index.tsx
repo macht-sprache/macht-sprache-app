@@ -63,7 +63,7 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
 
     return (
         <>
-            <PageTitle title={translation.value} />
+            <PageTitle title={translation.value} lang={translation.lang} />
             <Header
                 capitalize
                 mainLang={translation.lang}
