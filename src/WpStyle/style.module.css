@@ -92,12 +92,12 @@
     width: 100%;
 }
 
-.container :global(.wp-embed-aspect-16-9) {
+.container :global(.wp-block-embed-youtube) {
     position: relative;
     padding-bottom: calc(9 / 16 * 100%);
 }
 
-.container :global(.wp-embed-aspect-16-9 iframe) {
+.container :global(.wp-block-embed-youtube iframe) {
     position: absolute;
     height: 100%;
 }
