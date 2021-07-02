@@ -83,3 +83,21 @@
 .container :global(.wp-block-image) {
     margin: 2rem 0;
 }
+
+.container :global(.wp-block-embed) {
+    margin: 1rem 0;
+}
+
+.container :global(.wp-block-embed iframe) {
+    width: 100%;
+}
+
+.container :global(.wp-embed-aspect-16-9) {
+    position: relative;
+    padding-bottom: calc(9 / 16 * 100%);
+}
+
+.container :global(.wp-embed-aspect-16-9 iframe) {
+    position: absolute;
+    height: 100%;
+}
