@@ -19,6 +19,11 @@ const ABOUT_SLUGS = {
     de: 'ueber-macht-sprache-kurzversion-startseite',
 };
 
+const EVENT_SLUGS = {
+    en: 'macht-sprache-events-short-version-landing-page',
+    de: 'macht-sprache-veranstaltungen-kurzversion-startseite',
+};
+
 export default function Home() {
     const { t } = useTranslation();
     const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
@@ -38,7 +43,10 @@ export default function Home() {
                             <LatestActivity />
                         </Suspense>
                     ) : (
-                        <About />
+                        <>
+                            <About />
+                            <Events />
+                        </>
                     )}
                 </div>
                 <div>
@@ -52,7 +60,10 @@ export default function Home() {
                         </div>
                     </Suspense>
                     {user ? (
-                        <About />
+                        <>
+                            <About />
+                            <Events />
+                        </>
                     ) : (
                         <Suspense fallback={null}>
                             <LatestActivity />
@@ -75,6 +86,18 @@ function About() {
             <ButtonContainer align="left">
                 <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
             </ButtonContainer>
+        </>
+    );
+}
+
+function Events() {
+    const { response } = useWpPage(EVENT_SLUGS);
+    const { t } = useTranslation();
+
+    return (
+        <>
+            <ColumnHeading>{t('home.events')}</ColumnHeading>
+            <WpStyle body={response?.body} />
         </>
     );
 }
