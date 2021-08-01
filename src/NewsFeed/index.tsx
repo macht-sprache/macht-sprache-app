@@ -1,19 +1,22 @@
 import { useTranslation } from 'react-i18next';
 import { ButtonAnchor } from '../Form/Button';
 import { FormatDate } from '../FormatDate';
-import { useWpPosts, WpImage } from '../useWpHooks';
+import { WpMedia, WpPost } from '../hooks/wp';
 import s from './style.module.css';
 
-const MACHT_SPRACHE_TAGS = { en: '523', de: '520' };
+export const MACHT_SPRACHE_TAGS = { en: '523', de: '520' };
 
-export function NewsFeed() {
+type Props = {
+    getPosts: () => WpPost[];
+};
+
+export function NewsFeed({ getPosts }: Props) {
     const { t } = useTranslation();
-    const { response, isLoading } = useWpPosts(MACHT_SPRACHE_TAGS);
+    const posts = getPosts();
 
     return (
         <>
-            {isLoading && <>{t('common.loading')}</>}
-            {response?.map(({ title, link, excerpt, date, featuredMedia }, index) => (
+            {posts.map(({ title, link, excerpt, date, featuredMedia }, index) => (
                 <article
                     key={index}
                     className={s.article}
@@ -44,4 +47,14 @@ export function NewsFeed() {
             ))}
         </>
     );
+}
+
+interface WpImageProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
+    image: WpMedia;
+}
+
+export function WpImage({ image, ...props }: WpImageProps) {
+    const srcSet = image.sizes.map(size => `${size.source_url} ${size.width}w`).join(', ');
+
+    return <img width={image.width} height={image.height} alt="" srcSet={srcSet} {...props} />;
 }

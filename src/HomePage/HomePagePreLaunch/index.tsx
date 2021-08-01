@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
+import { useWpPage, useWpPosts } from '../../hooks/wp';
 // import { Link } from 'react-router-dom';
 // import Button, { ButtonContainer } from '../../Form/Button';
 // import { Checkbox } from '../../Form/Checkbox';
 // import { Input } from '../../Form/Input';
 // import InputContainer from '../../Form/InputContainer';
 import { ColumnHeading, Columns } from '../../Layout/Columns';
-import { NewsFeed } from '../../NewsFeed';
+import { MACHT_SPRACHE_TAGS, NewsFeed } from '../../NewsFeed';
 // import { IMPRINT, PRIVACY } from '../../routes';
-import { useWpPage } from '../../useWpHooks';
 import { WpStyle } from '../../WpStyle';
 import { HomePageHeader } from '../Header';
 import s from './style.module.css';
@@ -19,7 +19,8 @@ const ABOUT_SLUGS = {
 
 export function HomePagePreLaunch() {
     const { t } = useTranslation();
-    const { response } = useWpPage(ABOUT_SLUGS);
+    const getAbout = useWpPage(ABOUT_SLUGS);
+    const getPosts = useWpPosts(MACHT_SPRACHE_TAGS);
 
     return (
         <>
@@ -39,12 +40,12 @@ export function HomePagePreLaunch() {
                         <SignUp />
                     </div> */}
                     <ColumnHeading>{t('home.about')}</ColumnHeading>
-                    <WpStyle body={response?.body} />
+                    <WpStyle body={getAbout().body} />
                 </div>
                 <div>
                     <ColumnHeading>{t('home.news')}</ColumnHeading>
                     <div className={s.newsFeed}>
-                        <NewsFeed />
+                        <NewsFeed getPosts={getPosts} />
                     </div>
                 </div>
             </Columns>
