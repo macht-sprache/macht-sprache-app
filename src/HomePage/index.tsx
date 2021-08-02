@@ -1,15 +1,16 @@
 import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { ContentItemList } from '../ContentItemList';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
 import { useUser } from '../hooks/appContext';
 import { collections } from '../hooks/data';
 import { useCollection } from '../hooks/fetch';
+import { useWpPage } from '../hooks/wp';
 import { ColumnHeading, Columns } from '../Layout/Columns';
 import { ABOUT, TERMS } from '../routes';
 import { Terms } from '../Terms/TermsSmall';
 import { TermsWeekHighlights } from '../Terms/TermsWeekHighlights';
-import { useWpPage } from '../useWpHooks';
 import { WpStyle } from '../WpStyle';
 import { HomePageHeader } from './Header';
 import s from './style.module.css';
@@ -43,10 +44,7 @@ export default function Home() {
                             <LatestActivity />
                         </Suspense>
                     ) : (
-                        <>
-                            <About />
-                            <Events />
-                        </>
+                        <WpContent />
                     )}
                 </div>
                 <div>
@@ -60,10 +58,7 @@ export default function Home() {
                         </div>
                     </Suspense>
                     {user ? (
-                        <>
-                            <About />
-                            <Events />
-                        </>
+                        <WpContent />
                     ) : (
                         <Suspense fallback={null}>
                             <LatestActivity />
@@ -75,14 +70,25 @@ export default function Home() {
     );
 }
 
+function WpContent() {
+    return (
+        <ErrorBoundary fallbackRender={() => null}>
+            <Suspense fallback={null}>
+                <About />
+                <Events />
+            </Suspense>
+        </ErrorBoundary>
+    );
+}
+
 function About() {
-    const { response } = useWpPage(ABOUT_SLUGS);
+    const getPage = useWpPage(ABOUT_SLUGS);
     const { t } = useTranslation();
 
     return (
         <>
             <ColumnHeading>{t('home.about')}</ColumnHeading>
-            <WpStyle body={response?.body} />
+            <WpStyle body={getPage().body} />
             <ButtonContainer align="left">
                 <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
             </ButtonContainer>
@@ -91,13 +97,13 @@ function About() {
 }
 
 function Events() {
-    const { response } = useWpPage(EVENT_SLUGS);
+    const getPage = useWpPage(EVENT_SLUGS);
     const { t } = useTranslation();
 
     return (
         <>
             <ColumnHeading>{t('home.events')}</ColumnHeading>
-            <WpStyle body={response?.body} />
+            <WpStyle body={getPage().body} />
         </>
     );
 }

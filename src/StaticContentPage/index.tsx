@@ -1,9 +1,7 @@
-import { useTranslation } from 'react-i18next';
-import Header, { SimpleHeader } from '../Header';
+import Header from '../Header';
+import { useWpPage } from '../hooks/wp';
 import { SingleColumn } from '../Layout/Columns';
-import PageLoadingState from '../PageLoadingState';
 import PageTitle from '../PageTitle';
-import { useWpPage } from '../useWpHooks';
 import { WpStyle } from '../WpStyle';
 import s from './style.module.css';
 
@@ -12,30 +10,17 @@ type StaticContentPageProps = {
 };
 
 export function StaticContentPage({ slugs }: StaticContentPageProps) {
-    const { response, isLoading, error } = useWpPage(slugs);
-    const { t } = useTranslation();
-
-    if (error) {
-        return (
-            <>
-                <SimpleHeader>{t('common.error.general')}</SimpleHeader>
-                {error.message}
-            </>
-        );
-    }
-
-    if (!response || isLoading) {
-        return <PageLoadingState />;
-    }
+    const getPost = useWpPage(slugs);
+    const post = getPost();
 
     return (
         <>
-            <PageTitle title={response.title} />
+            <PageTitle title={post.title} />
             <Header>
-                <div className={s.title}>{response.title}</div>
+                <div className={s.title}>{post.title}</div>
             </Header>
             <SingleColumn>
-                <WpStyle body={response?.body} />
+                <WpStyle body={post.body} />
             </SingleColumn>
         </>
     );
