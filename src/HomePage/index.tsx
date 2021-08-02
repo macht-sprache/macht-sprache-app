@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { ContentItemList } from '../ContentItemList';
 import { ButtonContainer, ButtonLink } from '../Form/Button';
@@ -43,10 +44,7 @@ export default function Home() {
                             <LatestActivity />
                         </Suspense>
                     ) : (
-                        <Suspense fallback={null}>
-                            <About />
-                            <Events />
-                        </Suspense>
+                        <WpContent />
                     )}
                 </div>
                 <div>
@@ -60,10 +58,7 @@ export default function Home() {
                         </div>
                     </Suspense>
                     {user ? (
-                        <Suspense fallback={null}>
-                            <About />
-                            <Events />
-                        </Suspense>
+                        <WpContent />
                     ) : (
                         <Suspense fallback={null}>
                             <LatestActivity />
@@ -72,6 +67,17 @@ export default function Home() {
                 </div>
             </Columns>
         </>
+    );
+}
+
+function WpContent() {
+    return (
+        <ErrorBoundary fallbackRender={() => null}>
+            <Suspense fallback={null}>
+                <About />
+                <Events />
+            </Suspense>
+        </ErrorBoundary>
     );
 }
 
