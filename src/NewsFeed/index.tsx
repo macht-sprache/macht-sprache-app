@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ButtonAnchor } from '../Form/Button';
 import { FormatDate } from '../FormatDate';
 import { WpMedia, WpPost } from '../hooks/wp';
+import { stopPropagation } from '../utils';
 import s from './style.module.css';
 
 export const MACHT_SPRACHE_TAGS = { en: '523', de: '520' };
@@ -17,13 +18,7 @@ export function NewsFeed({ getPosts }: Props) {
     return (
         <>
             {posts.map(({ title, link, excerpt, date, featuredMedia }, index) => (
-                <article
-                    key={index}
-                    className={s.article}
-                    onClick={() => {
-                        window.open(link);
-                    }}
-                >
+                <article key={index} className={s.article} onClick={() => window.open(link)}>
                     <h1 className={s.heading}>
                         <a
                             href={link}
@@ -31,6 +26,7 @@ export function NewsFeed({ getPosts }: Props) {
                             rel="noreferrer"
                             className={s.link}
                             dangerouslySetInnerHTML={{ __html: title }}
+                            onClick={stopPropagation}
                         />
                     </h1>
                     {featuredMedia && <WpImage sizes="600px" className={s.image} image={featuredMedia} />}
@@ -39,7 +35,13 @@ export function NewsFeed({ getPosts }: Props) {
                             <FormatDate date={date} />
                         </div>
                         <div className={s.excerpt} dangerouslySetInnerHTML={{ __html: excerpt }} />
-                        <ButtonAnchor href={link} target="_blank" rel="noreferrer" className={s.clickForMore}>
+                        <ButtonAnchor
+                            href={link}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={stopPropagation}
+                            className={s.clickForMore}
+                        >
                             {t('newsFeed.clickForMore')}
                         </ButtonAnchor>
                     </div>
