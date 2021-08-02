@@ -43,7 +43,6 @@ const getInitialReader = <T>(url: string) => {
     );
     return () => {
         if (initialError) {
-            cache.delete(url);
             throw initialError;
         }
         if (!initialData) {
