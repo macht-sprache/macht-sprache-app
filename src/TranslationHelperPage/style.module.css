@@ -1,0 +1,19 @@
+.analysisContainer {
+    padding: 1rem;
+    border: var(--thinBorder) solid var(--black);
+    background: var(--white);
+    font-family: var(--paragraphFont);
+    margin-bottom: 1rem;
+}
+
+.analysisContainer p {
+    margin: 0;
+}
+
+.sensibleWord {
+    background: var(--orange);
+    color: var(--blackDark);
+    padding: 0.2em;
+    font-style: italic;
+    cursor: default;
+}
