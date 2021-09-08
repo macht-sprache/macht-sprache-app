@@ -17,3 +17,31 @@
     font-style: italic;
     cursor: default;
 }
+
+.sensibleWordHovered {
+    box-shadow: 0 0 0 2px var(--orange);
+}
+
+.overlay {
+    max-width: 300px;
+    font-size: var(--fontSizeM);
+}
+
+.overlayWord {
+    font-weight: bold;
+}
+
+.overlayHeading {
+    margin: 0.5rem 0;
+}
+
+.overlayTranslationList {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.overlayTranslation {
+    font-size: var(--fontSizeS);
+    padding: 0;
+}
