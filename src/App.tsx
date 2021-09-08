@@ -30,6 +30,7 @@ import TranslationExamplePage from './pages/TranslationExamplePage';
 import TranslationExampleRedirect from './pages/TranslationExampleRedirect';
 import TranslationPage from './pages/TranslationPage';
 import TranslationRedirect from './pages/TranslationRedirect';
+import TranslationHelperPage from './TranslationHelperPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
@@ -130,6 +131,9 @@ function AppRouter() {
                                 </AdminRoute>
                                 <LaunchedRoute path={routes.NEWS} exact>
                                     <NewsPage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.TRANSLATION_HELPER} exact>
+                                    <TranslationHelperPage />
                                 </LaunchedRoute>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
