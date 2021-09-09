@@ -15,16 +15,26 @@
     color: var(--blackDark);
     padding: 0.2em;
     font-style: italic;
-    cursor: default;
+    cursor: pointer;
+    border: none;
+    display: inline;
+    font-size: inherit;
+    font-family: inherit;
 }
 
-.sensibleWordHovered {
+.sensibleWordHovered,
+.sensibleWord:hover {
     box-shadow: 0 0 0 2px var(--orange);
 }
 
-.overlay {
+.tooltip {
     max-width: 300px;
-    font-size: var(--fontSizeM);
+    font-size: var(--fontSizeS);
+}
+
+.tooltipDefinition {
+    margin: 0;
+    font-style: italic;
 }
 
 .overlayWord {
@@ -32,16 +42,20 @@
 }
 
 .overlayHeading {
-    margin: 0.5rem 0;
+    margin: 0 0 0.5rem;
+    font-style: italic;
 }
 
 .overlayTranslationList {
     padding: 0;
-    list-style: none;
-    margin: 0;
+    margin: 0 0 2rem;
 }
 
 .overlayTranslation {
-    font-size: var(--fontSizeS);
     padding: 0;
+    margin-bottom: 0;
+}
+
+.overlayTranslation {
+    margin-top: 0.5rem;
 }
