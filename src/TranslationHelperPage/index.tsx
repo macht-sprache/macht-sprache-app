@@ -122,9 +122,14 @@ function SensibleWord({ children, translationList }: { children: React.ReactNode
     const [overlayOpen, setOverlayOpen] = useState(false);
 
     const tooltip = (
-        <div className={s.tooltip}>
+        <div
+            className={s.tooltip}
+            onClick={() => {
+                setOverlayOpen(true);
+            }}
+        >
             {translationList.definition && <p className={s.tooltipDefinition}>{translationList.definition}</p>}
-            <a href={translationList.link}>Click for possible translations</a>
+            Click for possible translations
         </div>
     );
 
