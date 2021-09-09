@@ -1,5 +1,5 @@
 import Tooltip from 'rc-tooltip';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button, { ButtonContainer, ButtonAnchor } from '../Form/Button';
 import { Select, Textarea } from '../Form/Input';
