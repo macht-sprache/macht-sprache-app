@@ -11,33 +11,52 @@ import { Lang } from '../types';
 import s from './style.module.css';
 import clsx from 'clsx';
 import { ModalDialog } from '../ModalDialog';
+import { TermWithLang } from '../TermWithLang';
 
 type TextType = 'original' | 'translation';
 
 type TranslationList = {
-    word: string;
+    term: {
+        value: string;
+        lang: Lang;
+    };
     definition?: string;
     link: string;
-    translations: { word: string; definition?: string }[];
+    translations: {
+        term: { value: string; lang: Lang };
+        definition?: string;
+    }[];
 };
 
 const dummyTranslationRace: TranslationList = {
-    word: 'Race',
+    term: {
+        value: 'Race',
+        lang: langA,
+    },
     definition: 'In references to human beings, race is an identity category.',
     link: 'https://www.machtsprache.de/term/b2LXNYVQJ3BH5JFDrB8m',
     translations: [
         {
-            word: 'Race',
+            term: {
+                value: 'Race',
+                lang: langB,
+            },
             definition:
                 'Der Englische Begriff Race kann im Deutschen beibehalten werden. Er beschreibt ein Identitätskonzept und kann als solches als feststehender Ausdruck verstanden werden.',
         },
         {
-            word: 'Rassifizierung',
+            term: {
+                value: 'Rassifizierung',
+                lang: langB,
+            },
             definition:
                 'Rassifizierung ist keine direkte Übersetzung für Race. Der Begriff beschreibt den gesellschaftlichen Prozess, der Menschen einer Race zuordnet, also einer bestimmten Identität.',
         },
         {
-            word: 'Rasse',
+            term: {
+                value: 'Rasse',
+                lang: langB,
+            },
             definition:
                 'Rasse ist die wohl bekannteste Übersetzungsoption für Race. Aber die Bedeutung der Begriffe hat historisch unterschiedliche Entwicklungen durchgemacht. Rasse ist beispielsweise eng verbunden mit kolonialer, pseudowissenschaftlicher Rassenforschung und der Nazizeit. Bei Race ist klarer, dass es sich um ein Konstrukt handelt. ',
         },
@@ -45,23 +64,41 @@ const dummyTranslationRace: TranslationList = {
 };
 
 const dummyTranslationWhiteFragility: TranslationList = {
-    word: 'white fragility',
+    term: {
+        value: 'white fragility',
+        lang: langA,
+    },
     link: 'https://www.machtsprache.de/term/b2LXNYVQJ3BH5JFDrB8m',
     translations: [
         {
-            word: 'Weiße Fragilität',
+            term: {
+                value: 'Weiße Fragilität',
+                lang: langB,
+            },
         },
         {
-            word: 'Weiße Empfindlichkeit',
+            term: {
+                value: 'Weiße Empfindlichkeit',
+                lang: langB,
+            },
         },
         {
-            word: 'Überweisze Empfindlichkeit',
+            term: {
+                value: 'Überweisze Empfindlichkeit',
+                lang: langB,
+            },
         },
         {
-            word: 'Weiße Überempfindlichkeit',
+            term: {
+                value: 'Weiße Überempfindlichkeit',
+                lang: langB,
+            },
         },
         {
-            word: 'White Fragility',
+            term: {
+                value: 'White Fragility',
+                lang: langB,
+            },
         },
     ],
 };
@@ -187,43 +224,47 @@ function SensibleWord({
                         setOverlayOpen(true);
                     }}
                     className={clsx(s.sensibleWord, { [s.sensibleWordHovered]: tooltipOpen })}
+                    lang={translationList.term.lang}
                 >
                     {children}
                 </button>
             </Tooltip>
             {overlayOpen && (
                 <ModalDialog
-                    title={translationList.word}
+                    title={
+                        <span className={s.overlayTitle}>
+                            <TermWithLang term={translationList.term} />
+                        </span>
+                    }
                     onClose={() => {
                         setOverlayOpen(false);
                     }}
                     isDismissable={true}
                 >
-                    <div className={s.overlay}>
-                        {translationList.definition && (
-                            <p className={s.overlayDefinition}>{translationList.definition}</p>
-                        )}
-                        <ul className={s.overlayTranslationList}>
-                            {translationList.translations.map((translation, index) => (
-                                <li key={index} className={s.overlayTranslation}>
-                                    <span className={s.overlayWord}>{translation.word}</span>
-                                    {translation.definition && <>: </>}
-                                    {translation.definition}
-                                </li>
-                            ))}
-                        </ul>
-                        <ButtonContainer>
-                            <ButtonAnchor href={translationList.link}>More information</ButtonAnchor>
-                            <Button
-                                primary={true}
-                                onClick={() => {
-                                    setOverlayOpen(false);
-                                }}
-                            >
-                                close
-                            </Button>
-                        </ButtonContainer>
-                    </div>
+                    {translationList.definition && <p className={s.overlayDefinition}>{translationList.definition}</p>}
+                    <h3>Possible translations:</h3>
+                    <ul className={s.overlayTranslationList}>
+                        {translationList.translations.map((translation, index) => (
+                            <li key={index} className={s.overlayTranslation}>
+                                <span className={s.overlayTranslationTerm}>
+                                    <TermWithLang term={translation.term} />
+                                </span>
+                                {translation.definition && <>: </>}
+                                {translation.definition}
+                            </li>
+                        ))}
+                    </ul>
+                    <ButtonContainer>
+                        <ButtonAnchor href={translationList.link}>Discuss or suggest translation</ButtonAnchor>
+                        <Button
+                            primary={true}
+                            onClick={() => {
+                                setOverlayOpen(false);
+                            }}
+                        >
+                            close
+                        </Button>
+                    </ButtonContainer>
                 </ModalDialog>
             )}
         </>
