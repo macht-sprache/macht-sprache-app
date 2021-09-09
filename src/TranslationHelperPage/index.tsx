@@ -1,5 +1,5 @@
 import Tooltip from 'rc-tooltip';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button, { ButtonContainer, ButtonAnchor } from '../Form/Button';
 import { Select, Textarea } from '../Form/Input';
@@ -92,20 +92,49 @@ export default function TranslationHelperPage() {
 }
 
 function Analysis({ onCancel }: { onCancel: () => void }) {
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+
+    function onTooltipChange(isVisible: boolean) {
+        setTooltipOpen(isVisible);
+    }
+
     return (
         <>
             <p>Click on the words for more information.</p>
-            <div className={s.analysisContainer}>
+            <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
                 <p>
-                    Led to factors like <SensibleWord translationList={dummyTranslationRace}>race</SensibleWord>,
-                    development and location - to who does and who doesn’t make a ‚relatable’ victim of terror.
-                    <br />I conceptualize this process as{' '}
-                    <SensibleWord translationList={dummyTranslationWhiteFragility}>white fragility</SensibleWord>.
-                    Though <SensibleWord translationList={dummyTranslationWhiteFragility}>white fragility</SensibleWord>{' '}
-                    is triggered by discomfort and anxiety, it is born of superiority and entitlement.{' '}
-                    <SensibleWord translationList={dummyTranslationWhiteFragility}>White fragility</SensibleWord>
-                    is not weakness per se. In fact, it is a powerful means of white racial control and the protection
-                    of white advantage.
+                    <span>Led to factors like</span>{' '}
+                    <SensibleWord onTooltipVisibleChange={onTooltipChange} translationList={dummyTranslationRace}>
+                        race
+                    </SensibleWord>
+                    <span>
+                        , development and location - to who does and who doesn’t make a ‚relatable’ victim of terror.
+                        <br />I conceptualize this process as{' '}
+                    </span>
+                    <SensibleWord
+                        onTooltipVisibleChange={onTooltipChange}
+                        translationList={dummyTranslationWhiteFragility}
+                    >
+                        <span>white fragility</span>
+                    </SensibleWord>
+                    <span>. Though</span>{' '}
+                    <SensibleWord
+                        onTooltipVisibleChange={onTooltipChange}
+                        translationList={dummyTranslationWhiteFragility}
+                    >
+                        white fragility
+                    </SensibleWord>{' '}
+                    <span>is triggered by discomfort and anxiety, it is born of superiority and entitlement.</span>{' '}
+                    <SensibleWord
+                        onTooltipVisibleChange={onTooltipChange}
+                        translationList={dummyTranslationWhiteFragility}
+                    >
+                        White fragility
+                    </SensibleWord>
+                    <span>
+                        is not weakness per se. In fact, it is a powerful means of white racial control and the
+                        protection of white advantage.
+                    </span>
                 </p>
             </div>
             <ButtonContainer>
@@ -117,8 +146,16 @@ function Analysis({ onCancel }: { onCancel: () => void }) {
     );
 }
 
-function SensibleWord({ children, translationList }: { children: React.ReactNode; translationList: TranslationList }) {
-    const [isVisible, setIsVisible] = useState(false);
+function SensibleWord({
+    children,
+    translationList,
+    onTooltipVisibleChange,
+}: {
+    children: React.ReactNode;
+    translationList: TranslationList;
+    onTooltipVisibleChange: (isVisible: boolean) => void;
+}) {
+    const [tooltipOpen, setTooltipOpen] = useState(false);
     const [overlayOpen, setOverlayOpen] = useState(false);
 
     const tooltip = (
@@ -139,7 +176,8 @@ function SensibleWord({ children, translationList }: { children: React.ReactNode
                 overlay={tooltip}
                 placement="bottom"
                 onVisibleChange={visible => {
-                    setIsVisible(visible);
+                    setTooltipOpen(visible);
+                    onTooltipVisibleChange(visible);
                 }}
                 mouseEnterDelay={0.2}
                 mouseLeaveDelay={0.2}
@@ -148,7 +186,7 @@ function SensibleWord({ children, translationList }: { children: React.ReactNode
                     onClick={() => {
                         setOverlayOpen(true);
                     }}
-                    className={clsx(s.sensibleWord, { [s.sensibleWordHovered]: isVisible })}
+                    className={clsx(s.sensibleWord, { [s.sensibleWordHovered]: tooltipOpen })}
                 >
                     {children}
                 </button>
