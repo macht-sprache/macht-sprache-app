@@ -6,6 +6,14 @@
     margin-bottom: 1rem;
 }
 
+.analysisContainer p > * {
+    transition: 0.3s filter, 0.1s box-shadow;
+}
+
+.analysisContainerWithTooltip p > *:not(.sensibleWordHovered) {
+    filter: blur(3px);
+}
+
 .analysisContainer p {
     margin: 0;
 }
