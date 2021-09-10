@@ -52,6 +52,7 @@ export default function SelectTooltip({ children }: { children: React.ReactNode 
                     overlay={<div className={s.tooltip}>Click to add missing word to macht.sprache.</div>}
                     placement="bottom"
                     visible={true}
+                    destroyTooltipOnHide={true}
                 >
                     <div
                         className={s.tooltipDummy}
