@@ -12,6 +12,7 @@ import s from './style.module.css';
 import clsx from 'clsx';
 import { ModalDialog } from '../ModalDialog';
 import { TermWithLang } from '../TermWithLang';
+import SelectTooltip from '../SelectTooltip';
 
 type TextType = 'original' | 'translation';
 
@@ -138,42 +139,45 @@ function Analysis({ onCancel }: { onCancel: () => void }) {
     return (
         <>
             <p>Click on the words for more information.</p>
-            <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
-                <p>
-                    <span>Led to factors like</span>{' '}
-                    <SensibleWord onTooltipVisibleChange={onTooltipChange} translationList={dummyTranslationRace}>
-                        race
-                    </SensibleWord>
-                    <span>
-                        , development and location - to who does and who doesn’t make a ‚relatable’ victim of terror.
-                        <br />I conceptualize this process as{' '}
-                    </span>
-                    <SensibleWord
-                        onTooltipVisibleChange={onTooltipChange}
-                        translationList={dummyTranslationWhiteFragility}
-                    >
-                        <span>white fragility</span>
-                    </SensibleWord>
-                    <span>. Though</span>{' '}
-                    <SensibleWord
-                        onTooltipVisibleChange={onTooltipChange}
-                        translationList={dummyTranslationWhiteFragility}
-                    >
-                        white fragility
-                    </SensibleWord>{' '}
-                    <span>is triggered by discomfort and anxiety, it is born of superiority and entitlement.</span>{' '}
-                    <SensibleWord
-                        onTooltipVisibleChange={onTooltipChange}
-                        translationList={dummyTranslationWhiteFragility}
-                    >
-                        White fragility
-                    </SensibleWord>
-                    <span>
-                        is not weakness per se. In fact, it is a powerful means of white racial control and the
-                        protection of white advantage.
-                    </span>
-                </p>
-            </div>
+            <SelectTooltip>
+                <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
+                    <p>
+                        <span>Led to factors like</span>{' '}
+                        <SensibleWord onTooltipVisibleChange={onTooltipChange} translationList={dummyTranslationRace}>
+                            race
+                        </SensibleWord>
+                        <span>
+                            , development and location - to who does and who doesn’t make a ‚relatable’ victim of
+                            terror.
+                            <br />I conceptualize this process as{' '}
+                        </span>
+                        <SensibleWord
+                            onTooltipVisibleChange={onTooltipChange}
+                            translationList={dummyTranslationWhiteFragility}
+                        >
+                            <span>white fragility</span>
+                        </SensibleWord>
+                        <span>. Though</span>{' '}
+                        <SensibleWord
+                            onTooltipVisibleChange={onTooltipChange}
+                            translationList={dummyTranslationWhiteFragility}
+                        >
+                            white fragility
+                        </SensibleWord>{' '}
+                        <span>is triggered by discomfort and anxiety, it is born of superiority and entitlement.</span>{' '}
+                        <SensibleWord
+                            onTooltipVisibleChange={onTooltipChange}
+                            translationList={dummyTranslationWhiteFragility}
+                        >
+                            White fragility
+                        </SensibleWord>
+                        <span>
+                            is not weakness per se. In fact, it is a powerful means of white racial control and the
+                            protection of white advantage.
+                        </span>
+                    </p>
+                </div>
+            </SelectTooltip>
             <ButtonContainer>
                 <Button primary={true} onClick={onCancel}>
                     Edit Text

@@ -1,0 +1,9 @@
+.tooltipDummy {
+    position: absolute;
+    pointer-events: none;
+}
+
+.tooltip {
+    max-width: 250px;
+    cursor: pointer;
+}
