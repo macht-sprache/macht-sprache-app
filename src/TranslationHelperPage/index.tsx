@@ -207,7 +207,15 @@ function SensibleWord({
             }}
         >
             {translationList.definition && <p className={s.tooltipDefinition}>{translationList.definition}</p>}
-            Click for possible translations
+            Possible Translations:{' '}
+            <ul className={s.tooltipList}>
+                {translationList.translations.map((translation, index) => (
+                    <li className={s.tooltipListItem} key={index}>
+                        {translation.term.value}
+                    </li>
+                ))}
+            </ul>
+            <p>Click for possible translations</p>
         </div>
     );
 
