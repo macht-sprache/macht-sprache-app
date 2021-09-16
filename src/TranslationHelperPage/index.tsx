@@ -109,7 +109,7 @@ export default function TranslationHelperPage() {
 
     return (
         <>
-            <Header subLine="Get help with sensible translations">Translation Helper</Header>
+            <Header subLine="Get help with sensitive translations">Translation Helper</Header>
             <SingleColumn>
                 {isSubmitted ? (
                     <Analysis
@@ -143,34 +143,34 @@ function Analysis({ onCancel }: { onCancel: () => void }) {
                 <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
                     <p>
                         <span>Led to factors like</span>{' '}
-                        <SensibleWord onTooltipVisibleChange={onTooltipChange} translationList={dummyTranslationRace}>
+                        <SensitiveWord onTooltipVisibleChange={onTooltipChange} translationList={dummyTranslationRace}>
                             race
-                        </SensibleWord>
+                        </SensitiveWord>
                         <span>
                             , development and location - to who does and who doesn’t make a ‚relatable’ victim of
                             terror.
                             <br />I conceptualize this process as{' '}
                         </span>
-                        <SensibleWord
+                        <SensitiveWord
                             onTooltipVisibleChange={onTooltipChange}
                             translationList={dummyTranslationWhiteFragility}
                         >
                             <span>white fragility</span>
-                        </SensibleWord>
+                        </SensitiveWord>
                         <span>. Though</span>{' '}
-                        <SensibleWord
+                        <SensitiveWord
                             onTooltipVisibleChange={onTooltipChange}
                             translationList={dummyTranslationWhiteFragility}
                         >
                             white fragility
-                        </SensibleWord>{' '}
+                        </SensitiveWord>{' '}
                         <span>is triggered by discomfort and anxiety, it is born of superiority and entitlement.</span>{' '}
-                        <SensibleWord
+                        <SensitiveWord
                             onTooltipVisibleChange={onTooltipChange}
                             translationList={dummyTranslationWhiteFragility}
                         >
                             White fragility
-                        </SensibleWord>
+                        </SensitiveWord>
                         <span>
                             is not weakness per se. In fact, it is a powerful means of white racial control and the
                             protection of white advantage.
@@ -187,7 +187,7 @@ function Analysis({ onCancel }: { onCancel: () => void }) {
     );
 }
 
-function SensibleWord({
+function SensitiveWord({
     children,
     translationList,
     onTooltipVisibleChange,
@@ -235,7 +235,7 @@ function SensibleWord({
                     onClick={() => {
                         setOverlayOpen(true);
                     }}
-                    className={clsx(s.sensibleWord, { [s.sensibleWordHovered]: tooltipOpen })}
+                    className={clsx(s.sensitiveWord, { [s.sensitiveWordHovered]: tooltipOpen })}
                     lang={translationList.term.lang}
                 >
                     {children}
@@ -293,7 +293,7 @@ function Form({ onSubmit }: { onSubmit: () => void }) {
 
     return (
         <>
-            <p>Add a text you would like to analyse for sensible terms:</p>
+            <p>Add a text you would like to analyse for sensitive terms:</p>
             <InputContainer>
                 <Select
                     label="Language"
