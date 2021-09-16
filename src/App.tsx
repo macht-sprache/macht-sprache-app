@@ -30,7 +30,7 @@ import TranslationExamplePage from './pages/TranslationExamplePage';
 import TranslationExampleRedirect from './pages/TranslationExampleRedirect';
 import TranslationPage from './pages/TranslationPage';
 import TranslationRedirect from './pages/TranslationRedirect';
-import TranslationHelperPage from './TranslationHelperPage';
+import TextCheckerPage from './TextCheckerPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
@@ -133,7 +133,7 @@ function AppRouter() {
                                     <NewsPage />
                                 </LaunchedRoute>
                                 <LaunchedRoute path={routes.TRANSLATION_HELPER} exact>
-                                    <TranslationHelperPage />
+                                    <TextCheckerPage />
                                 </LaunchedRoute>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
