@@ -10,7 +10,7 @@
     transition: 0.3s filter, 0.1s box-shadow;
 }
 
-.analysisContainerWithTooltip p > *:not(.sensibleWordHovered) {
+.analysisContainerWithTooltip p > *:not(.sensitiveWordHovered) {
     filter: blur(3px);
 }
 
@@ -18,7 +18,7 @@
     margin: 0;
 }
 
-.sensibleWord {
+.sensitiveWord {
     background: var(--lang-color);
     padding: 0.2em;
     font-style: italic;
@@ -29,8 +29,8 @@
     font-family: inherit;
 }
 
-.sensibleWordHovered,
-.sensibleWord:hover {
+.sensitiveWordHovered,
+.sensitiveWord:hover {
     box-shadow: 0 0 0 2px var(--lang-color);
 }
 
