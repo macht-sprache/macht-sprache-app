@@ -104,7 +104,7 @@ const dummyTranslationWhiteFragility: TranslationList = {
     ],
 };
 
-export default function TranslationHelperPage() {
+export default function TextCheckerPage() {
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     return (

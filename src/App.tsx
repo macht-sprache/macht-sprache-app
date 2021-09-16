@@ -28,7 +28,7 @@ import TermPage from './TermPage';
 import { TermsPage } from './TermsPage';
 import TranslationExamplePage from './TranslationExamplePage';
 import TranslationExampleRedirect from './TranslationExampleRedirect';
-import TranslationHelperPage from './TranslationHelperPage';
+import TextCheckerPage from './TextCheckerPage';
 import TranslationPage from './TranslationPage';
 import TranslationRedirect from './TranslationRedirect';
 import { LangProvider } from './useLang';
@@ -133,7 +133,7 @@ function AppRouter() {
                                     <NewsPage />
                                 </LaunchedRoute>
                                 <LaunchedRoute path={routes.TRANSLATION_HELPER} exact>
-                                    <TranslationHelperPage />
+                                    <TextCheckerPage />
                                 </LaunchedRoute>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
