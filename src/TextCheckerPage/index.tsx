@@ -253,30 +253,34 @@ function SensitiveWord({
                     }}
                     isDismissable={true}
                 >
-                    {translationList.definition && <p className={s.overlayDefinition}>{translationList.definition}</p>}
-                    <h3>Meanings:</h3>
-                    <ul className={s.overlayTranslationList}>
-                        {translationList.translations.map((translation, index) => (
-                            <li key={index} className={s.overlayTranslation}>
-                                <span className={s.overlayTranslationTerm}>
-                                    <TermWithLang term={translation.term} />
-                                </span>
-                                {translation.definition && <>: </>}
-                                {translation.definition}
-                            </li>
-                        ))}
-                    </ul>
-                    <ButtonContainer>
-                        <ButtonAnchor href={translationList.link}>Discuss or suggest options</ButtonAnchor>
-                        <Button
-                            primary={true}
-                            onClick={() => {
-                                setOverlayOpen(false);
-                            }}
-                        >
-                            Go Back
-                        </Button>
-                    </ButtonContainer>
+                    <div className={s.overlayContainer}>
+                        {translationList.definition && (
+                            <p className={s.overlayDefinition}>{translationList.definition}</p>
+                        )}
+                        <h3>Possible meanings:</h3>
+                        <ul className={s.overlayTranslationList}>
+                            {translationList.translations.map((translation, index) => (
+                                <li key={index} className={s.overlayTranslation}>
+                                    <span className={s.overlayTranslationTerm}>
+                                        <TermWithLang term={translation.term} />
+                                    </span>
+                                    {translation.definition && <>: </>}
+                                    {translation.definition}
+                                </li>
+                            ))}
+                        </ul>
+                        <ButtonContainer>
+                            <ButtonAnchor href={translationList.link}>Discuss or suggest options</ButtonAnchor>
+                            <Button
+                                primary={true}
+                                onClick={() => {
+                                    setOverlayOpen(false);
+                                }}
+                            >
+                                Go back
+                            </Button>
+                        </ButtonContainer>
+                    </div>
                 </ModalDialog>
             )}
         </>

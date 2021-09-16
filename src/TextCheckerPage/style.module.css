@@ -67,6 +67,11 @@
     font-weight: bold;
 }
 
+.overlayContainer {
+    font-family: var(--paragraphFont);
+    line-height: var(--lineHeightParagraph);
+}
+
 .overlayTitle {
     font-size: var(--fontSizeL);
 }
