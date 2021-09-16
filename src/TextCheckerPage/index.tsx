@@ -297,7 +297,7 @@ function Form({ onSubmit }: { onSubmit: () => void }) {
 
     return (
         <>
-            <p>Add a text you would like to analyse for sensitive terms:</p>
+            <p>Add a text you would like to check for sensitive terms:</p>
             <InputContainer>
                 <Select
                     label="Language"
@@ -342,7 +342,7 @@ function Form({ onSubmit }: { onSubmit: () => void }) {
             </InputContainer>
             <ButtonContainer>
                 <Button primary={true} onClick={onSubmit}>
-                    Analyse for terms
+                    Check text
                 </Button>
             </ButtonContainer>
         </>
