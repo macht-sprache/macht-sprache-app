@@ -7,11 +7,12 @@
 }
 
 .analysisContainer p > * {
-    transition: 0.3s filter, 0.1s box-shadow;
+    transition: 0.3s opacity, 0.3s filter, 0.1s box-shadow;
 }
 
 .analysisContainerWithTooltip p > *:not(.sensitiveWordHovered) {
-    filter: blur(3px);
+    opacity: 0.7;
+    filter: blur(1px);
 }
 
 .analysisContainer p {
