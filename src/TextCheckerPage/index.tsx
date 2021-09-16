@@ -207,7 +207,7 @@ function SensitiveWord({
             }}
         >
             {translationList.definition && <p className={s.tooltipDefinition}>{translationList.definition}</p>}
-            Possible Translations:{' '}
+            Possible Meanings:{' '}
             <ul className={s.tooltipList}>
                 {translationList.translations.map((translation, index) => (
                     <li className={s.tooltipListItem} key={index}>
@@ -215,7 +215,7 @@ function SensitiveWord({
                     </li>
                 ))}
             </ul>
-            <p>Click for possible translations</p>
+            <p>Click for possible information</p>
         </div>
     );
 
