@@ -215,7 +215,7 @@ function SensitiveWord({
                     </li>
                 ))}
             </ul>
-            <p>Click for possible information</p>
+            <p>Click for more information</p>
         </div>
     );
 
