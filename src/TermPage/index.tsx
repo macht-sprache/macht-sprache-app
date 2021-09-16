@@ -258,6 +258,11 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
 
                     {userProperties?.admin && (
                         <>
+                            <h3>Defintion (~40 words)</h3>
+                            <InputContainer>
+                                <Textarea label={`definition ${langA}`} />
+                                <Textarea label={`definition ${langB}`} />
+                            </InputContainer>
                             <h3>Admin</h3>
                             <InputContainer>
                                 <Textarea

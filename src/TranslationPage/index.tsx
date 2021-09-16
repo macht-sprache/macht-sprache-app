@@ -5,13 +5,14 @@ import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../Comments';
 import ConfirmModal from '../ConfirmModal';
 import Button, { ButtonContainer } from '../Form/Button';
-import { Input } from '../Form/Input';
+import { Input, Textarea } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import { FormatDate } from '../FormatDate';
 import Header from '../Header';
 import { useAppContext } from '../hooks/appContext';
 import { collections, getSourcesRef, getTranslationExamplesRef } from '../hooks/data';
 import { Get, GetList, useCollection, useDocument } from '../hooks/fetch';
+import { langA, langB } from '../languages';
 import { ColumnHeading, SingleColumn } from '../Layout/Columns';
 import LinkButton from '../LinkButton';
 import { ModalDialog } from '../ModalDialog';
@@ -192,6 +193,7 @@ function EditTranslation({ translation }: { translation: Translation }) {
 
 function EditTranslationOverlay({ translation, onClose }: { translation: Translation; onClose: () => void }) {
     const { t } = useTranslation();
+    const { userProperties } = useAppContext();
     const [saving, setIsSaving] = useState(false);
     const [value, setValue] = useState(translation.value);
 
@@ -219,6 +221,16 @@ function EditTranslationOverlay({ translation, onClose }: { translation: Transla
                             onChange={({ target: { value } }) => setValue(value)}
                         />
                     </InputContainer>
+
+                    {userProperties?.admin && (
+                        <>
+                            <h3>Definition (10-15 words)</h3>
+                            <InputContainer>
+                                <Textarea label={`definition ${langA}`} />
+                                <Textarea label={`definition ${langB}`} />
+                            </InputContainer>
+                        </>
+                    )}
 
                     <ButtonContainer>
                         <Button onClick={onClose}>{t('common.formNav.cancel')}</Button>
