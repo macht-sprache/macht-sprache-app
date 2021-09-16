@@ -138,7 +138,7 @@ function Analysis({ onCancel }: { onCancel: () => void }) {
 
     return (
         <>
-            <p>Click on the words for more information.</p>
+            <p>Sensitive terms are highlighted. Click for more information.</p>
             <SelectTooltip>
                 <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
                     <p>
@@ -254,7 +254,7 @@ function SensitiveWord({
                     isDismissable={true}
                 >
                     {translationList.definition && <p className={s.overlayDefinition}>{translationList.definition}</p>}
-                    <h3>Possible translations:</h3>
+                    <h3>Meanings:</h3>
                     <ul className={s.overlayTranslationList}>
                         {translationList.translations.map((translation, index) => (
                             <li key={index} className={s.overlayTranslation}>
@@ -267,14 +267,14 @@ function SensitiveWord({
                         ))}
                     </ul>
                     <ButtonContainer>
-                        <ButtonAnchor href={translationList.link}>Discuss or suggest translation</ButtonAnchor>
+                        <ButtonAnchor href={translationList.link}>Discuss or suggest options</ButtonAnchor>
                         <Button
                             primary={true}
                             onClick={() => {
                                 setOverlayOpen(false);
                             }}
                         >
-                            close
+                            Go Back
                         </Button>
                     </ButtonContainer>
                 </ModalDialog>
@@ -312,7 +312,7 @@ function Form({ onSubmit }: { onSubmit: () => void }) {
                     <option value={langB}>{t(`common.langLabels.${langB}` as const)}</option>
                 </Select>
                 <Select
-                    label="Type of the text"
+                    label="Type"
                     value={textType}
                     span={2}
                     onChange={value => {
