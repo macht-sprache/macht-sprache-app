@@ -109,7 +109,7 @@ export default function TextCheckerPage() {
 
     return (
         <>
-            <Header subLine="Get help with sensitive translations">Translation Helper</Header>
+            <Header subLine="Get help with sensitive translations">Text checker</Header>
             <SingleColumn>
                 {isSubmitted ? (
                     <Analysis
@@ -207,7 +207,7 @@ function SensitiveWord({
             }}
         >
             {translationList.definition && <p className={s.tooltipDefinition}>{translationList.definition}</p>}
-            Possible Meanings:{' '}
+            Possible meanings:{' '}
             <ul className={s.tooltipList}>
                 {translationList.translations.map((translation, index) => (
                     <li className={s.tooltipListItem} key={index}>
