@@ -196,12 +196,13 @@ function EditTranslationOverlay({ translation, onClose }: { translation: Transla
     const { userProperties } = useAppContext();
     const [saving, setIsSaving] = useState(false);
     const [value, setValue] = useState(translation.value);
+    const [definition, setDefinition] = useState(translation.definition);
 
     const onSave = () => {
         setIsSaving(true);
         collections.translations
             .doc(translation.id)
-            .set({ ...translation, value })
+            .set({ ...translation, definition, value })
             .then(() => {
                 setIsSaving(false);
                 onClose();
@@ -226,8 +227,20 @@ function EditTranslationOverlay({ translation, onClose }: { translation: Transla
                         <>
                             <h3>Definition (10-15 words)</h3>
                             <InputContainer>
-                                <Textarea label={`definition ${langA}`} />
-                                <Textarea label={`definition ${langB}`} />
+                                <Textarea
+                                    label={`definition ${langA}`}
+                                    value={definition.langA}
+                                    onChange={({ target: { value } }) =>
+                                        setDefinition(before => ({ ...before, langA: value }))
+                                    }
+                                />
+                                <Textarea
+                                    label={`definition ${langB}`}
+                                    value={definition.langB}
+                                    onChange={({ target: { value } }) =>
+                                        setDefinition(before => ({ ...before, langB: value }))
+                                    }
+                                />
                             </InputContainer>
                         </>
                     )}

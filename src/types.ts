@@ -45,6 +45,7 @@ export interface Translation extends Commentable {
     term: DocReference<Term>;
     creator: UserMini;
     createdAt: Timestamp;
+    definition: { langA: string; langB: string };
 
     value: string;
     variants: string[];
