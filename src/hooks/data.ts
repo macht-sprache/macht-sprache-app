@@ -69,6 +69,7 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
             lang,
             commentCount,
             adminComment,
+            definition,
             adminTags,
         } = snapshot.data(defaultSnapshotOptions);
         return {
@@ -81,6 +82,7 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
             lang,
             commentCount,
             adminComment,
+            definition,
             adminTags,
         };
     },
@@ -335,6 +337,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
             translationsAsVariants: false,
         },
         adminComment: { langA: '', langB: '' },
+        definition: { langA: '', langB: '' },
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
     });

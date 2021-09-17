@@ -1,5 +1,5 @@
 import { Timestamp } from '@google-cloud/firestore';
-import { Dictionary } from 'rambdax';
+import { Dictionary, mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
 import { GlobalSettings, Lang, User, UserProperties, UserSettings } from '../../../src/types';
@@ -183,13 +183,40 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
     const currentUserId = verifyUser(context);
     await verifyAdmin(currentUserId);
 
+    const termDefaults: Partial<Term> = {
+        adminComment: {
+            langA: '',
+            langB: '',
+        },
+        definition: {
+            langA: '',
+            langB: '',
+        },
+        adminTags: {
+            hideFromList: false,
+            showInSidebar: false,
+            hightlightLandingPage: false,
+            disableExamples: false,
+            enableCommentsOnTranslations: false,
+            translationsAsVariants: false,
+        },
+    };
+
     await db.runTransaction(async t => {
-        const notifications = await t.get(db.collectionGroup('notifications'));
-        notifications.forEach(doc => {
-            const data = doc.data();
-            t.set(doc.ref, { ...data, notifiedAt: data.notifiedAt ?? new Timestamp(0, 0) });
+        const terms = await t.get(db.collection('terms'));
+        terms.forEach(term => {
+            const data = term.data();
+            t.set(term.ref, mergeDeepRight(termDefaults, data));
         });
     });
+
+    // await db.runTransaction(async t => {
+    //     const notifications = await t.get(db.collectionGroup('notifications'));
+    //     notifications.forEach(doc => {
+    //         const data = doc.data();
+    //         t.set(doc.ref, { ...data, notifiedAt: data.notifiedAt ?? new Timestamp(0, 0) });
+    //     });
+    // });
 });
 
 export const runSeedSubscriptions = functions.https.onCall(async (_, context) => {
