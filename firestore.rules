@@ -153,14 +153,16 @@ service cloud.firestore {
 
     function isValidTranslation() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['term', 'creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'ratings']) &&
+      return data.keys().hasOnly(['term', 'creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'ratings', 'definition']) &&
         data.term is path &&
         data.createdAt == request.time &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&
         data.commentCount == 0 &&
-        data.ratings == null;
+        data.ratings == null &&
+        data.definition.langA == '' &&
+        data.definition.langB == '';
     }
 
     function isValidTranslationUpdate() {
@@ -169,10 +171,17 @@ service cloud.firestore {
         data.value is string;
     }
 
+    function isValidTranslationUpdateAdmin() {
+      let data = request.resource.data;
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'definition']) &&
+        data.value is string;
+    }
+
     match /translations/{translation} {
       allow read: if true;
       allow create: if isValidatedUser() && isCreator() && isValidTranslation();
-      allow update: if isValidatedUser() && (isCreator() || isAdmin()) && isValidTranslationUpdate();
+      allow update: if isValidatedUser() &&
+        ((isCreator() && isValidTranslationUpdate()) || (isAdmin() && isValidTranslationUpdateAdmin()));
       allow delete: if isValidatedUser() && isAdmin();
 
       function isValidRating() {

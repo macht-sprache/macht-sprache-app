@@ -94,10 +94,10 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
         return { ...data, createdAt: getCreatedAt(translation) };
     },
     fromFirestore: (snapshot): Translation => {
-        const { term, creator, createdAt, value, variants, lang, ratings, commentCount } = snapshot.data(
+        const { term, creator, createdAt, value, variants, lang, ratings, commentCount, definition } = snapshot.data(
             defaultSnapshotOptions
         );
-        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, ratings, commentCount };
+        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, ratings, commentCount, definition };
     },
 };
 
@@ -358,6 +358,7 @@ export async function addTranslation(user: User, term: Term, value: string, comm
         lang: term.lang === langA ? langB : langA,
         value,
         commentCount: 0,
+        definition: { langA: '', langB: '' },
         creator: { id: user.id, displayName: user.displayName },
         createdAt: firebase.firestore.Timestamp.now(),
         ratings: null,

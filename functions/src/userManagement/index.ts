@@ -2,7 +2,7 @@ import { Timestamp } from '@google-cloud/firestore';
 import { Dictionary, mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
-import { GlobalSettings, Lang, User, UserProperties, UserSettings } from '../../../src/types';
+import { GlobalSettings, Lang, Translation, User, UserProperties, UserSettings } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 import { Recipient, sendWeeklyDigestMail } from '../mails';
 import { seedSubscriptions } from '../notifications/seedSubscriptions';
@@ -207,6 +207,21 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
         terms.forEach(term => {
             const data = term.data();
             t.set(term.ref, mergeDeepRight(termDefaults, data));
+        });
+    });
+
+    const translationDefaults: Partial<Translation> = {
+        definition: {
+            langA: '',
+            langB: '',
+        },
+    };
+
+    await db.runTransaction(async t => {
+        const translations = await t.get(db.collection('translations'));
+        translations.forEach(translation => {
+            const data = translation.data();
+            t.set(translation.ref, mergeDeepRight(translationDefaults, data));
         });
     });
 
