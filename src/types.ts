@@ -33,6 +33,7 @@ export interface Term extends Commentable {
         translationsAsVariants: boolean;
     };
     adminComment: { langA: string; langB: string };
+    definition: { langA: string; langB: string };
 
     value: string;
     variants: string[];

@@ -219,13 +219,14 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
     const [value, setValue] = useState(term.value);
     const [lang, setLang] = useState(term.lang);
     const [adminComment, setAdminComment] = useState(term.adminComment);
+    const [definition, setDefinition] = useState(term.definition);
     const [adminTags, setAdminTags] = useState(term.adminTags);
 
     const onSave = () => {
         setIsSaving(true);
         collections.terms
             .doc(term.id)
-            .set({ ...term, value, lang, adminComment, adminTags })
+            .set({ ...term, value, lang, adminComment, definition, adminTags })
             .then(() => {
                 setIsSaving(false);
                 onClose();
@@ -260,8 +261,20 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                         <>
                             <h3>Defintion (~40 words)</h3>
                             <InputContainer>
-                                <Textarea label={`definition ${langA}`} />
-                                <Textarea label={`definition ${langB}`} />
+                                <Textarea
+                                    label={`definition ${langA}`}
+                                    value={definition.langA}
+                                    onChange={({ target: { value } }) =>
+                                        setDefinition(before => ({ ...before, langA: value }))
+                                    }
+                                />
+                                <Textarea
+                                    label={`definition ${langB}`}
+                                    value={definition.langB}
+                                    onChange={({ target: { value } }) =>
+                                        setDefinition(before => ({ ...before, langB: value }))
+                                    }
+                                />
                             </InputContainer>
                             <h3>Admin</h3>
                             <InputContainer>

@@ -88,10 +88,12 @@ service cloud.firestore {
 
     function isValidTerm() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'createdAt',  'adminComment', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'adminTags']) &&
+      return data.keys().hasOnly(['creator', 'createdAt',  'adminComment', 'definition', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'adminTags']) &&
         data.createdAt == request.time &&
         data.adminComment.langA == '' &&
         data.adminComment.langB == '' &&
+        data.definition.langA == '' &&
+        data.definition.langB == '' &&
         data.value is string &&
         data.variants is list &&
         data.lang is string &&
@@ -114,7 +116,7 @@ service cloud.firestore {
 
     function isValidTermUpdateAdmin() {
       let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'adminTags']) &&
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'definition', 'adminTags']) &&
         data.value is string &&
         data.lang is string &&
         data.adminTags is map;
