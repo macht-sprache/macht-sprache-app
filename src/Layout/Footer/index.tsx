@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import s from './style.module.css';
 import Pocolit from './Logos/pocolit.svg';
 import Volligohne from './Logos/volligohne.svg';
+import PrototypeFund from './Logos/PrototypeFund.svg';
 import SenatEn from './Logos/senat_en.svg';
 import SenatDe from './Logos/senat_de.svg';
 import { useLang } from '../../useLang';
@@ -21,6 +22,7 @@ export default function Footer({ className }: { className?: string }) {
                 </LogoContainer>
                 <LogoContainer heading={t('footer.fundedBy')}>
                     <Logo alt={t('footer.senate')} img={lang === langA ? SenatEn : SenatDe} />
+                    <Logo alt="prototype fund" img={PrototypeFund} link="https://prototypefund.de" />
                 </LogoContainer>
             </div>
         </footer>
