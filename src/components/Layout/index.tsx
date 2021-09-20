@@ -1,6 +1,6 @@
 import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
-import { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link, NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ContentWarning } from '../ContentWarning';
@@ -16,10 +16,12 @@ import {
     ADMIN_CONTENT,
     CODE_OF_CONDUCT,
     IMPRINT,
+    MANIFESTO,
     NEWS,
     PRIVACY,
     TERMS,
     TERM_SIDEBAR,
+    TRANSLATION_HELPER,
 } from '../../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../../useDomId';
@@ -28,6 +30,8 @@ import Footer from './Footer';
 import Logo from './logo.svg';
 import LogoSmall from './logo_small.svg';
 import s from './style.module.css';
+import { MDXProvider } from '@mdx-js/react';
+import mdxComponents from './mdxComponents';
 
 type Props = {
     children: React.ReactNode;
@@ -57,37 +61,39 @@ function Layout({ children }: Props) {
 
     return (
         <OverlayProvider>
-            <div className={s.container}>
-                <div className={s.mobileHeaderBar}>
-                    <Link className={s.mobileHeaderBarLogo} to="/">
-                        <img className={s.mobileHeaderBarLogoImage} src={LogoSmall} alt={t('nav.logoAlt')} />
-                    </Link>
-                    <LinkButton
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-expanded={menuOpen}
-                        aria-controls={id('menu')}
-                    >
-                        Menu
-                    </LinkButton>
-                    {user && <Notifications userId={user.id} />}
-                </div>
-                <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
-                    <div className={s.header}>
-                        <Link className={s.logo} to="/">
-                            <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
+            <MDXProvider components={mdxComponents}>
+                <div className={s.container}>
+                    <div className={s.mobileHeaderBar}>
+                        <Link className={s.mobileHeaderBarLogo} to="/">
+                            <img className={s.mobileHeaderBarLogoImage} src={LogoSmall} alt={t('nav.logoAlt')} />
                         </Link>
-                    </div>
-                    <div className={s.topRightMenu}>
-                        <TopMenu />
+                        <LinkButton
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            aria-expanded={menuOpen}
+                            aria-controls={id('menu')}
+                        >
+                            Menu
+                        </LinkButton>
                         {user && <Notifications userId={user.id} />}
                     </div>
-                    <Sidebar />
+                    <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
+                        <div className={s.header}>
+                            <Link className={s.logo} to="/">
+                                <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
+                            </Link>
+                        </div>
+                        <div className={s.topRightMenu}>
+                            <TopMenu />
+                            {user && <Notifications userId={user.id} />}
+                        </div>
+                        <Sidebar />
+                    </div>
+                    <main className={s.main}>{children}</main>
+                    <Footer className={s.footer} />
+                    <div className={s.background} />
+                    <ContentWarning />
                 </div>
-                <main className={s.main}>{children}</main>
-                <Footer className={s.footer} />
-                <div className={s.background} />
-                <ContentWarning />
-            </div>
+            </MDXProvider>
         </OverlayProvider>
     );
 }
@@ -100,6 +106,14 @@ function Sidebar() {
     const userProperties = useUserProperties();
 
     let mainLinks = [
+        {
+            to: MANIFESTO,
+            label: 'Manifesto',
+        },
+        {
+            to: TRANSLATION_HELPER,
+            label: 'Text Checker',
+        },
         {
             to: ABOUT,
             label: t('nav.about'),
