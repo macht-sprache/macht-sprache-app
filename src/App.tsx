@@ -35,6 +35,7 @@ import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
 import UserPage from './pages/UserPage';
+import ManifestoPage from './ManifestoPage';
 
 function App() {
     useLangCssVars();
@@ -134,6 +135,9 @@ function AppRouter() {
                                 </LaunchedRoute>
                                 <LaunchedRoute path={routes.TRANSLATION_HELPER} exact>
                                     <TextCheckerPage />
+                                </LaunchedRoute>
+                                <LaunchedRoute path={routes.MANIFESTO} exact>
+                                    <ManifestoPage />
                                 </LaunchedRoute>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
