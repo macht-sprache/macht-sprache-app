@@ -26,11 +26,11 @@
     position: absolute;
     height: var(--indicatorSize);
     width: var(--indicatorSize);
-    left: calc(var(--indicatorSize) / 2);
+    left: 0.5rem;
     top: 50%;
     transform: translateY(calc(var(--indicatorSize) / -2)) rotate(-45deg);
     transform-origin: center;
-    transition: 0.3s all ease;
+    transition: 0.3s transform ease;
     display: block;
     background: linear-gradient(
             90deg,
@@ -49,7 +49,12 @@
 }
 
 .toggleButton[aria-expanded='true']:before {
-    transform: translateY(calc(var(--indicatorSize) / -2)) rotate(45deg);
+    transform: translateY(calc(var(--indicatorSize) / -1.5)) rotate(45deg);
+    left: 0.75rem;
+}
+
+.toggleButton[aria-expanded='false']:hover:before {
+    left: 0.75rem;
 }
 
 .heading {
