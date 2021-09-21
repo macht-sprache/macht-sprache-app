@@ -1,6 +1,5 @@
 import Header from '../Header';
 import { SingleColumn } from '../Layout/Columns';
-import TextChecker from '../TextChecker';
 
 /* eslint-disable import/no-webpack-loader-syntax */
 import Intro from '!babel-loader!@mdx-js/loader!./intro.en.mdx';
@@ -8,6 +7,8 @@ import Intro from '!babel-loader!@mdx-js/loader!./intro.en.mdx';
 import About from '!babel-loader!@mdx-js/loader!./aboutus.en.mdx';
 /* eslint-disable import/no-webpack-loader-syntax */
 import Principles from '!babel-loader!@mdx-js/loader!./principles.en.mdx';
+/* eslint-disable import/no-webpack-loader-syntax */
+import Guidelines from '!babel-loader!@mdx-js/loader!./guidelines.en.mdx';
 
 export default function ManifestoPage() {
     return (
@@ -18,8 +19,7 @@ export default function ManifestoPage() {
                 <Intro />
                 <About />
                 <Principles />
-                <h2>Text Checker</h2>
-                <TextChecker />
+                <Guidelines />
             </SingleColumn>
         </>
     );
