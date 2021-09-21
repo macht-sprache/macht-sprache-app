@@ -1,4 +1,13 @@
+.container {
+    --boxColor: var(--green);
+    --boxColorContrast: var(--orange);
+    --indicatorSize: 1.5rem;
+    border: solid var(--thickBorder) var(--boxColor);
+    margin: 2rem 0;
+}
+
 .toggleButton {
+    position: relative;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -8,14 +17,39 @@
     font-size: inherit;
     color: inherit;
     text-align: left;
-    padding: 1rem;
+    padding: 1rem 1rem 1rem 3rem;
     width: 100%;
 }
 
-.container {
-    --boxColor: var(--green);
-    border: solid var(--thickBorder) var(--boxColor);
-    margin: 2rem 0;
+.toggleButton:before {
+    content: '';
+    position: absolute;
+    height: var(--indicatorSize);
+    width: var(--indicatorSize);
+    left: calc(var(--indicatorSize) / 2);
+    top: 50%;
+    transform: translateY(calc(var(--indicatorSize) / -2)) rotate(-45deg);
+    transform-origin: center;
+    transition: 0.3s all ease;
+    display: block;
+    background: linear-gradient(
+            90deg,
+            transparent 0%,
+            transparent 50%,
+            var(--boxColorContrast) 50%,
+            var(--boxColorContrast) 100%
+        ),
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            transparent 50%,
+            var(--boxColorContrast) 50%,
+            var(--boxColorContrast) 100%
+        );
+}
+
+.toggleButton[aria-expanded='true']:before {
+    transform: translateY(calc(var(--indicatorSize) / -2)) rotate(45deg);
 }
 
 .heading {
