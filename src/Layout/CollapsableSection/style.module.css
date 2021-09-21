@@ -1,0 +1,37 @@
+.toggleButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    text-align: left;
+    padding: 1rem;
+    width: 100%;
+}
+
+.container {
+    --boxColor: var(--green);
+    border: solid var(--thickBorder) var(--boxColor);
+    margin: 2rem 0;
+}
+
+.heading {
+    background: var(--boxColor);
+    margin: 0;
+}
+
+.content {
+    padding: 1rem;
+    background: white;
+}
+
+.content *:first-child {
+    margin-top: 0;
+}
+
+.content *:last-child {
+    margin-bottom: 0;
+}
