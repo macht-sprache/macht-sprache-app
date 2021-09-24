@@ -1,15 +1,13 @@
+/* eslint-disable import/no-webpack-loader-syntax */
+
 import Header from '../Header';
 import { SingleColumn } from '../Layout/Columns';
 import MdxWrapper from '../MdxWrapper';
 
-/* eslint-disable import/no-webpack-loader-syntax */
-import Intro from '!babel-loader!@mdx-js/loader!./intro.en.mdx';
-/* eslint-disable import/no-webpack-loader-syntax */
-import About from '!babel-loader!@mdx-js/loader!./aboutus.en.mdx';
-/* eslint-disable import/no-webpack-loader-syntax */
-import Principles from '!babel-loader!@mdx-js/loader!./principles.en.mdx';
-/* eslint-disable import/no-webpack-loader-syntax */
-import Guidelines from '!babel-loader!@mdx-js/loader!./guidelines.en.mdx';
+import Intro from '!babel-loader!@mdx-js/loader!../Manifesto/intro.en.mdx';
+import About from '!babel-loader!@mdx-js/loader!../Manifesto/aboutus.en.mdx';
+import Principles from '!babel-loader!@mdx-js/loader!../Manifesto/principles.en.mdx';
+import Guidelines from '!babel-loader!@mdx-js/loader!../Manifesto/guidelines.en.mdx';
 
 export default function ManifestoPage() {
     return (
