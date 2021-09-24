@@ -30,8 +30,6 @@ import Footer from './Footer';
 import Logo from './logo.svg';
 import LogoSmall from './logo_small.svg';
 import s from './style.module.css';
-import { MDXProvider } from '@mdx-js/react';
-import mdxComponents from './mdxComponents';
 
 type Props = {
     children: React.ReactNode;
@@ -61,39 +59,37 @@ function Layout({ children }: Props) {
 
     return (
         <OverlayProvider>
-            <MDXProvider components={mdxComponents}>
-                <div className={s.container}>
-                    <div className={s.mobileHeaderBar}>
-                        <Link className={s.mobileHeaderBarLogo} to="/">
-                            <img className={s.mobileHeaderBarLogoImage} src={LogoSmall} alt={t('nav.logoAlt')} />
+            <div className={s.container}>
+                <div className={s.mobileHeaderBar}>
+                    <Link className={s.mobileHeaderBarLogo} to="/">
+                        <img className={s.mobileHeaderBarLogoImage} src={LogoSmall} alt={t('nav.logoAlt')} />
+                    </Link>
+                    <LinkButton
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        aria-expanded={menuOpen}
+                        aria-controls={id('menu')}
+                    >
+                        Menu
+                    </LinkButton>
+                    {user && <Notifications userId={user.id} />}
+                </div>
+                <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
+                    <div className={s.header}>
+                        <Link className={s.logo} to="/">
+                            <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
                         </Link>
-                        <LinkButton
-                            onClick={() => setMenuOpen(!menuOpen)}
-                            aria-expanded={menuOpen}
-                            aria-controls={id('menu')}
-                        >
-                            Menu
-                        </LinkButton>
+                    </div>
+                    <div className={s.topRightMenu}>
+                        <TopMenu />
                         {user && <Notifications userId={user.id} />}
                     </div>
-                    <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
-                        <div className={s.header}>
-                            <Link className={s.logo} to="/">
-                                <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
-                            </Link>
-                        </div>
-                        <div className={s.topRightMenu}>
-                            <TopMenu />
-                            {user && <Notifications userId={user.id} />}
-                        </div>
-                        <Sidebar />
-                    </div>
-                    <main className={s.main}>{children}</main>
-                    <Footer className={s.footer} />
-                    <div className={s.background} />
-                    <ContentWarning />
+                    <Sidebar />
                 </div>
-            </MDXProvider>
+                <main className={s.main}>{children}</main>
+                <Footer className={s.footer} />
+                <div className={s.background} />
+                <ContentWarning />
+            </div>
         </OverlayProvider>
     );
 }

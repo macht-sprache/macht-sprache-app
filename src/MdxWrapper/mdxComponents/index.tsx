@@ -1,5 +1,5 @@
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
-import CollapsableSection from '../CollapsableSection';
+import CollapsableSection from '../../Layout/CollapsableSection';
 import s from './style.module.css';
 
 const components = {

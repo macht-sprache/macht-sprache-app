@@ -1,5 +1,6 @@
 import Header from '../Header';
 import { SingleColumn } from '../Layout/Columns';
+import MdxWrapper from '../MdxWrapper';
 
 /* eslint-disable import/no-webpack-loader-syntax */
 import Intro from '!babel-loader!@mdx-js/loader!./intro.en.mdx';
@@ -16,10 +17,12 @@ export default function ManifestoPage() {
             <Header subLine="Here is a telling sub-line">Manifesto</Header>
 
             <SingleColumn>
-                <Intro />
-                <About />
-                <Principles />
-                <Guidelines />
+                <MdxWrapper>
+                    <Intro />
+                    <About />
+                    <Principles />
+                    <Guidelines />
+                </MdxWrapper>
             </SingleColumn>
         </>
     );
