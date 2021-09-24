@@ -1,8 +1,7 @@
-import { Timestamp } from '@google-cloud/firestore';
 import { Dictionary, mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
-import { GlobalSettings, Lang, Translation, User, UserProperties, UserSettings } from '../../../src/types';
+import { GlobalSettings, Lang, Term, Translation, User, UserProperties, UserSettings } from '../../../src/types';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 import { Recipient, sendWeeklyDigestMail } from '../mails';
 import { seedSubscriptions } from '../notifications/seedSubscriptions';
@@ -224,14 +223,6 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
             t.set(translation.ref, mergeDeepRight(translationDefaults, data));
         });
     });
-
-    // await db.runTransaction(async t => {
-    //     const notifications = await t.get(db.collectionGroup('notifications'));
-    //     notifications.forEach(doc => {
-    //         const data = doc.data();
-    //         t.set(doc.ref, { ...data, notifiedAt: data.notifiedAt ?? new Timestamp(0, 0) });
-    //     });
-    // });
 });
 
 export const runSeedSubscriptions = functions.https.onCall(async (_, context) => {
