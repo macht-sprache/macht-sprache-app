@@ -58,6 +58,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const canDelete = userProperties?.admin;
     const [lang] = useLang();
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
+    const definition = term.adminComment[lang === langA ? 'langA' : 'langB'];
 
     return (
         <>
@@ -93,14 +94,17 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                 <SubscribeTerm term={term} user={user} />
                             </Suspense>
                         )}
-                        <Share
-                            title={`macht.sprache.: ${term.value}`}
-                            text={t('term.share', { term: term.value })}
-                            itemTranslated={t('common.entities.term.value')}
-                        />
+                        {definition && <p className={s.defintion}>{definition}</p>}
                     </>
                 }
                 mainLang={term.lang}
+                rightHandSideContent={
+                    <Share
+                        title={`macht.sprache.: ${term.value}`}
+                        text={t('term.share', { term: term.value })}
+                        itemTranslated={t('common.entities.term.value')}
+                    />
+                }
             >
                 <Redact>{term.value}</Redact>
             </Header>
