@@ -43,7 +43,7 @@ export default function Share({
             {navigator.share !== undefined && isTouchDevice() ? (
                 <NativeShare text={textWithLineBreaks} title={title} url={url} size={size} />
             ) : (
-                <ButtonContainer align="left">
+                <div className={s.buttonContainer}>
                     <ButtonAnchor
                         target="_blank"
                         rel="noopener"
@@ -52,6 +52,7 @@ export default function Share({
                         onClick={() => {
                             trackEvent({ category: MATOMO_CATEGORY, action: 'twitter' });
                         }}
+                        className={s.button}
                     >
                         <TwitterIcon className={s.icon} /> Twitter
                     </ButtonAnchor>
@@ -63,6 +64,7 @@ export default function Share({
                         onClick={() => {
                             trackEvent({ category: MATOMO_CATEGORY, action: 'facebook' });
                         }}
+                        className={s.button}
                     >
                         <FacebookIcon className={s.icon} /> Facebook
                     </ButtonAnchor>
@@ -72,11 +74,12 @@ export default function Share({
                         onClick={() => {
                             trackEvent({ category: MATOMO_CATEGORY, action: 'mail' });
                         }}
+                        className={s.button}
                     >
                         <MailIcon className={s.icon} /> Mail
                     </ButtonAnchor>
                     {navigator.clipboard && <CopyButton text={textWithLineBreaks} url={url} size={size} />}
-                </ButtonContainer>
+                </div>
             )}
         </div>
     );
@@ -106,7 +109,7 @@ function NativeShare({
     };
 
     return (
-        <Button onClick={share} size={size}>
+        <Button onClick={share} size={size} className={s.button}>
             <ShareIcon className={s.icon} /> {t('share.NativeShareButton')}
         </Button>
     );
@@ -129,7 +132,7 @@ function CopyButton({ text, url, size }: { text: string; url: string; size?: 'sm
     };
 
     return (
-        <Button onClick={copy} size={size}>
+        <Button onClick={copy} size={size} className={s.button}>
             <ClipboardIcon className={s.icon} /> {copied ? t('share.copyToClipboardDone') : t('share.copyToClipboard')}
         </Button>
     );

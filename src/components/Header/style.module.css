@@ -75,3 +75,11 @@
         margin-bottom: 4rem;
     }
 }
+
+@media (min-width: 900px) {
+    .rightHandSideSublineContainer {
+        display: grid;
+        grid-gap: 1rem;
+        grid-template-columns: 1fr 11rem;
+    }
+}
