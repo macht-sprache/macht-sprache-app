@@ -2,7 +2,7 @@ import { htmlToText } from 'html-to-text';
 import escape from 'lodash.escape';
 import type { MJMLJsonObject } from 'mjml-core';
 import { Lang, Notification } from '../../../src/types';
-import { formatDate } from '../../../src/FormatDate/service';
+import { formatDate } from '../../../src/components/FormatDate/service';
 import { TFunc, translate } from './i18n';
 import {
     addTracking,

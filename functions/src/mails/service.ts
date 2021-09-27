@@ -1,5 +1,5 @@
 import { compile } from 'path-to-regexp';
-import { getRedact } from '../../../src/RedactSensitiveTerms/service';
+import { getRedact } from '../../../src/components/RedactSensitiveTerms/service';
 import { TERM, TRANSLATION_EXAMPLE_REDIRECT, TRANSLATION_REDIRECT } from '../../../src/routes';
 import { DocReference } from '../../../src/types';
 import config from '../config';
