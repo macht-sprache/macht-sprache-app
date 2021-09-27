@@ -10,15 +10,17 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
 
 export type Ref = HTMLButtonElement;
 
-const Button = forwardRef<Ref | null, Props>(({ primary = false, size = 'medium', ...props }: Props, ref) => {
-    return (
-        <button
-            ref={ref}
-            className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })}
-            {...props}
-        />
-    );
-});
+const Button = forwardRef<Ref | null, Props>(
+    ({ primary = false, size = 'medium', className, ...props }: Props, ref) => {
+        return (
+            <button
+                ref={ref}
+                className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' }, className)}
+                {...props}
+            />
+        );
+    }
+);
 
 export default Button;
 
