@@ -28,6 +28,7 @@ import { Source, Term, Translation, TranslationExample } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import s from './style.module.css';
+import { useLang } from '../../useLang';
 
 type Props = {
     getTerm: Get<Term>;
@@ -61,6 +62,8 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
     const translation = getTranslation();
     const canEdit = translation.creator.id === user?.id || userProperties?.admin;
     const canDelete = userProperties?.admin;
+    const [lang] = useLang();
+    const definition = translation.definition[lang === langA ? 'langA' : 'langB'];
 
     return (
         <>
@@ -97,12 +100,16 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                                 <DeleteTranslation translation={translation} />
                             </>
                         )}
-                        <Share
-                            itemTranslated={t('common.entities.translation.value')}
-                            title={`macht.sprache.: ${translation.value}`}
-                            text={t('translation.share', { term: term.value, translation: translation.value })}
-                        />
+                        {definition && <p className={s.defintion}>{definition}</p>}
                     </>
+                }
+                rightHandSideContent={
+                    <Share
+                        itemTranslated={t('common.entities.translation.value')}
+                        title={`macht.sprache.: ${translation.value}`}
+                        text={t('translation.share', { term: term.value, translation: translation.value })}
+                        rightAlignedOnBigScreen={true}
+                    />
                 }
             >
                 <Redact>{translation.value}</Redact>
