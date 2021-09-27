@@ -3,6 +3,10 @@
     vertical-align: text-top;
 }
 
+.label {
+    margin-bottom: 0.5rem;
+}
+
 .medium .label {
     margin-bottom: 1rem;
 }
@@ -10,7 +14,6 @@
 .buttonContainer {
     display: flex;
     flex-wrap: wrap;
-    /* justify-content: flex-end; */
     margin: -0.25rem;
 }
 
@@ -19,15 +22,10 @@
 }
 
 @media (min-width: 900px) {
-    .container.small {
+    .container.rightAlignedOnBigScreen {
         text-align: right;
     }
-
-    .small .label {
-        margin-bottom: 1rem;
-    }
-
-    .small .buttonContainer {
+    .rightAlignedOnBigScreen .buttonContainer {
         justify-content: flex-end;
     }
 }

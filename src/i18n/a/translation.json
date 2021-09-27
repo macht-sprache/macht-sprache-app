@@ -371,7 +371,7 @@
     "share": {
         "NativeShareButton": "Share via Twitter, WhatsApp, Mail etc.",
         "LabelDefault": "Share this {{item}}:",
-        "copyToClipboard": "Copy to clipboard",
+        "copyToClipboard": "To clipboard",
         "copyToClipboardDone": "Copied!"
     }
 }
