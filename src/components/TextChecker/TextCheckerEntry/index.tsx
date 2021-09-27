@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import Button, { ButtonContainer } from '../../Form/Button';
 import { Select, Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
-import { langA, langB } from '../../languages';
-import { Lang } from '../../types';
+import { langA, langB } from '../../../languages';
+import { Lang } from '../../../types';
 
 type TextType = 'original' | 'translation';
 

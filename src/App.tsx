@@ -30,12 +30,12 @@ import TranslationExamplePage from './pages/TranslationExamplePage';
 import TranslationExampleRedirect from './pages/TranslationExampleRedirect';
 import TranslationPage from './pages/TranslationPage';
 import TranslationRedirect from './pages/TranslationRedirect';
-import TextCheckerPage from './TextCheckerPage';
+import TextCheckerPage from './pages/TextCheckerPage';
 import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
 import UserPage from './pages/UserPage';
-import ManifestoPage from './ManifestoPage';
+import ManifestoPage from './pages/ManifestoPage';
 
 function App() {
     useLangCssVars();

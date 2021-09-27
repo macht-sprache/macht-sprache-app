@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import Tooltip from 'rc-tooltip';
-import { Lang } from '../../types';
+import { Lang } from '../../../types';
 import s from './style.module.css';
 import clsx from 'clsx';
 import { ModalDialog } from '../../ModalDialog';
 import { TermWithLang } from '../../TermWithLang';
 import SelectTooltip from '../../SelectTooltip';
-import { langA, langB } from '../../languages';
+import { langA, langB } from '../../../languages';
 import Button, { ButtonContainer, ButtonAnchor } from '../../Form/Button';
 
 type TranslationList = {

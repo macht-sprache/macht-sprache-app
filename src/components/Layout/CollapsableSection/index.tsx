@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDomId } from '../../useDomId';
+import { useDomId } from '../../../useDomId';
 import s from './style.module.css';
 
 export default function CollapsableSection({

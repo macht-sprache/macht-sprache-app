@@ -1,6 +1,6 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 
-import CollapsableSection from '../../Layout/CollapsableSection';
+import CollapsableSection from '../../components/Layout/CollapsableSection';
 import { useLang } from '../../useLang';
 
 export const guidelinesList = [
