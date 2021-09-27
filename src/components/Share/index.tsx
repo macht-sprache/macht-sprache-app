@@ -21,6 +21,7 @@ export default function Share({
     label,
     itemTranslated,
     size = 'small',
+    rightAlignedOnBigScreen = false,
 }: {
     text: string;
     title?: string;
@@ -28,6 +29,7 @@ export default function Share({
     label?: React.ReactNode;
     itemTranslated?: string;
     size?: 'small' | 'medium';
+    rightAlignedOnBigScreen?: boolean;
 }) {
     const { t } = useTranslation();
     const labelDisplayed = label || t('share.LabelDefault', { item: itemTranslated });
@@ -37,7 +39,7 @@ export default function Share({
     const textWithLineBreaks = text + '\n\n';
 
     return (
-        <div className={clsx(s.container, s[size])}>
+        <div className={clsx(s.container, s[size], { [s.rightAlignedOnBigScreen]: rightAlignedOnBigScreen })}>
             <div className={s.label}>{labelDisplayed}</div>
             {/* a little weird to look for touch – but this "native" thing is not that useful on desktop usually... */}
             {navigator.share !== undefined && isTouchDevice() ? (
