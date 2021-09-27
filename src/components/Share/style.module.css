@@ -3,10 +3,31 @@
     vertical-align: text-top;
 }
 
-.container.small {
-    margin-top: 1rem;
-}
-
 .medium .label {
     margin-bottom: 1rem;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: flex-end; */
+    margin: -0.25rem;
+}
+
+.button {
+    margin: 0.25rem;
+}
+
+@media (min-width: 900px) {
+    .container.small {
+        text-align: right;
+    }
+
+    .small .label {
+        margin-bottom: 1rem;
+    }
+
+    .small .buttonContainer {
+        justify-content: flex-end;
+    }
 }

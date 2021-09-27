@@ -14,9 +14,17 @@ type Props = {
         inner: React.ReactNode;
     }[];
     capitalize?: boolean;
+    rightHandSideContent?: React.ReactNode;
 };
 
-export default function Header({ children, subLine, mainLang, topHeading, capitalize = false }: Props) {
+export default function Header({
+    children,
+    subLine,
+    mainLang,
+    topHeading,
+    capitalize = false,
+    rightHandSideContent,
+}: Props) {
     return (
         <header className={s.header}>
             <div>
@@ -48,7 +56,14 @@ export default function Header({ children, subLine, mainLang, topHeading, capita
                         {children}
                     </span>
                 </h1>
-                <div className={s.subline}>{subLine}</div>
+                {rightHandSideContent ? (
+                    <div className={s.rightHandSideSublineContainer}>
+                        <div className={s.subline}>{subLine}</div>
+                        <div className={s.rightHandSide}>{rightHandSideContent}</div>
+                    </div>
+                ) : (
+                    <div className={s.subline}>{subLine}</div>
+                )}
             </div>
         </header>
     );
