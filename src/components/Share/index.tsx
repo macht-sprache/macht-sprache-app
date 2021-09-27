@@ -1,4 +1,4 @@
-import Button, { ButtonAnchor, ButtonContainer } from '../Form/Button';
+import Button, { ButtonAnchor } from '../Form/Button';
 import { ReactComponent as ShareIcon } from './share-alt-solid.svg';
 import { ReactComponent as TwitterIcon } from './twitter-brands.svg';
 import { ReactComponent as FacebookIcon } from './facebook-f-brands.svg';
