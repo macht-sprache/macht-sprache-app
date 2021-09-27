@@ -58,7 +58,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const canDelete = userProperties?.admin;
     const [lang] = useLang();
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
-    const definition = term.adminComment[lang === langA ? 'langA' : 'langB'];
+    const definition = term.definition[lang === langA ? 'langA' : 'langB'];
 
     return (
         <>
@@ -103,6 +103,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         title={`macht.sprache.: ${term.value}`}
                         text={t('term.share', { term: term.value })}
                         itemTranslated={t('common.entities.term.value')}
+                        rightAlignedOnBigScreen={true}
                     />
                 }
             >

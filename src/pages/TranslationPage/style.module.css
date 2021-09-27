@@ -9,3 +9,9 @@
     border: solid var(--thickBorder) var(--dominantLanguageColor);
     flex-basis: 20rem;
 }
+
+.defintion {
+    font-family: var(--paragraphFont);
+    line-height: var(--lineHeightParagraph);
+    white-space: pre-wrap;
+}
