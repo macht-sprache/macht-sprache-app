@@ -88,7 +88,7 @@ service cloud.firestore {
 
     function isValidTerm() {
       let data = request.resource.data;
-      return data.keys().hasOnly(['creator', 'createdAt',  'adminComment', 'definition', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'adminTags']) &&
+      return data.keys().hasOnly(['creator', 'createdAt',  'adminComment', 'definition', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'adminTags', 'guidelines']) &&
         data.createdAt == request.time &&
         data.adminComment.langA == '' &&
         data.adminComment.langB == '' &&
@@ -104,7 +104,8 @@ service cloud.firestore {
         data.adminTags.hightlightLandingPage == false &&
         data.adminTags.disableExamples == false &&
         data.adminTags.enableCommentsOnTranslations == false &&
-        data.adminTags.translationsAsVariants == false;
+        data.adminTags.translationsAsVariants == false &&
+        data.guidelines is list;
     }
 
     function isValidTermUpdate() {
@@ -116,10 +117,11 @@ service cloud.firestore {
 
     function isValidTermUpdateAdmin() {
       let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'definition', 'adminTags']) &&
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'definition', 'adminTags', 'guidelines']) &&
         data.value is string &&
         data.lang is string &&
-        data.adminTags is map;
+        data.adminTags is map &&
+        data.guidelines is list;
     }
 
     match /terms/{term} {

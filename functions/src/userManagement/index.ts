@@ -199,6 +199,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
             enableCommentsOnTranslations: false,
             translationsAsVariants: false,
         },
+        guidelines: [],
     };
 
     await db.runTransaction(async t => {

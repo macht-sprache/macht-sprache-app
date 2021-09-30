@@ -38,6 +38,7 @@ export interface Term extends Commentable {
     value: string;
     variants: string[];
     lang: Lang;
+    guidelines: string[];
 }
 
 export interface Translation extends Commentable {
