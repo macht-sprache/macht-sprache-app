@@ -29,6 +29,8 @@ import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import s from './style.module.css';
+import { guidelinesList } from '../../Manifesto/guidelines';
+import { xor } from 'lodash';
 
 type Props = {
     getTerm: Get<Term>;
@@ -226,12 +228,13 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
     const [adminComment, setAdminComment] = useState(term.adminComment);
     const [definition, setDefinition] = useState(term.definition);
     const [adminTags, setAdminTags] = useState(term.adminTags);
+    const [guidelines, setGuidelines] = useState(term.guidelines);
 
     const onSave = () => {
         setIsSaving(true);
         collections.terms
             .doc(term.id)
-            .set({ ...term, value, lang, adminComment, definition, adminTags })
+            .set({ ...term, value, lang, adminComment, definition, adminTags, guidelines })
             .then(() => {
                 setIsSaving(false);
                 onClose();
@@ -312,6 +315,16 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     }
                                 />
                             </InputContainer>
+                            {guidelinesList.map(guideline => (
+                                <GuidelineCheckbox
+                                    key={guideline.id}
+                                    guideline={guideline.id}
+                                    checked={guidelines.includes(guideline.id)}
+                                    onChange={() => {
+                                        setGuidelines(before => xor(before, [guideline.id]));
+                                    }}
+                                />
+                            ))}
                             <h3>Admin</h3>
                             <InputContainer>
                                 <Textarea
@@ -351,6 +364,22 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                 </>
             )}
         </ModalDialog>
+    );
+}
+
+function GuidelineCheckbox({
+    guideline,
+    onChange,
+    checked,
+}: {
+    guideline: string;
+    onChange: () => void;
+    checked: boolean;
+}) {
+    return (
+        <div style={{ margin: '.5rem 0' }}>
+            <Checkbox checked={checked} onChange={onChange} label={guideline} />
+        </div>
     );
 }
 
