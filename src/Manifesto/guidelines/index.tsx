@@ -54,7 +54,7 @@ export default function Guidelines() {
             {guidelinesList.map(guideline => {
                 const Content = guideline[lang].default;
                 return (
-                    <CollapsableSection key={guideline.id} title={guideline[lang].title}>
+                    <CollapsableSection key={guideline.id} title={guideline[lang].title} domId={guideline.id}>
                         <Content />
                     </CollapsableSection>
                 );

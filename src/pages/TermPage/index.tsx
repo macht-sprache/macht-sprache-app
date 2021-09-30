@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import Button, { ButtonContainer } from '../../components/Form/Button';
@@ -31,6 +32,7 @@ import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import s from './style.module.css';
 import { guidelinesList } from '../../Manifesto/guidelines';
 import { xor } from 'lodash';
+import { MANIFESTO } from '../../routes';
 
 type Props = {
     getTerm: Get<Term>;
@@ -61,6 +63,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const [lang] = useLang();
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
     const definition = term.definition[lang === langA ? 'langA' : 'langB'];
+    const guidelines = guidelinesList.filter(guideline => term.guidelines.includes(guideline.id));
 
     return (
         <>
@@ -97,6 +100,18 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </Suspense>
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
+                        {guidelines.length && (
+                            <p className={s.guidelines}>
+                                Guidelines:{' '}
+                                {guidelines.map(guideline => (
+                                    <span className={s.guideline}>
+                                        <HashLink key={guideline.id} to={`${MANIFESTO}#${guideline.id}`}>
+                                            {guideline[lang].title}
+                                        </HashLink>
+                                    </span>
+                                ))}
+                            </p>
+                        )}
                     </>
                 }
                 mainLang={term.lang}
