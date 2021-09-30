@@ -5,7 +5,7 @@ import s from './style.module.css';
 export default function CollapsableSection({
     children,
     title,
-    isOpenDefault = false,
+    isOpenDefault,
     domId,
 }: {
     children: React.ReactNode;
@@ -13,7 +13,7 @@ export default function CollapsableSection({
     isOpenDefault?: boolean;
     domId?: string;
 }) {
-    const [isOpen, setIsOpen] = useState(isOpenDefault);
+    const [isOpen, setIsOpen] = useState(window.location.hash === `#${domId}` || isOpenDefault);
     const id = useDomId();
 
     return (
