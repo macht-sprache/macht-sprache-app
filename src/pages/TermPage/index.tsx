@@ -238,6 +238,37 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
             });
     };
 
+    const setAdminTag = (adminTag: string, checked: boolean) => {
+        setAdminTags(before => ({ ...before, [adminTag]: checked }));
+    };
+
+    const adminCheckboxes: { label: string; tag: keyof Term['adminTags'] }[] = [
+        {
+            label: 'Highlight landing page',
+            tag: 'hightlightLandingPage',
+        },
+        {
+            label: 'Show in sidebar',
+            tag: 'showInSidebar',
+        },
+        {
+            label: 'Hide from list',
+            tag: 'hideFromList',
+        },
+        {
+            label: 'Disable Examples',
+            tag: 'disableExamples',
+        },
+        {
+            label: 'Enable Comments on Translations',
+            tag: 'enableCommentsOnTranslations',
+        },
+        {
+            label: "Is 'about gender'-page (changes wording)",
+            tag: 'translationsAsVariants',
+        },
+    ];
+
     return (
         <ModalDialog title={t('common.entities.term.edit')} onClose={onClose}>
             {saving ? (
@@ -298,60 +329,16 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     }
                                 />
                             </InputContainer>
-                            <div style={{ margin: '1rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.hightlightLandingPage}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, hightlightLandingPage: checked }));
-                                    }}
-                                    label="Highlight landing page"
+
+                            {adminCheckboxes.map(tag => (
+                                <AdminCheckbox
+                                    label={tag.label}
+                                    adminTag={tag.tag}
+                                    setAdminTag={setAdminTag}
+                                    checked={adminTags[tag.tag]}
+                                    key={tag.tag}
                                 />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.showInSidebar}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, showInSidebar: checked }));
-                                    }}
-                                    label="Show in sidebar"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.hideFromList}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, hideFromList: checked }));
-                                    }}
-                                    label="Hide from list"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.disableExamples}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, disableExamples: checked }));
-                                    }}
-                                    label="Disable Examples"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.enableCommentsOnTranslations}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, enableCommentsOnTranslations: checked }));
-                                    }}
-                                    label="Enable Comments on Translations"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.translationsAsVariants}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, translationsAsVariants: checked }));
-                                    }}
-                                    label="Is 'about gender'-page (changes wording)"
-                                />
-                            </div>
+                            ))}
                         </>
                     )}
 
@@ -364,5 +351,29 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                 </>
             )}
         </ModalDialog>
+    );
+}
+
+function AdminCheckbox({
+    adminTag,
+    label,
+    setAdminTag,
+    checked,
+}: {
+    adminTag: string;
+    label: string;
+    setAdminTag: (adminTag: string, checked: boolean) => void;
+    checked: boolean;
+}) {
+    return (
+        <div style={{ margin: '.5rem 0' }}>
+            <Checkbox
+                checked={checked}
+                onChange={({ target: { checked } }: { target: { checked: boolean } }) => {
+                    setAdminTag(adminTag, checked);
+                }}
+                label={label}
+            />
+        </div>
     );
 }
