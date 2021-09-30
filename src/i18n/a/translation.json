@@ -46,6 +46,7 @@
         },
         "loading": "Loading...",
         "saving": "Saving...",
+        "more": "more...",
         "error": {
             "general": "Something went wrong"
         },

@@ -46,6 +46,7 @@
         },
         "loading": "Lade...",
         "saving": "Speichere...",
+        "more": "mehr...",
         "error": {
             "general": "Da ist etwas schief gegangen"
         },
