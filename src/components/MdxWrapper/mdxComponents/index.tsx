@@ -1,6 +1,7 @@
 import { HashLink } from 'react-router-hash-link';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import CollapsableSection from '../../Layout/CollapsableSection';
+import PullQuote from '../../PullQuote';
 import s from './style.module.css';
 
 const components = {
@@ -8,6 +9,7 @@ const components = {
     ButtonAnchor,
     ButtonContainer,
     CollapsableSection,
+    PullQuote,
     p: ({ children }: { children: React.ReactNode }) => <p className={s.paragraph}>{children}</p>,
     a: ({
         href,
