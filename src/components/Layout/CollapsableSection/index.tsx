@@ -50,7 +50,12 @@ export default function CollapsableSection({
                             {!isOpen && (
                                 <>
                                     {' '}
-                                    <button className={s.moreButton} onClick={() => setIsOpen(true)}>
+                                    <button
+                                        className={s.moreButton}
+                                        onClick={() => setIsOpen(true)}
+                                        aria-expanded={isOpen}
+                                        aria-controls={id('section')}
+                                    >
                                         {t('common.more')}
                                     </button>
                                 </>
