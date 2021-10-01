@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router';
 import { useDomId } from '../../../useDomId';
 import s from './style.module.css';
 
@@ -18,7 +19,14 @@ export default function CollapsableSection({
 }) {
     const [isOpen, setIsOpen] = useState(window.location.hash === `#${domId}` || isOpenDefault);
     const id = useDomId();
+    const location = useLocation();
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (window.location.hash === `#${domId}`) {
+            setIsOpen(true);
+        }
+    }, [location, domId]);
 
     return (
         <section className={s.container}>
