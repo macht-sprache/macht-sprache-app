@@ -100,7 +100,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </Suspense>
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
-                        {guidelines.length && (
+                        {userProperties?.admin && guidelines.length && (
                             <p className={s.guidelines}>
                                 Guidelines:{' '}
                                 {guidelines.map(guideline => (

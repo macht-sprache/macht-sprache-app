@@ -103,14 +103,6 @@ function Sidebar() {
 
     let mainLinks = [
         {
-            to: MANIFESTO,
-            label: 'Manifesto',
-        },
-        {
-            to: TRANSLATION_HELPER,
-            label: 'Text Checker',
-        },
-        {
             to: ABOUT,
             label: t('nav.about'),
         },
@@ -143,6 +135,14 @@ function Sidebar() {
 
     if (userProperties?.admin) {
         mainLinks.push(
+            {
+                to: MANIFESTO,
+                label: 'Manifesto',
+            },
+            {
+                to: TRANSLATION_HELPER,
+                label: 'Text Checker',
+            },
             {
                 to: ADMIN,
                 label: 'admin – users',
