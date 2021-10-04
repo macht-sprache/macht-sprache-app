@@ -1,5 +1,10 @@
+import { Suspense } from 'react';
 import s from './style.module.css';
 
 export default function TermExampleContainer({ children }: { children: React.ReactNode }) {
-    return <div className={s.container}>{children}</div>;
+    return (
+        <Suspense fallback={null}>
+            <div className={s.container}>{children}</div>
+        </Suspense>
+    );
 }
