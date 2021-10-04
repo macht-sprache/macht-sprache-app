@@ -29,12 +29,12 @@ function Inner({ getTerms, lang }: InnerProps) {
         const term = terms.find(term => term.lang === lang);
 
         if (term) {
-            return <TermItem term={term} size="tiny" />;
+            return <TermItem term={term} size="medium" />;
         }
     }
 
     if (terms.length === 1) {
-        return <TermItem term={terms[0]} size="tiny" />;
+        return <TermItem term={terms[0]} size="medium" />;
     }
 
     return <>term not found</>;
