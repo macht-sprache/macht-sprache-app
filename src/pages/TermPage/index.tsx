@@ -104,10 +104,8 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             <p className={s.guidelines}>
                                 Guidelines:{' '}
                                 {guidelines.map(guideline => (
-                                    <span className={s.guideline}>
-                                        <HashLink key={guideline.id} to={`${MANIFESTO}#${guideline.id}`}>
-                                            {guideline[lang].title}
-                                        </HashLink>
+                                    <span className={s.guideline} key={guideline.id}>
+                                        <HashLink to={`${MANIFESTO}#${guideline.id}`}>{guideline[lang].title}</HashLink>
                                     </span>
                                 ))}
                             </p>
