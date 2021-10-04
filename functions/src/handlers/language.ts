@@ -1,6 +1,6 @@
 import { LanguageServiceClient } from '@google-cloud/language';
 import { all, isNil, last, partition, slice, zip } from 'rambdax';
-import { Lang } from '../../../src/types';
+import { Lang, TextToken } from '../../../src/types';
 
 const languageClient = new LanguageServiceClient();
 
@@ -47,4 +47,22 @@ export const findTermMatches = async (term: string, snippet: string, language: L
     }, []);
 
     return termMatches;
+};
+
+export const findLemmas = async (content: string, language: Lang): Promise<TextToken[]> => {
+    const [{ tokens }] = await languageClient.analyzeSyntax({
+        document: {
+            type: 'PLAIN_TEXT',
+            content,
+            language,
+        },
+        encodingType: 'UTF16',
+    });
+
+    return (tokens || [])
+        .filter(token => token.partOfSpeech?.tag !== 'PUNCT')
+        .map(token => ({
+            lemma: token.lemma!,
+            pos: [token.text!.beginOffset!, token.text!.beginOffset! + token.text!.content!.length],
+        }));
 };

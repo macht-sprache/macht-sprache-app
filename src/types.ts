@@ -41,6 +41,16 @@ export interface Term extends Commentable {
     guidelines: string[];
 }
 
+interface Index<T> {
+    ref: DocReference<T>;
+    lang: Lang;
+    lemmas: string[][];
+}
+
+export type TermIndex = Index<Term>;
+
+export type TranslationIndex = Index<Translation>;
+
 export interface Translation extends Commentable {
     id: string;
     term: DocReference<Term>;
@@ -261,4 +271,9 @@ export interface Subscription {
     createdAt: Timestamp;
     updatedAt: Timestamp | null;
     active: boolean;
+}
+
+export interface TextToken {
+    lemma: string;
+    pos: [number, number];
 }
