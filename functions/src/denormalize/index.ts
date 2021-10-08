@@ -117,11 +117,13 @@ export const denormalizeSourceRefs = functions.firestore
                     const translationsSnap = translationRefs.length ? await t.getAll(...translationRefs) : [];
                     const termRefs = uniqueRefs(translationsSnap.map(snap => snap.data()?.term));
 
-                    await t.update(sourceRef, { refs: [...termRefs, ...translationRefs] });
+                    t.update(sourceRef, { refs: [...termRefs, ...translationRefs] });
                 })
             )
         );
     });
+
+export { denormalizeTermIndex, denormalizeTranslationIndex } from './termTranslationIndex';
 
 const refsAreEqual = (a?: firestore.DocumentReference, b?: firestore.DocumentReference) =>
     a === b || !!(b && a?.isEqual(b));

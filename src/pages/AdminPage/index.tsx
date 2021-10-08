@@ -49,6 +49,7 @@ const useAuthUserInfos = () => {
 const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
 const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
 const runSeedSubscriptions = () => functions.httpsCallable('userManagement-runSeedSubscriptions')();
+const runSeedTermTranslationIndex = () => functions.httpsCallable('userManagement-runSeedTermTranslationIndex')();
 
 type WeeklyDigestParams = {
     from: string;
@@ -103,6 +104,7 @@ export default function AdminPage() {
                     <EnsureValidUserEntitiesButton />
                     <RunContentMigrationsButton />
                     <RunSeedSubscriptionsButton />
+                    <RunSeedTermTranslationIndexButton />
                 </ButtonContainer>
             </SingleColumn>
         </>
@@ -583,6 +585,31 @@ function RunSeedSubscriptionsButton() {
             {onClick => (
                 <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
                     {requestState === 'DONE' ? 'Ran Seed Subscriptions' : 'Run Seed Subscriptions'}
+                </Button>
+            )}
+        </ConfirmModal>
+    );
+}
+
+function RunSeedTermTranslationIndexButton() {
+    const [requestState, setRequestState] = useRequestState();
+    const onConfirm = useCallback(() => {
+        setRequestState('IN_PROGRESS');
+        runSeedTermTranslationIndex().then(
+            () => setRequestState('DONE'),
+            error => setRequestState('ERROR', error)
+        );
+    }, [setRequestState]);
+    return (
+        <ConfirmModal
+            title="Run Seed Term/Translation Index?"
+            body={<p>This will get the lemmas for all terms/translation for indexing purposes</p>}
+            confirmLabel="Run"
+            onConfirm={onConfirm}
+        >
+            {onClick => (
+                <Button disabled={requestState === 'IN_PROGRESS' || requestState === 'DONE'} onClick={onClick}>
+                    {requestState === 'DONE' ? 'Ran Seed Term/Translation Index' : 'Run Seed Term/Translation Index'}
                 </Button>
             )}
         </ConfirmModal>

@@ -2,6 +2,7 @@ import { Dictionary, mergeDeepRight } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
 import { GlobalSettings, Lang, Term, Translation, User, UserProperties, UserSettings } from '../../../src/types';
+import { seedTermTranslationIndex } from '../denormalize/termTranslationIndex';
 import { auth, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 import { Recipient, sendWeeklyDigestMail } from '../mails';
 import { seedSubscriptions } from '../notifications/seedSubscriptions';
@@ -230,6 +231,12 @@ export const runSeedSubscriptions = functions.https.onCall(async (_, context) =>
     const currentUserId = verifyUser(context);
     await verifyAdmin(currentUserId);
     await seedSubscriptions();
+});
+
+export const runSeedTermTranslationIndex = functions.https.onCall(async (_, context) => {
+    const currentUserId = verifyUser(context);
+    await verifyAdmin(currentUserId);
+    await seedTermTranslationIndex();
 });
 
 type DigestMailParams = {

@@ -15,6 +15,7 @@ import {
     SourceType,
     Subscription,
     Term,
+    TermIndex,
     Translation,
     TranslationExample,
     User,
@@ -100,6 +101,17 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
             defaultSnapshotOptions
         );
         return { id: snapshot.id, term, creator, createdAt, value, variants, lang, ratings, commentCount, definition };
+    },
+};
+
+const TermIndexConverter: firebase.firestore.FirestoreDataConverter<TermIndex> = {
+    toFirestore: (termIndex: TermIndex) => {
+        const { lemmas, ...rest } = termIndex;
+        return { lemmas: JSON.stringify(lemmas), ...rest };
+    },
+    fromFirestore: (snapshot): TermIndex => {
+        const { ref, lang, lemmas } = snapshot.data(defaultSnapshotOptions);
+        return { ref: addConverterToRef(ref), lang, lemmas: JSON.parse(lemmas) };
     },
 };
 
@@ -268,6 +280,7 @@ export const collections = {
     userProperties: db.collection('userProperties').withConverter(UserPropertiesConverter),
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
+    termIndex: db.collection('termIndex').withConverter(TermIndexConverter),
     translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),
     sources: db.collection('sources').withConverter(SourceConverter),
     sensitiveTerms: db.collection('sensitiveTerms').withConverter(SensitiveTermsConverter),

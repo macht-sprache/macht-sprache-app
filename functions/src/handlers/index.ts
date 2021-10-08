@@ -15,9 +15,14 @@ import {
 } from '../../../src/types';
 import { convertRef, db, functions, verifyUser, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
-import { findTermMatches } from './language';
+import { findTermMatches, findLemmas } from './language';
 import { getMovie, searchMovies } from './movies';
 import { getWebPage, searchWebPage } from './webpages';
+
+export const analyzeText = functions.https.onCall(async ({ text, lang }: { text: string; lang: Lang }, context) => {
+    verifyUser(context);
+    return findLemmas(text, lang);
+});
 
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);
