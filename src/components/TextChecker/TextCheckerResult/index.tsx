@@ -1,149 +1,95 @@
-import { useState } from 'react';
-import Tooltip from 'rc-tooltip';
-import { Lang } from '../../../types';
-import s from './style.module.css';
 import clsx from 'clsx';
+import Tooltip from 'rc-tooltip';
+import { Suspense, useState } from 'react';
+import { generatePath } from 'react-router-dom';
+import { getTranslationsRef } from '../../../hooks/data';
+import { Get, GetList, useCollection, useDocument } from '../../../hooks/fetch';
+import { langA } from '../../../languages';
+import { TERM } from '../../../routes';
+import { DocReference, Lang, Term, TermIndex, TextToken, Translation } from '../../../types';
+import { useLang } from '../../../useLang';
+import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import { ModalDialog } from '../../ModalDialog';
-import { TermWithLang } from '../../TermWithLang';
+import { Redact } from '../../RedactSensitiveTerms';
 import SelectTooltip from '../../SelectTooltip';
-import { langA, langB } from '../../../languages';
-import Button, { ButtonContainer, ButtonAnchor } from '../../Form/Button';
+import { TermWithLang } from '../../TermWithLang';
+import s from './style.module.css';
 
-type TranslationList = {
-    term: {
-        value: string;
-        lang: Lang;
-    };
-    definition?: string;
-    link: string;
-    translations: {
-        term: { value: string; lang: Lang };
-        definition?: string;
-    }[];
+type Props = {
+    lang: Lang;
+    text: string;
+    analyzedText: TextToken[];
+    getTermIndex: GetList<TermIndex>;
+    onCancel: () => void;
 };
 
-const dummyTranslationRace: TranslationList = {
-    term: {
-        value: 'Race',
-        lang: langA,
-    },
-    definition: 'In references to human beings, race is an identity category.',
-    link: 'https://www.machtsprache.de/term/b2LXNYVQJ3BH5JFDrB8m',
-    translations: [
-        {
-            term: {
-                value: 'Race',
-                lang: langB,
-            },
-            definition:
-                'Der Englische Begriff Race kann im Deutschen beibehalten werden. Er beschreibt ein Identitätskonzept und kann als solches als feststehender Ausdruck verstanden werden.',
-        },
-        {
-            term: {
-                value: 'Rassifizierung',
-                lang: langB,
-            },
-            definition:
-                'Rassifizierung ist keine direkte Übersetzung für Race. Der Begriff beschreibt den gesellschaftlichen Prozess, der Menschen einer Race zuordnet, also einer bestimmten Identität.',
-        },
-        {
-            term: {
-                value: 'Rasse',
-                lang: langB,
-            },
-            definition:
-                'Rasse ist die wohl bekannteste Übersetzungsoption für Race. Aber die Bedeutung der Begriffe hat historisch unterschiedliche Entwicklungen durchgemacht. Rasse ist beispielsweise eng verbunden mit kolonialer, pseudowissenschaftlicher Rassenforschung und der Nazizeit. Bei Race ist klarer, dass es sich um ein Konstrukt handelt. ',
-        },
-    ],
+type Match = {
+    pos: [number, number];
+    ref: DocReference<Term>;
 };
 
-const dummyTranslationWhiteFragility: TranslationList = {
-    term: {
-        value: 'white fragility',
-        lang: langA,
-    },
-    link: 'https://www.machtsprache.de/term/b2LXNYVQJ3BH5JFDrB8m',
-    translations: [
-        {
-            term: {
-                value: 'Weiße Fragilität',
-                lang: langB,
-            },
-        },
-        {
-            term: {
-                value: 'Weiße Empfindlichkeit',
-                lang: langB,
-            },
-        },
-        {
-            term: {
-                value: 'Überweisze Empfindlichkeit',
-                lang: langB,
-            },
-        },
-        {
-            term: {
-                value: 'Weiße Überempfindlichkeit',
-                lang: langB,
-            },
-        },
-        {
-            term: {
-                value: 'White Fragility',
-                lang: langB,
-            },
-        },
-    ],
-};
-
-export default function Analysis({ onCancel }: { onCancel: () => void }) {
+export default function Analysis({ lang, getTermIndex, text, analyzedText, onCancel }: Props) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
+    const termIndex = getTermIndex().filter(i => i.lang === lang);
+    const termIndexByFirstLemma = termIndex.reduce<{ [firstLemma: string]: TermIndex[] }>((acc, cur) => {
+        cur.lemmas.forEach(lemmaList => {
+            const firstLemma = lemmaList[0]?.toLowerCase();
+            if (firstLemma) {
+                if (acc[firstLemma]) {
+                    acc[firstLemma].push(cur);
+                } else {
+                    acc[firstLemma] = [cur];
+                }
+            }
+        });
+        return acc;
+    }, {});
 
-    function onTooltipChange(isVisible: boolean) {
-        setTooltipOpen(isVisible);
-    }
+    const matches = analyzedText.reduce<Match[]>((acc, cur, index) => {
+        const potentialMatches = termIndexByFirstLemma[cur.lemma.toLowerCase()];
+        if (potentialMatches) {
+            potentialMatches.forEach(potentialMatch => {
+                const lemmaList = potentialMatch.lemmas.find(ll =>
+                    ll.every(
+                        (lemma, lemmaIndex) =>
+                            analyzedText[index + lemmaIndex]?.lemma.toLowerCase() === lemma.toLowerCase()
+                    )
+                );
+                if (lemmaList) {
+                    acc.push({
+                        pos: [cur.pos[0], analyzedText[index + lemmaList.length - 1].pos[1]],
+                        ref: potentialMatch.ref,
+                    });
+                }
+            });
+        }
+        return acc;
+    }, []);
+
+    const children = [
+        ...matches.flatMap((match, index) => {
+            const prevPos = matches[index - 1]?.pos[1] || 0;
+            return [
+                <span key={index + 'a'}>{text.substring(prevPos, match.pos[0])}</span>,
+                <SensitiveWord
+                    key={index + 'b'}
+                    lang={lang}
+                    termRef={match.ref}
+                    onTooltipVisibleChange={setTooltipOpen}
+                >
+                    {text.substring(match.pos[0], match.pos[1])}
+                </SensitiveWord>,
+            ];
+        }),
+        <span key="last">{text.substring(matches[matches.length - 1]?.pos?.[1] || 0)}</span>,
+    ];
 
     return (
         <>
             <p>Sensitive terms are highlighted. Click for more information.</p>
             <SelectTooltip>
                 <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
-                    <p>
-                        <span>Led to factors like</span>{' '}
-                        <SensitiveWord onTooltipVisibleChange={onTooltipChange} translationList={dummyTranslationRace}>
-                            race
-                        </SensitiveWord>
-                        <span>
-                            , development and location - to who does and who doesn’t make a ‚relatable’ victim of
-                            terror.
-                            <br />I conceptualize this process as{' '}
-                        </span>
-                        <SensitiveWord
-                            onTooltipVisibleChange={onTooltipChange}
-                            translationList={dummyTranslationWhiteFragility}
-                        >
-                            <span>white fragility</span>
-                        </SensitiveWord>
-                        <span>. Though</span>{' '}
-                        <SensitiveWord
-                            onTooltipVisibleChange={onTooltipChange}
-                            translationList={dummyTranslationWhiteFragility}
-                        >
-                            white fragility
-                        </SensitiveWord>{' '}
-                        <span>is triggered by discomfort and anxiety, it is born of superiority and entitlement.</span>{' '}
-                        <SensitiveWord
-                            onTooltipVisibleChange={onTooltipChange}
-                            translationList={dummyTranslationWhiteFragility}
-                        >
-                            White fragility
-                        </SensitiveWord>
-                        <span>
-                            is not weakness per se. In fact, it is a powerful means of white racial control and the
-                            protection of white advantage.
-                        </span>
-                    </p>
+                    <p>{children}</p>
                 </div>
             </SelectTooltip>
             <ButtonContainer>
@@ -157,40 +103,33 @@ export default function Analysis({ onCancel }: { onCancel: () => void }) {
 
 function SensitiveWord({
     children,
-    translationList,
+    termRef,
+    lang,
     onTooltipVisibleChange,
 }: {
     children: React.ReactNode;
-    translationList: TranslationList;
+    termRef: DocReference<Term>;
+    lang: Lang;
     onTooltipVisibleChange: (isVisible: boolean) => void;
 }) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [overlayOpen, setOverlayOpen] = useState(false);
 
-    const tooltip = (
-        <div
-            className={s.tooltip}
-            onClick={() => {
-                setOverlayOpen(true);
-            }}
-        >
-            {translationList.definition && <p className={s.tooltipDefinition}>{translationList.definition}</p>}
-            Possible meanings:{' '}
-            <ul className={s.tooltipList}>
-                {translationList.translations.map((translation, index) => (
-                    <li className={s.tooltipListItem} key={index}>
-                        {translation.term.value}
-                    </li>
-                ))}
-            </ul>
-            <p>Click for more information</p>
-        </div>
-    );
+    const getTerm = useDocument(termRef);
+    const getTranslations = useCollection(getTranslationsRef(termRef));
 
     return (
         <>
             <Tooltip
-                overlay={tooltip}
+                overlay={
+                    <Suspense fallback={null}>
+                        <TermTooltip
+                            getTerm={getTerm}
+                            getTranslations={getTranslations}
+                            onClick={() => setOverlayOpen(true)}
+                        />
+                    </Suspense>
+                }
                 placement="bottom"
                 onVisibleChange={visible => {
                     setTooltipOpen(visible);
@@ -204,53 +143,99 @@ function SensitiveWord({
                         setOverlayOpen(true);
                     }}
                     className={clsx(s.sensitiveWord, { [s.sensitiveWordHovered]: tooltipOpen })}
-                    lang={translationList.term.lang}
+                    lang={lang}
                 >
                     {children}
                 </button>
             </Tooltip>
             {overlayOpen && (
-                <ModalDialog
-                    title={
-                        <span className={s.overlayTitle}>
-                            <TermWithLang term={translationList.term} />
-                        </span>
-                    }
-                    onClose={() => {
-                        setOverlayOpen(false);
-                    }}
-                    isDismissable={true}
-                >
-                    <div className={s.overlayContainer}>
-                        {translationList.definition && (
-                            <p className={s.overlayDefinition}>{translationList.definition}</p>
-                        )}
-                        <h3>Possible meanings:</h3>
-                        <ul className={s.overlayTranslationList}>
-                            {translationList.translations.map((translation, index) => (
-                                <li key={index} className={s.overlayTranslation}>
-                                    <span className={s.overlayTranslationTerm}>
-                                        <TermWithLang term={translation.term} />
-                                    </span>
-                                    {translation.definition && <>: </>}
-                                    {translation.definition}
-                                </li>
-                            ))}
-                        </ul>
-                        <ButtonContainer>
-                            <ButtonAnchor href={translationList.link}>Discuss or suggest options</ButtonAnchor>
-                            <Button
-                                primary={true}
-                                onClick={() => {
-                                    setOverlayOpen(false);
-                                }}
-                            >
-                                Go back
-                            </Button>
-                        </ButtonContainer>
-                    </div>
-                </ModalDialog>
+                <Suspense fallback={null}>
+                    <TermModal
+                        getTerm={getTerm}
+                        getTranslations={getTranslations}
+                        onClose={() => setOverlayOpen(false)}
+                    />
+                </Suspense>
             )}
         </>
+    );
+}
+
+type TermProps = {
+    getTerm: Get<Term>;
+    getTranslations: GetList<Translation>;
+};
+
+type ModalProps = TermProps & {
+    onClose: () => void;
+};
+
+type TooltipProps = TermProps & {
+    onClick: () => void;
+};
+
+function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
+    const [lang] = useLang();
+    const term = getTerm();
+    const translations = getTranslations();
+    const langIdentifier = lang === langA ? 'langA' : ('langB' as const);
+    const termDefinition = term.definition[langIdentifier];
+
+    return (
+        <ModalDialog
+            title={
+                <span className={s.overlayTitle}>
+                    <TermWithLang term={term} />
+                </span>
+            }
+            onClose={onClose}
+            isDismissable={true}
+        >
+            <div className={s.overlayContainer}>
+                {termDefinition && <p className={s.overlayDefinition}>{termDefinition}</p>}
+                <h3>Possible meanings:</h3>
+                <ul className={s.overlayTranslationList}>
+                    {translations.map(translation => (
+                        <li key={translation.id} className={s.overlayTranslation}>
+                            <span className={s.overlayTranslationTerm}>
+                                <TermWithLang term={translation} />
+                            </span>
+                            {translation.definition[langIdentifier] && <>: </>}
+                            {translation.definition[langIdentifier]}
+                        </li>
+                    ))}
+                </ul>
+                <ButtonContainer>
+                    <ButtonAnchor href={generatePath(TERM, { termId: term.id })}>
+                        Discuss or suggest options
+                    </ButtonAnchor>
+                    <Button primary={true} onClick={onClose}>
+                        Go back
+                    </Button>
+                </ButtonContainer>
+            </div>
+        </ModalDialog>
+    );
+}
+
+function TermTooltip({ getTerm, getTranslations, onClick }: TooltipProps) {
+    const [lang] = useLang();
+    const term = getTerm();
+    const translations = getTranslations();
+    const termDefinition = term.definition[lang === langA ? 'langA' : 'langB'];
+
+    return (
+        <div className={s.tooltip} onClick={onClick}>
+            {termDefinition && <p className={s.tooltipDefinition}>{termDefinition}</p>}
+            Possible meanings:{' '}
+            <ul className={s.tooltipList}>
+                {translations.map(translation => (
+                    <li className={s.tooltipListItem} key={translation.id}>
+                        <Redact>{translation.value}</Redact>
+                    </li>
+                ))}
+            </ul>
+            <p>Click for more information</p>
+        </div>
     );
 }
