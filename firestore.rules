@@ -206,6 +206,10 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    match /translationIndex/{translationIndex} {
+      allow read: if true;
+    }
+
     match /translationExamples/{translationExample} {
       allow read: if true;
       allow delete: if isValidatedUser() && isAdmin();
