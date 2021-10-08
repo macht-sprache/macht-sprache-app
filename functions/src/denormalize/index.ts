@@ -1,11 +1,8 @@
-import { DocumentSnapshot } from '@google-cloud/firestore';
 import { firestore } from 'firebase-admin';
-import { Change, EventContext } from 'firebase-functions';
-import { clamp, equals, uniqWith } from 'rambdax';
+import { clamp, uniqWith } from 'rambdax';
 import { RATING_STEPS } from '../../../src/constants';
-import type { Comment, Lang, Rating, Term, Translation } from '../../../src/types';
+import type { Comment, Rating, Translation } from '../../../src/types';
 import { db, functions, logger, WithoutId } from '../firebase';
-import { findLemmas } from '../handlers/language';
 
 export const denormalizeCommentCount = functions.firestore
     .document('/comments/{commentId}')
@@ -126,66 +123,7 @@ export const denormalizeSourceRefs = functions.firestore
         );
     });
 
-type TermTranslationIndex = {
-    ref: firestore.DocumentReference;
-    lang: Lang;
-    lemmas: string;
-};
-
-const getDenormalizeTermTranslationIndex = (collectionName: string) => async (
-    change: Change<DocumentSnapshot>,
-    { resource }: EventContext
-) => {
-    const before = change.before.data() as Term | Translation | undefined;
-    const after = change.after.data() as Term | Translation | undefined;
-
-    if (equals(getVariants(before), getVariants(after))) {
-        logger.info('No change to variants', { resource });
-        return;
-    }
-
-    const collection = db.collection(collectionName);
-
-    if (!after) {
-        logger.info('Deleting index', { resource });
-        await collection.doc(change.before.ref.id).delete();
-        return;
-    }
-
-    logger.info('Saving index', { resource });
-    const termIndex = await getTermTranslationIndex(after, change.after.ref);
-    await collection.doc(change.after.ref.id).set(termIndex);
-};
-
-export const denormalizeTermIndex = functions.firestore
-    .document('/terms/{termId}')
-    .onWrite(getDenormalizeTermTranslationIndex('/termIndex'));
-
-export const denormalizeTranslationIndex = functions.firestore
-    .document('/translations/{translationId}')
-    .onWrite(getDenormalizeTermTranslationIndex('/translationIndex'));
-
-const getVariants = (entity: Term | Translation | undefined) => {
-    if (!entity) {
-        return [];
-    }
-    return [entity.value, ...entity.variants];
-};
-
-const getTermTranslationIndex = async (
-    term: Term | Translation,
-    ref: firestore.DocumentReference
-): Promise<TermTranslationIndex> => {
-    const variants = getVariants(term);
-    const lemmas = (await Promise.all(variants.map(variant => findLemmas(variant, term.lang)))).map(result =>
-        result.map(({ lemma }) => lemma)
-    );
-    return {
-        ref,
-        lemmas: JSON.stringify(lemmas),
-        lang: term.lang,
-    };
-};
+export { denormalizeTermIndex, denormalizeTranslationIndex } from './termTranslationIndex';
 
 const refsAreEqual = (a?: firestore.DocumentReference, b?: firestore.DocumentReference) =>
     a === b || !!(b && a?.isEqual(b));
