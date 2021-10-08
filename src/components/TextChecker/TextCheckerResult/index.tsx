@@ -89,7 +89,7 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
             <p>Sensitive terms are highlighted. Click for more information.</p>
             <SelectTooltip>
                 <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
-                    <p>{children}</p>
+                    <p lang={lang}>{children}</p>
                 </div>
             </SelectTooltip>
             <ButtonContainer>

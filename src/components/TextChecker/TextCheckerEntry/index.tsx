@@ -18,9 +18,7 @@ export default function TextCheckerEntry({
     const { t } = useTranslation();
     const [language, setLanguage] = useState<Lang | undefined>();
     const [textType, setTextType] = useState<TextType | undefined>();
-    const [text, setText] = useState(
-        'Led to factors like race, development and location - to who does and who doesn’t make a ‚relatable’ victim of terror.\n\nI conceptualize this process as white fragility. Though white fragility is triggered by discomfort and anxiety, it is born of superiority and entitlement. White fragility is not weakness per se. In fact, it is a powerful means of white racial control and the protection of white advantage.'
-    );
+    const [text, setText] = useState('');
 
     return (
         <>

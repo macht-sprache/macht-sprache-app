@@ -17,6 +17,7 @@
 
 .analysisContainer p {
     margin: 0;
+    white-space: pre-wrap;
 }
 
 .sensitiveWord {
