@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
@@ -29,7 +30,7 @@ export default function CollapsableSection({
     }, [location, domId]);
 
     return (
-        <section className={s.container}>
+        <section className={clsx(s.container, { [s.open]: isOpen || intro })}>
             <h3 className={s.heading} id={domId}>
                 <button
                     onClick={() => {

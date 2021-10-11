@@ -9,7 +9,7 @@
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-.container:before {
+.container.open:before {
     --with: calc(var(--thickBorder) * 2);
     content: '';
     position: absolute;
