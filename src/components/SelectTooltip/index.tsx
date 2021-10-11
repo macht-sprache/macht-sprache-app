@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import Tooltip from 'rc-tooltip';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import s from './style.module.css';
@@ -16,32 +16,30 @@ export default function SelectTooltip({ children }: { children: React.ReactNode 
     const container = useRef<HTMLSpanElement>(null);
     const [tooltipPosition, setTooltipPosition] = useState<TooltipPosition | null>(null);
 
-    const showSelectTooltip = () => {
-        const selection = window.getSelection();
-        if (selection?.toString() !== '') {
-            const rect = selection?.getRangeAt(0)?.getBoundingClientRect();
+    const showSelectTooltipDebounced = useMemo(() => {
+        const showSelectTooltip = () => {
+            const selection = window.getSelection();
+            if (selection?.toString()) {
+                const rect = selection?.getRangeAt(0)?.getBoundingClientRect();
 
-            if (rect && selection?.anchorNode && selection?.focusNode) {
-                const startsInContainer = container.current?.contains(selection.anchorNode);
-                const endsInContainer = container.current?.contains(selection.focusNode);
+                if (rect && selection?.anchorNode && selection?.focusNode) {
+                    const startsInContainer = container.current?.contains(selection.anchorNode);
+                    const endsInContainer = container.current?.contains(selection.focusNode);
 
-                if (startsInContainer && endsInContainer) {
-                    setTooltipPosition({ x: rect.x, y: rect.y, width: rect.width, height: rect.height });
+                    if (startsInContainer && endsInContainer) {
+                        setTooltipPosition({ x: rect.x, y: rect.y, width: rect.width, height: rect.height });
+                    }
                 }
+            } else {
+                setTooltipPosition(null);
             }
-        } else {
-            setTooltipPosition(null);
-        }
-    };
-
-    const showSelectTooltipDebounced = debounce(showSelectTooltip, 500);
+        };
+        return debounce(showSelectTooltip, 500);
+    }, []);
 
     useEffect(() => {
         document.addEventListener('selectionchange', showSelectTooltipDebounced);
-
-        return () => {
-            document.removeEventListener('selectionchange', showSelectTooltipDebounced);
-        };
+        return () => document.removeEventListener('selectionchange', showSelectTooltipDebounced);
     }, [showSelectTooltipDebounced]);
 
     return (
