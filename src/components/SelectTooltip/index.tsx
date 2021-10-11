@@ -1,20 +1,25 @@
 import debounce from 'lodash.debounce';
 import Tooltip from 'rc-tooltip';
-import React, { useMemo, useState } from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import s from './style.module.css';
 
-type TooltipPosition = {
+type Props = {
+    children: React.ReactNode;
+    renderTooltip: (selectionValue: string) => React.ReactNode;
+};
+
+type TooltipState = {
+    value: string;
     x: number;
     y: number;
     width: number;
     height: number;
 };
 
-export default function SelectTooltip({ children }: { children: React.ReactNode }) {
+export function SelectTooltipContainer({ children, renderTooltip }: Props) {
     const container = useRef<HTMLSpanElement>(null);
-    const [tooltipPosition, setTooltipPosition] = useState<TooltipPosition | null>(null);
+    const [tooltipState, setTooltipState] = useState<TooltipState | null>(null);
 
     const showSelectTooltipDebounced = useMemo(() => {
         const showSelectTooltip = () => {
@@ -27,11 +32,17 @@ export default function SelectTooltip({ children }: { children: React.ReactNode 
                     const endsInContainer = container.current?.contains(selection.focusNode);
 
                     if (startsInContainer && endsInContainer) {
-                        setTooltipPosition({ x: rect.x, y: rect.y, width: rect.width, height: rect.height });
+                        setTooltipState({
+                            value: selection.toString(),
+                            x: rect.x,
+                            y: rect.y,
+                            width: rect.width,
+                            height: rect.height,
+                        });
                     }
                 }
             } else {
-                setTooltipPosition(null);
+                setTooltipState(null);
             }
         };
         return debounce(showSelectTooltip, 500);
@@ -45,9 +56,9 @@ export default function SelectTooltip({ children }: { children: React.ReactNode 
     return (
         <span ref={container}>
             {children}
-            {tooltipPosition && (
+            {tooltipState && (
                 <Tooltip
-                    overlay={<div className={s.tooltip}>Click to add missing word to macht.sprache.</div>}
+                    overlay={renderTooltip(tooltipState.value)}
                     placement="bottom"
                     visible={true}
                     destroyTooltipOnHide={true}
@@ -55,14 +66,18 @@ export default function SelectTooltip({ children }: { children: React.ReactNode 
                     <div
                         className={s.tooltipDummy}
                         style={{
-                            top: `${tooltipPosition.y}px`,
-                            left: `${tooltipPosition.x}px`,
-                            width: `${tooltipPosition.width}px`,
-                            height: `${tooltipPosition.height}px`,
+                            top: `${tooltipState.y}px`,
+                            left: `${tooltipState.x}px`,
+                            width: `${tooltipState.width}px`,
+                            height: `${tooltipState.height}px`,
                         }}
                     ></div>
                 </Tooltip>
             )}
         </span>
     );
+}
+
+export function SelectTooltipLink<T = unknown>(props: Omit<React.ComponentPropsWithoutRef<Link<T>>, 'className'>) {
+    return <Link<T> {...props} className={s.tooltip} />;
 }

@@ -1,6 +1,6 @@
 import { FormEventHandler, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, useHistory } from 'react-router-dom';
+import { generatePath, useHistory, useLocation } from 'react-router-dom';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Input, Select, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
@@ -17,12 +17,22 @@ type Model = {
     comment: string;
 };
 
+export type AddTermPageState = {
+    term: string;
+    lang: Lang;
+};
+
 export default function AddTermPage() {
     const user = useUser();
     const history = useHistory();
     const { t } = useTranslation();
     const [submitting, setSubmitting] = useState(false);
-    const [model, setModel] = useState<Model>({ term: '', lang: '', comment: '' });
+    const { state: locationState = {} } = useLocation<Partial<AddTermPageState> | undefined>();
+    const [model, setModel] = useState<Model>({
+        term: locationState.term || '',
+        lang: locationState.lang || '',
+        comment: '',
+    });
 
     if (!user) {
         return null;

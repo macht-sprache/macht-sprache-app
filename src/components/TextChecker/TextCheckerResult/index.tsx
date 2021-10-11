@@ -5,13 +5,14 @@ import { generatePath } from 'react-router-dom';
 import { getTranslationsRef } from '../../../hooks/data';
 import { Get, GetList, useCollection, useDocument } from '../../../hooks/fetch';
 import { langA } from '../../../languages';
-import { TERM } from '../../../routes';
+import { AddTermPageState } from '../../../pages/AddTermPage';
+import { TERM, TERM_ADD } from '../../../routes';
 import { DocReference, Lang, Term, TermIndex, TextToken, Translation } from '../../../types';
 import { useLang } from '../../../useLang';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import { ModalDialog } from '../../ModalDialog';
 import { Redact } from '../../RedactSensitiveTerms';
-import SelectTooltip from '../../SelectTooltip';
+import { SelectTooltipContainer, SelectTooltipLink } from '../../SelectTooltip';
 import { TermWithLang } from '../../TermWithLang';
 import s from './style.module.css';
 
@@ -75,7 +76,6 @@ const useMatches = (analyzedText: TextToken[], termIndexGrouped: { [firstLemma: 
 export default function Analysis({ lang, getTermIndex, text, analyzedText, onCancel }: Props) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const termIndexGrouped = useTermIndexGrouped(getTermIndex, lang);
-
     const matches = useMatches(analyzedText, termIndexGrouped);
 
     const children = [
@@ -99,11 +99,19 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
     return (
         <>
             <p>Sensitive terms are highlighted. Click for more information.</p>
-            <SelectTooltip>
+            <SelectTooltipContainer
+                renderTooltip={selectValue => (
+                    <SelectTooltipLink<AddTermPageState>
+                        to={{ pathname: TERM_ADD, state: { term: selectValue, lang: lang } }}
+                    >
+                        Click to add missing term to macht.sprache.
+                    </SelectTooltipLink>
+                )}
+            >
                 <div className={clsx(s.analysisContainer, { [s.analysisContainerWithTooltip]: tooltipOpen })}>
                     <p lang={lang}>{children}</p>
                 </div>
-            </SelectTooltip>
+            </SelectTooltipContainer>
             <ButtonContainer>
                 <Button primary={true} onClick={onCancel}>
                     Edit Text
