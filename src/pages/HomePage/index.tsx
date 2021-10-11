@@ -33,10 +33,7 @@ export default function Home() {
     return (
         <>
             <HomePageHeader />
-            <ColumnHeading>{t('home.termsOfTheWeek')}</ColumnHeading>
-            <Columns>
-                <TermsWeekHighlights />
-            </Columns>
+            <TermsWeekHighlights />
             <Columns>
                 <div>
                     {user ? (
