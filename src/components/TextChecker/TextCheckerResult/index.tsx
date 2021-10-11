@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
-import { Suspense, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import { generatePath } from 'react-router-dom';
 import { getTranslationsRef } from '../../../hooks/data';
 import { Get, GetList, useCollection, useDocument } from '../../../hooks/fetch';
@@ -28,43 +28,55 @@ type Match = {
     ref: DocReference<Term>;
 };
 
-export default function Analysis({ lang, getTermIndex, text, analyzedText, onCancel }: Props) {
-    const [tooltipOpen, setTooltipOpen] = useState(false);
-    const termIndex = getTermIndex().filter(i => i.lang === lang);
-    const termIndexByFirstLemma = termIndex.reduce<{ [firstLemma: string]: TermIndex[] }>((acc, cur) => {
-        cur.lemmas.forEach(lemmaList => {
-            const firstLemma = lemmaList[0]?.toLowerCase();
-            if (firstLemma) {
-                if (acc[firstLemma]) {
-                    acc[firstLemma].push(cur);
-                } else {
-                    acc[firstLemma] = [cur];
-                }
-            }
-        });
-        return acc;
-    }, {});
-
-    const matches = analyzedText.reduce<Match[]>((acc, cur, index) => {
-        const potentialMatches = termIndexByFirstLemma[cur.lemma.toLowerCase()];
-        if (potentialMatches) {
-            potentialMatches.forEach(potentialMatch => {
-                const lemmaList = potentialMatch.lemmas.find(ll =>
-                    ll.every(
-                        (lemma, lemmaIndex) =>
-                            analyzedText[index + lemmaIndex]?.lemma.toLowerCase() === lemma.toLowerCase()
-                    )
-                );
-                if (lemmaList) {
-                    acc.push({
-                        pos: [cur.pos[0], analyzedText[index + lemmaList.length - 1].pos[1]],
-                        ref: potentialMatch.ref,
-                    });
+const useTermIndexGrouped = (getTermIndex: GetList<TermIndex>, lang: Lang) => {
+    return useMemo(() => {
+        const termIndex = getTermIndex().filter(i => i.lang === lang);
+        return termIndex.reduce<{ [firstLemma: string]: TermIndex[] }>((acc, cur) => {
+            cur.lemmas.forEach(lemmaList => {
+                const firstLemma = lemmaList[0]?.toLowerCase();
+                if (firstLemma) {
+                    if (acc[firstLemma]) {
+                        acc[firstLemma].push(cur);
+                    } else {
+                        acc[firstLemma] = [cur];
+                    }
                 }
             });
-        }
-        return acc;
-    }, []);
+            return acc;
+        }, {});
+    }, [getTermIndex, lang]);
+};
+
+const useMatches = (analyzedText: TextToken[], termIndexGrouped: { [firstLemma: string]: TermIndex[] }) => {
+    return useMemo(() => {
+        return analyzedText.reduce<Match[]>((acc, cur, index) => {
+            const potentialMatches = termIndexGrouped[cur.lemma.toLowerCase()];
+            if (potentialMatches) {
+                potentialMatches.forEach(potentialMatch => {
+                    const lemmaList = potentialMatch.lemmas.find(ll =>
+                        ll.every(
+                            (lemma, lemmaIndex) =>
+                                analyzedText[index + lemmaIndex]?.lemma.toLowerCase() === lemma.toLowerCase()
+                        )
+                    );
+                    if (lemmaList) {
+                        acc.push({
+                            pos: [cur.pos[0], analyzedText[index + lemmaList.length - 1].pos[1]],
+                            ref: potentialMatch.ref,
+                        });
+                    }
+                });
+            }
+            return acc;
+        }, []);
+    }, [analyzedText, termIndexGrouped]);
+};
+
+export default function Analysis({ lang, getTermIndex, text, analyzedText, onCancel }: Props) {
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+    const termIndexGrouped = useTermIndexGrouped(getTermIndex, lang);
+
+    const matches = useMatches(analyzedText, termIndexGrouped);
 
     const children = [
         ...matches.flatMap((match, index) => {
