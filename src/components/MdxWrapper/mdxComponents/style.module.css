@@ -6,6 +6,10 @@
     margin-top: 4rem;
 }
 
+.heading_3:not(:first-child) {
+    margin-top: 2rem;
+}
+
 .ul {
     list-style: none;
     padding: 0 0 0 0.75rem;
