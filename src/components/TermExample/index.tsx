@@ -37,5 +37,5 @@ function Inner({ getTerms, lang }: InnerProps) {
         return <TermItem term={terms[0]} size="medium" />;
     }
 
-    return <>term not found</>;
+    return <div>term not found</div>;
 }
