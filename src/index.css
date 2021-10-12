@@ -51,6 +51,12 @@ body {
         set here is just the default if there's no page color
     */
     --dominantLanguageColor: var(--black);
+
+    --fullWidthInNarrowCollumn: clamp(
+        100%,
+        calc(100% + (100vw - 100% - var(--sidebarWidth) - 10rem)),
+        var(--contentWidth)
+    );
 }
 
 h1 {

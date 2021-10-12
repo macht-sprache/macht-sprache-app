@@ -6,6 +6,10 @@
     margin-top: 4rem;
 }
 
+.heading_3 {
+    margin-top: 0;
+}
+
 .heading_3:not(:first-child) {
     margin-top: 2rem;
 }
@@ -38,4 +42,16 @@
 
 .li + .li {
     margin-top: 0.5rem;
+}
+
+.columns {
+    display: grid;
+    grid-gap: 2rem;
+    margin: 2rem 0;
+    width: var(--fullWidthInNarrowCollumn);
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+.columns p:last-child {
+    margin-bottom: 0;
 }

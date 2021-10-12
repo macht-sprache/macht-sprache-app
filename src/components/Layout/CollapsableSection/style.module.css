@@ -117,7 +117,7 @@
 .container {
     display: grid;
     grid-gap: 2rem;
-    width: clamp(100%, calc(100% + (100vw - 100% - var(--sidebarWidth) - 10rem)), var(--contentWidth));
+    width: var(--fullWidthInNarrowCollumn);
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     align-items: start;
     margin: 2rem 0;

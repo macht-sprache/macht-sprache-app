@@ -19,6 +19,7 @@ const components = {
     h3: ({ children }: { children: React.ReactNode }) => <h3 className={s.heading_3}>{children}</h3>,
     li: ({ children }: { children: React.ReactNode }) => <li className={s.li}>{children}</li>,
     ul: ({ children }: { children: React.ReactNode }) => <ul className={s.ul}>{children}</ul>,
+    Columns: ({ children }: { children: React.ReactNode }) => <div className={s.columns}>{children}</div>,
     a: ({
         href,
         ...props
