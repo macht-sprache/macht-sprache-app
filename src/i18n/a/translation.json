@@ -46,7 +46,10 @@
         },
         "loading": "Loading...",
         "saving": "Saving...",
-        "more": "more...",
+        "collapsor": {
+            "more": "more",
+            "close": "close"
+        },
         "error": {
             "general": "Something went wrong"
         },

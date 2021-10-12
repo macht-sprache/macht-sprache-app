@@ -46,7 +46,10 @@
         },
         "loading": "Lade...",
         "saving": "Speichere...",
-        "more": "mehr...",
+        "collapsor": {
+            "more": "mehr",
+            "close": "schließen"
+        },
         "error": {
             "general": "Da ist etwas schief gegangen"
         },
