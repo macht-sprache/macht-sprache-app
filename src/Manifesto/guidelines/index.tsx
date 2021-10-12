@@ -1,6 +1,6 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 
-import CollapsableSection from '../../components/Layout/CollapsableSection';
+import CollapsableSection, { CollapsableSectionContainer } from '../../components/Layout/CollapsableSection';
 import { useLang } from '../../useLang';
 
 export const guidelinesList = [
@@ -51,19 +51,21 @@ export default function Guidelines() {
 
     return (
         <>
-            {guidelinesList.map(guideline => {
-                const Content = guideline[lang].default;
-                return (
-                    <CollapsableSection
-                        key={guideline.id}
-                        title={guideline[lang].title}
-                        intro={guideline[lang].intro}
-                        domId={guideline.id}
-                    >
-                        <Content />
-                    </CollapsableSection>
-                );
-            })}
+            <CollapsableSectionContainer>
+                {guidelinesList.map(guideline => {
+                    const Content = guideline[lang].default;
+                    return (
+                        <CollapsableSection
+                            key={guideline.id}
+                            title={guideline[lang].title}
+                            intro={guideline[lang].intro}
+                            domId={guideline.id}
+                        >
+                            <Content />
+                        </CollapsableSection>
+                    );
+                })}
+            </CollapsableSectionContainer>
         </>
     );
 }

@@ -1,4 +1,4 @@
-.container {
+.section {
     --boxColor: var(--green);
     --boxColorContrast: var(--orange);
     --indicatorSize: 1.5rem;
@@ -9,7 +9,7 @@
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-.container.open:before {
+.section.open:before {
     --with: calc(var(--thickBorder) * 2);
     content: '';
     position: absolute;
@@ -112,4 +112,17 @@
     margin: 0;
     color: inherit;
     text-decoration: underline;
+}
+
+.container {
+    display: grid;
+    grid-gap: 2rem;
+    width: clamp(100%, calc(100% + (100vw - 100% - var(--sidebarWidth) - 10rem)), var(--contentWidth));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    align-items: start;
+    margin: 2rem 0;
+}
+
+.container .section {
+    margin: 0;
 }

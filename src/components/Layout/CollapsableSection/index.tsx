@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 import { useDomId } from '../../../useDomId';
@@ -30,7 +30,7 @@ export default function CollapsableSection({
     }, [location, domId]);
 
     return (
-        <section className={clsx(s.container, { [s.open]: isOpen || intro })}>
+        <section className={clsx(s.section, { [s.open]: isOpen || intro })}>
             <h3 className={s.heading} id={domId}>
                 <button
                     onClick={() => {
@@ -66,4 +66,8 @@ export default function CollapsableSection({
             )}
         </section>
     );
+}
+
+export function CollapsableSectionContainer({ children }: { children: React.ReactNode }) {
+    return <div className={s.container}>{children}</div>;
 }
