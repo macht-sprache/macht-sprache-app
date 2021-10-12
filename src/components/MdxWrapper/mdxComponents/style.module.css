@@ -1,3 +1,37 @@
 .paragraph {
     font-family: var(--paragraphFont);
 }
+
+.heading_2:not(:first-child) {
+    margin-top: 4rem;
+}
+
+.ul {
+    list-style: none;
+    padding: 0 0 0 0.75rem;
+    line-height: var(--lineHeightParagraph);
+}
+
+.li {
+    font-family: var(--paragraphFont);
+    position: relative;
+}
+
+.li:before {
+    content: '';
+    position: absolute;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: var(--pink);
+    border-radius: 50%;
+    top: 0.6em;
+    left: -0.75rem;
+}
+
+.li:nth-child(odd):before {
+    background: var(--green);
+}
+
+.li + .li {
+    margin-top: 0.5rem;
+}

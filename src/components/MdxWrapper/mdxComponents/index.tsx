@@ -15,6 +15,9 @@ const components = {
     TermExampleContainer,
     PullQuote,
     p: ({ children }: { children: React.ReactNode }) => <p className={s.paragraph}>{children}</p>,
+    h2: ({ children }: { children: React.ReactNode }) => <h2 className={s.heading_2}>{children}</h2>,
+    li: ({ children }: { children: React.ReactNode }) => <li className={s.li}>{children}</li>,
+    ul: ({ children }: { children: React.ReactNode }) => <ul className={s.ul}>{children}</ul>,
     a: ({
         href,
         ...props
