@@ -12,7 +12,7 @@ import Guidelines from '!babel-loader!@mdx-js/loader!../../Manifesto/guidelines.
 export default function ManifestoPage() {
     return (
         <>
-            <Header subLine="Here is a telling sub-line">Manifesto</Header>
+            <Header subLine="Why macht.sprache. matters">Manifesto</Header>
 
             <SingleColumn>
                 <MdxWrapper>
