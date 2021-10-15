@@ -21,7 +21,7 @@ import {
     PRIVACY,
     TERMS,
     TERM_SIDEBAR,
-    TRANSLATION_HELPER,
+    TEXT_CHECKER,
 } from '../../routes';
 import { TopMenu } from '../TopMenu';
 import { useDomId } from '../../useDomId';
@@ -140,7 +140,7 @@ function Sidebar() {
                 label: 'Manifesto',
             },
             {
-                to: TRANSLATION_HELPER,
+                to: TEXT_CHECKER,
                 label: 'Text Checker',
             },
             {

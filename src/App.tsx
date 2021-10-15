@@ -133,7 +133,7 @@ function AppRouter() {
                                 <LaunchedRoute path={routes.NEWS} exact>
                                     <NewsPage />
                                 </LaunchedRoute>
-                                <LaunchedRoute path={routes.TRANSLATION_HELPER} exact>
+                                <LaunchedRoute path={routes.TEXT_CHECKER}>
                                     <TextCheckerPage />
                                 </LaunchedRoute>
                                 <LaunchedRoute path={routes.MANIFESTO} exact>
