@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { langA, langB } from '../../../languages';
 import { Lang } from '../../../types';
@@ -7,18 +6,22 @@ import { Select, Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 
 type TextType = 'original' | 'translation';
+export type TextCheckerValue = {
+    lang: Lang | undefined;
+    text: string;
+    textType: TextType | undefined;
+};
 
-export default function TextCheckerEntry({
-    onSubmit,
-    busy,
-}: {
-    onSubmit: (text: string, lang: Lang) => void;
-    busy: boolean;
-}) {
+type Props = {
+    value: TextCheckerValue;
+    onChange: (value: TextCheckerValue) => void;
+    onSubmit: () => void;
+    busy?: boolean;
+};
+
+export default function TextCheckerEntry({ value: { lang, text, textType }, onChange, onSubmit, busy }: Props) {
     const { t } = useTranslation();
-    const [language, setLanguage] = useState<Lang | undefined>();
-    const [textType, setTextType] = useState<TextType | undefined>();
-    const [text, setText] = useState('');
+    const updateModel = (update: Partial<TextCheckerValue>) => onChange({ lang, text, textType, ...update });
 
     return (
         <>
@@ -27,13 +30,13 @@ export default function TextCheckerEntry({
                 <Select
                     disabled={busy}
                     label="Language"
-                    value={language}
+                    value={lang}
                     span={2}
-                    onChange={value => {
-                        if (!value.target.value) {
-                            setLanguage(undefined);
+                    onChange={({ target }) => {
+                        if (!target.value) {
+                            updateModel({ lang: undefined });
                         } else {
-                            setLanguage(value.target.value === langA ? langA : langB);
+                            updateModel({ lang: target.value === langA ? langA : langB });
                         }
                     }}
                 >
@@ -46,11 +49,11 @@ export default function TextCheckerEntry({
                     label="Type"
                     value={textType}
                     span={2}
-                    onChange={value => {
-                        if (!value.target.value) {
-                            setTextType(undefined);
+                    onChange={({ target }) => {
+                        if (!target.value) {
+                            updateModel({ textType: undefined });
                         } else {
-                            setTextType(value.target.value === 'original' ? 'original' : 'translation');
+                            updateModel({ textType: target.value === 'original' ? 'original' : 'translation' });
                         }
                     }}
                 >
@@ -64,15 +67,11 @@ export default function TextCheckerEntry({
                     label="Text"
                     value={text}
                     minHeight="300px"
-                    onChange={value => setText(value.target.value)}
+                    onChange={({ target }) => updateModel({ text: target.value })}
                 />
             </InputContainer>
             <ButtonContainer>
-                <Button
-                    primary={true}
-                    disabled={!language || textType !== 'original' || busy}
-                    onClick={() => onSubmit(text, language!)}
-                >
+                <Button primary={true} disabled={!lang || textType !== 'original' || busy} onClick={onSubmit}>
                     Check text
                 </Button>
             </ButtonContainer>

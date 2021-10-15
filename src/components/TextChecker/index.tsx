@@ -7,8 +7,10 @@ import { useRequestState } from '../../hooks/useRequestState';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { TEXT_CHECKER, TEXT_CHECKER_RESULT } from '../../routes';
 import { Lang, TermIndex, TextToken } from '../../types';
-import TextCheckerEntry from './TextCheckerEntry';
+import TextCheckerEntry, { TextCheckerValue } from './TextCheckerEntry';
 import TextCheckerResult from './TextCheckerResult';
+
+type EntryPageState = TextCheckerValue | undefined;
 
 type ResultPageState =
     | {
@@ -37,12 +39,20 @@ export default function TextChecker() {
 }
 
 function EntryPage() {
-    const history = useHistory<ResultPageState>();
+    const history = useHistory<ResultPageState | EntryPageState>();
+    const { state, pathname } = useLocation<EntryPageState>();
     const [requestState, setRequestState] = useRequestState();
+    const value = state || { text: '', lang: undefined, textType: undefined };
     return (
         <TextCheckerEntry
             busy={requestState === 'IN_PROGRESS'}
-            onSubmit={(text, lang) => {
+            value={value}
+            onChange={newValue => history.replace(pathname, newValue)}
+            onSubmit={() => {
+                const { lang, text } = value;
+                if (!lang || !text) {
+                    return;
+                }
                 setRequestState('IN_PROGRESS');
                 analyzeText(text, lang).then(
                     analyzedText => {
