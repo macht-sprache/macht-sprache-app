@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { useState } from 'react';
 import BookSearch from '../../components/MediaSelection/BookSearch';
 import { CommentCreate } from '../../components/Comments/CommentCreate';

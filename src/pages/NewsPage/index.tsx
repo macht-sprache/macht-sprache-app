@@ -15,7 +15,7 @@ export function NewsPage() {
             <PageTitle title={t('home.news')} />
             <Header subLine={t('newsFeed.subLine')}>{t('home.news')}</Header>
             <div className={s.feed}>
-                <Suspense fallback={<>t('common.loading')</>}>
+                <Suspense fallback={<>{t('common.loading')}</>}>
                     <NewsFeed getPosts={getPosts} />
                 </Suspense>
             </div>

@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import isEqual from 'lodash.isequal';
 import { DependencyList, useEffect, useMemo, useState } from 'react';
 import { ERROR_NOT_FOUND } from '../constants';

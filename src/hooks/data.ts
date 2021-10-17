@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { useMemo } from 'react';
 import { db } from '../firebase';
 import { langA, langB } from '../languages';

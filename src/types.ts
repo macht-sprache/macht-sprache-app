@@ -1,4 +1,4 @@
-import type firebase from 'firebase';
+import type firebase from 'firebase/compat';
 import { langA, langB } from './languages';
 
 export type LangA = typeof langA;

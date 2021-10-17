@@ -1,4 +1,4 @@
-import type firebase from 'firebase';
+import type firebase from 'firebase/compat';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';

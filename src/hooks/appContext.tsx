@@ -1,4 +1,4 @@
-import type firebase from 'firebase';
+import type firebase from 'firebase/compat';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { auth } from '../firebase';
 import { DocReference, User, UserProperties, UserSettings } from '../types';

@@ -1,4 +1,4 @@
-import type firebase from 'firebase';
+import type firebase from 'firebase/compat';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { auth } from '../firebase';
