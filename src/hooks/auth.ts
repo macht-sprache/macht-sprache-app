@@ -1,4 +1,4 @@
-import type firebase from 'firebase/compat';
+import { signInWithEmailAndPassword, User } from 'firebase/auth';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { auth } from '../firebase';
@@ -16,13 +16,13 @@ export type AuthHandlerParams = {
 export const useLogin = (continuePath: string = HOME, isVerification = false) => {
     const { user, authUser, accountState } = useAppContext();
     const history = useHistory();
-    const [loginUser, setLoginUser] = useState<firebase.User>();
+    const [loginUser, setLoginUser] = useState<User>();
     const [loginState, setLoginState, loginError] = useRequestState();
     const login = useCallback(
         (email: string, password: string) => {
             setLoginUser(undefined);
             setLoginState('IN_PROGRESS');
-            auth.signInWithEmailAndPassword(email, password).then(
+            signInWithEmailAndPassword(auth, email, password).then(
                 credential => {
                     setLoginUser(credential.user!);
                     setLoginState('DONE');

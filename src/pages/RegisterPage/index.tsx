@@ -1,19 +1,20 @@
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { FormEventHandler, useCallback, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, Redirect } from 'react-router-dom';
-import { DISPLAY_NAME_REGEX } from '../../constants';
-import { auth } from '../../firebase';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { ErrorBox } from '../../components/Form/ErrorBox';
 import { Input } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
-import { isDisplayNameAvailable, postRegistrationHandler, sendEmailVerification } from '../../functions';
 import { SimpleHeader } from '../../components/Header';
+import { SingleColumn } from '../../components/Layout/Columns';
+import { DISPLAY_NAME_REGEX } from '../../constants';
+import { auth } from '../../firebase';
+import { isDisplayNameAvailable, postRegistrationHandler, sendEmailVerification } from '../../functions';
 import { useUser } from '../../hooks/appContext';
 import { addContinueParam, useContinuePath } from '../../hooks/location';
 import { useRequestState } from '../../hooks/useRequestState';
-import { SingleColumn } from '../../components/Layout/Columns';
 import { IMPRINT, PRIVACY, REGISTER_POST } from '../../routes';
 import { Lang } from '../../types';
 import { useLang } from '../../useLang';
@@ -29,13 +30,13 @@ const signUp = async (
 ) => {
     await isDisplayNameAvailable(displayName);
 
-    const { user } = await auth.createUserWithEmailAndPassword(email, password);
+    const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
     if (!user) {
         throw Error('Account creation failed');
     }
 
-    await user.updateProfile({ displayName });
+    await updateProfile(user, { displayName });
     await postRegistrationHandler(displayName, lang, newsletter);
 
     if (!user.emailVerified) {
@@ -57,7 +58,7 @@ const useRegistrationErrorLabels = (
     const { t } = useTranslation();
 
     const errorLabels: RegistrationErrorLabels = useMemo(() => {
-        if (registrationError?.code === 'already-exists') {
+        if (registrationError?.code === 'functions/already-exists') {
             return { displayName: t('auth.errors.name-already-in-use') };
         }
         if (registrationError?.code === 'auth/email-already-in-use') {

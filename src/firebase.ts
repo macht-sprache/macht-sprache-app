@@ -1,5 +1,5 @@
 import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 
@@ -13,12 +13,15 @@ const appConfig = {
 };
 
 const app = firebase.initializeApp(appConfig);
-const auth = app.auth();
+const auth = getAuth(app);
 const db = app.firestore();
 const functions = app.functions(process.env.REACT_APP_FIREBASE_REGION);
 
 if (process.env.REACT_APP_AUTH_EMULATOR_PORT) {
-    auth.useEmulator(window.location.origin.replace(window.location.port, process.env.REACT_APP_AUTH_EMULATOR_PORT));
+    connectAuthEmulator(
+        auth,
+        window.location.origin.replace(window.location.port, process.env.REACT_APP_AUTH_EMULATOR_PORT)
+    );
 }
 
 if (process.env.REACT_APP_FIRESTORE_EMULATOR_PORT) {

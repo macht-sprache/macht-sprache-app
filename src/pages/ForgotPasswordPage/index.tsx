@@ -1,17 +1,18 @@
+import { confirmPasswordReset, verifyPasswordResetCode } from 'firebase/auth';
 import { FormEventHandler, useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { auth } from '../../firebase';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { ErrorBox } from '../../components/Form/ErrorBox';
 import { Input } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
-import { sendPasswordReset } from '../../functions';
 import { SimpleHeader } from '../../components/Header';
+import { SingleColumn } from '../../components/Layout/Columns';
+import { auth } from '../../firebase';
+import { sendPasswordReset } from '../../functions';
 import { AuthHandlerParams, useAuthHandlerParams, useLogin } from '../../hooks/auth';
 import { useContinuePath } from '../../hooks/location';
 import { useRequestState } from '../../hooks/useRequestState';
-import { SingleColumn } from '../../components/Layout/Columns';
 import { FORGOT_PASSWORD } from '../../routes';
 import { useLang } from '../../useLang';
 
@@ -31,7 +32,7 @@ function ResetPassword({ actionCode, continueUrl }: AuthHandlerParams) {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        auth.verifyPasswordResetCode(actionCode).then(setEmail, error => {
+        verifyPasswordResetCode(auth, actionCode).then(setEmail, error => {
             setError(true);
             console.error(error);
         });
@@ -69,7 +70,7 @@ function ResetPasswordForm({ email, actionCode, continueUrl }: { email: string }
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setRequestState('IN_PROGRESS');
-        auth.confirmPasswordReset(actionCode, password)
+        confirmPasswordReset(auth, actionCode, password)
             .then(() => login(email, password))
             .catch(error => setRequestState('ERROR', error));
     };
