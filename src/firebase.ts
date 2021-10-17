@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 import 'firebase/compat/firestore';
-import 'firebase/compat/functions';
 
 const appConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,7 +15,7 @@ const appConfig = {
 const app = firebase.initializeApp(appConfig);
 const auth = getAuth(app);
 const db = app.firestore();
-const functions = app.functions(process.env.REACT_APP_FIREBASE_REGION);
+const functions = getFunctions(app, process.env.REACT_APP_FIREBASE_REGION);
 
 if (process.env.REACT_APP_AUTH_EMULATOR_PORT) {
     connectAuthEmulator(
@@ -29,7 +29,11 @@ if (process.env.REACT_APP_FIRESTORE_EMULATOR_PORT) {
 }
 
 if (process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT) {
-    functions.useEmulator(window.location.hostname, parseInt(process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT));
+    connectFunctionsEmulator(
+        functions,
+        window.location.hostname,
+        parseInt(process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT)
+    );
 }
 
 const Timestamp = firebase.firestore.Timestamp;

@@ -20,6 +20,7 @@ import { langA, langB } from '../../languages';
 import { GlobalSettings, User, UserProperties, UserSettings } from '../../types';
 import { useLang } from '../../useLang';
 import s from './style.module.css';
+import { httpsCallable } from 'firebase/functions';
 
 type AuthUserInfo = { email: string; verified: boolean; creationTime: string };
 type AuthUserInfos = Partial<Record<string, { email: string; verified: boolean; creationTime: string }>>;
@@ -38,7 +39,7 @@ const useAuthUserInfos = () => {
     const [authUserInfos, setAuthUserInfos] = useState<AuthUserInfos>({});
     useEffect(() => {
         let currentRequest = true;
-        const fn = functions.httpsCallable('userManagement-getAuthUserInfos');
+        const fn = httpsCallable<void, AuthUserInfos>(functions, 'userManagement-getAuthUserInfos');
         fn().then(({ data }) => currentRequest && setAuthUserInfos(data));
         return () => {
             currentRequest = false;
@@ -47,10 +48,10 @@ const useAuthUserInfos = () => {
     return authUserInfos;
 };
 
-const ensureValidUserEntities = () => functions.httpsCallable('userManagement-ensureValidUserEntities')();
-const runContentMigrations = () => functions.httpsCallable('userManagement-runContentMigrations')();
-const runSeedSubscriptions = () => functions.httpsCallable('userManagement-runSeedSubscriptions')();
-const runSeedTermTranslationIndex = () => functions.httpsCallable('userManagement-runSeedTermTranslationIndex')();
+const ensureValidUserEntities = () => httpsCallable(functions, 'userManagement-ensureValidUserEntities')();
+const runContentMigrations = () => httpsCallable(functions, 'userManagement-runContentMigrations')();
+const runSeedSubscriptions = () => httpsCallable(functions, 'userManagement-runSeedSubscriptions')();
+const runSeedTermTranslationIndex = () => httpsCallable(functions, 'userManagement-runSeedTermTranslationIndex')();
 
 type WeeklyDigestParams = {
     from: string;
@@ -66,12 +67,12 @@ type WeeklyDigestParams = {
     };
 };
 const sendWeeklyDigestTest = (params: WeeklyDigestParams) =>
-    functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
+    httpsCallable(functions, 'userManagement-sendWeeklyDigestTest')(params);
 const sendWeeklyDigest = (params: WeeklyDigestParams) =>
-    functions.httpsCallable('userManagement-sendWeeklyDigest')(params);
+    httpsCallable(functions, 'userManagement-sendWeeklyDigest')(params);
 
 const deleteAllContentOfUser = (userId: string) => {
-    const fn = functions.httpsCallable('userManagement-deleteAllContentOfUser');
+    const fn = httpsCallable(functions, 'userManagement-deleteAllContentOfUser');
     return fn({ userId });
 };
 

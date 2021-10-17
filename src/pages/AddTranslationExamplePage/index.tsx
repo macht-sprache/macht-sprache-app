@@ -109,13 +109,13 @@ function AddTranslationExample({ getTerm, getTranslation }: { getTerm: Get<Term>
         setSaveState({ saving: true, error: false });
 
         addTranslationExample(translationExampleModel).then(
-            ({ data }) => {
+            translationExampleId => {
                 setSaveState({ saving: false, error: false });
                 history.push(
                     generatePath(TRANSLATION_EXAMPLE, {
                         termId: term.id,
                         translationId: translation.id,
-                        translationExampleId: data.translationExampleId,
+                        translationExampleId,
                     })
                 );
             },
