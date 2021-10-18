@@ -9,7 +9,7 @@ import { AddTermPageState } from '../../../pages/AddTermPage';
 import { TERM, TERM_ADD } from '../../../routes';
 import { DocReference, Lang, Term, TermIndex, TextToken, Translation } from '../../../types';
 import { useLang } from '../../../useLang';
-import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
+import Button, { ButtonContainer, ButtonLink } from '../../Form/Button';
 import { ModalDialog } from '../../ModalDialog';
 import { Redact } from '../../RedactSensitiveTerms';
 import { SelectTooltipContainer, SelectTooltipLink } from '../../SelectTooltip';
@@ -226,9 +226,7 @@ function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
                     ))}
                 </ul>
                 <ButtonContainer>
-                    <ButtonAnchor href={generatePath(TERM, { termId: term.id })}>
-                        Discuss or suggest options
-                    </ButtonAnchor>
+                    <ButtonLink to={generatePath(TERM, { termId: term.id })}>Discuss or suggest options</ButtonLink>
                     <Button primary={true} onClick={onClose}>
                         Go back
                     </Button>
