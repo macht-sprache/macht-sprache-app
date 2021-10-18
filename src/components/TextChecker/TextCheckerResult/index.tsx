@@ -15,6 +15,7 @@ import { ModalDialog } from '../../ModalDialog';
 import { Redact } from '../../RedactSensitiveTerms';
 import { SelectTooltipContainer, SelectTooltipLink } from '../../SelectTooltip';
 import { TermWithLang } from '../../TermWithLang';
+import { sortTranslations } from '../../TranslationsList/service';
 import s from './style.module.css';
 
 type Props = {
@@ -200,7 +201,7 @@ function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
     const { t } = useTranslation();
     const [lang] = useLang();
     const term = getTerm();
-    const translations = getTranslations();
+    const translations = sortTranslations(getTranslations());
     const langIdentifier = lang === langA ? 'langA' : 'langB';
     const termDefinition = term.definition[langIdentifier];
 
@@ -245,7 +246,7 @@ function TermTooltip({ getTerm, getTranslations, onClick }: TooltipProps) {
     const { t } = useTranslation();
     const [lang] = useLang();
     const term = getTerm();
-    const translations = getTranslations();
+    const translations = sortTranslations(getTranslations());
     const termDefinition = term.definition[lang === langA ? 'langA' : 'langB'];
 
     return (
