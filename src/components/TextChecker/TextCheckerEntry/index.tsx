@@ -25,11 +25,11 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
 
     return (
         <>
-            <p>Add a text you would like to check for sensitive terms:</p>
+            <p>{t('textChecker.entry.description')}</p>
             <InputContainer>
                 <Select
                     disabled={busy}
-                    label="Language"
+                    label={t('common.langLabels.language')}
                     value={lang}
                     span={2}
                     onChange={({ target }) => {
@@ -46,7 +46,7 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
                 </Select>
                 <Select
                     disabled={busy}
-                    label="Type"
+                    label={t('textChecker.entry.type.label')}
                     value={textType}
                     span={2}
                     onChange={({ target }) => {
@@ -58,13 +58,13 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
                     }}
                 >
                     <option value=""></option>
-                    <option value="original">original</option>
-                    <option value="translation">translation</option>
+                    <option value="original">{t('textChecker.entry.type.original')}</option>
+                    <option value="translation">{t('textChecker.entry.type.translation')}</option>
                 </Select>
                 <Textarea
                     busy={busy}
                     disabled={busy}
-                    label="Text"
+                    label={t('textChecker.entry.text')}
                     value={text}
                     minHeight="300px"
                     onChange={({ target }) => updateModel({ text: target.value })}
@@ -72,7 +72,7 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
             </InputContainer>
             <ButtonContainer>
                 <Button primary={true} disabled={!lang || textType !== 'original' || busy} onClick={onSubmit}>
-                    Check text
+                    {t('textChecker.entry.submit')}
                 </Button>
             </ButtonContainer>
         </>

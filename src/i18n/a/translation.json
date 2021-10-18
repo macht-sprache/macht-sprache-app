@@ -346,6 +346,31 @@
             }
         }
     },
+    "textChecker": {
+        "title": "Text Checker",
+        "subLine": "Get help with sensitive translations",
+        "entry": {
+            "description": "Add a text you would like to check for sensitive terms:",
+            "type": {
+                "label": "Type",
+                "original": "original",
+                "translation": "translation"
+            },
+            "text": "Text",
+            "submit": "Check Text"
+        },
+        "result": {
+            "description": "Sensitive terms are highlighted. Click for more information.",
+            "cancel": "Edit Text",
+            "addMissing": "Click to add missing term to macht.sprache.",
+            "translationsHeading": "Possible translations:",
+            "clickHint": "Click for more information",
+            "modal": {
+                "close": "Go Back",
+                "discuss": "Discuss or suggest options"
+            }
+        }
+    },
     "contentWarning": {
         "title": "Content Warning",
         "button": "Thanks, I understand",

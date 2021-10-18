@@ -1,11 +1,13 @@
+import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header';
 import { SingleColumn } from '../../components/Layout/Columns';
 import TextChecker from '../../components/TextChecker';
 
 export default function TextCheckerPage() {
+    const { t } = useTranslation();
     return (
         <>
-            <Header subLine="Get help with sensitive translations">Text checker</Header>
+            <Header subLine={t('textChecker.subLine')}>{t('textChecker.title')}</Header>
             <SingleColumn>
                 <TextChecker />
             </SingleColumn>

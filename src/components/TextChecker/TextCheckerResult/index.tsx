@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
 import { Suspense, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { generatePath } from 'react-router-dom';
 import { getTranslationsRef } from '../../../hooks/data';
 import { Get, GetList, useCollection, useDocument } from '../../../hooks/fetch';
@@ -74,6 +75,7 @@ const useMatches = (analyzedText: TextToken[], termIndexGrouped: { [firstLemma: 
 };
 
 export default function Analysis({ lang, getTermIndex, text, analyzedText, onCancel }: Props) {
+    const { t } = useTranslation();
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const termIndexGrouped = useTermIndexGrouped(getTermIndex, lang);
     const matches = useMatches(analyzedText, termIndexGrouped);
@@ -98,13 +100,13 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
 
     return (
         <>
-            <p>Sensitive terms are highlighted. Click for more information.</p>
+            <p>{t('textChecker.result.description')}</p>
             <SelectTooltipContainer
                 renderTooltip={selectValue => (
                     <SelectTooltipLink<AddTermPageState>
                         to={{ pathname: TERM_ADD, state: { term: selectValue, lang: lang } }}
                     >
-                        Click to add missing term to macht.sprache.
+                        {t('textChecker.result.addMissing')}
                     </SelectTooltipLink>
                 )}
             >
@@ -114,7 +116,7 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
             </SelectTooltipContainer>
             <ButtonContainer>
                 <Button primary={true} onClick={onCancel}>
-                    Edit Text
+                    {t('textChecker.result.cancel')}
                 </Button>
             </ButtonContainer>
         </>
@@ -195,10 +197,11 @@ type TooltipProps = TermProps & {
 };
 
 function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
+    const { t } = useTranslation();
     const [lang] = useLang();
     const term = getTerm();
     const translations = getTranslations();
-    const langIdentifier = lang === langA ? 'langA' : ('langB' as const);
+    const langIdentifier = lang === langA ? 'langA' : 'langB';
     const termDefinition = term.definition[langIdentifier];
 
     return (
@@ -213,7 +216,7 @@ function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
         >
             <div className={s.overlayContainer}>
                 {termDefinition && <p className={s.overlayDefinition}>{termDefinition}</p>}
-                <h3>Possible meanings:</h3>
+                <h3>{t('textChecker.result.translationsHeading')}</h3>
                 <ul className={s.overlayTranslationList}>
                     {translations.map(translation => (
                         <li key={translation.id} className={s.overlayTranslation}>
@@ -226,9 +229,11 @@ function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
                     ))}
                 </ul>
                 <ButtonContainer>
-                    <ButtonLink to={generatePath(TERM, { termId: term.id })}>Discuss or suggest options</ButtonLink>
+                    <ButtonLink to={generatePath(TERM, { termId: term.id })}>
+                        {t('textChecker.result.modal.discuss')}
+                    </ButtonLink>
                     <Button primary={true} onClick={onClose}>
-                        Go back
+                        {t('textChecker.result.modal.close')}
                     </Button>
                 </ButtonContainer>
             </div>
@@ -237,6 +242,7 @@ function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
 }
 
 function TermTooltip({ getTerm, getTranslations, onClick }: TooltipProps) {
+    const { t } = useTranslation();
     const [lang] = useLang();
     const term = getTerm();
     const translations = getTranslations();
@@ -245,7 +251,7 @@ function TermTooltip({ getTerm, getTranslations, onClick }: TooltipProps) {
     return (
         <div className={s.tooltip} onClick={onClick}>
             {termDefinition && <p className={s.tooltipDefinition}>{termDefinition}</p>}
-            Possible meanings:{' '}
+            {t('textChecker.result.translationsHeading')}{' '}
             <ul className={s.tooltipList}>
                 {translations.map(translation => (
                     <li className={s.tooltipListItem} key={translation.id}>
@@ -253,7 +259,7 @@ function TermTooltip({ getTerm, getTranslations, onClick }: TooltipProps) {
                     </li>
                 ))}
             </ul>
-            <p>Click for more information</p>
+            <p>{t('textChecker.result.clickHint')}</p>
         </div>
     );
 }
