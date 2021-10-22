@@ -35,7 +35,7 @@ export default function AddTranslationPage() {
         setSubmitting(true);
         addTranslation(user, term, model.translation, model.comment)
             .then(translation => {
-                history.push(generatePath(TRANSLATION, { termId: term.id, translationId: translation.id }));
+                history.replace(generatePath(TRANSLATION, { termId: term.id, translationId: translation.id }));
             })
             .catch(console.error)
             .finally(() => setSubmitting(false));

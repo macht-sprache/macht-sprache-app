@@ -42,7 +42,7 @@ export default function AddTermPage() {
         event.preventDefault();
         setSubmitting(true);
         addTerm(user, model.term, model.lang || langA, model.comment)
-            .then(ref => history.push(generatePath(TERM, { termId: ref.id })))
+            .then(ref => history.replace(generatePath(TERM, { termId: ref.id })))
             .catch(console.error)
             .finally(() => setSubmitting(false));
     };
