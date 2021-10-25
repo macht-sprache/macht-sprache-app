@@ -52,25 +52,27 @@ const useTermIndexGrouped = (getTermIndex: GetList<TermIndex>, lang: Lang) => {
 
 const useMatches = (analyzedText: TextToken[], termIndexGrouped: { [firstLemma: string]: TermIndex[] }) => {
     return useMemo(() => {
-        return analyzedText.reduce<Match[]>((acc, cur, index) => {
-            const potentialMatches = termIndexGrouped[cur.lemma.toLowerCase()];
-            if (potentialMatches) {
-                potentialMatches.forEach(potentialMatch => {
-                    const lemmaList = potentialMatch.lemmas.find(ll =>
+        return analyzedText.reduce<Match[]>((matches, textToken, index) => {
+            const currentMatches = (termIndexGrouped[textToken.lemma.toLowerCase()] || []).reduce<Match[]>(
+                (acc, cur) => {
+                    const matchedTerms = cur.lemmas.find(ll =>
                         ll.every(
                             (lemma, lemmaIndex) =>
                                 analyzedText[index + lemmaIndex]?.lemma.toLowerCase() === lemma.toLowerCase()
                         )
                     );
-                    if (lemmaList) {
+                    if (matchedTerms) {
                         acc.push({
-                            pos: [cur.pos[0], analyzedText[index + lemmaList.length - 1].pos[1]],
-                            ref: potentialMatch.ref,
+                            pos: [textToken.pos[0], analyzedText[index + matchedTerms.length - 1].pos[1]],
+                            ref: cur.ref,
                         });
                     }
-                });
-            }
-            return acc;
+                    return acc;
+                },
+                []
+            );
+
+            return [...matches, ...currentMatches];
         }, []);
     }, [analyzedText, termIndexGrouped]);
 };
@@ -83,16 +85,22 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
 
     const children = [
         ...matches.flatMap((match, index) => {
-            const prevPos = matches[index - 1]?.pos[1] || 0;
+            const prevEnd = matches[index - 1]?.pos[1] || 0;
+            const [start, end] = match.pos;
+
+            if (prevEnd > start) {
+                return [];
+            }
+
             return [
-                <span key={index + 'a'}>{text.substring(prevPos, match.pos[0])}</span>,
+                <span key={index + 'a'}>{text.substring(prevEnd, start)}</span>,
                 <SensitiveWord
                     key={index + 'b'}
                     lang={lang}
                     termRef={match.ref}
                     onTooltipVisibleChange={setTooltipOpen}
                 >
-                    {text.substring(match.pos[0], match.pos[1])}
+                    {text.substring(start, end)}
                 </SensitiveWord>,
             ];
         }),
