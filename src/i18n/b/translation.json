@@ -357,6 +357,7 @@
         },
         "result": {
             "description": "Sensible Bgriffe sind hervorgehoben. Klick für mehr Informationen.",
+            "nothingFound": "Es wurde kein sensibler Begriff gefunden. Markiere einen Begriff, um ihn hinzuzufügen.",
             "cancel": "Text editieren",
             "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
             "translationsHeading": "Mögliche Übersetzungen:",

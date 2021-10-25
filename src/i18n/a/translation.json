@@ -361,6 +361,7 @@
         },
         "result": {
             "description": "Sensitive terms are highlighted. Click for more information.",
+            "nothingFound": "There where no sensitive terms found. You can select text below to add a term.",
             "cancel": "Edit Text",
             "addMissing": "Click to add missing term to macht.sprache.",
             "translationsHeading": "Possible translations:",

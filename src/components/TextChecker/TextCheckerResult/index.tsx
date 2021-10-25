@@ -109,7 +109,7 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
 
     return (
         <>
-            <p>{t('textChecker.result.description')}</p>
+            <p>{t(matches.length === 0 ? 'textChecker.result.nothingFound' : 'textChecker.result.description')}</p>
             <SelectTooltipContainer
                 renderTooltip={selectValue => (
                     <SelectTooltipLink<AddTermPageState>
