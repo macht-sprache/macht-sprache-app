@@ -342,6 +342,31 @@
             }
         }
     },
+    "textChecker": {
+        "title": "Text Checker",
+        "subLine": "Hilfe bei sensiblen Übersetzungen",
+        "entry": {
+            "description": "Füge einen Text ein, den du auf sensible Begriffe überprüfen möchtest:",
+            "type": {
+                "label": "Textart",
+                "original": "Original",
+                "translation": "Übersetzung"
+            },
+            "text": "Text",
+            "submit": "Überprüfe Text"
+        },
+        "result": {
+            "description": "Sensible Bgriffe sind hervorgehoben. Klick für mehr Informationen.",
+            "cancel": "Text editieren",
+            "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
+            "translationsHeading": "Mögliche Übersetzungen:",
+            "clickHint": "Klick für mehr Informationen",
+            "modal": {
+                "close": "Zurück",
+                "discuss": "Diskutiere oder schlage neue Übersetzung vor"
+            }
+        }
+    },
     "contentWarning": {
         "title": "Inhaltliche Warnung",
         "button": "Danke, verstanden",
