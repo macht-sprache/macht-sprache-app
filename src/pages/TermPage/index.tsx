@@ -1,4 +1,5 @@
 import firebase from 'firebase/app';
+import xor from 'lodash.xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -11,10 +12,6 @@ import { Input, Select, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
 import { FormatDate } from '../../components/FormatDate';
 import Header from '../../components/Header';
-import { useAppContext } from '../../hooks/appContext';
-import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
-import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
-import { langA, langB } from '../../languages';
 import { FullWidthColumn, SingleColumn } from '../../components/Layout/Columns';
 import LinkButton from '../../components/LinkButton';
 import Linkify from '../../components/Linkify';
@@ -25,14 +22,17 @@ import Share from '../../components/Share';
 import SidebarTermRedirectWrapper from '../../components/SidebarTermRedirectWrapper';
 import { TermWithLang } from '../../components/TermWithLang';
 import { TranslationsList } from '../../components/TranslationsList';
+import { UserInlineDisplay } from '../../components/UserInlineDisplay';
+import { useAppContext } from '../../hooks/appContext';
+import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
+import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
+import { langA, langB } from '../../languages';
+import { guidelinesList } from '../../Manifesto/guidelines';
+import { MANIFESTO } from '../../routes';
 import { Lang, Source, Term, Translation, User } from '../../types';
 import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
-import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import s from './style.module.css';
-import { guidelinesList } from '../../Manifesto/guidelines';
-import { xor } from 'lodash';
-import { MANIFESTO } from '../../routes';
 
 type Props = {
     getTerm: Get<Term>;
