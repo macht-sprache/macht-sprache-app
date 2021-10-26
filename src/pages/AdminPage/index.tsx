@@ -231,7 +231,7 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
                     type="text"
                 />
                 <Input
-                    label={`Subject ${t(`common.langLabels.${langA}` as const)}`}
+                    label={`Subject ${t(`common.langLabels.${langB}` as const)}`}
                     onChange={event => updateModel({ subjectB: event.target.value })}
                     value={model.subjectB}
                     placeholder="Required"
