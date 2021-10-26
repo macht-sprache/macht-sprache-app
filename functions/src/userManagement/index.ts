@@ -244,10 +244,11 @@ type DigestMailParams = {
     to: string;
     limit: number;
     intro: { [langA]: string; [langB]: string };
+    subject: { [langA]: string; [langB]: string };
 };
 
 export const sendWeeklyDigestTest = functions.https.onCall(
-    async ({ from, to, limit, intro }: DigestMailParams, context) => {
+    async ({ from, to, limit, intro, subject }: DigestMailParams, context) => {
         const currentUserId = verifyUser(context);
         await verifyAdmin(currentUserId);
 
@@ -263,13 +264,14 @@ export const sendWeeklyDigestTest = functions.https.onCall(
                 to: new Date(to),
                 limit,
                 intro,
+                subject,
             }
         );
     }
 );
 
 export const sendWeeklyDigest = functions.https.onCall(
-    async ({ from, to, limit, intro }: DigestMailParams, context) => {
+    async ({ from, to, limit, intro, subject }: DigestMailParams, context) => {
         const currentUserId = verifyUser(context);
         await verifyAdmin(currentUserId);
 
@@ -305,6 +307,7 @@ export const sendWeeklyDigest = functions.https.onCall(
             to: new Date(to),
             limit,
             intro,
+            subject,
         });
     }
 );

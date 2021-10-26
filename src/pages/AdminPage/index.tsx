@@ -59,6 +59,10 @@ type WeeklyDigestParams = {
         [langA]: string;
         [langB]: string;
     };
+    subject: {
+        [langA]: string;
+        [langB]: string;
+    };
 };
 const sendWeeklyDigestTest = (params: WeeklyDigestParams) =>
     functions.httpsCallable('userManagement-sendWeeklyDigestTest')(params);
@@ -131,6 +135,8 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
         from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
         to: new Date(),
         limit: 25,
+        subjectA: '',
+        subjectB: '',
         introLangA: '',
         introLangB: '',
     });
@@ -156,6 +162,10 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
                 [langA]: model.introLangA,
                 [langB]: model.introLangB,
             },
+            subject: {
+                [langA]: model.subjectA,
+                [langB]: model.subjectB,
+            },
         }).then(
             () => setTestMailState('DONE'),
             error => setTestMailState('ERROR', error)
@@ -169,6 +179,10 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
             to: model.to.toISOString(),
             limit: model.limit,
             intro: {
+                [langA]: model.introLangA,
+                [langB]: model.introLangB,
+            },
+            subject: {
                 [langA]: model.introLangA,
                 [langB]: model.introLangB,
             },
@@ -209,22 +223,47 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
                     onChange={event => updateModel({ limit: parseInt(event.target.value) })}
                     value={model.limit}
                 />
+                <Input
+                    label={`Subject ${t(`common.langLabels.${langA}` as const)}`}
+                    onChange={event => updateModel({ subjectA: event.target.value })}
+                    value={model.subjectA}
+                    placeholder="Required"
+                    type="text"
+                />
+                <Input
+                    label={`Subject ${t(`common.langLabels.${langA}` as const)}`}
+                    onChange={event => updateModel({ subjectB: event.target.value })}
+                    value={model.subjectB}
+                    placeholder="Required"
+                    type="text"
+                />
                 <Textarea
                     label={`Intro ${t(`common.langLabels.${langA}` as const)}`}
-                    placeholder="Leave blank for default intro"
+                    placeholder="Required"
                     value={model.introLangA}
                     onChange={event => updateModel({ introLangA: event.target.value })}
                 />
                 <Textarea
                     label={`Intro ${t(`common.langLabels.${langB}` as const)}`}
-                    placeholder="Leave blank for default intro"
+                    placeholder="Required"
                     value={model.introLangB}
                     onChange={event => updateModel({ introLangB: event.target.value })}
                 />
             </InputContainer>
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
-                <Button disabled={disabled || testMailState === 'DONE'} onClick={sendTestMail} primary>
+                <Button
+                    disabled={
+                        disabled ||
+                        testMailState === 'DONE' ||
+                        model.subjectA === '' ||
+                        model.subjectB === '' ||
+                        model.introLangA === '' ||
+                        model.introLangB === ''
+                    }
+                    onClick={sendTestMail}
+                    primary
+                >
                     {(testMailState === 'INIT' || testMailState === 'ERROR') && 'Send Test Mail'}
                     {testMailState === 'IN_PROGRESS' && 'Sending Test Mail…'}
                     {testMailState === 'DONE' && 'Sent Test Mail!'}

@@ -105,6 +105,10 @@ type DigestMailConfig = {
         [langA]: string;
         [langB]: string;
     };
+    subject: {
+        [langA]: string;
+        [langB]: string;
+    };
 };
 
 export const sendWeeklyDigestMail = async (recipients: Recipient[], config: DigestMailConfig) => {
@@ -119,7 +123,8 @@ export const sendWeeklyDigestMail = async (recipients: Recipient[], config: Dige
                 link: generateUrl(USER, { userId: recipient.id }),
             },
             config.intro[recipient.lang],
-            digestContent[recipient.lang]
+            digestContent[recipient.lang],
+            config.subject[recipient.lang]
         );
         await sendMail({ html, subject, to: recipient });
     }

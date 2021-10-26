@@ -18,8 +18,6 @@
         "button": "Gehe zu macht.sprache."
     },
     "weeklyDigest": {
-        "subject": "Wöchentliche Zusammenfassung von Aktivität auf macht.sprache.",
-        "intro": "hier ist eine Zusammenfassung, was die letzte Woche bei macht.sprache. passiert ist:",
         "newComment": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> kommentierte <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a>",
         "newTerm": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> fügte einen Begriff hinzu",
         "newTranslation": "<a class=\"link\" href=\"{{userUrl}}\">{{userName}}</a> fügte eine Übersetzung für <a class=\"link\" href=\"{{termUrl}}\">{{term}}</a> hinzu",

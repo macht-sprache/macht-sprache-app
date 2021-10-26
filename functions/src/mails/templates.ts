@@ -246,21 +246,19 @@ export const getActivationMail = ({ recipientName, link, lang }: TemplateOptions
 export const getWeeklyDigestMail = (
     { recipientName, lang, link }: TemplateOptions,
     intro: string,
-    content: MJMLJsonObject[]
+    content: MJMLJsonObject[],
+    subject: string
 ): RenderedMailTemplate => {
     const t = translate(lang);
     const md = new MarkdownIt();
 
     const { html } = mjml2html(
         withBaseTemplate(
-            [
-                getText(t('greeting', { recipientName })),
-                getText(intro ? md.render(intro) : t('weeklyDigest.intro'), 'intro'),
-            ],
+            [getText(t('greeting', { recipientName })), getText(md.render(intro), 'intro')],
             [getSectionColumn(content), getSectionColumn([getText(t('weeklyDigest.unsubscribe', { url: link }))])]
         )
     );
-    return { html, subject: t('weeklyDigest.subject') };
+    return { html, subject: subject };
 };
 
 export const getNotificationMail = (recipient: Recipient, message: string, content: MJMLJsonObject[]) => {
