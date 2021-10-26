@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
+import DividedList from '../../components/DividedList';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { Input, Select, Textarea } from '../../components/Form/Input';
@@ -72,28 +73,20 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                 capitalize
                 subLine={
                     <>
-                        {!term.adminTags.translationsAsVariants && (
-                            <Trans
-                                t={t}
-                                i18nKey="common.addedOn"
-                                components={{
-                                    User: <UserInlineDisplay {...term.creator} />,
-                                    FormatDate: <FormatDate date={term.createdAt} />,
-                                }}
-                            />
-                        )}
-                        {canEdit && (
-                            <>
-                                {' | '}
-                                <EditTerm term={term} />
-                            </>
-                        )}
-                        {canDelete && (
-                            <>
-                                {' | '}
-                                <DeleteTerm term={term} />
-                            </>
-                        )}
+                        <DividedList>
+                            {!term.adminTags.translationsAsVariants && (
+                                <Trans
+                                    t={t}
+                                    i18nKey="common.addedOn"
+                                    components={{
+                                        User: <UserInlineDisplay {...term.creator} />,
+                                        FormatDate: <FormatDate date={term.createdAt} />,
+                                    }}
+                                />
+                            )}
+                            {canEdit && <EditTerm term={term} />}
+                            {canDelete && <DeleteTerm term={term} />}
+                        </DividedList>
                         {user && (
                             <Suspense fallback={<Checkbox disabled label={t('notifications.subscribe')} />}>
                                 <SubscribeTerm term={term} user={user} />

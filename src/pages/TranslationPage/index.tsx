@@ -4,31 +4,32 @@ import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
+import DividedList from '../../components/DividedList';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Input, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
 import { FormatDate } from '../../components/FormatDate';
 import Header from '../../components/Header';
-import { useAppContext } from '../../hooks/appContext';
-import { collections, getSourcesRef, getTranslationExamplesRef } from '../../hooks/data';
-import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
-import { langA, langB } from '../../languages';
 import { ColumnHeading, SingleColumn } from '../../components/Layout/Columns';
 import LinkButton from '../../components/LinkButton';
 import { ModalDialog } from '../../components/ModalDialog';
 import PageTitle from '../../components/PageTitle';
 import { RatingContainer } from '../../components/Rating';
 import { Redact } from '../../components/RedactSensitiveTerms';
-import { TERM } from '../../routes';
 import Share from '../../components/Share';
 import SidebarTermRedirectWrapper from '../../components/SidebarTermRedirectWrapper';
 import { TermWithLang } from '../../components/TermWithLang';
 import TranslationExamplesList from '../../components/TranslationExamplesList';
-import { Source, Term, Translation, TranslationExample } from '../../types';
-import { getDominantLanguageClass } from '../../useLangCssVars';
 import { UserInlineDisplay } from '../../components/UserInlineDisplay';
-import s from './style.module.css';
+import { useAppContext } from '../../hooks/appContext';
+import { collections, getSourcesRef, getTranslationExamplesRef } from '../../hooks/data';
+import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
+import { langA, langB } from '../../languages';
+import { TERM } from '../../routes';
+import { Source, Term, Translation, TranslationExample } from '../../types';
 import { useLang } from '../../useLang';
+import { getDominantLanguageClass } from '../../useLangCssVars';
+import s from './style.module.css';
 
 type Props = {
     getTerm: Get<Term>;
@@ -80,26 +81,18 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                 ]}
                 subLine={
                     <>
-                        <Trans
-                            t={t}
-                            i18nKey="common.addedOn"
-                            components={{
-                                User: <UserInlineDisplay {...translation.creator} />,
-                                FormatDate: <FormatDate date={translation.createdAt} />,
-                            }}
-                        />
-                        {canEdit && (
-                            <>
-                                {' | '}
-                                <EditTranslation translation={translation} />
-                            </>
-                        )}
-                        {canDelete && (
-                            <>
-                                {' | '}
-                                <DeleteTranslation translation={translation} />
-                            </>
-                        )}
+                        <DividedList>
+                            <Trans
+                                t={t}
+                                i18nKey="common.addedOn"
+                                components={{
+                                    User: <UserInlineDisplay {...translation.creator} />,
+                                    FormatDate: <FormatDate date={translation.createdAt} />,
+                                }}
+                            />
+                            {canEdit && <EditTranslation translation={translation} />}
+                            {canDelete && <DeleteTranslation translation={translation} />}
+                        </DividedList>
                         {definition && <p className={s.defintion}>{definition}</p>}
                     </>
                 }

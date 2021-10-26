@@ -445,13 +445,14 @@ function UserStats({ getUsers, getUserProperties, getUserSettings, authUserInfos
                 {digestSubscribers.length}
                 <br />
             </p>
-            <a href={newsletterSubscribersUrl} download="newsletter-subscribe.csv">
-                Newsletter Subscribe List
-            </a>
-            {' | '}
-            <a href={newsletterUnsubscribersUrl} download="newsletter-unsubscribe.csv">
-                Newsletter Unsubscribe List
-            </a>
+            <DividedList>
+                <a href={newsletterSubscribersUrl} download="newsletter-subscribe.csv">
+                    Newsletter Subscribe List
+                </a>
+                <a href={newsletterUnsubscribersUrl} download="newsletter-unsubscribe.csv">
+                    Newsletter Unsubscribe List
+                </a>
+            </DividedList>
         </SingleColumn>
     );
 }
