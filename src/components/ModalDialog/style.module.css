@@ -1,5 +1,5 @@
 .background {
-    z-index: 20;
+    z-index: 2000;
     background: var(--white);
     display: grid;
     grid-template-columns: 1fr;

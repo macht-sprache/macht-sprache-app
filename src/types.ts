@@ -202,6 +202,7 @@ export interface UserSettings {
 
 export interface UserProperties {
     admin: boolean;
+    betaAccess: boolean;
     enabled: boolean;
     tokenTime: string;
 }

@@ -6,21 +6,32 @@
     },
     "[yaml]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.formatOnSave": true,
+        "editor.formatOnSave": true
+    },
+    "[mdx]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "css.lint.validProperties": ["composes"],
     "css.lint.unknownAtRules": "ignore",
     "[css]": {
-        "editor.formatOnSave": true,
+        "editor.formatOnSave": true
     },
     "[javascript]": {
-        "editor.formatOnSave": true,
+        "editor.formatOnSave": true
     },
     "[typescript]": {
-        "editor.formatOnSave": true,
+        "editor.formatOnSave": true
     },
     "[typescriptreact]": {
-        "editor.formatOnSave": true,
+        "editor.formatOnSave": true
     },
     "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.options": {
+        "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
+    },
+    "eslint.validate": ["markdown", "mdx", "javascript", "javascriptreact", "typescript", "typescriptreact"]
 }

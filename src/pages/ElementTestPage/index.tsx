@@ -15,6 +15,8 @@ import MovieSearch from '../../components/MediaSelection/MovieSearch';
 import WebPageSearch from '../../components/MediaSelection/WebPageSearch';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { InlineInput } from '../../components/Form/InlineInput';
+/* eslint-disable import/no-webpack-loader-syntax */
+import MdxContent from '!babel-loader!@mdx-js/loader!./text.en.mdx';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -225,6 +227,9 @@ export default function ElementTestPage() {
 
             <Heading>WebPage Search</Heading>
             <WebPageSearch label="Paste URL" lang="en" selectedPage={page} onSelect={setPage} />
+
+            <Heading>MDX</Heading>
+            <MdxContent />
         </>
     );
 }

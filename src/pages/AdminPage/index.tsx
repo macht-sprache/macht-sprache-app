@@ -1,23 +1,24 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../../components/ConfirmModal';
-import { functions } from '../../firebase';
+import DividedList from '../../components/DividedList';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { HorizontalRadio, HorizontalRadioContainer } from '../../components/Form/HorizontalRadio';
 import { Input, Select, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
 import { formatDate } from '../../components/FormatDate';
 import { SimpleHeader } from '../../components/Header';
+import { ColumnHeading, FullWidthColumn, SingleColumn } from '../../components/Layout/Columns';
+import { ModalDialog } from '../../components/ModalDialog';
+import { Terms } from '../../components/Terms/TermsSmall';
+import { UserInlineDisplay } from '../../components/UserInlineDisplay';
+import { functions } from '../../firebase';
 import { collections } from '../../hooks/data';
 import { Get, GetList, GetListById, useCollection, useCollectionById, useDocument } from '../../hooks/fetch';
 import { useRequestState } from '../../hooks/useRequestState';
 import { langA, langB } from '../../languages';
-import { ColumnHeading, FullWidthColumn, SingleColumn } from '../../components/Layout/Columns';
-import { ModalDialog } from '../../components/ModalDialog';
-import { Terms } from '../../components/Terms/TermsSmall';
 import { GlobalSettings, User, UserProperties, UserSettings } from '../../types';
 import { useLang } from '../../useLang';
-import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import s from './style.module.css';
 
 type AuthUserInfo = { email: string; verified: boolean; creationTime: string };
@@ -353,26 +354,20 @@ function UserItem({
     authInfo?: AuthUserInfo;
 }) {
     const [lang] = useLang();
-    const setAdmin = (admin: boolean) => collections.userProperties.doc(user.id).set({ admin }, { merge: true });
+    const setAdmin = (admin: boolean) => collections.userProperties.doc(user.id).update({ admin });
+    const setBetaAccess = (betaAccess: boolean) => collections.userProperties.doc(user.id).update({ betaAccess });
 
     return (
         <li key={user.id} className={s.userItem}>
             <div className={s.userInfo}>
-                <span className={s.userName}>
-                    <UserInlineDisplay {...user} />
-                </span>
-                {!properties?.enabled && (
-                    <>
-                        {' '}
-                        <span className={s.tag}>Disabled</span>
-                    </>
-                )}
-                {!!properties?.admin && (
-                    <>
-                        {' '}
-                        <span className={s.tag}>Admin</span>
-                    </>
-                )}
+                <DividedList divider=" ">
+                    <span className={s.userName}>
+                        <UserInlineDisplay {...user} />
+                    </span>
+                    {!properties?.enabled && <span className={s.tag}>Disabled</span>}
+                    {!!properties?.admin && <span className={s.tag}>Admin</span>}
+                    {!!properties?.betaAccess && <span className={s.tag}>Beta Access</span>}
+                </DividedList>
                 <br />
                 {authInfo && (
                     <>
@@ -403,12 +398,41 @@ function UserItem({
                         body={
                             <p>
                                 Are you sure you want to revoke the admin role from user{' '}
-                                <strong>{user.displayName}</strong> an admin?
+                                <strong>{user.displayName}</strong>?
                             </p>
                         }
                         confirmLabel="Confirm"
                     >
                         {onClick => <Button onClick={onClick}>Revoke Admin</Button>}
+                    </ConfirmModal>
+                )}
+                {properties?.betaAccess ? (
+                    <ConfirmModal
+                        title="Revoke Beta Access"
+                        onConfirm={() => setBetaAccess(false)}
+                        body={
+                            <p>
+                                Are you sure you want to revoke beta access from user{' '}
+                                <strong>{user.displayName}</strong>?
+                            </p>
+                        }
+                        confirmLabel="Confirm"
+                    >
+                        {onClick => <Button onClick={onClick}>Revoke Beta Access</Button>}
+                    </ConfirmModal>
+                ) : (
+                    <ConfirmModal
+                        title="Give Beta Access"
+                        onConfirm={() => setBetaAccess(true)}
+                        body={
+                            <p>
+                                Are you sure you want to give user <strong>{user.displayName}</strong> access to beta
+                                features?
+                            </p>
+                        }
+                        confirmLabel="Confirm"
+                    >
+                        {onClick => <Button onClick={onClick}>Give Beta Access</Button>}
                     </ConfirmModal>
                 )}
                 <DeleteContentButton user={user} />
@@ -460,13 +484,14 @@ function UserStats({ getUsers, getUserProperties, getUserSettings, authUserInfos
                 {digestSubscribers.length}
                 <br />
             </p>
-            <a href={newsletterSubscribersUrl} download="newsletter-subscribe.csv">
-                Newsletter Subscribe List
-            </a>
-            {' | '}
-            <a href={newsletterUnsubscribersUrl} download="newsletter-unsubscribe.csv">
-                Newsletter Unsubscribe List
-            </a>
+            <DividedList>
+                <a href={newsletterSubscribersUrl} download="newsletter-subscribe.csv">
+                    Newsletter Subscribe List
+                </a>
+                <a href={newsletterUnsubscribersUrl} download="newsletter-unsubscribe.csv">
+                    Newsletter Unsubscribe List
+                </a>
+            </DividedList>
         </SingleColumn>
     );
 }

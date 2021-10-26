@@ -1,22 +1,21 @@
 import clsx from 'clsx';
-import deburr from 'lodash.deburr';
-import orderBy from 'lodash.orderby';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link, useHistory } from 'react-router-dom';
-import { AddEntityButton } from '../AddEntityButton';
-import { CoverIcon } from '../CoverIcon';
-import { FormatDate } from '../FormatDate';
 import { useGroupedSources } from '../../hooks/data';
 import { GetList } from '../../hooks/fetch';
 import { langA, langB } from '../../languages';
-import { RatingContainer } from '../Rating';
-import { Redact } from '../RedactSensitiveTerms';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../../routes';
-import { TermWithLang } from '../TermWithLang';
 import { Source, Term, Translation } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
-import { UserInlineDisplay } from '../UserInlineDisplay';
 import { stopPropagation } from '../../utils';
+import { AddEntityButton } from '../AddEntityButton';
+import { CoverIcon } from '../CoverIcon';
+import { FormatDate } from '../FormatDate';
+import { RatingContainer } from '../Rating';
+import { Redact } from '../RedactSensitiveTerms';
+import { TermWithLang } from '../TermWithLang';
+import { UserInlineDisplay } from '../UserInlineDisplay';
+import { sortTranslations } from './service';
 import s from './style.module.css';
 
 type TranslationsListProps = {
@@ -33,11 +32,7 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
     const translationsCount = translations.length;
     const sources = useGroupedSources(getSources());
     const otherLang = term.lang === langA ? langB : langA;
-    const translationsSorted = orderBy(
-        translations,
-        [({ ratings }) => averageRatings(ratings), ({ value }) => deburr(value)],
-        ['desc', 'asc']
-    );
+    const translationsSorted = sortTranslations(translations);
 
     return (
         <div className={clsx(s.container, s[size])}>
@@ -207,17 +202,4 @@ function AddExampleButton({ to, className }: { to: string; className?: string })
             +
         </Link>
     );
-}
-
-function averageRatings(ratings: number[] | null) {
-    if (!ratings) {
-        return 0;
-    }
-
-    const sumOfAllRatings = ratings.reduce((accumulator, current, index) => {
-        return accumulator + current * (index + 1);
-    }, 0);
-    const countOfAllRatings = ratings.reduce((a, b) => a + b, 0);
-
-    return countOfAllRatings && sumOfAllRatings / countOfAllRatings;
 }

@@ -1,0 +1,92 @@
+.analysisContainer {
+    padding: 1rem;
+    border: var(--thinBorder) solid var(--black);
+    background: var(--white);
+    font-family: var(--paragraphFont);
+    margin-bottom: 1rem;
+}
+
+.analysisContainer p > * {
+    transition: 0.3s opacity, 0.3s filter, 0.1s box-shadow;
+}
+
+.analysisContainerWithTooltip p > *:not(.sensitiveWordHovered) {
+    opacity: 0.7;
+    filter: blur(1px);
+}
+
+.analysisContainer p {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.sensitiveWord {
+    background: var(--lang-color);
+    padding: 0.2em;
+    font-style: italic;
+    cursor: pointer;
+    border: none;
+    display: inline;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.sensitiveWordHovered,
+.sensitiveWord:hover {
+    box-shadow: 0 0 0 2px var(--lang-color);
+}
+
+.tooltip {
+    max-width: 300px;
+    font-size: var(--fontSizeS);
+}
+
+.tooltip p:last-child {
+    margin-bottom: 0;
+}
+
+.tooltipDefinition {
+    margin: 0 0 0.5rem;
+    font-style: italic;
+}
+
+.tooltipList {
+    display: inline;
+    list-style: none;
+    padding: 0;
+}
+
+.tooltipListItem {
+    display: inline;
+}
+
+.tooltipListItem + .tooltipListItem:before {
+    content: ', ';
+}
+
+.overlayTranslationTerm {
+    font-weight: bold;
+}
+
+.overlayContainer {
+    font-family: var(--paragraphFont);
+    line-height: var(--lineHeightParagraph);
+}
+
+.overlayTitle {
+    font-size: var(--fontSizeL);
+}
+
+.overlayTranslationList {
+    padding: 0;
+    margin: 0 0 2rem;
+}
+
+.overlayTranslation {
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.overlayTranslation + .overlayTranslation {
+    margin-top: 1rem;
+}

@@ -1,0 +1,46 @@
+.container {
+    margin: 2rem 0 2rem 4rem;
+}
+
+.quote {
+    background: var(--green);
+    padding: 2rem 1rem;
+    margin: 0;
+    border: var(--thickBorder) var(--white) solid;
+    font-size: var(--fontSizeL);
+}
+
+.quote p:first-child {
+    margin-top: 0;
+}
+
+.quote p:last-child {
+    margin-bottom: 0;
+}
+
+.author {
+    margin: 1rem 1rem 0 1rem;
+    font-style: italic;
+    text-align: right;
+}
+
+.author:before {
+    content: '– ';
+}
+
+@media (min-width: 1000px) {
+    .quote {
+        margin-right: -4rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .quote {
+        font-size: var(--fontSizeM);
+        padding: 1rem;
+    }
+
+    .container {
+        margin: 2rem 0 2rem 2rem;
+    }
+}

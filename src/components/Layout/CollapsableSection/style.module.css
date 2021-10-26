@@ -1,0 +1,128 @@
+.section {
+    --boxColor: var(--green);
+    --boxColorContrast: var(--orange);
+    --indicatorSize: 1.5rem;
+    position: relative;
+    border: solid var(--boxColor);
+    border-width: 0 0 0 var(--thickBorder);
+    margin: 2rem 0;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.section.open:before {
+    --with: calc(var(--thickBorder) * 2);
+    content: '';
+    position: absolute;
+    width: calc(var(--thickBorder) + 100%);
+    left: calc(var(--thickBorder) * -1);
+    bottom: calc(var(--with) * -1);
+    height: var(--with);
+    backdrop-filter: blur(4px) contrast(0.8) brightness(1.3);
+}
+
+.toggleButton {
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    text-align: left;
+    padding: 1rem 1rem 1rem 3rem;
+    width: 100%;
+}
+
+.toggleButton:before {
+    content: '';
+    position: absolute;
+    height: var(--indicatorSize);
+    width: var(--indicatorSize);
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(calc(var(--indicatorSize) / -2)) rotate(-45deg);
+    transform-origin: center;
+    transition: 0.3s transform ease;
+    display: block;
+    background: linear-gradient(
+            90deg,
+            transparent 0%,
+            transparent 50%,
+            var(--boxColorContrast) 50%,
+            var(--boxColorContrast) 100%
+        ),
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            transparent 50%,
+            var(--boxColorContrast) 50%,
+            var(--boxColorContrast) 100%
+        );
+}
+
+.toggleButton[aria-expanded='true']:before {
+    transform: translateY(calc(var(--indicatorSize) / -1.5)) rotate(45deg);
+    left: 0.75rem;
+}
+
+.toggleButton[aria-expanded='false']:hover:before {
+    left: 0.75rem;
+}
+
+.heading {
+    background: var(--boxColor);
+    margin: 0;
+    font-weight: bold;
+}
+
+.content {
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+}
+
+.content *:first-child {
+    margin-top: 0;
+}
+
+.content *:last-child {
+    margin-bottom: 0;
+}
+
+.intro {
+    font-family: var(--paragraphFont);
+    line-height: var(--lineHeightParagraph);
+    font-weight: 600;
+}
+
+.intro + .children {
+    margin-top: 1rem;
+}
+
+.moreButton {
+    display: inline;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    text-decoration: underline;
+}
+
+.container {
+    display: grid;
+    grid-gap: 2rem;
+    width: var(--fullWidthInNarrowCollumn);
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    align-items: start;
+    margin: 2rem 0;
+}
+
+.container .section {
+    margin: 0;
+}

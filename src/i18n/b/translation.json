@@ -46,6 +46,10 @@
         },
         "loading": "Lade...",
         "saving": "Speichere...",
+        "collapsor": {
+            "more": "mehr",
+            "close": "schließen"
+        },
         "error": {
             "general": "Da ist etwas schief gegangen"
         },
@@ -335,6 +339,32 @@
                 "placeholder": "https://yourwebsite.com",
                 "inputHint": "Komplette URL",
                 "error": "bitte komplette URL (mit http)"
+            }
+        }
+    },
+    "textChecker": {
+        "title": "Text Checker",
+        "subLine": "Hilfe bei sensiblen Übersetzungen",
+        "entry": {
+            "description": "Füge einen Text ein, den du auf sensible Begriffe überprüfen möchtest:",
+            "type": {
+                "label": "Textart",
+                "original": "Original",
+                "translation": "Übersetzung"
+            },
+            "text": "Text",
+            "submit": "Überprüfe Text"
+        },
+        "result": {
+            "description": "Sensible Bgriffe sind hervorgehoben. Klick für mehr Informationen.",
+            "nothingFound": "Es wurde kein sensibler Begriff gefunden. Markiere einen Begriff, um ihn hinzuzufügen.",
+            "cancel": "Text editieren",
+            "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
+            "translationsHeading": "Mögliche Übersetzungen:",
+            "clickHint": "Klick für mehr Informationen",
+            "modal": {
+                "close": "Zurück",
+                "discuss": "Diskutiere oder schlage neue Übersetzung vor"
             }
         }
     },

@@ -1,6 +1,11 @@
 import { functions } from './firebase';
 import { TranslationExampleModel } from './modelTypes';
-import { Book, Lang, Movie, WebPage } from './types';
+import { Book, Lang, Movie, TextToken, WebPage } from './types';
+
+const _analyzeText = functions.httpsCallable('handlers-analyzeText');
+
+export const analyzeText = (text: string, lang: Lang): Promise<TextToken[]> =>
+    _analyzeText({ text, lang }).then(({ data }) => data);
 
 const _findBooks = functions.httpsCallable('handlers-findBooks');
 

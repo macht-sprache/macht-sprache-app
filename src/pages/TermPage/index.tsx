@@ -1,19 +1,19 @@
 import firebase from 'firebase/app';
+import xor from 'lodash.xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
+import BetaWrapper from '../../components/BetaWrapper';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
+import DividedList from '../../components/DividedList';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { Input, Select, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
 import { FormatDate } from '../../components/FormatDate';
 import Header from '../../components/Header';
-import { useAppContext } from '../../hooks/appContext';
-import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
-import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
-import { langA, langB } from '../../languages';
 import { FullWidthColumn, SingleColumn } from '../../components/Layout/Columns';
 import LinkButton from '../../components/LinkButton';
 import Linkify from '../../components/Linkify';
@@ -24,10 +24,16 @@ import Share from '../../components/Share';
 import SidebarTermRedirectWrapper from '../../components/SidebarTermRedirectWrapper';
 import { TermWithLang } from '../../components/TermWithLang';
 import { TranslationsList } from '../../components/TranslationsList';
-import { Lang, Source, Term, Translation, User } from '../../types';
+import { UserInlineDisplay } from '../../components/UserInlineDisplay';
+import { useAppContext } from '../../hooks/appContext';
+import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
+import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
+import { langA, langB } from '../../languages';
+import { Guideline, guidelineKeys, useGuidelines } from '../../Manifesto/guidelines/guidelines';
+import { MANIFESTO } from '../../routes';
+import { Lang, Source, Term, Translation, User, UserProperties } from '../../types';
 import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
-import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import s from './style.module.css';
 
 type Props = {
@@ -59,6 +65,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const [lang] = useLang();
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
     const definition = term.definition[lang === langA ? 'langA' : 'langB'];
+    const getGuidelines = useGuidelines(term.guidelines);
 
     return (
         <>
@@ -67,34 +74,31 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                 capitalize
                 subLine={
                     <>
-                        {!term.adminTags.translationsAsVariants && (
-                            <Trans
-                                t={t}
-                                i18nKey="common.addedOn"
-                                components={{
-                                    User: <UserInlineDisplay {...term.creator} />,
-                                    FormatDate: <FormatDate date={term.createdAt} />,
-                                }}
-                            />
-                        )}
-                        {canEdit && (
-                            <>
-                                {' | '}
-                                <EditTerm term={term} />
-                            </>
-                        )}
-                        {canDelete && (
-                            <>
-                                {' | '}
-                                <DeleteTerm term={term} />
-                            </>
-                        )}
+                        <DividedList>
+                            {!term.adminTags.translationsAsVariants && (
+                                <Trans
+                                    t={t}
+                                    i18nKey="common.addedOn"
+                                    components={{
+                                        User: <UserInlineDisplay {...term.creator} />,
+                                        FormatDate: <FormatDate date={term.createdAt} />,
+                                    }}
+                                />
+                            )}
+                            {canEdit && <EditTerm term={term} />}
+                            {canDelete && <DeleteTerm term={term} />}
+                        </DividedList>
                         {user && (
                             <Suspense fallback={<Checkbox disabled label={t('notifications.subscribe')} />}>
                                 <SubscribeTerm term={term} user={user} />
                             </Suspense>
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
+                        <BetaWrapper>
+                            <Suspense fallback={null}>
+                                <Guidelines getGuidelines={getGuidelines} userProperties={userProperties} />
+                            </Suspense>
+                        </BetaWrapper>
                     </>
                 }
                 mainLang={term.lang}
@@ -177,6 +181,31 @@ function SubscribeTerm({ term, user }: { term: Term; user: User }) {
     return <Checkbox label={t('notifications.subscribe')} checked={active} onChange={toggleSubscription} />;
 }
 
+function Guidelines({
+    getGuidelines,
+    userProperties,
+}: {
+    getGuidelines: () => Guideline[];
+    userProperties?: UserProperties;
+}) {
+    const guidelines = getGuidelines();
+
+    if (!userProperties?.admin || !guidelines.length) {
+        return null;
+    }
+
+    return (
+        <p className={s.guidelines}>
+            Guidelines:{' '}
+            {guidelines.map(guideline => (
+                <span className={s.guideline} key={guideline.id}>
+                    <HashLink to={`${MANIFESTO}#${guideline.id}`}>{guideline.title}</HashLink>
+                </span>
+            ))}
+        </p>
+    );
+}
+
 function DeleteTerm({ term }: { term: Term }) {
     const { t } = useTranslation();
 
@@ -226,17 +255,49 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
     const [adminComment, setAdminComment] = useState(term.adminComment);
     const [definition, setDefinition] = useState(term.definition);
     const [adminTags, setAdminTags] = useState(term.adminTags);
+    const [guidelines, setGuidelines] = useState(term.guidelines);
 
     const onSave = () => {
         setIsSaving(true);
         collections.terms
             .doc(term.id)
-            .set({ ...term, value, lang, adminComment, definition, adminTags })
+            .set({ ...term, value, lang, adminComment, definition, adminTags, guidelines })
             .then(() => {
                 setIsSaving(false);
                 onClose();
             });
     };
+
+    const setAdminTag = (adminTag: string, checked: boolean) => {
+        setAdminTags(before => ({ ...before, [adminTag]: checked }));
+    };
+
+    const adminCheckboxes: { label: string; tag: keyof Term['adminTags'] }[] = [
+        {
+            label: 'Highlight landing page',
+            tag: 'hightlightLandingPage',
+        },
+        {
+            label: 'Show in sidebar',
+            tag: 'showInSidebar',
+        },
+        {
+            label: 'Hide from list',
+            tag: 'hideFromList',
+        },
+        {
+            label: 'Disable Examples',
+            tag: 'disableExamples',
+        },
+        {
+            label: 'Enable Comments on Translations',
+            tag: 'enableCommentsOnTranslations',
+        },
+        {
+            label: "Is 'about gender'-page (changes wording)",
+            tag: 'translationsAsVariants',
+        },
+    ];
 
     return (
         <ModalDialog title={t('common.entities.term.edit')} onClose={onClose}>
@@ -281,6 +342,16 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     }
                                 />
                             </InputContainer>
+                            {guidelineKeys.map(guidelineKey => (
+                                <GuidelineCheckbox
+                                    key={guidelineKey}
+                                    guideline={guidelineKey}
+                                    checked={guidelines.includes(guidelineKey)}
+                                    onChange={() => {
+                                        setGuidelines(before => xor(before, [guidelineKey]));
+                                    }}
+                                />
+                            ))}
                             <h3>Admin</h3>
                             <InputContainer>
                                 <Textarea
@@ -298,60 +369,16 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     }
                                 />
                             </InputContainer>
-                            <div style={{ margin: '1rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.hightlightLandingPage}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, hightlightLandingPage: checked }));
-                                    }}
-                                    label="Highlight landing page"
+
+                            {adminCheckboxes.map(tag => (
+                                <AdminCheckbox
+                                    label={tag.label}
+                                    adminTag={tag.tag}
+                                    setAdminTag={setAdminTag}
+                                    checked={adminTags[tag.tag]}
+                                    key={tag.tag}
                                 />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.showInSidebar}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, showInSidebar: checked }));
-                                    }}
-                                    label="Show in sidebar"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.hideFromList}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, hideFromList: checked }));
-                                    }}
-                                    label="Hide from list"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.disableExamples}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, disableExamples: checked }));
-                                    }}
-                                    label="Disable Examples"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.enableCommentsOnTranslations}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, enableCommentsOnTranslations: checked }));
-                                    }}
-                                    label="Enable Comments on Translations"
-                                />
-                            </div>
-                            <div style={{ margin: '.5rem 0' }}>
-                                <Checkbox
-                                    checked={adminTags.translationsAsVariants}
-                                    onChange={({ target: { checked } }) => {
-                                        setAdminTags(before => ({ ...before, translationsAsVariants: checked }));
-                                    }}
-                                    label="Is 'about gender'-page (changes wording)"
-                                />
-                            </div>
+                            ))}
                         </>
                     )}
 
@@ -364,5 +391,45 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                 </>
             )}
         </ModalDialog>
+    );
+}
+
+function GuidelineCheckbox({
+    guideline,
+    onChange,
+    checked,
+}: {
+    guideline: string;
+    onChange: () => void;
+    checked: boolean;
+}) {
+    return (
+        <div style={{ margin: '.5rem 0' }}>
+            <Checkbox checked={checked} onChange={onChange} label={guideline} />
+        </div>
+    );
+}
+
+function AdminCheckbox({
+    adminTag,
+    label,
+    setAdminTag,
+    checked,
+}: {
+    adminTag: string;
+    label: string;
+    setAdminTag: (adminTag: string, checked: boolean) => void;
+    checked: boolean;
+}) {
+    return (
+        <div style={{ margin: '.5rem 0' }}>
+            <Checkbox
+                checked={checked}
+                onChange={({ target: { checked } }: { target: { checked: boolean } }) => {
+                    setAdminTag(adminTag, checked);
+                }}
+                label={label}
+            />
+        </div>
     );
 }

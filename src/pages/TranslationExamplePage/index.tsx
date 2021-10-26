@@ -21,6 +21,7 @@ import { getDominantLanguageClass } from '../../useLangCssVars';
 import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import { extractRootDomain, trimString } from '../../utils';
 import s from './style.module.css';
+import DividedList from '../../components/DividedList';
 
 type Props = {
     getTerm: Get<Term>;
@@ -88,13 +89,10 @@ function TranslationExamplePage({ getTerm, getTranslation, getTranslationExample
                                 }}
                             />
                             <br />
-                            <ExampleSubLine source={originalSource} />
-                            {canDelete && (
-                                <>
-                                    {' | '}
-                                    <DeleteTranslationExample translationExample={translationExample} />
-                                </>
-                            )}
+                            <DividedList>
+                                <ExampleSubLine source={originalSource} />
+                                {canDelete && <DeleteTranslationExample translationExample={translationExample} />}
+                            </DividedList>
                         </p>
                         <Share
                             itemTranslated={t('common.entities.translatioExample.value')}
@@ -138,7 +136,7 @@ function ExampleSubLine({ source }: { source: Source }) {
     switch (source.type) {
         case 'BOOK':
             return (
-                <>
+                <DividedList divider=" ">
                     {source.authors.length &&
                         t('translationExample.page.subLine.BOOK.author', {
                             author: source.authors.join(', '),
@@ -152,7 +150,7 @@ function ExampleSubLine({ source }: { source: Source }) {
                         t('translationExample.page.subLine.BOOK.year', {
                             year: source.year,
                         })}
-                </>
+                </DividedList>
             );
         case 'MOVIE':
             return (
