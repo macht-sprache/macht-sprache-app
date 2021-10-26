@@ -50,8 +50,13 @@ const UserSettingsConverter: firebase.firestore.FirestoreDataConverter<UserSetti
 const UserPropertiesConverter: firebase.firestore.FirestoreDataConverter<UserProperties> = {
     toFirestore: (data: UserProperties) => data,
     fromFirestore: (snapshot): UserProperties => {
-        const { admin, enabled, tokenTime } = snapshot.data(defaultSnapshotOptions);
-        return { admin, enabled: enabled ?? false, tokenTime: tokenTime ?? new Date(0).toISOString() };
+        const { admin, betaAccess, enabled, tokenTime } = snapshot.data(defaultSnapshotOptions);
+        return {
+            admin,
+            betaAccess: betaAccess ?? false,
+            enabled: enabled ?? false,
+            tokenTime: tokenTime ?? new Date(0).toISOString(),
+        };
     },
 };
 

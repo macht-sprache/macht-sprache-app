@@ -75,6 +75,7 @@ export const postRegistrationHandler = functions.https.onCall(
 
             const userProperties: UserProperties = {
                 admin: false,
+                betaAccess: false,
                 enabled: globalSettings.enableNewUsers,
                 tokenTime,
             };
@@ -159,6 +160,7 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
         };
         const defaultUserProperties: UserProperties = {
             admin: false,
+            betaAccess: false,
             enabled: true,
             tokenTime: new Date(0).toISOString(),
         };
