@@ -25,4 +25,11 @@ export const verifyUser = (context: CallableContext) => {
     return context.auth.uid;
 };
 
+export const verifyBeta = async (userId: string) => {
+    const snap = await db.collection('userProperties').doc(userId).get();
+    if (!snap.data()?.betaAccess) {
+        throw new HttpsError('permission-denied', 'User has no beta access');
+    }
+};
+
 export type WithoutId<T> = Omit<T, 'id'>;

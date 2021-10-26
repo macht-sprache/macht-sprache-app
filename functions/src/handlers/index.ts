@@ -13,14 +13,15 @@ import {
     User,
     WebPageSource,
 } from '../../../src/types';
-import { convertRef, db, functions, verifyUser, WithoutId } from '../firebase';
+import { convertRef, db, functions, verifyBeta, verifyUser, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
 import { findTermMatches, findLemmas } from './language';
 import { getMovie, searchMovies } from './movies';
 import { getWebPage, searchWebPage } from './webpages';
 
 export const analyzeText = functions.https.onCall(async ({ text, lang }: { text: string; lang: Lang }, context) => {
-    verifyUser(context);
+    const userId = verifyUser(context);
+    await verifyBeta(userId);
     return findLemmas(text, lang);
 });
 
