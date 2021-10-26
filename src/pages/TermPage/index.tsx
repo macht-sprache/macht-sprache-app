@@ -27,9 +27,9 @@ import { useAppContext } from '../../hooks/appContext';
 import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
 import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
 import { langA, langB } from '../../languages';
-import { guidelinesList } from '../../Manifesto/guidelines';
+import { Guideline, guidelineKeys, useGuidelines } from '../../Manifesto/guidelines/guidelines';
 import { MANIFESTO } from '../../routes';
-import { Lang, Source, Term, Translation, User } from '../../types';
+import { Lang, Source, Term, Translation, User, UserProperties } from '../../types';
 import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import s from './style.module.css';
@@ -63,7 +63,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const [lang] = useLang();
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
     const definition = term.definition[lang === langA ? 'langA' : 'langB'];
-    const guidelines = guidelinesList.filter(guideline => term.guidelines.includes(guideline.id));
+    const getGuidelines = useGuidelines(term.guidelines);
 
     return (
         <>
@@ -100,16 +100,9 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </Suspense>
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
-                        {userProperties?.admin && guidelines.length !== 0 && (
-                            <p className={s.guidelines}>
-                                Guidelines:{' '}
-                                {guidelines.map(guideline => (
-                                    <span className={s.guideline} key={guideline.id}>
-                                        <HashLink to={`${MANIFESTO}#${guideline.id}`}>{guideline[lang].title}</HashLink>
-                                    </span>
-                                ))}
-                            </p>
-                        )}
+                        <Suspense fallback={null}>
+                            <Guidelines getGuidelines={getGuidelines} userProperties={userProperties} />
+                        </Suspense>
                     </>
                 }
                 mainLang={term.lang}
@@ -190,6 +183,31 @@ function SubscribeTerm({ term, user }: { term: Term; user: User }) {
         }
     };
     return <Checkbox label={t('notifications.subscribe')} checked={active} onChange={toggleSubscription} />;
+}
+
+function Guidelines({
+    getGuidelines,
+    userProperties,
+}: {
+    getGuidelines: () => Guideline[];
+    userProperties?: UserProperties;
+}) {
+    const guidelines = getGuidelines();
+
+    if (!userProperties?.admin || !guidelines.length) {
+        return null;
+    }
+
+    return (
+        <p className={s.guidelines}>
+            Guidelines:{' '}
+            {guidelines.map(guideline => (
+                <span className={s.guideline} key={guideline.id}>
+                    <HashLink to={`${MANIFESTO}#${guideline.id}`}>{guideline.title}</HashLink>
+                </span>
+            ))}
+        </p>
+    );
 }
 
 function DeleteTerm({ term }: { term: Term }) {
@@ -328,13 +346,13 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     }
                                 />
                             </InputContainer>
-                            {guidelinesList.map(guideline => (
+                            {guidelineKeys.map(guidelineKey => (
                                 <GuidelineCheckbox
-                                    key={guideline.id}
-                                    guideline={guideline.id}
-                                    checked={guidelines.includes(guideline.id)}
+                                    key={guidelineKey}
+                                    guideline={guidelineKey}
+                                    checked={guidelines.includes(guidelineKey)}
                                     onChange={() => {
-                                        setGuidelines(before => xor(before, [guideline.id]));
+                                        setGuidelines(before => xor(before, [guidelineKey]));
                                     }}
                                 />
                             ))}

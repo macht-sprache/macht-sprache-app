@@ -19,7 +19,7 @@
         "@types/lodash.isequal": "4.5.5",
         "@types/lodash.orderby": "4.6.6",
         "@types/lodash.xor": "4.5.6",
-        "@types/mdx-js__react": "1.5.4",
+        "@types/mdx": "2.0.1",
         "@types/node": "14.17.27",
         "@types/react": "17.0.30",
         "@types/react-dom": "17.0.9",
@@ -97,6 +97,7 @@
         ]
     },
     "devDependencies": {
-        "@types/linkify-it": "3.0.2"
+        "@types/linkify-it": "3.0.2",
+        "@types/mdx-js__react": "1.5.5"
     }
 }
