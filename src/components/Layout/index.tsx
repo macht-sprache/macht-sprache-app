@@ -96,23 +96,17 @@ function Layout({ children }: Props) {
 
 export default Layout;
 
+type LinkItem = {
+    to: string;
+    label: string;
+};
+
 function Sidebar() {
     const { t } = useTranslation();
     const launched = useLaunched();
     const userProperties = useUserProperties();
 
-    let mainLinks = [
-        {
-            to: ABOUT,
-            label: t('nav.about'),
-        },
-        {
-            to: CODE_OF_CONDUCT,
-            label: t('nav.coc'),
-        },
-    ];
-
-    let footerLinks = [
+    const footerLinks = [
         {
             to: IMPRINT,
             label: t('nav.imprint'),
@@ -123,60 +117,42 @@ function Sidebar() {
         },
     ];
 
-    if (launched) {
-        mainLinks = [
-            {
-                to: NEWS,
-                label: t('nav.news'),
-            },
-            ...mainLinks,
-        ];
-    }
-
-    if (userProperties?.admin) {
-        mainLinks.push(
-            {
-                to: MANIFESTO,
-                label: 'Manifesto',
-            },
-            {
-                to: TEXT_CHECKER,
-                label: 'Text Checker',
-            },
-            {
-                to: ADMIN,
-                label: 'admin – users',
-            },
-            {
-                to: ADMIN_COMMENTS,
-                label: 'admin – comments',
-            },
-            {
-                to: ADMIN_CONTENT,
-                label: 'admin – content',
-            }
-        );
-    }
+    const adminLinks = [
+        {
+            to: ADMIN,
+            label: 'admin – users',
+        },
+        {
+            to: ADMIN_COMMENTS,
+            label: 'admin – comments',
+        },
+        {
+            to: ADMIN_CONTENT,
+            label: 'admin – content',
+        },
+    ];
 
     return (
         <div className={s.sidebar}>
             <nav className={s.sidebarInner}>
                 {launched && (
                     <>
-                        <SidebarNav
-                            links={[
-                                {
-                                    to: TERMS,
-                                    label: t('common.entities.term.value_plural'),
-                                },
-                            ]}
-                        />
+                        <NavItem to={TERMS} label={t('common.entities.term.value_plural')} />
                         <Suspense fallback={null}>
                             <SidebarTerms />
                         </Suspense>
+                        {userProperties?.betaAccess && (
+                            <>
+                                <NavItem to={MANIFESTO} label={'Manifesto'} />
+                                <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
+                            </>
+                        )}
+                        <NavItem to={NEWS} label={t('nav.news')} />
                     </>
                 )}
-                <SidebarNav links={mainLinks} />
+                <NavItem to={ABOUT} label={t('nav.about')} />
+                <NavItem to={CODE_OF_CONDUCT} label={t('nav.coc')} />
+                {userProperties?.admin && <SidebarNav links={adminLinks} />}
             </nav>
             <footer className={s.sidebarInner}>
                 <SidebarNav links={footerLinks} />
@@ -185,15 +161,21 @@ function Sidebar() {
     );
 }
 
-function SidebarNav({ links }: { links: { to: string; label: string }[] }) {
+function SidebarNav({ links }: { links: LinkItem[] }) {
     return (
         <>
-            {links.map(({ to, label }, index) => (
-                <NavLink key={index} className={s.sidebarLink} activeClassName={s.sidebarLinkActive} to={to}>
-                    {label}
-                </NavLink>
+            {links.map(link => (
+                <NavItem key={link.to} {...link} />
             ))}
         </>
+    );
+}
+
+function NavItem({ to, label }: LinkItem) {
+    return (
+        <NavLink className={s.sidebarLink} activeClassName={s.sidebarLinkActive} to={to}>
+            {label}
+        </NavLink>
     );
 }
 

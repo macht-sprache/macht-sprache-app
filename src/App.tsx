@@ -133,12 +133,12 @@ function AppRouter() {
                                 <LaunchedRoute path={routes.NEWS} exact>
                                     <NewsPage />
                                 </LaunchedRoute>
-                                <LaunchedRoute path={routes.TEXT_CHECKER}>
+                                <BetaRoute path={routes.TEXT_CHECKER}>
                                     <TextCheckerPage />
-                                </LaunchedRoute>
-                                <LaunchedRoute path={routes.MANIFESTO} exact>
+                                </BetaRoute>
+                                <BetaRoute path={routes.MANIFESTO} exact>
                                     <ManifestoPage />
-                                </LaunchedRoute>
+                                </BetaRoute>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
                                         slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }}
@@ -198,6 +198,16 @@ function AdminRoute(props: RouteProps) {
     const userProperties = useUserProperties();
 
     if (userProperties?.admin) {
+        return <Route {...props} />;
+    }
+
+    return <NotFoundPage />;
+}
+
+function BetaRoute(props: RouteProps) {
+    const userProperties = useUserProperties();
+
+    if (userProperties?.betaAccess) {
         return <Route {...props} />;
     }
 

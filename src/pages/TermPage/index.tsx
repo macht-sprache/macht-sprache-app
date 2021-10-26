@@ -4,6 +4,7 @@ import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
+import BetaWrapper from '../../components/BetaWrapper';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import DividedList from '../../components/DividedList';
@@ -93,9 +94,11 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </Suspense>
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
-                        <Suspense fallback={null}>
-                            <Guidelines getGuidelines={getGuidelines} userProperties={userProperties} />
-                        </Suspense>
+                        <BetaWrapper>
+                            <Suspense fallback={null}>
+                                <Guidelines getGuidelines={getGuidelines} userProperties={userProperties} />
+                            </Suspense>
+                        </BetaWrapper>
                     </>
                 }
                 mainLang={term.lang}
