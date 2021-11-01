@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import xor from 'lodash.xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';

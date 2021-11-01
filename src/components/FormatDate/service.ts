@@ -1,4 +1,4 @@
-import type firebase from 'firebase';
+import type firebase from 'firebase/compat';
 import { Lang } from '../../types';
 
 export type DateInput = Date | firebase.firestore.Timestamp;

@@ -1,4 +1,5 @@
-import type firebase from 'firebase';
+import { onAuthStateChanged, User as AuthUser } from 'firebase/auth';
+import type firebase from 'firebase/compat';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { auth } from '../firebase';
 import { DocReference, User, UserProperties, UserSettings } from '../types';
@@ -8,7 +9,7 @@ export type AccountState = 'ANONYMOUS' | 'ACTIVE' | 'NEEDS_VERIFICATION' | 'DISA
 
 const appContext = createContext<{
     user?: User;
-    authUser?: firebase.User;
+    authUser?: AuthUser;
     userSettings?: UserSettings;
     userProperties?: UserProperties;
     sensitiveTerms: Set<string>;
@@ -65,14 +66,15 @@ export const AppContextProvider: React.FC = ({ children }) => {
 
 function useAuthUser() {
     const [{ authUser, loading, error }, setState] = useState<{
-        authUser?: firebase.User;
+        authUser?: AuthUser;
         loading: boolean;
-        error?: firebase.auth.Error;
+        error?: Error;
     }>({
         loading: true,
     });
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(
+        const unsubscribe = onAuthStateChanged(
+            auth,
             newAuthUser => {
                 setState({ authUser: newAuthUser ?? undefined, loading: false });
             },
@@ -85,7 +87,7 @@ function useAuthUser() {
     return [authUser, loading, error] as const;
 }
 
-function useAccountState(authUser?: firebase.User, userProperties?: UserProperties): AccountState {
+function useAccountState(authUser?: AuthUser, userProperties?: UserProperties): AccountState {
     const [tokenResult, setTokenResult] = useState<firebase.auth.IdTokenResult>();
 
     useEffect(() => {

@@ -1,15 +1,15 @@
-import type firebase from 'firebase';
+import { applyActionCode, User as AuthUser } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
-import { auth } from '../../firebase';
 import Button, { ButtonContainer, ButtonLink } from '../../components/Form/Button';
-import { postVerifyHandler, sendEmailVerification } from '../../functions';
 import { SimpleHeader } from '../../components/Header';
+import { SingleColumn } from '../../components/Layout/Columns';
+import { auth } from '../../firebase';
+import { postVerifyHandler, sendEmailVerification } from '../../functions';
 import { AccountState, useAppContext } from '../../hooks/appContext';
 import { useAuthHandlerParams } from '../../hooks/auth';
 import { addContinueParam, useContinuePath } from '../../hooks/location';
-import { SingleColumn } from '../../components/Layout/Columns';
 import { HOME, LOGIN, REGISTER_POST } from '../../routes';
 import { User } from '../../types';
 import { useLang } from '../../useLang';
@@ -42,7 +42,7 @@ function VerifyEmail({
     continueUrl,
 }: {
     user?: User;
-    authUser?: firebase.User;
+    authUser?: AuthUser;
     accountState: AccountState;
     actionCode: string;
     continueUrl: string | null;
@@ -51,7 +51,7 @@ function VerifyEmail({
     const [verifyState, setVerifyState] = useState<'VERIFYING' | 'VERIFIED' | 'ERROR'>('VERIFYING');
 
     useEffect(() => {
-        auth.applyActionCode(actionCode).then(
+        applyActionCode(auth, actionCode).then(
             () => {
                 setVerifyState('VERIFIED');
             },
@@ -95,7 +95,7 @@ function VerifyEmail({
     }
 }
 
-function VerificationRequired({ continuePath, authUser }: { continuePath: string; authUser?: firebase.User }) {
+function VerificationRequired({ continuePath, authUser }: { continuePath: string; authUser?: AuthUser }) {
     const { t } = useTranslation();
     const [lang] = useLang();
     const [resendState, setResendState] = useState<'INIT' | 'SENDING' | 'SENT'>('INIT');
