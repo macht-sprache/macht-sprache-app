@@ -1,4 +1,5 @@
 .button {
+    position: relative;
     display: block;
     font-size: inherit;
     font-family: var(--monospaceFont);
@@ -53,6 +54,36 @@
 
 :global(.inputContainer) + .buttonContainer {
     margin-top: 1rem;
+}
+
+.busy {
+    --w: calc(var(--thickBorder) * 1);
+    --l: 2rem;
+}
+
+.busy:before {
+    content: '';
+    position: absolute;
+    top: calc(var(--thickBorder) * -1);
+    right: calc(var(--thickBorder) * -1);
+    bottom: calc(var(--thickBorder) * -1);
+    left: calc(var(--thickBorder) * -1);
+    background: linear-gradient(90deg, var(--green) 50%, transparent 50%),
+        linear-gradient(90deg, var(--green) 50%, transparent 50%),
+        linear-gradient(0deg, var(--green) 50%, transparent 50%),
+        linear-gradient(0deg, var(--green) 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: var(--l) var(--w), var(--l) var(--w), var(--w) var(--l), var(--w) var(--l);
+    animation: border-dance 0.3s infinite linear;
+}
+
+@keyframes border-dance {
+    0% {
+        background-position: 0 0, var(--l) 100%, 0 var(--l), 100% 0;
+    }
+    100% {
+        background-position: var(--l) 0, 0 100%, 0 0, 100% var(--l);
+    }
 }
 
 .buttonContainer {

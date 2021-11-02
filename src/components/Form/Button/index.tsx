@@ -6,16 +6,21 @@ import s from './style.module.css';
 interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     primary?: boolean;
     size?: 'small' | 'medium';
+    busy?: boolean;
 }
 
 export type Ref = HTMLButtonElement;
 
 const Button = forwardRef<Ref | null, Props>(
-    ({ primary = false, size = 'medium', className, ...props }: Props, ref) => {
+    ({ primary = false, size = 'medium', className, busy = false, ...props }: Props, ref) => {
         return (
             <button
                 ref={ref}
-                className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' }, className)}
+                className={clsx(
+                    s.button,
+                    { [s.buttonPrimary]: primary, [s.small]: size === 'small', [s.busy]: busy },
+                    className
+                )}
                 {...props}
             />
         );
