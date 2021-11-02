@@ -5,6 +5,7 @@ import { generatePath, useParams } from 'react-router-dom';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import DividedList from '../../components/DividedList';
+import EditVariants from '../../components/EditVariants';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Input, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
@@ -91,8 +92,15 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                                 }}
                             />
                             {canEdit && <EditTranslation translation={translation} />}
+                            {canEdit && (
+                                <EditVariants
+                                    entity={translation}
+                                    entityRef={collections.translations.doc(translation.id)}
+                                />
+                            )}
                             {canDelete && <DeleteTranslation translation={translation} />}
                         </DividedList>
+
                         {definition && <p className={s.defintion}>{definition}</p>}
                     </>
                 }

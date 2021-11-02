@@ -175,7 +175,7 @@ service cloud.firestore {
 
     function isValidTranslationUpdateAdmin() {
       let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'definition']) &&
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'definition', 'variants']) &&
         data.value is string;
     }
 
