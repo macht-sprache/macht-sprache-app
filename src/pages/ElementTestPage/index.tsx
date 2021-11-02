@@ -119,6 +119,8 @@ export default function ElementTestPage() {
             <Button primary={true}>button</Button>
             <Heading>Button Disabled</Heading>
             <Button disabled>button</Button>
+            <Heading>Button Busy</Heading>
+            <Button busy>button</Button>
 
             <Heading>Form</Heading>
             <InputContainer>
