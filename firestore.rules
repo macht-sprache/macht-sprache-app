@@ -117,7 +117,7 @@ service cloud.firestore {
 
     function isValidTermUpdateAdmin() {
       let data = request.resource.data;
-      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'definition', 'adminTags', 'guidelines']) &&
+      return data.diff(resource.data).affectedKeys().hasOnly(['value', 'lang', 'adminComment', 'definition', 'adminTags', 'guidelines', 'variants']) &&
         data.value is string &&
         data.lang is string &&
         data.adminTags is map &&

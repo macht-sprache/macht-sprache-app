@@ -42,6 +42,11 @@
                 "value_plural": "Beispielübersetzungen",
                 "add": "Beispielübersetzung hinzufügen",
                 "addShort": "Beispiel hinzufügen"
+            },
+            "variant": {
+                "edit": "Varianten bearbeiten",
+                "add": "Variante hinzufügen",
+                "empty": "Keine Varianten vorhanden"
             }
         },
         "loading": "Lade...",

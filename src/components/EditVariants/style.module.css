@@ -1,0 +1,11 @@
+.variant + .variant {
+    margin-top: 0.5rem;
+}
+
+.variants {
+    margin-bottom: 0.5rem;
+}
+
+.addButtonContainer {
+    margin-bottom: 1rem;
+}
