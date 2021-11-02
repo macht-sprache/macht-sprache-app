@@ -8,6 +8,7 @@ import Intro from '!babel-loader!@mdx-js/loader!../../Manifesto/intro.en.mdx';
 import About from '!babel-loader!@mdx-js/loader!../../Manifesto/aboutus.en.mdx';
 import Principles from '!babel-loader!@mdx-js/loader!../../Manifesto/principles.en.mdx';
 import Guidelines from '!babel-loader!@mdx-js/loader!../../Manifesto/guidelines.en.mdx';
+import StructuralConsiderations from '!babel-loader!@mdx-js/loader!../../Manifesto/structural-considerations.en.mdx';
 
 export default function ManifestoPage() {
     return (
@@ -20,6 +21,7 @@ export default function ManifestoPage() {
                     <About />
                     <Principles />
                     <Guidelines />
+                    <StructuralConsiderations />
                 </MdxWrapper>
             </SingleColumn>
         </>
