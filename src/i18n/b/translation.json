@@ -399,5 +399,9 @@
         "LabelDefault": "Teile diese Seite:",
         "copyToClipboard": "Zwischenablage",
         "copyToClipboardDone": "Kopiert!"
+    },
+    "manifesto": {
+        "title": "Manifest",
+        "subline": "Warum macht.sprache. wichtig ist"
     }
 }

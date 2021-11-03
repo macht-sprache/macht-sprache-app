@@ -403,5 +403,9 @@
         "LabelDefault": "Share this {{item}}:",
         "copyToClipboard": "To clipboard",
         "copyToClipboardDone": "Copied!"
+    },
+    "manifesto": {
+        "title": "Manifesto",
+        "subline": "Why macht.sprache. matters"
     }
 }
