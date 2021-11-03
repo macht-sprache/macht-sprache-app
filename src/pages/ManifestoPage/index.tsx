@@ -20,7 +20,6 @@ import { useLang } from '../../useLang';
 export default function ManifestoPage() {
     const { t } = useTranslation();
     const [lang] = useLang();
-
     return (
         <>
             <Header subLine={t('manifesto.subline')}>{t('manifesto.title')}</Header>
