@@ -30,7 +30,7 @@ export default function CollapsableSection({
     }, [location, domId]);
 
     return (
-        <section className={clsx(s.section, { [s.open]: isOpen || intro })}>
+        <section className={clsx(s.section, { [s.open]: isOpen })}>
             <h3 className={s.heading} id={domId}>
                 <button
                     onClick={() => {
@@ -46,22 +46,22 @@ export default function CollapsableSection({
             {(isOpen || intro) && (
                 <div id={id('section')} className={s.content}>
                     {intro && (
-                        <div className={s.intro}>
-                            {intro}
-                            <>
-                                {' '}
-                                <button
-                                    className={s.moreButton}
-                                    onClick={() => setIsOpen(!isOpen)}
-                                    aria-expanded={isOpen}
-                                    aria-controls={id('section')}
-                                >
-                                    {isOpen ? <>{t('common.collapsor.close')}</> : <>{t('common.collapsor.more')}...</>}
-                                </button>
-                            </>
-                        </div>
+                        <>
+                            <div className={s.intro}>{intro}</div>
+                        </>
                     )}
                     {isOpen && <div className={s.children}>{children}</div>}
+                    <div className={s.moreButtonContainer}>
+                        <button
+                            className={s.moreButton}
+                            onClick={() => setIsOpen(!isOpen)}
+                            aria-expanded={isOpen}
+                            aria-controls={id('section')}
+                        >
+                            {isOpen ? <>{t('common.collapsor.close')}</> : <>{t('common.collapsor.more')}</>}
+                            <div className={s.arrow} />
+                        </button>
+                    </div>
                 </div>
             )}
         </section>

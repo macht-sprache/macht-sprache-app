@@ -1,23 +1,11 @@
 .section {
-    --boxColor: var(--green);
-    --boxColorContrast: var(--orange);
+    --boxColor: var(--orange);
     --indicatorSize: 1.5rem;
     position: relative;
     border: solid var(--boxColor);
-    border-width: 0 0 0 var(--thickBorder);
+    border-width: 0 var(--thickBorder) var(--thickBorder);
     margin: 2rem 0;
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.section.open:before {
-    --with: calc(var(--thickBorder) * 2);
-    content: '';
-    position: absolute;
-    width: calc(var(--thickBorder) + 100%);
-    left: calc(var(--thickBorder) * -1);
-    bottom: calc(var(--with) * -1);
-    height: var(--with);
-    backdrop-filter: blur(4px) contrast(0.8) brightness(1.3);
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .toggleButton {
@@ -31,44 +19,8 @@
     font-size: inherit;
     color: inherit;
     text-align: left;
-    padding: 1rem 1rem 1rem 3rem;
+    padding: 1rem;
     width: 100%;
-}
-
-.toggleButton:before {
-    content: '';
-    position: absolute;
-    height: var(--indicatorSize);
-    width: var(--indicatorSize);
-    left: 0.5rem;
-    top: 50%;
-    transform: translateY(calc(var(--indicatorSize) / -2)) rotate(-45deg);
-    transform-origin: center;
-    transition: 0.3s transform ease;
-    display: block;
-    background: linear-gradient(
-            90deg,
-            transparent 0%,
-            transparent 50%,
-            var(--boxColorContrast) 50%,
-            var(--boxColorContrast) 100%
-        ),
-        linear-gradient(
-            180deg,
-            transparent 0%,
-            transparent 50%,
-            var(--boxColorContrast) 50%,
-            var(--boxColorContrast) 100%
-        );
-}
-
-.toggleButton[aria-expanded='true']:before {
-    transform: translateY(calc(var(--indicatorSize) / -1.5)) rotate(45deg);
-    left: 0.75rem;
-}
-
-.toggleButton[aria-expanded='false']:hover:before {
-    left: 0.75rem;
 }
 
 .heading {
@@ -78,8 +30,9 @@
 }
 
 .content {
-    padding: 1rem;
+    padding: 1rem 1rem 3rem;
     backdrop-filter: blur(10px);
+    position: relative;
 }
 
 .content *:first-child {
@@ -100,18 +53,118 @@
     margin-top: 1rem;
 }
 
+.moreButtonContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    color: var(--boxColor);
+}
+
+@property --gap {
+    syntax: '<number>'; /* <- defined as type number for the transition to work */
+    initial-value: 0;
+    /* inherits: false; */
+}
+
 .moreButton {
-    display: inline;
+    position: absolute;
+    top: 0.5rem;
     cursor: pointer;
     font-family: inherit;
     font-size: inherit;
-    font-weight: 600;
     background: transparent;
     border: none;
     padding: 0;
     margin: 0;
     color: inherit;
-    text-decoration: underline;
+}
+
+.moreButton:hover {
+    font-weight: 600;
+}
+
+.arrow {
+    --size: 1rem;
+    --gap: -0.4rem;
+    --gapWide: -0.5rem;
+    left: 50%;
+    bottom: calc(var(--size) * -1 - 1rem);
+    background: var(--backgroundColor);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.arrow,
+.arrow:before,
+.arrow:after {
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    border: var(--boxColor) solid;
+    border-width: 0 var(--thickBorder) var(--thickBorder) 0;
+}
+
+.open .arrow,
+.open .arrow:before,
+.open .arrow:after {
+    border-width: var(--thickBorder) 0 0 var(--thickBorder);
+}
+
+.open .arrow:before {
+    visibility: hidden;
+}
+
+.open .arrow {
+    --gap: -0.45rem;
+    --gapWide: -0.55rem;
+    margin-bottom: 0.1rem;
+}
+
+.arrow:before,
+.arrow:after {
+    content: '';
+    display: block;
+    transform: translate(var(--gap), var(--gap));
+    animation-fill-mode: forwards;
+    animation-duration: 0.3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-play-state: paused;
+}
+
+.arrow:before {
+    transform: translate(var(--gap), var(--gap));
+    animation-name: arrowBefore;
+}
+
+.arrow:after {
+    transform: translate(calc(var(--gap) * 2), calc(var(--gap) * 2));
+    animation-name: arrowAfter;
+}
+
+.moreButton:hover .arrow:before {
+    animation-play-state: running;
+}
+
+.moreButton:hover .arrow:after {
+    animation-play-state: running;
+}
+
+@keyframes arrowBefore {
+    from {
+        transform: translate(calc(var(--gap) * 2), calc(var(--gap) * 2));
+    }
+    to {
+        transform: translate(calc(var(--gapWide) * 2), calc(var(--gapWide) * 2));
+    }
+}
+
+@keyframes arrowAfter {
+    from {
+        transform: translate(var(--gap), var(--gap));
+    }
+    to {
+        transform: translate(var(--gapWide), var(--gapWide));
+    }
 }
 
 .container {
