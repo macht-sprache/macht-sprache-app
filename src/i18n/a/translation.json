@@ -48,7 +48,7 @@
         "saving": "Saving...",
         "collapsor": {
             "more": "more",
-            "close": "close"
+            "close": "less"
         },
         "error": {
             "general": "Something went wrong"

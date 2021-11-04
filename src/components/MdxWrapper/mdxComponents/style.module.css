@@ -3,11 +3,13 @@
 }
 
 .heading_2:not(:first-child) {
-    margin-top: 4rem;
+    margin-top: 6rem;
 }
 
 .heading_3 {
     margin-top: 0;
+    font-size: var(--fontSizeL);
+    font-weight: normal;
 }
 
 .heading_3:not(:first-child) {
