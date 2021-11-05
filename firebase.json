@@ -8,13 +8,13 @@
         "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
         "rewrites": [
             {
-                "source": "**",
+                "source": "!/static/**",
                 "destination": "/index.html"
             }
         ],
         "headers": [
             {
-                "source": "**/*.@(css|js|map|svg|png)",
+                "source": "/static/**/*.@(css|js|map|svg|png)",
                 "headers": [
                     {
                         "key": "Cache-Control",
