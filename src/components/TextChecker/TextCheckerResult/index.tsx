@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import Tooltip from 'rc-tooltip';
-import { Suspense, useMemo, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath } from 'react-router-dom';
 import { getTranslationsRef } from '../../../hooks/data';
@@ -8,7 +8,7 @@ import { Get, GetList, useCollection, useDocument } from '../../../hooks/fetch';
 import { langA } from '../../../languages';
 import { AddTermPageState } from '../../../pages/AddTermPage';
 import { TERM, TERM_ADD } from '../../../routes';
-import { DocReference, Lang, Term, TermIndex, TextToken, Translation } from '../../../types';
+import { DocReference, Lang, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../../types';
 import { useLang } from '../../../useLang';
 import Button, { ButtonContainer, ButtonLink } from '../../Form/Button';
 import { ModalDialog } from '../../ModalDialog';
@@ -16,6 +16,7 @@ import { Redact } from '../../RedactSensitiveTerms';
 import { SelectTooltipContainer, SelectTooltipLink } from '../../SelectTooltip';
 import { TermWithLang } from '../../TermWithLang';
 import { sortTranslations } from '../../TranslationsList/service';
+import { useIndexGrouped, useMatchGroups } from './hooks';
 import s from './style.module.css';
 
 type Props = {
@@ -23,70 +24,21 @@ type Props = {
     text: string;
     analyzedText: TextToken[];
     getTermIndex: GetList<TermIndex>;
+    getTranslationIndex: GetList<TranslationIndex>;
     onCancel: () => void;
 };
 
-type Match = {
-    pos: [number, number];
-    ref: DocReference<Term>;
-};
-
-const useTermIndexGrouped = (getTermIndex: GetList<TermIndex>, lang: Lang) => {
-    return useMemo(() => {
-        const termIndex = getTermIndex().filter(i => i.lang === lang);
-        return termIndex.reduce<{ [firstLemma: string]: TermIndex[] }>((acc, cur) => {
-            cur.lemmas.forEach(lemmaList => {
-                const firstLemma = lemmaList[0]?.toLowerCase();
-                if (firstLemma) {
-                    if (acc[firstLemma]) {
-                        acc[firstLemma].push(cur);
-                    } else {
-                        acc[firstLemma] = [cur];
-                    }
-                }
-            });
-            return acc;
-        }, {});
-    }, [getTermIndex, lang]);
-};
-
-const useMatches = (analyzedText: TextToken[], termIndexGrouped: { [firstLemma: string]: TermIndex[] }) => {
-    return useMemo(() => {
-        return analyzedText.reduce<Match[]>((matches, textToken, index) => {
-            const currentMatches = (termIndexGrouped[textToken.lemma.toLowerCase()] || []).reduce<Match[]>(
-                (acc, cur) => {
-                    const matchedTerms = cur.lemmas.find(ll =>
-                        ll.every(
-                            (lemma, lemmaIndex) =>
-                                analyzedText[index + lemmaIndex]?.lemma.toLowerCase() === lemma.toLowerCase()
-                        )
-                    );
-                    if (matchedTerms) {
-                        acc.push({
-                            pos: [textToken.pos[0], analyzedText[index + matchedTerms.length - 1].pos[1]],
-                            ref: cur.ref,
-                        });
-                    }
-                    return acc;
-                },
-                []
-            );
-
-            return [...matches, ...currentMatches];
-        }, []);
-    }, [analyzedText, termIndexGrouped]);
-};
-
-export default function Analysis({ lang, getTermIndex, text, analyzedText, onCancel }: Props) {
+export default function Analysis({ lang, getTermIndex, getTranslationIndex, text, analyzedText, onCancel }: Props) {
     const { t } = useTranslation();
     const [tooltipOpen, setTooltipOpen] = useState(false);
-    const termIndexGrouped = useTermIndexGrouped(getTermIndex, lang);
-    const matches = useMatches(analyzedText, termIndexGrouped);
+    const termIndex = useIndexGrouped(getTermIndex, lang);
+    const translationIndex = useIndexGrouped(getTranslationIndex, lang);
+    const matchGroups = useMatchGroups(analyzedText, termIndex, translationIndex);
 
     const children = [
-        ...matches.flatMap((match, index) => {
-            const prevEnd = matches[index - 1]?.pos[1] || 0;
-            const [start, end] = match.pos;
+        ...matchGroups.flatMap((matchGroup, index) => {
+            const prevEnd = matchGroups[index - 1]?.pos[1] || 0;
+            const [start, end] = matchGroup.pos;
 
             if (prevEnd > start) {
                 return [];
@@ -97,19 +49,19 @@ export default function Analysis({ lang, getTermIndex, text, analyzedText, onCan
                 <SensitiveWord
                     key={index + 'b'}
                     lang={lang}
-                    termRef={match.ref}
+                    termRef={matchGroup.termMatches[0].ref}
                     onTooltipVisibleChange={setTooltipOpen}
                 >
                     {text.substring(start, end)}
                 </SensitiveWord>,
             ];
         }),
-        <span key="last">{text.substring(matches[matches.length - 1]?.pos?.[1] || 0)}</span>,
+        <span key="last">{text.substring(matchGroups[matchGroups.length - 1]?.pos?.[1] || 0)}</span>,
     ];
 
     return (
         <>
-            <p>{t(matches.length === 0 ? 'textChecker.result.nothingFound' : 'textChecker.result.description')}</p>
+            <p>{t(matchGroups.length === 0 ? 'textChecker.result.nothingFound' : 'textChecker.result.description')}</p>
             <SelectTooltipContainer
                 renderTooltip={selectValue => (
                     <SelectTooltipLink<AddTermPageState>

@@ -6,7 +6,7 @@ import { GetList, useCollection } from '../../hooks/fetch';
 import { useRequestState } from '../../hooks/useRequestState';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { TEXT_CHECKER, TEXT_CHECKER_RESULT } from '../../routes';
-import { Lang, TermIndex, TextToken } from '../../types';
+import { Lang, TermIndex, TextToken, TranslationIndex } from '../../types';
 import TextCheckerEntry, { TextCheckerValue } from './TextCheckerEntry';
 import TextCheckerResult from './TextCheckerResult';
 
@@ -22,6 +22,7 @@ type ResultPageState =
 
 export default function TextChecker() {
     const getTermIndex = useCollection(collections.termIndex);
+    const getTranslationIndex = useCollection(collections.translationIndex);
 
     return (
         <Switch>
@@ -29,7 +30,7 @@ export default function TextChecker() {
                 <EntryPage />
             </Route>
             <Route path={TEXT_CHECKER_RESULT} exact>
-                <ResultPage getTermIndex={getTermIndex} />
+                <ResultPage getTermIndex={getTermIndex} getTranslationIndex={getTranslationIndex} />
             </Route>
             <Route>
                 <NotFoundPage />
@@ -66,7 +67,13 @@ function EntryPage() {
     );
 }
 
-function ResultPage({ getTermIndex }: { getTermIndex: GetList<TermIndex> }) {
+function ResultPage({
+    getTermIndex,
+    getTranslationIndex,
+}: {
+    getTermIndex: GetList<TermIndex>;
+    getTranslationIndex: GetList<TranslationIndex>;
+}) {
     const history = useHistory();
     const { state } = useLocation<ResultPageState>();
 
@@ -77,6 +84,7 @@ function ResultPage({ getTermIndex }: { getTermIndex: GetList<TermIndex> }) {
     return (
         <TextCheckerResult
             getTermIndex={getTermIndex}
+            getTranslationIndex={getTranslationIndex}
             lang={state.lang}
             text={state.text}
             analyzedText={state.analyzedText}
