@@ -41,29 +41,18 @@
     font-size: var(--fontSizeS);
 }
 
-.tooltip p:last-child {
-    margin-bottom: 0;
+.tooltip p {
+    margin: 0;
+}
+
+.tooltip p + p {
+    margin-top: 0.5rem;
 }
 
 .tooltipDefinition {
-    margin: 0 0 0.5rem;
     font-style: italic;
 }
-
-.tooltipList {
-    display: inline;
-    list-style: none;
-    padding: 0;
-}
-
-.tooltipListItem {
-    display: inline;
-}
-
-.tooltipListItem + .tooltipListItem:before {
-    content: ', ';
-}
-
+/* 
 .overlayTranslationTerm {
     font-weight: bold;
 }
@@ -71,7 +60,7 @@
 .overlayContainer {
     font-family: var(--paragraphFont);
     line-height: var(--lineHeightParagraph);
-}
+} */
 
 .overlayTitle {
     font-size: var(--fontSizeL);

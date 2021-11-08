@@ -106,7 +106,18 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
         const { term, creator, createdAt, value, variants, lang, ratings, commentCount, definition } = snapshot.data(
             defaultSnapshotOptions
         );
-        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, ratings, commentCount, definition };
+        return {
+            id: snapshot.id,
+            term: addConverterToRef(term),
+            creator,
+            createdAt,
+            value,
+            variants,
+            lang,
+            ratings,
+            commentCount,
+            definition,
+        };
     },
 };
 

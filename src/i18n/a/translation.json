@@ -370,6 +370,7 @@
             "cancel": "Edit Text",
             "addMissing": "Click to add missing term to macht.sprache.",
             "translationsHeading": "Possible translations:",
+            "termsHeading": "Possible translation for:",
             "clickHint": "Click for more information",
             "modal": {
                 "close": "Go Back",

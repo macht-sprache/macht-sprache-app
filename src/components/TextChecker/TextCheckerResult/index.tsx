@@ -1,21 +1,13 @@
 import clsx from 'clsx';
-import Tooltip from 'rc-tooltip';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generatePath } from 'react-router-dom';
-import { getTranslationsRef } from '../../../hooks/data';
-import { Get, GetList, useCollection, useDocument } from '../../../hooks/fetch';
-import { langA } from '../../../languages';
+import { GetList } from '../../../hooks/fetch';
 import { AddTermPageState } from '../../../pages/AddTermPage';
-import { TERM, TERM_ADD } from '../../../routes';
-import { DocReference, Lang, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../../types';
-import { useLang } from '../../../useLang';
-import Button, { ButtonContainer, ButtonLink } from '../../Form/Button';
-import { ModalDialog } from '../../ModalDialog';
-import { Redact } from '../../RedactSensitiveTerms';
+import { TERM_ADD } from '../../../routes';
+import { Lang, TermIndex, TextToken, TranslationIndex } from '../../../types';
+import Button, { ButtonContainer } from '../../Form/Button';
 import { SelectTooltipContainer, SelectTooltipLink } from '../../SelectTooltip';
-import { TermWithLang } from '../../TermWithLang';
-import { sortTranslations } from '../../TranslationsList/service';
+import HighlightedPhrase from './HighlightedPhrase';
 import { useIndexGrouped, useMatchGroups } from './hooks';
 import s from './style.module.css';
 
@@ -46,14 +38,15 @@ export default function Analysis({ lang, getTermIndex, getTranslationIndex, text
 
             return [
                 <span key={index + 'a'}>{text.substring(prevEnd, start)}</span>,
-                <SensitiveWord
+                <HighlightedPhrase
                     key={index + 'b'}
                     lang={lang}
-                    termRef={matchGroup.termMatches[0].ref}
+                    termRefs={matchGroup.termMatches.map(match => match.ref)}
+                    translationRefs={matchGroup.translationMatches.map(match => match.ref)}
                     onTooltipVisibleChange={setTooltipOpen}
                 >
                     {text.substring(start, end)}
-                </SensitiveWord>,
+                </HighlightedPhrase>,
             ];
         }),
         <span key="last">{text.substring(matchGroups[matchGroups.length - 1]?.pos?.[1] || 0)}</span>,
@@ -81,146 +74,5 @@ export default function Analysis({ lang, getTermIndex, getTranslationIndex, text
                 </Button>
             </ButtonContainer>
         </>
-    );
-}
-
-function SensitiveWord({
-    children,
-    termRef,
-    lang,
-    onTooltipVisibleChange,
-}: {
-    children: React.ReactNode;
-    termRef: DocReference<Term>;
-    lang: Lang;
-    onTooltipVisibleChange: (isVisible: boolean) => void;
-}) {
-    const [tooltipOpen, setTooltipOpen] = useState(false);
-    const [overlayOpen, setOverlayOpen] = useState(false);
-
-    const getTerm = useDocument(termRef);
-    const getTranslations = useCollection(getTranslationsRef(termRef));
-
-    return (
-        <>
-            <Tooltip
-                overlay={
-                    <Suspense fallback={null}>
-                        <TermTooltip
-                            getTerm={getTerm}
-                            getTranslations={getTranslations}
-                            onClick={() => setOverlayOpen(true)}
-                        />
-                    </Suspense>
-                }
-                placement="bottom"
-                onVisibleChange={visible => {
-                    setTooltipOpen(visible);
-                    onTooltipVisibleChange(visible);
-                }}
-                mouseEnterDelay={0.2}
-                mouseLeaveDelay={0.2}
-            >
-                <button
-                    onClick={() => {
-                        setOverlayOpen(true);
-                    }}
-                    className={clsx(s.sensitiveWord, { [s.sensitiveWordHovered]: tooltipOpen })}
-                    lang={lang}
-                >
-                    {children}
-                </button>
-            </Tooltip>
-            {overlayOpen && (
-                <Suspense fallback={null}>
-                    <TermModal
-                        getTerm={getTerm}
-                        getTranslations={getTranslations}
-                        onClose={() => setOverlayOpen(false)}
-                    />
-                </Suspense>
-            )}
-        </>
-    );
-}
-
-type TermProps = {
-    getTerm: Get<Term>;
-    getTranslations: GetList<Translation>;
-};
-
-type ModalProps = TermProps & {
-    onClose: () => void;
-};
-
-type TooltipProps = TermProps & {
-    onClick: () => void;
-};
-
-function TermModal({ getTerm, getTranslations, onClose }: ModalProps) {
-    const { t } = useTranslation();
-    const [lang] = useLang();
-    const term = getTerm();
-    const translations = sortTranslations(getTranslations());
-    const langIdentifier = lang === langA ? 'langA' : 'langB';
-    const termDefinition = term.definition[langIdentifier];
-
-    return (
-        <ModalDialog
-            title={
-                <span className={s.overlayTitle}>
-                    <TermWithLang term={term} />
-                </span>
-            }
-            onClose={onClose}
-            isDismissable={true}
-        >
-            <div className={s.overlayContainer}>
-                {termDefinition && <p className={s.overlayDefinition}>{termDefinition}</p>}
-                <h3>{t('textChecker.result.translationsHeading')}</h3>
-                <ul className={s.overlayTranslationList}>
-                    {translations.map(translation => (
-                        <li key={translation.id} className={s.overlayTranslation}>
-                            <span className={s.overlayTranslationTerm}>
-                                <TermWithLang term={translation} />
-                            </span>
-                            {translation.definition[langIdentifier] && <>: </>}
-                            {translation.definition[langIdentifier]}
-                        </li>
-                    ))}
-                </ul>
-                <ButtonContainer>
-                    <ButtonLink to={generatePath(TERM, { termId: term.id })}>
-                        {t('textChecker.result.modal.discuss')}
-                    </ButtonLink>
-                    <Button primary={true} onClick={onClose}>
-                        {t('textChecker.result.modal.close')}
-                    </Button>
-                </ButtonContainer>
-            </div>
-        </ModalDialog>
-    );
-}
-
-function TermTooltip({ getTerm, getTranslations, onClick }: TooltipProps) {
-    const { t } = useTranslation();
-    const [lang] = useLang();
-    const term = getTerm();
-    const translations = sortTranslations(getTranslations());
-    const termDefinition = term.definition[lang === langA ? 'langA' : 'langB'];
-
-    return (
-        <div className={s.tooltip} onClick={onClick}>
-            {termDefinition && <p className={s.tooltipDefinition}>{termDefinition}</p>}
-            {t('textChecker.result.translationsHeading')}{' '}
-            <ul className={s.tooltipList}>
-                {translations.map(translation => (
-                    <li className={s.tooltipListItem} key={translation.id}>
-                        <Redact>{translation.value}</Redact>
-                    </li>
-                ))}
-            </ul>
-            <p>{t('textChecker.result.clickHint')}</p>
-        </div>
     );
 }
