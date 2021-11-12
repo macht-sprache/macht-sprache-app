@@ -19,13 +19,7 @@ export default function EditVariants<T extends Entity>({ entity, entityRef }: Pr
 
     return (
         <>
-            <LinkButton
-                onClick={() => {
-                    setOverlayOpen(true);
-                }}
-            >
-                {t('common.entities.variant.edit')}
-            </LinkButton>
+            <LinkButton onClick={() => setOverlayOpen(true)}>{t('common.entities.variant.edit')}</LinkButton>
             {overlayOpen && (
                 <EditVariantsOverlay
                     entity={entity}
@@ -50,7 +44,7 @@ function EditVariantsOverlay<T extends Entity>({ entity, entityRef, onClose }: O
 
     const onSave = () => {
         setIsSaving(true);
-        entityRef.update({ variants: variants.filter(variant => variant !== '') }).then(() => {
+        entityRef.update({ variants: variants.filter(variant => variant) }).then(() => {
             setIsSaving(false);
             onClose();
         });
@@ -67,18 +61,14 @@ function EditVariantsOverlay<T extends Entity>({ entity, entityRef, onClose }: O
                             <Variant
                                 key={index}
                                 variant={variant}
-                                onChange={newVariant => {
+                                onChange={newVariant =>
                                     setVariants(prevVariants => {
                                         const newVariants = [...prevVariants];
                                         newVariants[index] = newVariant;
                                         return newVariants;
-                                    });
-                                }}
-                                onDelete={() => {
-                                    setVariants(prev => {
-                                        return without(prev, prev[index]);
-                                    });
-                                }}
+                                    })
+                                }
+                                onDelete={() => setVariants(prev => without(prev, prev[index]))}
                                 isSaving={isSaving}
                             />
                         ))}
@@ -87,12 +77,7 @@ function EditVariantsOverlay<T extends Entity>({ entity, entityRef, onClose }: O
             </div>
             <div className={s.addButtonContainer}>
                 <ButtonContainer align="center">
-                    <Button
-                        onClick={() => {
-                            setVariants(prev => [...prev, '']);
-                        }}
-                        disabled={isSaving}
-                    >
+                    <Button onClick={() => setVariants(prev => [...prev, ''])} disabled={isSaving}>
                         {t('common.entities.variant.add')}
                     </Button>
                 </ButtonContainer>
@@ -129,9 +114,7 @@ function Variant({
                     type="text"
                     value={variant}
                     label="Variant"
-                    onChange={event => {
-                        onChange(event.currentTarget.value);
-                    }}
+                    onChange={event => onChange(event.currentTarget.value)}
                     disabled={isSaving}
                     span={3}
                 />
