@@ -96,6 +96,7 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                                 <EditVariants
                                     entity={translation}
                                     entityRef={collections.translations.doc(translation.id)}
+                                    indexRef={collections.translationIndex.doc(translation.id)}
                                 />
                             )}
                             {canDelete && <DeleteTranslation translation={translation} />}

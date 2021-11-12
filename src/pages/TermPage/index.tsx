@@ -88,7 +88,11 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             )}
                             {canEdit && <EditTerm term={term} />}
                             {userProperties?.admin && (
-                                <EditVariants entity={term} entityRef={collections.terms.doc(term.id)} />
+                                <EditVariants
+                                    entity={term}
+                                    entityRef={collections.terms.doc(term.id)}
+                                    indexRef={collections.termIndex.doc(term.id)}
+                                />
                             )}
                             {canDelete && <DeleteTerm term={term} />}
                         </DividedList>
