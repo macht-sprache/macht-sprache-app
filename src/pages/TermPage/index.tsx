@@ -8,6 +8,7 @@ import BetaWrapper from '../../components/BetaWrapper';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import DividedList from '../../components/DividedList';
+import EditVariants from '../../components/EditVariants';
 import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { Input, Select, Textarea } from '../../components/Form/Input';
@@ -86,8 +87,12 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                 />
                             )}
                             {canEdit && <EditTerm term={term} />}
+                            {userProperties?.admin && (
+                                <EditVariants entity={term} entityRef={collections.terms.doc(term.id)} />
+                            )}
                             {canDelete && <DeleteTerm term={term} />}
                         </DividedList>
+
                         {user && (
                             <Suspense fallback={<Checkbox disabled label={t('notifications.subscribe')} />}>
                                 <SubscribeTerm term={term} user={user} />

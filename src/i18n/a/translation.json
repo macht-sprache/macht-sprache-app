@@ -42,6 +42,11 @@
                 "value_plural": "Translation Examples",
                 "add": "Add Translation Example",
                 "addShort": "Add Example"
+            },
+            "variant": {
+                "edit": "Edit Variants",
+                "add": "Add Variant",
+                "empty": "No Variants"
             }
         },
         "loading": "Loading...",
