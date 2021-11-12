@@ -5,11 +5,9 @@ import Button, { ButtonContainer } from '../../Form/Button';
 import { Select, Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 
-type TextType = 'original' | 'translation';
 export type TextCheckerValue = {
     lang: Lang | undefined;
     text: string;
-    textType: TextType | undefined;
 };
 
 type Props = {
@@ -19,9 +17,9 @@ type Props = {
     busy?: boolean;
 };
 
-export default function TextCheckerEntry({ value: { lang, text, textType }, onChange, onSubmit, busy }: Props) {
+export default function TextCheckerEntry({ value: { lang, text }, onChange, onSubmit, busy }: Props) {
     const { t } = useTranslation();
-    const updateModel = (update: Partial<TextCheckerValue>) => onChange({ lang, text, textType, ...update });
+    const updateModel = (update: Partial<TextCheckerValue>) => onChange({ lang, text, ...update });
 
     return (
         <>
@@ -31,7 +29,6 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
                     disabled={busy}
                     label={t('common.langLabels.language')}
                     value={lang}
-                    span={2}
                     onChange={({ target }) => {
                         if (!target.value) {
                             updateModel({ lang: undefined });
@@ -44,23 +41,6 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
                     <option value={langA}>{t(`common.langLabels.${langA}` as const)}</option>
                     <option value={langB}>{t(`common.langLabels.${langB}` as const)}</option>
                 </Select>
-                <Select
-                    disabled={busy}
-                    label={t('textChecker.entry.type.label')}
-                    value={textType}
-                    span={2}
-                    onChange={({ target }) => {
-                        if (!target.value) {
-                            updateModel({ textType: undefined });
-                        } else {
-                            updateModel({ textType: target.value === 'original' ? 'original' : 'translation' });
-                        }
-                    }}
-                >
-                    <option value=""></option>
-                    <option value="original">{t('textChecker.entry.type.original')}</option>
-                    <option value="translation">{t('textChecker.entry.type.translation')}</option>
-                </Select>
                 <Textarea
                     busy={busy}
                     disabled={busy}
@@ -71,7 +51,7 @@ export default function TextCheckerEntry({ value: { lang, text, textType }, onCh
                 />
             </InputContainer>
             <ButtonContainer>
-                <Button primary={true} disabled={!lang || textType !== 'original' || busy} onClick={onSubmit}>
+                <Button primary={true} disabled={!lang || text === '' || busy} onClick={onSubmit}>
                     {t('textChecker.entry.submit')}
                 </Button>
             </ButtonContainer>
