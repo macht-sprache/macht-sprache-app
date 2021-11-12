@@ -92,7 +92,7 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                                 }}
                             />
                             {canEdit && <EditTranslation translation={translation} />}
-                            {canEdit && (
+                            {userProperties?.admin && (
                                 <EditVariants
                                     entity={translation}
                                     entityRef={collections.translations.doc(translation.id)}
