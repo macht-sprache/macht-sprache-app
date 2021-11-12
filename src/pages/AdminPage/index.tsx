@@ -185,8 +185,8 @@ function WeeklyDigestModal({ onClose }: { onClose: () => void }) {
                 [langB]: model.introLangB,
             },
             subject: {
-                [langA]: model.introLangA,
-                [langB]: model.introLangB,
+                [langA]: model.subjectA,
+                [langB]: model.subjectB,
             },
         }).then(
             () => setRealMailState('DONE'),
