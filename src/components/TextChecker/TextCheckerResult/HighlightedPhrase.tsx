@@ -63,6 +63,7 @@ const useLangIdentifier = () => {
 };
 
 const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRefs, lang, onTooltipVisibleChange }) => {
+    const { t } = useTranslation();
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [overlayOpen, setOverlayOpen] = useState(false);
 
@@ -70,7 +71,14 @@ const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRef
         <>
             <Tooltip
                 overlay={
-                    <Suspense fallback={null}>
+                    <Suspense
+                        fallback={
+                            <>
+                                {/* TODO: nicer loading state */}
+                                {t('common.loading')}
+                            </>
+                        }
+                    >
                         <PhraseTooltip
                             termRefs={termRefs}
                             translationRefs={translationRefs}
