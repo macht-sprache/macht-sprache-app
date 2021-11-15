@@ -35,7 +35,7 @@ export default function TextCheckerEntry({ value: { lang, text }, onChange, onSu
                     onLanguageChange={lang => {
                         updateModel({ lang });
                     }}
-                    buttonLabel={t('textChecker.entry.submit')}
+                    buttonLabel={t(busy ? 'textChecker.entry.submitBusy' : 'textChecker.entry.submit')}
                     busy={busy}
                     onSubmit={onSubmit}
                     buttonDisabled={!lang || text === '' || busy}

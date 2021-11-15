@@ -362,7 +362,8 @@
                 "translation": "translation"
             },
             "text": "Text",
-            "submit": "Check Text"
+            "submit": "Check Text",
+            "submitBusy": "Checking..."
         },
         "result": {
             "description": "Sensitive terms are highlighted. Click for more information.",

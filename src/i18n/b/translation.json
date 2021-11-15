@@ -358,10 +358,11 @@
                 "translation": "Übersetzung"
             },
             "text": "Zu prüfender Text",
-            "submit": "Text überprüfen"
+            "submit": "Text überprüfen",
+            "submitBusy": "Überprüfe..."
         },
         "result": {
-            "description": "Ananlyseergebnis:",
+            "description": "Analyseergebnis:",
             "nothingFound": "Es wurde kein sensibler Begriff gefunden. Markiere einen Begriff, um ihn hinzuzufügen.",
             "cancel": "Text editieren",
             "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
