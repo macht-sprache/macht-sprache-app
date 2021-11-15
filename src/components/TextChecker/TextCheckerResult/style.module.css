@@ -68,16 +68,14 @@
     margin-top: 1rem;
 }
 
-.bottomBox {
-    display: flex;
-    justify-content: space-between;
+.textLabel {
+    margin-bottom: 1rem;
 }
 
-.submitButtonContainer {
-    flex: 0 0 auto;
-    align-self: flex-end;
+.otherTerms {
+    margin-top: 2rem;
 }
 
-.textTypeLabel {
-    margin-bottom: 0.5rem;
+.buttonContainer {
+    margin-top: 2rem;
 }

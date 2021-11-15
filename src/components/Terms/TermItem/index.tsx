@@ -16,6 +16,8 @@ import { getDominantLanguageClass } from '../../../useLangCssVars';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
 import { stopPropagation } from '../../../utils';
 import s from './style.module.css';
+import { useLang } from '../../../useLang';
+import { langA } from '../../../languages';
 
 const EMPTY_ARRAY: never[] = [];
 
@@ -27,6 +29,8 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
     const getTranslations = useCollection(getTranslationsRef(termRef));
     const history = useHistory();
     const { t } = useTranslation();
+    const [lang] = useLang();
+    const definition = term.definition[lang === langA ? 'langA' : 'langB'];
 
     const translations = getTranslations();
     const pathToTerm = generatePath(TERM, { termId: term.id });
@@ -60,6 +64,7 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                     {size === 'medium' && (
                         <>
                             <section className={s.section}>
+                                {definition && <p className={s.definition}>{definition}</p>}
                                 <h2 className={s.bodyHeading}>
                                     {translations.length}{' '}
                                     {t('common.entities.translation.value', { count: translations.length })}:

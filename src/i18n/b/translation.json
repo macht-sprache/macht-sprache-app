@@ -369,6 +369,7 @@
             "translationsHeading": "Mögliche Übersetzungen:",
             "termsHeading": "Mögliche Übersetzung für:",
             "clickHint": "Klick für mehr Informationen",
+            "otherTerms": "Andere Begriffe, die mit <Term /> übereinstimmen",
             "modal": {
                 "close": "Zurück",
                 "discuss": "Diskutiere oder schlage neue Übersetzung vor"

@@ -60,6 +60,10 @@
     margin-top: 2rem;
 }
 
+.definition {
+    margin-top: 0;
+}
+
 .bodyHeading {
     font-weight: normal;
     font-size: var(--fontSizeM);

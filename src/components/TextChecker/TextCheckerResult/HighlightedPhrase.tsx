@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import firebase from 'firebase/compat/app';
 import Tooltip from 'rc-tooltip';
-import { Suspense, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { Suspense, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { collections, getTranslationsRef } from '../../../hooks/data';
 import { useCollection, useDocument } from '../../../hooks/fetch';
 import { langA } from '../../../languages';
@@ -16,7 +16,6 @@ import { TermItem } from '../../Terms/TermItem';
 import { TermWithLang, WrappedInLangColor } from '../../TermWithLang';
 import { sortTranslations } from '../../TranslationsList/service';
 import s from './style.module.css';
-import { Columns } from '../../Layout/Columns';
 import { generatePath, Link } from 'react-router-dom';
 import { TERM } from '../../../routes';
 
@@ -193,28 +192,42 @@ const PhraseModal = ({ title, termRefs, translationRefs, onClose }: ModalProps) 
             onClose={onClose}
             width="wide"
         >
-            {!!termRefs.length && <ModalTerms termRefs={termRefs} />}
+            {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} />}
             {!!translationRefs.length && <ModalTranslations translationRefs={translationRefs} />}
 
-            <ButtonContainer>
-                <Button primary={true} onClick={onClose}>
-                    {t('textChecker.result.modal.close')}
-                </Button>
-            </ButtonContainer>
+            <div className={s.buttonContainer}>
+                <ButtonContainer>
+                    <Button primary={true} onClick={onClose}>
+                        {t('textChecker.result.modal.close')}
+                    </Button>
+                </ButtonContainer>
+            </div>
         </ModalDialog>
     );
 };
 
-const ModalTerms = ({ termRefs }: Pick<BaseProps, 'termRefs'>) => {
+const ModalTerms = ({ termRefs, title }: Pick<BaseProps, 'termRefs'> & { title: React.ReactNode }) => {
+    const { t } = useTranslation();
     const getTerms = useTerms(termRefs);
     const terms = getTerms();
+    const longestTerm = getLongestEntity(terms);
+    const otherTerms = terms.filter(term => term.value !== longestTerm?.value);
+    const TitleWrapped = () => <>{title}</>;
 
     return (
-        <Columns>
-            {terms.map(term => (
-                <TermItem key={term.id} term={term} />
-            ))}
-        </Columns>
+        <>
+            {longestTerm && <TermItem term={longestTerm} />}
+            {otherTerms.length !== 0 && (
+                <div className={s.otherTerms}>
+                    <h3>
+                        <Trans t={t} i18nKey="textChecker.result.otherTerms" components={{ Term: <TitleWrapped /> }} />
+                    </h3>
+                    {otherTerms.map(term => (
+                        <TermItem key={term.id} term={term} size="small" />
+                    ))}
+                </div>
+            )}
+        </>
     );
 };
 
