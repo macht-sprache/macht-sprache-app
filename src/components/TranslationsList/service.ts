@@ -1,5 +1,5 @@
-import deburr from 'lodash.deburr';
-import orderBy from 'lodash.orderby';
+import deburr from 'lodash/deburr';
+import orderBy from 'lodash/orderBy';
 import { Translation } from '../../types';
 
 export const sortTranslations = (translations: Translation[]) =>
