@@ -5,6 +5,7 @@ import { equals } from 'rambdax';
 import type { Lang, Term, Translation } from '../../../src/types';
 import { db, functions, logger } from '../firebase';
 import { findLemmas } from '../handlers/language';
+import { getGeneratedVariants } from './generateVariants';
 
 type TermTranslation = Pick<Term | Translation, 'value' | 'variants' | 'lang'>;
 
@@ -76,7 +77,7 @@ const getVariants = (entity: TermTranslation | undefined) => {
     if (!entity) {
         return [];
     }
-    return [entity.value, ...entity.variants];
+    return [entity.value, ...getGeneratedVariants(entity), ...entity.variants];
 };
 
 const getTermTranslationIndex = async (
