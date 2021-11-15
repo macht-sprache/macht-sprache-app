@@ -125,14 +125,9 @@ const PhraseTooltip = ({ termRefs, translationRefs, onClick }: TooltipProps) => 
 const TooltipTerms = ({ termRefs }: Pick<BaseProps, 'termRefs'>) => {
     const getTerms = useTerms(termRefs);
     const terms = getTerms();
+    const longestTerm = getLongestEntity(terms);
 
-    return (
-        <>
-            {terms.map(term => (
-                <TooltipTerm key={term.id} term={term} />
-            ))}
-        </>
-    );
+    return <>{longestTerm && <TooltipTerm term={longestTerm} />}</>;
 };
 
 const TooltipTerm = ({ term }: { term: Term }) => {
@@ -246,5 +241,8 @@ const ModalTranslationTerm = ({ translation }: { translation: Translation }) => 
         </li>
     );
 };
+
+const getLongestEntity = <Entity extends Term | Translation>(terms: Entity[]): Entity | null =>
+    terms.reduce((prev, current) => (prev.value.length > current.value.length ? prev : current));
 
 export default HighlightedPhrase;
