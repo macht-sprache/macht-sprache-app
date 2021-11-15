@@ -49,33 +49,6 @@
 .tooltipDefinition {
     font-style: italic;
 }
-
-.overlayTitle {
-    font-size: var(--fontSizeL);
-}
-
-.overlayTranslationList {
-    padding: 0;
-    margin: 0 0 2rem;
-}
-
-.overlayTranslation {
-    padding: 0;
-    margin-bottom: 0;
-}
-
-.overlayTranslation + .overlayTranslation {
-    margin-top: 1rem;
-}
-
 .textLabel {
     margin-bottom: 1rem;
-}
-
-.otherTerms {
-    margin-top: 2rem;
-}
-
-.buttonContainer {
-    margin-top: 2rem;
 }

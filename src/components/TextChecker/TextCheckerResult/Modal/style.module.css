@@ -1,0 +1,25 @@
+.title {
+    font-size: var(--fontSizeL);
+}
+
+.otherTerms {
+    margin-top: 2rem;
+}
+
+.buttonContainer {
+    margin-top: 2rem;
+}
+
+.translationList {
+    padding: 0;
+    margin: 0 0 2rem;
+}
+
+.translation {
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.translation + .translation {
+    margin-top: 1rem;
+}

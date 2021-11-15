@@ -1,23 +1,17 @@
 import clsx from 'clsx';
-import firebase from 'firebase/compat/app';
 import Tooltip from 'rc-tooltip';
 import React, { Suspense, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { collections, getTranslationsRef } from '../../../hooks/data';
 import { useCollection, useDocument } from '../../../hooks/fetch';
-import { langA } from '../../../languages';
 import { DocReference, Lang, Term, Translation } from '../../../types';
-import { useLang } from '../../../useLang';
 import DividedList from '../../DividedList';
-import Button, { ButtonContainer } from '../../Form/Button';
-import { ModalDialog } from '../../ModalDialog';
 import { Redact } from '../../RedactSensitiveTerms';
-import { TermItem } from '../../Terms/TermItem';
-import { TermWithLang, WrappedInLangColor } from '../../TermWithLang';
+import { WrappedInLangColor } from '../../TermWithLang';
 import { sortTranslations } from '../../TranslationsList/service';
+import { getLongestEntity, useLangIdentifier, useTerms, useTranslations } from '../service';
+import PhraseModal from './Modal';
 import s from './style.module.css';
-import { generatePath, Link } from 'react-router-dom';
-import { TERM } from '../../../routes';
 
 type BaseProps = {
     termRefs: DocReference<Term>[];
@@ -31,34 +25,6 @@ type Props = BaseProps & {
 
 type TooltipProps = BaseProps & {
     onClick: () => void;
-};
-
-type ModalProps = BaseProps & {
-    title: React.ReactNode;
-    onClose: () => void;
-};
-
-const useTerms = (termRefs: DocReference<Term>[]) =>
-    useCollection(
-        collections.terms.where(
-            firebase.firestore.FieldPath.documentId(),
-            'in',
-            termRefs.map(ref => ref.id)
-        )
-    );
-
-const useTranslations = (translationRefs: DocReference<Translation>[]) =>
-    useCollection(
-        collections.translations.where(
-            firebase.firestore.FieldPath.documentId(),
-            'in',
-            translationRefs.map(ref => ref.id)
-        )
-    );
-
-const useLangIdentifier = () => {
-    const [lang] = useLang();
-    return lang === langA ? 'langA' : 'langB';
 };
 
 const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRefs, lang, onTooltipVisibleChange }) => {
@@ -182,88 +148,5 @@ const TooltipTranslationTerm = ({ translation }: { translation: Translation }) =
     const getTerm = useDocument(translation.term);
     return <Redact>{getTerm().value}</Redact>;
 };
-
-const PhraseModal = ({ title, termRefs, translationRefs, onClose }: ModalProps) => {
-    const { t } = useTranslation();
-    return (
-        <ModalDialog
-            title={<span className={s.overlayTitle}>{title}</span>}
-            isDismissable
-            onClose={onClose}
-            width="wide"
-        >
-            {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} />}
-            {!!translationRefs.length && <ModalTranslations translationRefs={translationRefs} />}
-
-            <div className={s.buttonContainer}>
-                <ButtonContainer>
-                    <Button primary={true} onClick={onClose}>
-                        {t('textChecker.result.modal.close')}
-                    </Button>
-                </ButtonContainer>
-            </div>
-        </ModalDialog>
-    );
-};
-
-const ModalTerms = ({ termRefs, title }: Pick<BaseProps, 'termRefs'> & { title: React.ReactNode }) => {
-    const { t } = useTranslation();
-    const getTerms = useTerms(termRefs);
-    const terms = getTerms();
-    const longestTerm = getLongestEntity(terms);
-    const otherTerms = terms.filter(term => term.value !== longestTerm?.value);
-    const TitleWrapped = () => <>{title}</>;
-
-    return (
-        <>
-            {longestTerm && <TermItem term={longestTerm} />}
-            {otherTerms.length !== 0 && (
-                <div className={s.otherTerms}>
-                    <h3>
-                        <Trans t={t} i18nKey="textChecker.result.otherTerms" components={{ Term: <TitleWrapped /> }} />
-                    </h3>
-                    {otherTerms.map(term => (
-                        <TermItem key={term.id} term={term} size="small" />
-                    ))}
-                </div>
-            )}
-        </>
-    );
-};
-
-const ModalTranslations = ({ translationRefs }: Pick<BaseProps, 'translationRefs'>) => {
-    const { t } = useTranslation();
-    const getTranslations = useTranslations(translationRefs);
-    const translations = getTranslations();
-
-    return (
-        <div>
-            <h3>{t('textChecker.result.termsHeading')}</h3>
-            <ul className={s.overlayTranslationList}>
-                {translations.map(translation => (
-                    <ModalTranslationTerm key={translation.id} translation={translation} />
-                ))}
-            </ul>
-        </div>
-    );
-};
-
-const ModalTranslationTerm = ({ translation }: { translation: Translation }) => {
-    const langIdentifier = useLangIdentifier();
-    const getTerm = useDocument(translation.term);
-    const term = getTerm();
-    return (
-        <li className={s.overlayTranslation}>
-            <Link className={s.overlayTranslationTerm} to={generatePath(TERM, { termId: term.id })}>
-                <TermWithLang term={term} />
-            </Link>
-            {term.definition[langIdentifier] && <>: </>}
-            {term.definition[langIdentifier]}
-        </li>
-    );
-};
-
-const getLongestEntity = <Entity extends Term | Translation>(terms: Entity[]): Entity | null =>
-    terms.reduce((prev, current) => (prev.value.length > current.value.length ? prev : current));
 
 export default HighlightedPhrase;
