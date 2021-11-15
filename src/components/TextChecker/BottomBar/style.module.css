@@ -1,0 +1,9 @@
+.bottomBox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitButtonContainer {
+    flex: 0 0 auto;
+    align-self: flex-end;
+}

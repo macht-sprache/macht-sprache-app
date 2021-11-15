@@ -1,9 +1,6 @@
 .analysisContainer {
-    padding: 1rem;
-    border: var(--thinBorder) solid var(--black);
-    background: var(--white);
     font-family: var(--paragraphFont);
-    margin-bottom: 1rem;
+    min-height: calc(300px - 2rem);
 }
 
 .analysisContainer p > * {
@@ -52,15 +49,6 @@
 .tooltipDefinition {
     font-style: italic;
 }
-/* 
-.overlayTranslationTerm {
-    font-weight: bold;
-}
-
-.overlayContainer {
-    font-family: var(--paragraphFont);
-    line-height: var(--lineHeightParagraph);
-} */
 
 .overlayTitle {
     font-size: var(--fontSizeL);
@@ -78,4 +66,18 @@
 
 .overlayTranslation + .overlayTranslation {
     margin-top: 1rem;
+}
+
+.bottomBox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitButtonContainer {
+    flex: 0 0 auto;
+    align-self: flex-end;
+}
+
+.textTypeLabel {
+    margin-bottom: 0.5rem;
 }
