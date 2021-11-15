@@ -1,4 +1,4 @@
-import escapeRegExp from 'lodash.escaperegexp';
+import escapeRegExp from 'lodash/escapeRegExp';
 import { memo } from 'react';
 import { Redact } from '../RedactSensitiveTerms';
 

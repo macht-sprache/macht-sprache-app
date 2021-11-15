@@ -1,4 +1,4 @@
-import { without } from 'lodash';
+import without from 'lodash/without';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DocReference, Term, Translation } from '../../types';

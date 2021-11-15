@@ -1,4 +1,4 @@
-import orderBy from 'lodash.orderby';
+import orderBy from 'lodash/orderBy';
 import {
     CommentItemLinkWrapper,
     TermItemLinkWrapper,
