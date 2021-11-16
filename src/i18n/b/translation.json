@@ -367,6 +367,7 @@
             "cancel": "Text editieren",
             "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
             "translationsHeading": "Mögliche Übersetzungen:",
+            "termsHeading": "Mögliche Übersetzung für:",
             "otherTerms": "Andere Begriffe, die mit <Term /> übereinstimmen",
             "modal": {
                 "close": "Zurück",
