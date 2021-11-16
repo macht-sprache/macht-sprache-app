@@ -22,7 +22,7 @@ export default function ManifestoPage() {
     const [lang] = useLang();
     return (
         <>
-            <Header subLine={t('manifesto.subline')}>{t('manifesto.title')}</Header>
+            <Header>{t('manifesto.title')}</Header>
             <SingleColumn>
                 <MdxWrapper>
                     {lang === langA ? (
