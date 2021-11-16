@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { useDocument } from '../../../../hooks/fetch';
@@ -23,10 +24,17 @@ type ModalProps = {
 
 export default function PhraseModal({ title, termRefs, translationRefs, onClose }: ModalProps) {
     const { t } = useTranslation();
+    const [widerModal, setWiderModal] = useState(false);
+
     return (
-        <ModalDialog title={<span className={s.title}>{title}</span>} isDismissable onClose={onClose} width="wider">
-            {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} />}
-            {!!translationRefs.length && <ModalTranslations translationRefs={translationRefs} />}
+        <ModalDialog
+            title={<span className={s.title}>{title}</span>}
+            isDismissable
+            onClose={onClose}
+            width={widerModal ? 'wider' : 'wide'}
+        >
+            {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} setWiderModal={setWiderModal} />}
+            {!!translationRefs.length && !termRefs.length && <ModalTranslations translationRefs={translationRefs} />}
 
             <div className={s.buttonContainer}>
                 <ButtonContainer>
@@ -39,7 +47,11 @@ export default function PhraseModal({ title, termRefs, translationRefs, onClose 
     );
 }
 
-const ModalTerms = ({ termRefs, title }: Pick<ModalProps, 'termRefs'> & { title: React.ReactNode }) => {
+const ModalTerms = ({
+    termRefs,
+    title,
+    setWiderModal,
+}: Pick<ModalProps, 'termRefs'> & { title: React.ReactNode; setWiderModal: (wide: boolean) => void }) => {
     const { t } = useTranslation();
     const getTerms = useTerms(termRefs);
     const terms = getTerms();
@@ -47,11 +59,15 @@ const ModalTerms = ({ termRefs, title }: Pick<ModalProps, 'termRefs'> & { title:
     const otherTerms = terms.filter(term => term.value !== longestTerm?.value);
     const TitleWrapped = () => <>{title}</>;
 
+    useEffect(() => {
+        setWiderModal(!!longestTerm?.guidelines.length);
+    }, [longestTerm, setWiderModal]);
+
     return (
         <>
             {longestTerm && (
                 <>
-                    {longestTerm.guidelines.length === 0 ? (
+                    {!longestTerm.guidelines.length ? (
                         <TermItem term={longestTerm} />
                     ) : (
                         <Columns>
