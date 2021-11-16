@@ -99,7 +99,7 @@
     background: var(--orange);
 }
 
-.container:not(:focus-within):not(.hasPlaceholder) .labelEmpty {
+.container:not(:focus-within):not(.hasPlaceholder):not(.dontAnimateLabel) .labelEmpty {
     transform: translateY(0.7rem);
 }
 
