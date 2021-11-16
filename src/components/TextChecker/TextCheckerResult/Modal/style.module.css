@@ -23,3 +23,9 @@
 .translation + .translation {
     margin-top: 1rem;
 }
+
+.guidelines {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}

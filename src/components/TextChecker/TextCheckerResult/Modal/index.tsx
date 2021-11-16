@@ -1,9 +1,13 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
 import { useDocument } from '../../../../hooks/fetch';
+import { useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
 import { TERM } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
 import Button, { ButtonContainer } from '../../../Form/Button';
+import CollapsableSection from '../../../Layout/CollapsableSection';
+import { Columns } from '../../../Layout/Columns';
+import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
 import { TermWithLang } from '../../../TermWithLang';
@@ -20,7 +24,7 @@ type ModalProps = {
 export default function PhraseModal({ title, termRefs, translationRefs, onClose }: ModalProps) {
     const { t } = useTranslation();
     return (
-        <ModalDialog title={<span className={s.title}>{title}</span>} isDismissable onClose={onClose} width="wide">
+        <ModalDialog title={<span className={s.title}>{title}</span>} isDismissable onClose={onClose} width="wider">
             {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} />}
             {!!translationRefs.length && <ModalTranslations translationRefs={translationRefs} />}
 
@@ -45,7 +49,19 @@ const ModalTerms = ({ termRefs, title }: Pick<ModalProps, 'termRefs'> & { title:
 
     return (
         <>
-            {longestTerm && <TermItem term={longestTerm} />}
+            {longestTerm && (
+                <>
+                    {longestTerm.guidelines.length === 0 ? (
+                        <TermItem term={longestTerm} />
+                    ) : (
+                        <Columns>
+                            <TermItem term={longestTerm} />
+                            <Guidelines term={longestTerm} />
+                        </Columns>
+                    )}
+                </>
+            )}
+
             {otherTerms.length !== 0 && (
                 <div className={s.otherTerms}>
                     <h3>
@@ -57,6 +73,28 @@ const ModalTerms = ({ termRefs, title }: Pick<ModalProps, 'termRefs'> & { title:
                 </div>
             )}
         </>
+    );
+};
+
+const Guidelines = ({ term }: { term: Term }) => {
+    const getGuidelines = useGuidelines(term.guidelines);
+    const guidelines = getGuidelines();
+
+    return (
+        <MdxWrapper>
+            <div className={s.guidelines}>
+                {guidelines.map(guideline => (
+                    <CollapsableSection
+                        key={guideline.id}
+                        title={guideline.title}
+                        intro={guideline.intro}
+                        domId={guideline.id}
+                    >
+                        <guideline.Content />
+                    </CollapsableSection>
+                ))}
+            </div>
+        </MdxWrapper>
     );
 };
 
