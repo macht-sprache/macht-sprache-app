@@ -84,13 +84,10 @@ const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRef
 };
 
 const PhraseTooltip = ({ termRefs, translationRefs, onClick }: TooltipProps) => {
-    const { t } = useTranslation();
-
     return (
         <div className={s.tooltip} onClick={onClick}>
             {!!termRefs.length && <TooltipTerms termRefs={termRefs} />}
             {!!translationRefs.length && <TooltipTranslations translationRefs={translationRefs} />}
-            <p>{t('textChecker.result.clickHint')}</p>
         </div>
     );
 };
@@ -115,7 +112,7 @@ const TooltipTerm = ({ term }: { term: Term }) => {
             {termDefinition && <p className={s.tooltipDefinition}>{termDefinition}</p>}
             {!!translations.length && (
                 <p>
-                    {t('textChecker.result.translationsHeading')}{' '}
+                    <strong>{t('textChecker.result.translationsHeading')}</strong>{' '}
                     <DividedList divider=", ">
                         {translations.map(translation => (
                             <Redact key={translation.id}>{translation.value}</Redact>
