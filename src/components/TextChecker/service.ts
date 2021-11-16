@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat';
+import firebase from 'firebase/compat/app';
 import { collections } from '../../hooks/data';
 import { useCollection } from '../../hooks/fetch';
 import { langA } from '../../languages';
