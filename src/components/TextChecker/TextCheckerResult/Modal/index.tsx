@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, Link } from 'react-router-dom';
 import { useDocument } from '../../../../hooks/fetch';
 import { useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
-import { TERM } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
 import Button, { ButtonContainer } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
@@ -11,8 +9,7 @@ import { Columns } from '../../../Layout/Columns';
 import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
-import { TermWithLang } from '../../../TermWithLang';
-import { getLongestEntity, useLangIdentifier, useTerms, useTranslations } from '../../service';
+import { getLongestEntity, useTerms, useTranslations } from '../../service';
 import s from './style.module.css';
 
 type ModalProps = {
