@@ -3,6 +3,7 @@ import { Lang } from '../../../types';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
 import BottomBar from '../BottomBar';
+import s from './style.module.css';
 
 export type TextCheckerValue = {
     lang: Lang | undefined;
@@ -25,11 +26,12 @@ export default function TextCheckerEntry({ value: { lang, text }, onChange, onSu
             <InputContainer>
                 <Textarea
                     disabled={busy}
-                    label={t('textChecker.entry.text')}
+                    label={t('textChecker.entry.description')}
                     value={text}
                     minHeight="300px"
                     onChange={({ target }) => updateModel({ text: target.value })}
-                    placeholder={t('textChecker.entry.description')}
+                    dontAnimateLabel={true}
+                    inputClassName={s.textarea}
                 />
                 <BottomBar
                     onLanguageChange={lang => {

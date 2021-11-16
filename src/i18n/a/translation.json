@@ -355,13 +355,12 @@
         "title": "Text Checker",
         "subLine": "Get help with sensitive translations",
         "entry": {
-            "description": "Add a text you would like to check for sensitive terms:",
+            "description": "Add a text you would like to check for sensitive terms",
             "type": {
                 "label": "Type",
                 "original": "original",
                 "translation": "translation"
             },
-            "text": "Text",
             "submit": "Check Text",
             "submitBusy": "Checking..."
         },

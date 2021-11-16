@@ -1,0 +1,9 @@
+.textarea {
+    margin-top: 1rem;
+}
+
+@media (min-width: 1100px) {
+    .textarea {
+        font-size: var(--fontSizeL);
+    }
+}
