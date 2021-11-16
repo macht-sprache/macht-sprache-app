@@ -87,7 +87,7 @@ const PhraseTooltip = ({ termRefs, translationRefs, onClick }: TooltipProps) => 
     return (
         <div className={s.tooltip} onClick={onClick}>
             {!!termRefs.length && <TooltipTerms termRefs={termRefs} />}
-            {!!translationRefs.length && <TooltipTranslations translationRefs={translationRefs} />}
+            {!!translationRefs.length && !termRefs.length && <TooltipTranslations translationRefs={translationRefs} />}
         </div>
     );
 };
@@ -131,7 +131,7 @@ const TooltipTranslations = ({ translationRefs }: Pick<BaseProps, 'translationRe
 
     return (
         <p>
-            {t('textChecker.result.termsHeading')}{' '}
+            <strong>{t('textChecker.result.translationsHeading')}</strong>{' '}
             <DividedList divider=", ">
                 {translations.map(translation => (
                     <TooltipTranslationTerm key={translation.id} translation={translation} />

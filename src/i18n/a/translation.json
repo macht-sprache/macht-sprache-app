@@ -371,7 +371,6 @@
             "cancel": "Edit Text",
             "addMissing": "Click to add missing term to macht.sprache.",
             "translationsHeading": "Possible translations:",
-            "termsHeading": "Possible translation for:",
             "otherTerms": "Other Terms matching <Term />",
             "modal": {
                 "close": "Go Back",
