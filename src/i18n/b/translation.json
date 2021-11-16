@@ -370,7 +370,9 @@
             "otherTerms": "Andere Begriffe, die mit <Term /> übereinstimmen",
             "modal": {
                 "close": "Zurück",
-                "discuss": "Diskutiere oder schlage neue Übersetzung vor"
+                "discuss": "Diskutiere oder schlage neue Übersetzung vor",
+                "headingTerms": "Beste Übereinstimmung",
+                "headingGuidelines": "Passende Leitlinien aus <ManifestoLink>dem Manifest</ManifestoLink>"
             }
         }
     },

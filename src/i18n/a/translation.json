@@ -371,10 +371,12 @@
             "addMissing": "Click to add missing term to macht.sprache.",
             "translationsHeading": "Possible translations:",
             "termsHeading": "Possible translation for:",
-            "otherTerms": "Other Terms matching <Term />",
+            "otherTerms": "Other terms matching <Term />",
             "modal": {
                 "close": "Go Back",
-                "discuss": "Discuss or suggest options"
+                "discuss": "Discuss or suggest options",
+                "headingTerms": "Closest matching term",
+                "headingGuidelines": "Guidelines from the <ManifestoLink>Manifesto</ManifestoLink>"
             }
         }
     },

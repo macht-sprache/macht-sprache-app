@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { useDocument } from '../../../../hooks/fetch';
 import { useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
+import { MANIFESTO } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
 import Button, { ButtonContainer } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
@@ -70,7 +72,10 @@ const ModalTerms = ({
                         <TermItem term={longestTerm} />
                     ) : (
                         <Columns>
-                            <TermItem term={longestTerm} />
+                            <div>
+                                <h3 className={s.heading}>{t('textChecker.result.modal.headingTerms')}</h3>
+                                <TermItem term={longestTerm} />
+                            </div>
                             <Guidelines term={longestTerm} />
                         </Columns>
                     )}
@@ -96,20 +101,28 @@ const Guidelines = ({ term }: { term: Term }) => {
     const guidelines = getGuidelines();
 
     return (
-        <MdxWrapper>
+        <div>
+            <h3 className={s.heading}>
+                <Trans
+                    i18nKey="textChecker.result.modal.headingGuidelines"
+                    components={{ ManifestoLink: <Link to={MANIFESTO} /> }}
+                />
+            </h3>
             <div className={s.guidelines}>
-                {guidelines.map(guideline => (
-                    <CollapsableSection
-                        key={guideline.id}
-                        title={guideline.title}
-                        intro={guideline.intro}
-                        domId={guideline.id}
-                    >
-                        <guideline.Content />
-                    </CollapsableSection>
-                ))}
+                <MdxWrapper>
+                    {guidelines.map(guideline => (
+                        <CollapsableSection
+                            key={guideline.id}
+                            title={guideline.title}
+                            intro={guideline.intro}
+                            domId={guideline.id}
+                        >
+                            <guideline.Content />
+                        </CollapsableSection>
+                    ))}
+                </MdxWrapper>
             </div>
-        </MdxWrapper>
+        </div>
     );
 };
 

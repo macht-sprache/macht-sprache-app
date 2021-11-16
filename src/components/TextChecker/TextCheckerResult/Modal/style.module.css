@@ -2,6 +2,10 @@
     font-size: var(--fontSizeL);
 }
 
+.heading {
+    margin-top: 0;
+}
+
 .otherTerms {
     margin-top: 2rem;
 }
