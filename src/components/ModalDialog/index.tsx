@@ -5,6 +5,7 @@ import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
 import { useRef } from 'react';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 type ModalDialogProps = {
     onClose: () => void;
@@ -16,6 +17,7 @@ type ModalDialogProps = {
 
 export function ModalDialog({ title, children, onClose, isDismissable = true, width = 'medium' }: ModalDialogProps) {
     usePreventScroll();
+    const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
     const { overlayProps } = useOverlay({ onClose, isOpen: true, isDismissable }, ref);
     const { modalProps } = useModal();
@@ -32,9 +34,18 @@ export function ModalDialog({ title, children, onClose, isDismissable = true, wi
                         ref={ref}
                         className={clsx(s[width], s.overlay)}
                     >
-                        <h3 {...titleProps} className={s.title}>
-                            {title}
-                        </h3>
+                        <header className={s.header}>
+                            <h3 {...titleProps} className={s.title}>
+                                {title}
+                            </h3>
+                            {isDismissable && (
+                                <button
+                                    className={s.closeButton}
+                                    aria-label={t('common.formNav.close')}
+                                    onClick={onClose}
+                                />
+                            )}
+                        </header>
                         {children}
                     </div>
                 </FocusScope>
