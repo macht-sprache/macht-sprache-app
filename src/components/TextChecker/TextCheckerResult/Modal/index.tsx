@@ -31,10 +31,12 @@ export default function PhraseModal({ title, termRefs, translationRefs, onClose 
             title={<span className={s.title}>{title}</span>}
             isDismissable
             onClose={onClose}
-            width={widerModal ? 'wider' : 'wide'}
+            width={widerModal ? 'wider' : 'medium'}
         >
             {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} setWiderModal={setWiderModal} />}
-            {!!translationRefs.length && !termRefs.length && <ModalTranslations translationRefs={translationRefs} />}
+            {!!translationRefs.length && !termRefs.length && (
+                <ModalTranslations translationRefs={translationRefs} setWiderModal={setWiderModal} />
+            )}
 
             <div className={s.buttonContainer}>
                 <ButtonContainer>
@@ -78,7 +80,7 @@ const ModalTerms = ({
                 </>
             )}
 
-            {otherTerms.length !== 0 && (
+            {!!otherTerms.length && (
                 <div className={s.otherTerms}>
                     <h3>
                         <Trans t={t} i18nKey="textChecker.result.otherTerms" components={{ Term: <TitleWrapped /> }} />
@@ -114,34 +116,32 @@ const Guidelines = ({ term }: { term: Term }) => {
     );
 };
 
-const ModalTranslations = ({ translationRefs }: Pick<ModalProps, 'translationRefs'>) => {
+const ModalTranslations = ({
+    translationRefs,
+    setWiderModal,
+}: Pick<ModalProps, 'translationRefs'> & { setWiderModal: (wide: boolean) => void }) => {
     const { t } = useTranslation();
     const getTranslations = useTranslations(translationRefs);
     const translations = getTranslations();
 
+    useEffect(() => {
+        setWiderModal(translationRefs.length > 1);
+    }, [setWiderModal, translationRefs.length]);
+
     return (
         <div>
             <h3>{t('textChecker.result.termsHeading')}</h3>
-            <ul className={s.translationList}>
+            <div className={s.translationList}>
                 {translations.map(translation => (
                     <ModalTranslationTerm key={translation.id} translation={translation} />
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };
 
 const ModalTranslationTerm = ({ translation }: { translation: Translation }) => {
-    const langIdentifier = useLangIdentifier();
     const getTerm = useDocument(translation.term);
     const term = getTerm();
-    return (
-        <li className={s.translation}>
-            <Link className={s.translationTerm} to={generatePath(TERM, { termId: term.id })}>
-                <TermWithLang term={term} />
-            </Link>
-            {term.definition[langIdentifier] && <>: </>}
-            {term.definition[langIdentifier]}
-        </li>
-    );
+    return <TermItem term={term} />;
 };
