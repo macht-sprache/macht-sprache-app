@@ -79,6 +79,16 @@
     color: inherit;
 }
 
+.moreButton:before {
+    --width: 2.5rem;
+    content: '';
+    position: absolute;
+    right: calc(50% - var(--width) / 2);
+    top: 100%;
+    width: var(--width);
+    height: 2.5rem;
+}
+
 .moreButton:hover {
     font-weight: 600;
 }
