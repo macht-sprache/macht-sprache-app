@@ -9,6 +9,8 @@ type CommonProps = {
     span?: number;
     busy?: boolean;
     optional?: boolean;
+    dontAnimateLabel?: boolean;
+    inputClassName?: string;
 };
 
 type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & CommonProps;
@@ -22,6 +24,8 @@ export function Input({
     error,
     inlineButton,
     optional,
+    dontAnimateLabel,
+    inputClassName,
     ...props
 }: InputProps) {
     const inputProps = { value, disabled, ...props };
@@ -37,8 +41,9 @@ export function Input({
             empty={!value}
             optional={optional}
             placeholder={props.placeholder}
+            dontAnimateLabel={dontAnimateLabel}
         >
-            <input className={s.input} aria-invalid={!!error} {...inputProps} />
+            <input className={clsx(s.input, inputClassName)} aria-invalid={!!error} {...inputProps} />
         </Container>
     );
 }
@@ -56,6 +61,8 @@ export function Select({
     inlineButton,
     busy,
     optional,
+    dontAnimateLabel,
+    inputClassName,
     ...props
 }: SelectProps) {
     const selectProps = { value, disabled, ...props };
@@ -70,8 +77,9 @@ export function Select({
             label={label}
             empty={!value}
             optional={optional}
+            dontAnimateLabel={dontAnimateLabel}
         >
-            <select className={s.select} aria-invalid={!!error} {...selectProps}>
+            <select className={clsx(s.select, inputClassName)} aria-invalid={!!error} {...selectProps}>
                 {children}
             </select>
         </Container>
@@ -92,6 +100,8 @@ export function Textarea({
     maxLength,
     minHeight,
     optional,
+    dontAnimateLabel,
+    inputClassName,
     ...props
 }: TextareaProps) {
     const { t } = useTranslation();
@@ -111,9 +121,10 @@ export function Textarea({
             optional={optional}
             warning={displayCharLimitWarning ? t('common.textAeraCharWarning', { count: charLeft }) : undefined}
             placeholder={props.placeholder}
+            dontAnimateLabel={dontAnimateLabel}
         >
             <div className={s.textAreaWrapper}>
-                <textarea className={s.textarea} aria-invalid={!!error} {...textareaProps} />
+                <textarea className={clsx(s.textarea, inputClassName)} aria-invalid={!!error} {...textareaProps} />
                 <div className={s.textareaDummy} aria-hidden="true" style={{ minHeight }}>
                     {textareaProps.value ? textareaProps.value + ' ' : ' '}
                 </div>
@@ -134,6 +145,7 @@ const Container = ({
     warning,
     optional,
     placeholder,
+    dontAnimateLabel,
 }: {
     children: React.ReactNode;
     error?: React.ReactNode;
@@ -146,6 +158,7 @@ const Container = ({
     warning?: string;
     optional?: boolean;
     placeholder?: string;
+    dontAnimateLabel?: boolean;
 }) => {
     const { t } = useTranslation();
 
@@ -156,6 +169,7 @@ const Container = ({
                 [s.containerDisabled]: disabled,
                 [s.containerBusy]: busy,
                 [s.hasPlaceholder]: !!placeholder,
+                [s.dontAnimateLabel]: dontAnimateLabel,
             })}
             style={{ gridColumn: `span ${span}` }}
         >

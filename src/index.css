@@ -22,6 +22,7 @@ body {
     --disabledGrey: rgb(128, 128, 128);
     --placeholderGrey: rgb(184, 184, 184);
     --disabledGreyBackground: rgb(250, 248, 248);
+    --disabledGreyBackgroundDark: rgb(224, 224, 224);
     --backgroundColor: var(--white);
 
     --thickBorder: 2px;

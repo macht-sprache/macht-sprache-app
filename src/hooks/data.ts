@@ -18,6 +18,7 @@ import {
     TermIndex,
     Translation,
     TranslationExample,
+    TranslationIndex,
     User,
     UserProperties,
     UserSettings,
@@ -105,7 +106,18 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
         const { term, creator, createdAt, value, variants, lang, ratings, commentCount, definition } = snapshot.data(
             defaultSnapshotOptions
         );
-        return { id: snapshot.id, term, creator, createdAt, value, variants, lang, ratings, commentCount, definition };
+        return {
+            id: snapshot.id,
+            term: addConverterToRef(term),
+            creator,
+            createdAt,
+            value,
+            variants,
+            lang,
+            ratings,
+            commentCount,
+            definition,
+        };
     },
 };
 
@@ -115,6 +127,17 @@ const TermIndexConverter: firebase.firestore.FirestoreDataConverter<TermIndex> =
         return { lemmas: JSON.stringify(lemmas), ...rest };
     },
     fromFirestore: (snapshot): TermIndex => {
+        const { ref, lang, lemmas } = snapshot.data(defaultSnapshotOptions);
+        return { ref: addConverterToRef(ref), lang, lemmas: JSON.parse(lemmas) };
+    },
+};
+
+const TranslationIndexConverter: firebase.firestore.FirestoreDataConverter<TranslationIndex> = {
+    toFirestore: (translationIndex: TranslationIndex) => {
+        const { lemmas, ...rest } = translationIndex;
+        return { lemmas: JSON.stringify(lemmas), ...rest };
+    },
+    fromFirestore: (snapshot): TranslationIndex => {
         const { ref, lang, lemmas } = snapshot.data(defaultSnapshotOptions);
         return { ref: addConverterToRef(ref), lang, lemmas: JSON.parse(lemmas) };
     },
@@ -286,6 +309,7 @@ export const collections = {
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
     termIndex: db.collection('termIndex').withConverter(TermIndexConverter),
+    translationIndex: db.collection('translationIndex').withConverter(TranslationIndexConverter),
     translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),
     sources: db.collection('sources').withConverter(SourceConverter),
     sensitiveTerms: db.collection('sensitiveTerms').withConverter(SensitiveTermsConverter),

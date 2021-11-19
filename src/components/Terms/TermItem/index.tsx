@@ -3,18 +3,20 @@ import { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { generatePath, useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { CommentItem } from '../../Comments/CommentItem';
-import { FormatDate } from '../../FormatDate';
 import { collections, getCommentsRef, getTranslationsRef } from '../../../hooks/data';
 import { GetList, useCollection } from '../../../hooks/fetch';
-import { Redact } from '../../RedactSensitiveTerms';
+import { langA } from '../../../languages';
 import { TERM } from '../../../routes';
+import { Comment, Term } from '../../../types';
+import { useLang } from '../../../useLang';
+import { getDominantLanguageClass } from '../../../useLangCssVars';
+import { stopPropagation } from '../../../utils';
+import { CommentItem } from '../../Comments/CommentItem';
+import { FormatDate } from '../../FormatDate';
+import { Redact } from '../../RedactSensitiveTerms';
 import { TermWithLang } from '../../TermWithLang';
 import { TranslationsList } from '../../TranslationsList';
-import { Term, Comment } from '../../../types';
-import { getDominantLanguageClass } from '../../../useLangCssVars';
 import { UserInlineDisplay } from '../../UserInlineDisplay';
-import { stopPropagation } from '../../../utils';
 import s from './style.module.css';
 
 const EMPTY_ARRAY: never[] = [];
@@ -27,6 +29,8 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
     const getTranslations = useCollection(getTranslationsRef(termRef));
     const history = useHistory();
     const { t } = useTranslation();
+    const [lang] = useLang();
+    const definition = term.definition[lang === langA ? 'langA' : 'langB'];
 
     const translations = getTranslations();
     const pathToTerm = generatePath(TERM, { termId: term.id });
@@ -60,6 +64,7 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                     {size === 'medium' && (
                         <>
                             <section className={s.section}>
+                                {definition && <p className={s.definition}>{definition}</p>}
                                 <h2 className={s.bodyHeading}>
                                     {translations.length}{' '}
                                     {t('common.entities.translation.value', { count: translations.length })}:

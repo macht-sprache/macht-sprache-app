@@ -351,25 +351,28 @@
         "title": "Text Checker",
         "subLine": "Hilfe bei sensiblen Übersetzungen",
         "entry": {
-            "description": "Füge einen Text ein, den du auf sensible Begriffe überprüfen möchtest:",
+            "description": "Füge einen Text ein, den du auf sensible Begriffe überprüfen möchtest",
             "type": {
                 "label": "Textart",
                 "original": "Original",
                 "translation": "Übersetzung"
             },
-            "text": "Text",
-            "submit": "Überprüfe Text"
+            "submit": "Text überprüfen",
+            "submitBusy": "Überprüfe..."
         },
         "result": {
-            "description": "Sensible Bgriffe sind hervorgehoben. Klick für mehr Informationen.",
+            "description": "Analyseergebnis:",
             "nothingFound": "Es wurde kein sensibler Begriff gefunden. Markiere einen Begriff, um ihn hinzuzufügen.",
             "cancel": "Text editieren",
             "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
             "translationsHeading": "Mögliche Übersetzungen:",
-            "clickHint": "Klick für mehr Informationen",
+            "termsHeading": "Mögliche Übersetzung für:",
+            "otherTerms": "Andere Begriffe, die mit <Term /> übereinstimmen",
             "modal": {
                 "close": "Zurück",
-                "discuss": "Diskutiere oder schlage neue Übersetzung vor"
+                "discuss": "Diskutiere oder schlage neue Übersetzung vor",
+                "headingTerms": "Beste Übereinstimmung",
+                "headingGuidelines": "Passende Leitlinien aus <ManifestoLink>dem Manifest</ManifestoLink>"
             }
         }
     },

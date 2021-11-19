@@ -11,8 +11,21 @@
     border: var(--thickBorder) solid var(--black);
 }
 
+.container.disabled {
+    border-width: var(--thinBorder);
+    border-color: var(--disabledGrey);
+}
+
 .container:focus-within {
     border: var(--thickBorder) solid var(--orange);
+}
+
+.containerLabel {
+    margin-bottom: 0.5rem;
+}
+
+.containerLabel.disabled {
+    color: var(--disabledGrey);
 }
 
 .label {
@@ -62,4 +75,19 @@
         var(--colorLangA) var(--sw),
         var(--colorLangA) calc(var(--sw) * 2)
     );
+}
+
+.disabled .label {
+    cursor: default;
+    color: var(--disabledGrey);
+}
+
+.disabled .radio:checked + .label {
+    font-weight: normal;
+    background: var(--disabledGreyBackgroundDark);
+}
+
+.radioWrapper.disabled + .radioWrapper.disabled .label {
+    border-left-width: var(--thinBorder);
+    border-color: var(--disabledGrey);
 }

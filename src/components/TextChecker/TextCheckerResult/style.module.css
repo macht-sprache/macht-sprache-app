@@ -1,9 +1,12 @@
 .analysisContainer {
-    padding: 1rem;
-    border: var(--thinBorder) solid var(--black);
-    background: var(--white);
     font-family: var(--paragraphFont);
-    margin-bottom: 1rem;
+    min-height: calc(300px - 2rem);
+}
+
+@media (min-width: 1100px) {
+    .analysisContainer {
+        font-size: var(--fontSizeL);
+    }
 }
 
 .analysisContainer p > * {
@@ -34,6 +37,7 @@
 .sensitiveWordHovered,
 .sensitiveWord:hover {
     box-shadow: 0 0 0 2px var(--lang-color);
+    text-decoration: underline;
 }
 
 .tooltip {
@@ -41,52 +45,17 @@
     font-size: var(--fontSizeS);
 }
 
-.tooltip p:last-child {
-    margin-bottom: 0;
+.tooltip p {
+    margin: 0;
+}
+
+.tooltip p + p {
+    margin-top: 0.5rem;
 }
 
 .tooltipDefinition {
-    margin: 0 0 0.5rem;
     font-style: italic;
 }
-
-.tooltipList {
-    display: inline;
-    list-style: none;
-    padding: 0;
-}
-
-.tooltipListItem {
-    display: inline;
-}
-
-.tooltipListItem + .tooltipListItem:before {
-    content: ', ';
-}
-
-.overlayTranslationTerm {
-    font-weight: bold;
-}
-
-.overlayContainer {
-    font-family: var(--paragraphFont);
-    line-height: var(--lineHeightParagraph);
-}
-
-.overlayTitle {
-    font-size: var(--fontSizeL);
-}
-
-.overlayTranslationList {
-    padding: 0;
-    margin: 0 0 2rem;
-}
-
-.overlayTranslation {
-    padding: 0;
-    margin-bottom: 0;
-}
-
-.overlayTranslation + .overlayTranslation {
-    margin-top: 1rem;
+.textLabel {
+    margin-bottom: 1rem;
 }

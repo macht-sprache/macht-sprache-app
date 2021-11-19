@@ -44,3 +44,45 @@
     line-height: var(--lineHeightParagraph);
     margin-top: 0;
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.closeButton {
+    --background: var(--black);
+    flex: 0 0 auto;
+    position: relative;
+    border: none;
+    height: 3rem;
+    width: 3rem;
+    background: var(--white);
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.closeButton:hover {
+    --background: var(--orange);
+}
+
+.closeButton:before,
+.closeButton:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    background: var(--background);
+    height: 0.3rem;
+    width: calc(100% - 0.5rem);
+}
+
+.closeButton:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.closeButton:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}

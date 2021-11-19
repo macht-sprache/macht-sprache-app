@@ -1,7 +1,9 @@
 import without from 'lodash/without';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DocReference, Term, Translation } from '../../types';
+import { Get, useDocument } from '../../hooks/fetch';
+import { DocReference, Index, Term, Translation } from '../../types';
+import DividedList from '../DividedList';
 import Button, { ButtonContainer } from '../Form/Button';
 import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
@@ -11,9 +13,9 @@ import s from './style.module.css';
 
 type Entity = Term | Translation;
 
-type Props<T extends Entity> = { entity: T; entityRef: DocReference<T> };
+type Props<T extends Entity> = { entity: T; entityRef: DocReference<T>; indexRef: DocReference<Index<T>> };
 
-export default function EditVariants<T extends Entity>({ entity, entityRef }: Props<T>) {
+export default function EditVariants<T extends Entity>({ entity, entityRef, indexRef }: Props<T>) {
     const [overlayOpen, setOverlayOpen] = useState(false);
     const { t } = useTranslation();
 
@@ -24,9 +26,8 @@ export default function EditVariants<T extends Entity>({ entity, entityRef }: Pr
                 <EditVariantsOverlay
                     entity={entity}
                     entityRef={entityRef}
-                    onClose={() => {
-                        setOverlayOpen(false);
-                    }}
+                    indexRef={indexRef}
+                    onClose={() => setOverlayOpen(false)}
                 />
             )}
         </>
@@ -37,10 +38,11 @@ type OverlayProps<T extends Entity> = Props<T> & {
     onClose: () => void;
 };
 
-function EditVariantsOverlay<T extends Entity>({ entity, entityRef, onClose }: OverlayProps<T>) {
+function EditVariantsOverlay<T extends Entity>({ entity, entityRef, indexRef, onClose }: OverlayProps<T>) {
     const { t } = useTranslation();
     const [isSaving, setIsSaving] = useState(false);
     const [variants, setVariants] = useState(entity.variants);
+    const getIndex = useDocument(indexRef);
 
     const onSave = () => {
         setIsSaving(true);
@@ -52,6 +54,7 @@ function EditVariantsOverlay<T extends Entity>({ entity, entityRef, onClose }: O
 
     return (
         <ModalDialog title={t('common.entities.variant.edit')} onClose={onClose}>
+            <IndexDisplay getIndex={getIndex} />
             <div className={s.variants}>
                 {variants.length === 0 ? (
                     t('common.entities.variant.empty')
@@ -120,8 +123,28 @@ function Variant({
                 />
                 <Button onClick={onDelete} disabled={isSaving}>
                     {t('common.formNav.delete')}
-                </Button>{' '}
+                </Button>
             </InputContainer>
         </div>
+    );
+}
+
+function IndexDisplay<T extends Entity>({ getIndex }: { getIndex: Get<Index<T>> }) {
+    const index = getIndex(true);
+
+    if (!index) {
+        return null;
+    }
+
+    return (
+        <p lang={index.lang}>
+            <DividedList divider=", ">
+                {index.lemmas.map((ll, i) => (
+                    <DividedList key={i} divider="|">
+                        {ll.map(l => l)}
+                    </DividedList>
+                ))}
+            </DividedList>
+        </p>
     );
 }

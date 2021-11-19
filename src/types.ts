@@ -41,7 +41,7 @@ export interface Term extends Commentable {
     guidelines: string[];
 }
 
-interface Index<T> {
+export interface Index<T> {
     ref: DocReference<T>;
     lang: Lang;
     lemmas: string[][];

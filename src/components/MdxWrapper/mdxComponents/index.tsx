@@ -1,7 +1,7 @@
 import { MDXProviderComponents } from '@mdx-js/react';
 import { HashLink } from 'react-router-hash-link';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
-import CollapsableSection from '../../Layout/CollapsableSection';
+import CollapsableSection, { CollapsableSectionContainer } from '../../Layout/CollapsableSection';
 import PullQuote from '../../PullQuote';
 import TermExample from '../../TermExample';
 import TermExampleContainer from '../../TermExampleContainer';
@@ -12,6 +12,7 @@ const components: MDXProviderComponents = {
     ButtonAnchor,
     ButtonContainer,
     CollapsableSection,
+    CollapsableSectionContainer,
     TermExample,
     TermExampleContainer,
     PullQuote,
