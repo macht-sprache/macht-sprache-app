@@ -20,6 +20,9 @@ type BaseProps = {
 
 type Props = BaseProps & {
     lang: Lang;
+    showModal: boolean;
+    openModal: () => void;
+    closeModal: () => void;
     onTooltipVisibleChange: (isVisible: boolean) => void;
 };
 
@@ -27,10 +30,18 @@ type TooltipProps = BaseProps & {
     onClick: () => void;
 };
 
-const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRefs, lang, onTooltipVisibleChange }) => {
+const HighlightedPhrase: React.FC<Props> = ({
+    children,
+    termRefs,
+    translationRefs,
+    lang,
+    showModal,
+    openModal,
+    closeModal,
+    onTooltipVisibleChange,
+}) => {
     const { t } = useTranslation();
     const [tooltipOpen, setTooltipOpen] = useState(false);
-    const [overlayOpen, setOverlayOpen] = useState(false);
 
     return (
         <>
@@ -44,11 +55,7 @@ const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRef
                             </>
                         }
                     >
-                        <PhraseTooltip
-                            termRefs={termRefs}
-                            translationRefs={translationRefs}
-                            onClick={() => setOverlayOpen(true)}
-                        />
+                        <PhraseTooltip termRefs={termRefs} translationRefs={translationRefs} onClick={openModal} />
                     </Suspense>
                 }
                 placement="bottom"
@@ -60,22 +67,20 @@ const HighlightedPhrase: React.FC<Props> = ({ children, termRefs, translationRef
                 mouseLeaveDelay={0.2}
             >
                 <button
-                    onClick={() => {
-                        setOverlayOpen(true);
-                    }}
+                    onClick={openModal}
                     className={clsx(s.sensitiveWord, { [s.sensitiveWordHovered]: tooltipOpen })}
                     lang={lang}
                 >
                     {children}
                 </button>
             </Tooltip>
-            {overlayOpen && (
+            {showModal && (
                 <Suspense fallback={null}>
                     <PhraseModal
                         title={<WrappedInLangColor lang={lang}>{children}</WrappedInLangColor>}
                         termRefs={termRefs}
                         translationRefs={translationRefs}
-                        onClose={() => setOverlayOpen(false)}
+                        onClose={closeModal}
                     />
                 </Suspense>
             )}

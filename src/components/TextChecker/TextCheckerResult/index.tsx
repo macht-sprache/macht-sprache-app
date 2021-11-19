@@ -1,7 +1,9 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory, useLocation } from 'react-router';
 import { GetList } from '../../../hooks/fetch';
+import { addSearchParam } from '../../../hooks/location';
 import { AddTermPageState } from '../../../pages/AddTermPage';
 import { TERM_ADD } from '../../../routes';
 import { Lang, TermIndex, TextToken, TranslationIndex } from '../../../types';
@@ -22,8 +24,27 @@ type Props = {
     onCancel: () => void;
 };
 
+const useShowModal = () => {
+    const key = 'showMatch';
+    const location = useLocation();
+    const history = useHistory();
+    const param = new URLSearchParams(location.search).get(key);
+
+    const showModal = param && parseInt(param);
+    const openModal = useCallback(
+        (textIndex: number) => {
+            history.push(addSearchParam(location.pathname, [key, textIndex.toString()]), location.state);
+        },
+        [history, location.pathname, location.state]
+    );
+    const closeModal = useCallback(() => history.goBack(), [history]);
+
+    return { showModal, openModal, closeModal };
+};
+
 export default function Analysis({ lang, getTermIndex, getTranslationIndex, text, analyzedText, onCancel }: Props) {
     const { t } = useTranslation();
+    const { showModal, openModal, closeModal } = useShowModal();
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const termIndex = useIndexGrouped(getTermIndex, lang);
     const translationIndex = useIndexGrouped(getTranslationIndex, lang);
@@ -42,6 +63,9 @@ export default function Analysis({ lang, getTermIndex, getTranslationIndex, text
                 <span key={index + 'a'}>{text.substring(prevEnd, start)}</span>,
                 <HighlightedPhrase
                     key={index + 'b'}
+                    showModal={showModal === start}
+                    openModal={() => openModal(start)}
+                    closeModal={closeModal}
                     lang={lang}
                     termRefs={matchGroup.termMatches.map(match => match.ref)}
                     translationRefs={matchGroup.translationMatches.map(match => match.ref)}
