@@ -1,11 +1,10 @@
-import s from './style.module.css';
-import { useOverlay, usePreventScroll, useModal, OverlayContainer } from '@react-aria/overlays';
-
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
-import { useRef } from 'react';
+import { OverlayContainer, useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
 import clsx from 'clsx';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import s from './style.module.css';
 
 type ModalDialogProps = {
     onClose: () => void;
