@@ -50,7 +50,8 @@
 
 .inputContainer {
     position: relative;
-    min-height: 3.5rem;
+    min-height: 3.7rem;
+    height: 100%;
 }
 
 .input {
