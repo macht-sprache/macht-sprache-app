@@ -1,4 +1,4 @@
-import { LanguageServiceClient } from '@google-cloud/language';
+import { LanguageServiceClient, protos } from '@google-cloud/language';
 import { all, isNil, last, partition, slice, zip } from 'rambdax';
 import { Lang, TextToken } from '../../../src/types';
 
@@ -49,6 +49,8 @@ export const findTermMatches = async (term: string, snippet: string, language: L
     return termMatches;
 };
 
+const excludedTags: (keyof typeof protos.google.cloud.language.v1.PartOfSpeech.Tag)[] = ['PUNCT', 'X'];
+
 export const findLemmas = async (content: string, language: Lang): Promise<TextToken[]> => {
     const [{ tokens }] = await languageClient.analyzeSyntax({
         document: {
@@ -60,7 +62,7 @@ export const findLemmas = async (content: string, language: Lang): Promise<TextT
     });
 
     return (tokens || [])
-        .filter(token => token.partOfSpeech?.tag !== 'PUNCT')
+        .filter(token => typeof token.partOfSpeech?.tag === 'string' && !excludedTags.includes(token.partOfSpeech.tag))
         .map(token => ({
             lemma: token.lemma!,
             pos: [token.text!.beginOffset!, token.text!.beginOffset! + token.text!.content!.length],
