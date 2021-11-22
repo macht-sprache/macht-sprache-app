@@ -2,8 +2,7 @@ import firebase from 'firebase/compat/app';
 import xor from 'lodash/xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
+import { Link, useParams } from 'react-router-dom';
 import BetaWrapper from '../../components/BetaWrapper';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
@@ -208,7 +207,7 @@ function Guidelines({
             Guidelines:{' '}
             {guidelines.map(guideline => (
                 <span className={s.guideline} key={guideline.id}>
-                    <HashLink to={`${MANIFESTO}#${guideline.id}`}>{guideline.title}</HashLink>
+                    <Link to={`${MANIFESTO}#${guideline.id}`}>{guideline.title}</Link>
                 </span>
             ))}
         </p>

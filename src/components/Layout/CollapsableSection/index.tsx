@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router';
+import { useScrollHashIntoView } from '../../../hooks/useScrollHashIntoView';
 import { useDomId } from '../../../useDomId';
 import s from './style.module.css';
 
@@ -18,20 +18,15 @@ export default function CollapsableSection({
     isOpenDefault?: boolean;
     domId?: string;
 }) {
-    const [isOpen, setIsOpen] = useState(window.location.hash === `#${domId}` || isOpenDefault);
+    const [isOpen, setIsOpen] = useState(isOpenDefault);
+    const openSection = useCallback(() => setIsOpen(true), []);
+    const ref = useScrollHashIntoView(openSection);
     const id = useDomId();
-    const location = useLocation();
     const { t } = useTranslation();
-
-    useEffect(() => {
-        if (window.location.hash === `#${domId}`) {
-            setIsOpen(true);
-        }
-    }, [location, domId]);
 
     return (
         <section className={clsx(s.section, { [s.open]: isOpen })}>
-            <h3 className={s.heading} id={domId}>
+            <h3 className={s.heading} id={domId} ref={ref}>
                 <button
                     onClick={() => {
                         setIsOpen(!isOpen);

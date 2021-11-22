@@ -1,5 +1,5 @@
 import { MDXProviderComponents } from '@mdx-js/react';
-import { HashLink } from 'react-router-hash-link';
+import { Link } from 'react-router-dom';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import CollapsableSection, { CollapsableSectionContainer } from '../../Layout/CollapsableSection';
 import PullQuote from '../../PullQuote';
@@ -25,9 +25,9 @@ const components: MDXProviderComponents = {
     a: ({ href, ...props }) => {
         if (href?.startsWith('/')) {
             return (
-                <HashLink to={href} title={props.title}>
+                <Link to={href} title={props.title}>
                     {props.children}
-                </HashLink>
+                </Link>
             );
         }
         // eslint-disable-next-line jsx-a11y/anchor-has-content
