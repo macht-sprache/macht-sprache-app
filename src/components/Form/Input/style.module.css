@@ -50,6 +50,7 @@
 
 .inputContainer {
     position: relative;
+    min-height: 3.5rem;
 }
 
 .input {
@@ -59,7 +60,7 @@
     border: none;
     background: transparent;
     font-size: inherit;
-    padding: 2rem 0.5rem 0.5rem;
+    padding: 0rem 0.5rem 0.5rem;
     color: inherit;
     opacity: 1;
 }
@@ -70,9 +71,7 @@
 
 .label,
 .labelEmpty {
-    position: absolute;
-    left: 0.5rem;
-    top: 0.7rem;
+    padding: 0.6rem 0.5rem 0.4rem;
     transition: all 0.2s;
     pointer-events: none;
     transform: translateY(0);
@@ -112,6 +111,12 @@
 }
 
 .select {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-top: 2rem;
     composes: input;
     -webkit-appearance: none;
     cursor: pointer;

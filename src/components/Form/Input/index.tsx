@@ -125,7 +125,7 @@ export function Textarea({
         >
             <div className={s.textAreaWrapper}>
                 <textarea className={clsx(s.textarea, inputClassName)} aria-invalid={!!error} {...textareaProps} />
-                <div className={s.textareaDummy} aria-hidden="true" style={{ minHeight }}>
+                <div className={clsx(s.textareaDummy, inputClassName)} aria-hidden="true" style={{ minHeight }}>
                     {textareaProps.value ? textareaProps.value + ' ' : ' '}
                 </div>
             </div>
@@ -173,11 +173,11 @@ const Container = ({
             })}
             style={{ gridColumn: `span ${span}` }}
         >
-            <div className={empty ? s.labelEmpty : s.label}>
-                {label}
-                {optional && <> ({t('common.optional')})</>}
-            </div>
             <div className={s.inputContainer}>
+                <div className={empty ? s.labelEmpty : s.label}>
+                    {label}
+                    {optional && <> ({t('common.optional')})</>}
+                </div>
                 {children}
                 {inlineButton && <div className={s.inlineButton}>{inlineButton}</div>}
             </div>

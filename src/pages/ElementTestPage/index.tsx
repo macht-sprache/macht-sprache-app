@@ -161,7 +161,7 @@ export default function ElementTestPage() {
                 </Select>
                 <Input
                     label="Another field, busy"
-                    // busy={true}
+                    busy={true}
                     value={another}
                     onChange={value => {
                         setAnother(value.target.value);
@@ -174,6 +174,25 @@ export default function ElementTestPage() {
                     onChange={value => {
                         setAnother(value.target.value);
                     }}
+                />
+                <Input
+                    label="Another field, with inline button"
+                    value={another}
+                    span={2}
+                    onChange={value => {
+                        setAnother(value.target.value);
+                    }}
+                    inlineButton={<Button>huhu</Button>}
+                />
+                <Input
+                    label="with button and error"
+                    span={2}
+                    value={another}
+                    onChange={value => {
+                        setAnother(value.target.value);
+                    }}
+                    inlineButton={<Button>huhu</Button>}
+                    error="something is wrong here!"
                 />
                 <Textarea
                     label="Comment"
