@@ -115,7 +115,7 @@ const TooltipTerm = ({ term }: { term: Term }) => {
     return (
         <>
             {termDefinition && <p className={s.tooltipDefinition}>{termDefinition}</p>}
-            {!!translations.length && (
+            {!!translations.length ? (
                 <p>
                     <strong>{t('textChecker.result.translationsHeading')}</strong>{' '}
                     <DividedList divider=", ">
@@ -124,6 +124,8 @@ const TooltipTerm = ({ term }: { term: Term }) => {
                         ))}
                     </DividedList>
                 </p>
+            ) : (
+                <p>{t('translation.emptyShort')}</p>
             )}
         </>
     );

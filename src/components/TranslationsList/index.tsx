@@ -53,7 +53,7 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
                 <p>
                     <Trans
                         t={t}
-                        i18nKey="translation.empty"
+                        i18nKey={size === 'small' ? 'translation.emptyShort' : 'translation.empty'}
                         values={{ term: term.value }}
                         components={{ TermWithLang: <TermWithLang term={term} /> }}
                     />

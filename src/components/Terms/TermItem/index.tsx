@@ -65,10 +65,12 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                         <>
                             <section className={s.section}>
                                 {definition && <p className={s.definition}>{definition}</p>}
-                                <h2 className={s.bodyHeading}>
-                                    {translations.length}{' '}
-                                    {t('common.entities.translation.value', { count: translations.length })}:
-                                </h2>
+                                {!!translations.length && (
+                                    <h2 className={s.bodyHeading}>
+                                        {translations.length}{' '}
+                                        {t('common.entities.translation.value', { count: translations.length })}:
+                                    </h2>
+                                )}
                                 <div className={s.sectionBody}>
                                     <TranslationsList
                                         term={term}
