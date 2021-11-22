@@ -8,7 +8,6 @@ import { DocReference, Term, Translation } from '../../../../types';
 import Button, { ButtonContainer, ButtonLink } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
 import { Columns } from '../../../Layout/Columns';
-import LinkButton from '../../../LinkButton';
 import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
