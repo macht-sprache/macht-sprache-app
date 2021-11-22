@@ -87,9 +87,11 @@ const ModalTerms = ({
                     <h3>
                         <Trans t={t} i18nKey="textChecker.result.otherTerms" components={{ Term: <TitleWrapped /> }} />
                     </h3>
-                    {otherTerms.map(term => (
-                        <TermItem key={term.id} term={term} size="small" />
-                    ))}
+                    <div className={s.otherTermsList}>
+                        {otherTerms.map(term => (
+                            <TermItem key={term.id} term={term} size="small" />
+                        ))}
+                    </div>
                 </div>
             )}
         </>

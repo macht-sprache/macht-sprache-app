@@ -25,3 +25,9 @@
     grid-template-columns: 1fr;
     gap: 1rem;
 }
+
+.otherTermsList {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
