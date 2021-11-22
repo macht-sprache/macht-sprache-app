@@ -61,7 +61,11 @@
 }
 
 .capitalize {
-    text-transform: capitalize;
+    display: inline-block;
+}
+
+.capitalize::first-letter {
+    text-transform: uppercase;
 }
 
 .subline {
