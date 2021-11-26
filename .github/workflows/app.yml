@@ -40,6 +40,14 @@ jobs:
               with:
                   name: app-build
                   path: build
+            - name: Deploy static files
+              uses: actions-hub/gcloud@master
+              env:
+                  PROJECT_ID: ${{ secrets.FIREBASE_PROJECT }}
+                  APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+              with:
+                  args: -h 'Cache-Control:public, max-age=31536000' -m cp -n -z js,svg,css ./build/* gs://macht-sprache-static-assets/static
+                  cli: gsutil
             - name: Get Deploy Channel ID
               run: echo ::set-output name=short::${GITHUB_REF#refs/*/}
               id: ref
