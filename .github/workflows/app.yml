@@ -27,6 +27,7 @@ jobs:
                   REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
                   REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
                   REACT_APP_FIREBASE_REGION: ${{ secrets.FIREBASE_REGION }}
+                  PUBLIC_URL: https://storage.googleapis.com/macht-sprache-static-assets/
             - uses: actions/upload-artifact@v2
               with:
                   name: app-build
@@ -46,7 +47,7 @@ jobs:
                   PROJECT_ID: ${{ secrets.FIREBASE_PROJECT }}
                   APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
               with:
-                  args: -h 'Cache-Control:public, max-age=31536000' -m cp -n -z js,svg,css ./build/* gs://macht-sprache-static-assets/static
+                  args: -h 'Cache-Control:public, max-age=31536000' -m cp -n -z js,svg,css ./build/static/* gs://macht-sprache-static-assets/static
                   cli: gsutil
             - name: Get Deploy Channel ID
               run: echo ::set-output name=short::${GITHUB_REF#refs/*/}
