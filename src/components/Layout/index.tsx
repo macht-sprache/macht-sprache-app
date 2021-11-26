@@ -109,21 +109,21 @@ function Sidebar() {
             <nav className={s.sidebarInner}>
                 {launched && (
                     <>
+                        {userProperties?.betaAccess && (
+                            <>
+                                <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
+                                <NavItem to={MANIFESTO} label={'Manifesto'} />
+                            </>
+                        )}
                         <NavItem to={TERMS} label={t('common.entities.term.value_plural')} />
                         <Suspense fallback={null}>
                             <SidebarTerms />
                         </Suspense>
-                        {userProperties?.betaAccess && (
-                            <>
-                                <NavItem to={MANIFESTO} label={'Manifesto'} />
-                                <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
-                            </>
-                        )}
-                        <NavItem to={NEWS} label={t('nav.news')} />
                     </>
                 )}
                 <NavItem to={ABOUT} label={t('nav.about')} />
                 <NavItem to={CODE_OF_CONDUCT} label={t('nav.coc')} />
+                {launched && <NavItem to={NEWS} label={t('nav.news')} />}
             </nav>
             <footer className={s.sidebarInner}>
                 {userProperties?.admin && <NavItem to={ADMIN} label="admin" />}
