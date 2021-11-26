@@ -10,8 +10,6 @@ import { TranslationProvider } from './i18n/config';
 import AddTermPage from './pages/AddTermPage';
 import AddTranslationExamplePage from './pages/AddTranslationExamplePage';
 import AddTranslationPage from './pages/AddTranslationPage';
-import AdminCommentsPage from './pages/AdminCommentsPage/lazy';
-import AdminContentPage from './pages/AdminContentPage/lazy';
 import AdminPage from './pages/AdminPage/lazy';
 import ElementTestPage from './pages/ElementTestPage/lazy';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -121,14 +119,8 @@ function AppRouter() {
                                 <LaunchedRoute path={routes.USER} exact>
                                     <UserPage />
                                 </LaunchedRoute>
-                                <AdminRoute path={routes.ADMIN} exact>
+                                <AdminRoute path={routes.ADMIN}>
                                     <AdminPage />
-                                </AdminRoute>
-                                <AdminRoute path={routes.ADMIN_CONTENT} exact>
-                                    <AdminContentPage />
-                                </AdminRoute>
-                                <AdminRoute path={routes.ADMIN_COMMENTS} exact>
-                                    <AdminCommentsPage />
                                 </AdminRoute>
                                 <LaunchedRoute path={routes.NEWS} exact>
                                     <NewsPage />

@@ -1,10 +1,9 @@
-import { SimpleHeader } from '../../components/Header';
-import { collections } from '../../hooks/data';
-import { useCollection, useDocument } from '../../hooks/fetch';
-import { ColumnHeading, FullWidthColumn } from '../../components/Layout/Columns';
-import { TermItem } from '../../components/Terms/TermItem';
-import { TranslationItem } from '../../components/TranslationsList';
-import { Term, Translation } from '../../types';
+import { ColumnHeading, FullWidthColumn } from '../../../components/Layout/Columns';
+import { TermItem } from '../../../components/Terms/TermItem';
+import { TranslationItem } from '../../../components/TranslationsList';
+import { collections } from '../../../hooks/data';
+import { useCollection, useDocument } from '../../../hooks/fetch';
+import { Term, Translation } from '../../../types';
 import s from './style.module.css';
 
 export default function AdminContentPage() {
@@ -13,7 +12,6 @@ export default function AdminContentPage() {
 
     return (
         <>
-            <SimpleHeader>Administration – content</SimpleHeader>
             <FullWidthColumn>
                 <ColumnHeading>Latest 10 Terms</ColumnHeading>
                 <ListTerms terms={getTerms()} />

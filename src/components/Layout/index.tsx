@@ -3,17 +3,12 @@ import clsx from 'clsx';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link, NavLink, useHistory, useLocation } from 'react-router-dom';
-import { ContentWarning } from '../ContentWarning';
 import { useUser, useUserProperties } from '../../hooks/appContext';
 import { collections } from '../../hooks/data';
 import { useCollection } from '../../hooks/fetch';
-import LinkButton from '../LinkButton';
-import Notifications from '../Notifications';
 import {
     ABOUT,
     ADMIN,
-    ADMIN_COMMENTS,
-    ADMIN_CONTENT,
     CODE_OF_CONDUCT,
     IMPRINT,
     MANIFESTO,
@@ -23,9 +18,12 @@ import {
     TERM_SIDEBAR,
     TEXT_CHECKER,
 } from '../../routes';
-import { TopMenu } from '../TopMenu';
 import { useDomId } from '../../useDomId';
 import { useLaunched } from '../../useLaunched';
+import { ContentWarning } from '../ContentWarning';
+import LinkButton from '../LinkButton';
+import Notifications from '../Notifications';
+import { TopMenu } from '../TopMenu';
 import Footer from './Footer';
 import Logo from './logo.svg';
 import LogoSmall from './logo_small.svg';
@@ -106,32 +104,6 @@ function Sidebar() {
     const launched = useLaunched();
     const userProperties = useUserProperties();
 
-    const footerLinks = [
-        {
-            to: IMPRINT,
-            label: t('nav.imprint'),
-        },
-        {
-            to: PRIVACY,
-            label: t('nav.privacyPolicy'),
-        },
-    ];
-
-    const adminLinks = [
-        {
-            to: ADMIN,
-            label: 'admin – users',
-        },
-        {
-            to: ADMIN_COMMENTS,
-            label: 'admin – comments',
-        },
-        {
-            to: ADMIN_CONTENT,
-            label: 'admin – content',
-        },
-    ];
-
     return (
         <div className={s.sidebar}>
             <nav className={s.sidebarInner}>
@@ -152,10 +124,11 @@ function Sidebar() {
                 )}
                 <NavItem to={ABOUT} label={t('nav.about')} />
                 <NavItem to={CODE_OF_CONDUCT} label={t('nav.coc')} />
-                {userProperties?.admin && <SidebarNav links={adminLinks} />}
             </nav>
             <footer className={s.sidebarInner}>
-                <SidebarNav links={footerLinks} />
+                {userProperties?.admin && <NavItem to={ADMIN} label="admin" />}
+                <NavItem to={IMPRINT} label={t('nav.imprint')} />
+                <NavItem to={PRIVACY} label={t('nav.privacyPolicy')} />
             </footer>
         </div>
     );
