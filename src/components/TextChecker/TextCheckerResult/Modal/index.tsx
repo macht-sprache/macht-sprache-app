@@ -5,12 +5,13 @@ import { useDocument } from '../../../../hooks/fetch';
 import { useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
 import { MANIFESTO } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
-import Button, { ButtonContainer } from '../../../Form/Button';
+import Button, { ButtonContainer, ButtonLink } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
 import { Columns } from '../../../Layout/Columns';
 import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
+import { TermWithLang } from '../../../TermWithLang';
 import { getLongestEntity, useTerms, useTranslations } from '../../service';
 import s from './style.module.css';
 
@@ -99,6 +100,7 @@ const ModalTerms = ({
 };
 
 const Guidelines = ({ term }: { term: Term }) => {
+    const { t } = useTranslation();
     const getGuidelines = useGuidelines(term.guidelines);
     const guidelines = getGuidelines();
 
@@ -123,6 +125,19 @@ const Guidelines = ({ term }: { term: Term }) => {
                         </CollapsableSection>
                     ))}
                 </MdxWrapper>
+                <div className={s.manifestoLinkBox}>
+                    <p className={s.manifestoLinkText}>
+                        <Trans
+                            i18nKey="textChecker.result.modal.guidelineManifestoText"
+                            components={{ Term: <TermWithLang term={term} /> }}
+                        />
+                    </p>
+                    <ButtonContainer>
+                        <ButtonLink primary to={MANIFESTO}>
+                            {t('textChecker.result.modal.guidelineManifestoButton')}
+                        </ButtonLink>
+                    </ButtonContainer>
+                </div>
             </div>
         </div>
     );

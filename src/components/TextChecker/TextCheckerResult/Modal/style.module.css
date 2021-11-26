@@ -31,3 +31,13 @@
     grid-template-columns: 1fr;
     gap: 1rem;
 }
+
+.manifestoLinkBox {
+    padding: 1rem;
+    border: solid var(--thickBorder) var(--orange);
+    background: var(--white);
+}
+
+.manifestoLinkText {
+    margin-top: 0;
+}
