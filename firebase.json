@@ -5,20 +5,20 @@
     },
     "hosting": {
         "public": "build",
-        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+        "ignore": ["**/static/**"],
         "rewrites": [
             {
-                "source": "!/static/**",
+                "source": "**",
                 "destination": "/index.html"
             }
         ],
         "headers": [
             {
-                "source": "/static/**/*.@(css|js|map|svg|png)",
+                "source": "**",
                 "headers": [
                     {
                         "key": "Cache-Control",
-                        "value": "max-age=31536000"
+                        "value": "no-cache, public"
                     }
                 ]
             }
