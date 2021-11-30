@@ -26,8 +26,6 @@ const EVENT_SLUGS = {
 };
 
 export default function Home() {
-    const { t } = useTranslation();
-    const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
     const user = useUser();
 
     return (
@@ -41,21 +39,19 @@ export default function Home() {
                             <LatestActivity />
                         </Suspense>
                     ) : (
-                        <WpContent />
+                        <>
+                            <About />
+                            <TermsWrapped />
+                        </>
                     )}
                 </div>
                 <div>
-                    <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
-                    <Suspense fallback={null}>
-                        <Terms getTerms={getTerms} />
-                        <div className={s.button}>
-                            <ButtonContainer align="left">
-                                <ButtonLink to={TERMS}>{t('home.viewAllTerms')}</ButtonLink>
-                            </ButtonContainer>
-                        </div>
-                    </Suspense>
+                    <Events />
                     {user ? (
-                        <WpContent />
+                        <>
+                            <TermsWrapped />
+                            <About />
+                        </>
                     ) : (
                         <Suspense fallback={null}>
                             <LatestActivity />
@@ -67,14 +63,20 @@ export default function Home() {
     );
 }
 
-function WpContent() {
+function TermsWrapped() {
+    const { t } = useTranslation();
+    const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
+
     return (
-        <ErrorBoundary fallbackRender={() => null}>
-            <Suspense fallback={null}>
-                <About />
-                <Events />
-            </Suspense>
-        </ErrorBoundary>
+        <Suspense fallback={null}>
+            <ColumnHeading>{t('common.entities.term.all')}</ColumnHeading>
+            <Terms getTerms={getTerms} />
+            <div className={s.button}>
+                <ButtonContainer align="left">
+                    <ButtonLink to={TERMS}>{t('home.viewAllTerms')}</ButtonLink>
+                </ButtonContainer>
+            </div>
+        </Suspense>
     );
 }
 
@@ -83,13 +85,15 @@ function About() {
     const { t } = useTranslation();
 
     return (
-        <>
-            <ColumnHeading>{t('home.about')}</ColumnHeading>
-            <WpStyle body={getPage().body} />
-            <ButtonContainer align="left">
-                <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
-            </ButtonContainer>
-        </>
+        <ErrorBoundary fallbackRender={() => null}>
+            <Suspense fallback={null}>
+                <ColumnHeading>{t('home.about')}</ColumnHeading>
+                <WpStyle body={getPage().body} />
+                <ButtonContainer align="left">
+                    <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
+                </ButtonContainer>
+            </Suspense>
+        </ErrorBoundary>
     );
 }
 
@@ -98,10 +102,12 @@ function Events() {
     const { t } = useTranslation();
 
     return (
-        <>
-            <ColumnHeading>{t('home.events')}</ColumnHeading>
-            <WpStyle body={getPage().body} />
-        </>
+        <ErrorBoundary fallbackRender={() => null}>
+            <Suspense fallback={null}>
+                <ColumnHeading>{t('home.events')}</ColumnHeading>
+                <WpStyle body={getPage().body} />
+            </Suspense>
+        </ErrorBoundary>
     );
 }
 
