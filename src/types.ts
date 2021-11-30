@@ -31,6 +31,7 @@ export interface Term extends Commentable {
         disableExamples: boolean;
         enableCommentsOnTranslations: boolean;
         translationsAsVariants: boolean;
+        notOnlyPolitical: boolean;
     };
     adminComment: { langA: string; langB: string };
     definition: { langA: string; langB: string };

@@ -379,6 +379,7 @@ export async function addTerm(user: User, value: string, lang: Lang, comment?: s
             disableExamples: false,
             enableCommentsOnTranslations: false,
             translationsAsVariants: false,
+            notOnlyPolitical: false,
         },
         adminComment: { langA: '', langB: '' },
         definition: { langA: '', langB: '' },

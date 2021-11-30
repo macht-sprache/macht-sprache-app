@@ -201,6 +201,7 @@ export const runContentMigrations = functions.https.onCall(async (_, context) =>
             disableExamples: false,
             enableCommentsOnTranslations: false,
             translationsAsVariants: false,
+            notOnlyPolitical: false,
         },
         guidelines: [],
     };
