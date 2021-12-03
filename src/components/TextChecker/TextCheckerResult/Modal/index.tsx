@@ -1,10 +1,12 @@
+import xor from 'lodash/xor';
 import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useDocument } from '../../../../hooks/fetch';
-import { useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
+import { Guideline, guidelineKeys, useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
 import { MANIFESTO } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
+import DividedList from '../../../DividedList';
 import Button, { ButtonContainer, ButtonLink } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
 import { Columns } from '../../../Layout/Columns';
@@ -77,7 +79,7 @@ const ModalTerms = ({
                                 <h3 className={s.heading}>{t('textChecker.result.modal.headingTerms')}</h3>
                                 <TermItem term={longestTerm} />
                             </div>
-                            <Guidelines term={longestTerm} />
+                            <GuidelinesList term={longestTerm} />
                         </Columns>
                     )}
                 </>
@@ -99,10 +101,12 @@ const ModalTerms = ({
     );
 };
 
-const Guidelines = ({ term }: { term: Term }) => {
+const GuidelinesList = ({ term }: { term: Term }) => {
     const { t } = useTranslation();
     const getGuidelines = useGuidelines(term.guidelines);
     const guidelines = getGuidelines();
+    const getOtherGuidelines = useGuidelines(xor(guidelineKeys, term.guidelines));
+    const otherGuidelines = getOtherGuidelines();
 
     return (
         <div>
@@ -129,17 +133,29 @@ const Guidelines = ({ term }: { term: Term }) => {
                     <p className={s.manifestoLinkText}>
                         <Trans
                             i18nKey="textChecker.result.modal.guidelineManifestoText"
-                            components={{ Term: <TermWithLang term={term} /> }}
+                            components={{
+                                Term: <TermWithLang term={term} />,
+                                OtherGuidelines: <OtherGuidelines guidelines={otherGuidelines} />,
+                            }}
                         />
                     </p>
-                    <ButtonContainer>
-                        <ButtonLink primary to={MANIFESTO}>
-                            {t('textChecker.result.modal.guidelineManifestoButton')}
-                        </ButtonLink>
-                    </ButtonContainer>
                 </div>
             </div>
         </div>
+    );
+};
+
+const OtherGuidelines = ({ guidelines }: { guidelines: Guideline[] }) => {
+    const { t } = useTranslation();
+
+    return (
+        <DividedList divider=", " lastDivider={` ${t('common.and')} `}>
+            {guidelines.map(({ id, title }) => (
+                <Link to={`${MANIFESTO}#${id}`} key={id}>
+                    {title}
+                </Link>
+            ))}
+        </DividedList>
     );
 };
 

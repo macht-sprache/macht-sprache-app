@@ -73,7 +73,8 @@
         "optional": "optional",
         "newsletter": "Newsletter",
         "notifications": "Notifications",
-        "activity": "Activity"
+        "activity": "Activity",
+        "and": "and"
     },
     "nav": {
         "logoAlt": "Logo of macht.sprache.",
@@ -377,8 +378,7 @@
                 "discuss": "Discuss or suggest options",
                 "headingTerms": "Closest matching term",
                 "headingGuidelines": "Guidelines from the <ManifestoLink>Manifesto</ManifestoLink>",
-                "guidelineManifestoText": "The guidelines above are from the manifesto related to <Term />. We recommend to read the whole manifesto.",
-                "guidelineManifestoButton": "Read the whole manifesto"
+                "guidelineManifestoText": "The guidelines above are from the manifesto related to <Term />. Other guidelines: <OtherGuidelines />."
             }
         }
     },

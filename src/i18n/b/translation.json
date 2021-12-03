@@ -73,7 +73,8 @@
         "optional": "optional",
         "newsletter": "Newsletter",
         "notifications": "Benachrichtigungen",
-        "activity": "Aktivität"
+        "activity": "Aktivität",
+        "and": "und"
     },
     "nav": {
         "logoAlt": "Logo von macht.sprache.",
@@ -373,8 +374,7 @@
                 "discuss": "Diskutiere oder schlage neue Übersetzung vor",
                 "headingTerms": "Beste Übereinstimmung",
                 "headingGuidelines": "Passende Leitlinien aus <ManifestoLink>dem Manifest</ManifestoLink>",
-                "guidelineManifestoText": "Hier siehst du passende Ausschnitte aus dem Übersetzungsmanifest. Das gesamte Manifest bietet Argumente für einen politisch sensiblen Umgang mit Sprache und stellt einige nützliche Grundprinzipien und Leitlinien fürs Übersetzen vor",
-                "guidelineManifestoButton": "Ganzes Manifest lesen"
+                "guidelineManifestoText": "Hier siehst du passende Ausschnitte aus dem Übersetzungsmanifest. Das gesamte Manifest bietet Argumente für einen politisch sensiblen Umgang mit Sprache und stellt einige nützliche Grundprinzipien und Leitlinien fürs Übersetzen vor. Andere Leitlinien sind <OtherGuidelines />."
             }
         }
     },
