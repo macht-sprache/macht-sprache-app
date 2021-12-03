@@ -7,7 +7,7 @@ import { Guideline, guidelineKeys, useGuidelines } from '../../../../Manifesto/g
 import { MANIFESTO } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
 import DividedList from '../../../DividedList';
-import Button, { ButtonContainer, ButtonLink } from '../../../Form/Button';
+import Button, { ButtonContainer } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
 import { Columns } from '../../../Layout/Columns';
 import MdxWrapper from '../../../MdxWrapper';
@@ -102,7 +102,6 @@ const ModalTerms = ({
 };
 
 const GuidelinesList = ({ term }: { term: Term }) => {
-    const { t } = useTranslation();
     const getGuidelines = useGuidelines(term.guidelines);
     const guidelines = getGuidelines();
     const getOtherGuidelines = useGuidelines(xor(guidelineKeys, term.guidelines));
