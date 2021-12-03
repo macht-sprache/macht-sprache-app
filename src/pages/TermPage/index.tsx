@@ -307,6 +307,13 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
         },
     ];
 
+    const definitionCheckboxes: { label: string; tag: keyof Term['adminTags'] }[] = [
+        {
+            label: 'Does not only have political meaning (adds hint in text checker)',
+            tag: 'notOnlyPolitical',
+        },
+    ];
+
     return (
         <ModalDialog title={t('common.entities.term.edit')} onClose={onClose}>
             {saving ? (
@@ -350,6 +357,18 @@ function EditTermOverlay({ term, onClose }: { term: Term; onClose: () => void })
                                     }
                                 />
                             </InputContainer>
+
+                            {definitionCheckboxes.map(tag => (
+                                <AdminCheckbox
+                                    label={tag.label}
+                                    adminTag={tag.tag}
+                                    setAdminTag={setAdminTag}
+                                    checked={adminTags[tag.tag]}
+                                    key={tag.tag}
+                                />
+                            ))}
+
+                            <h3>Guidelines from Manifesto</h3>
                             {guidelineKeys.map(guidelineKey => (
                                 <GuidelineCheckbox
                                     key={guidelineKey}
