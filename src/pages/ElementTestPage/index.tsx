@@ -17,6 +17,7 @@ import { Checkbox } from '../../components/Form/Checkbox';
 import { InlineInput } from '../../components/Form/InlineInput';
 /* eslint-disable import/no-webpack-loader-syntax */
 import MdxContent from '!babel-loader!@mdx-js/loader!./text.en.mdx';
+import DividedList from '../../components/DividedList';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -251,6 +252,13 @@ export default function ElementTestPage() {
 
             <Heading>MDX</Heading>
             <MdxContent />
+
+            <Heading>Divided List</Heading>
+            <DividedList divider=", " lastDivider=" and ">
+                <>One</>
+                <>Two</>
+                <>Three</>
+            </DividedList>
         </>
     );
 }
