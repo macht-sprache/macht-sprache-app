@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import Header from '../../components/Header';
 import { SingleColumn } from '../../components/Layout/Columns';
 import MdxWrapper from '../../components/MdxWrapper';
+import PageTitle from '../../components/PageTitle';
 import { langA } from '../../languages';
 import { useLang } from '../../useLang';
 
@@ -23,6 +24,8 @@ export default function ManifestoPage() {
     return (
         <>
             <Header>{t('manifesto.title')}</Header>
+            <PageTitle title={t('manifesto.title')} />
+
             <SingleColumn>
                 <MdxWrapper>
                     {lang === langA ? (
