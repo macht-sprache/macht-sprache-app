@@ -357,11 +357,7 @@
         "subLine": "Check a text for sensitive translations",
         "entry": {
             "description": "Add a text you would like to check for sensitive terms",
-            "type": {
-                "label": "Type",
-                "original": "original",
-                "translation": "translation"
-            },
+            "languageSelect": "This text is in",
             "submit": "Check Text",
             "submitBusy": "Checking..."
         },

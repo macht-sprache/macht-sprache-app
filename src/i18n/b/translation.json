@@ -353,11 +353,7 @@
         "subLine": "Hilfe bei sensiblen Übersetzungen",
         "entry": {
             "description": "Füge einen Text ein, den du auf sensible Begriffe überprüfen möchtest",
-            "type": {
-                "label": "Textart",
-                "original": "Original",
-                "translation": "Übersetzung"
-            },
+            "languageSelect": "Sprache des Textes",
             "submit": "Text überprüfen",
             "submitBusy": "Überprüfe..."
         },
