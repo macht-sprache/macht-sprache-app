@@ -32,7 +32,7 @@ export default function BottomBar({
             <div className={s.bottomBox}>
                 <div>
                     <HorizontalRadioContainer
-                        label="Sprache des Textes"
+                        label={t('textChecker.entry.languageSelect')}
                         disabled={onLanguageChange === undefined || busy}
                     >
                         {languages.map(language => (

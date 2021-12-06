@@ -354,30 +354,26 @@
     },
     "textChecker": {
         "title": "Text Checker",
-        "subLine": "Get help with sensitive translations",
+        "subLine": "Check a text for sensitive translations",
         "entry": {
             "description": "Add a text you would like to check for sensitive terms",
-            "type": {
-                "label": "Type",
-                "original": "original",
-                "translation": "translation"
-            },
+            "languageSelect": "This text is in",
             "submit": "Check Text",
             "submitBusy": "Checking..."
         },
         "result": {
             "description": "Sensitive terms are highlighted. Click for more information.",
-            "nothingFound": "There where no sensitive terms found. You can select text below to add a term.",
+            "nothingFound": "There where no sensitive terms found. The macht.sprache. database is a work in progress: if you think there is a term that should have been highlighted, you can add it by selecting it below.",
             "cancel": "Edit Text",
             "addMissing": "Click to add missing term to macht.sprache.",
             "translationsHeading": "Possible translations:",
-            "termsHeading": "Possible translation for:",
+            "termsHeading": "Appears in the discussion on:",
             "otherTerms": "Other terms matching <Term />",
             "modal": {
                 "close": "Go Back",
                 "discuss": "Discuss or suggest options",
                 "headingTerms": "Closest matching term",
-                "headingGuidelines": "Guidelines from the <ManifestoLink>Manifesto</ManifestoLink>",
+                "headingGuidelines": "Relevant guidelines from the <ManifestoLink>Manifesto</ManifestoLink>",
                 "guidelineManifestoText": "The guidelines above are from the manifesto related to <Term />. Other guidelines: <OtherGuidelines />."
             }
         }
