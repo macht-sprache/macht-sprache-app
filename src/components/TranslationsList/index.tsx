@@ -24,9 +24,16 @@ type TranslationsListProps = {
     // TODO: This is not actually needed on the small size – we should split this component up
     getSources: GetList<Source>;
     size?: 'small' | 'medium';
+    itemsClickable?: boolean;
 };
 
-export function TranslationsList({ term, getTranslations, getSources, size = 'medium' }: TranslationsListProps) {
+export function TranslationsList({
+    term,
+    getTranslations,
+    getSources,
+    size = 'medium',
+    itemsClickable = true,
+}: TranslationsListProps) {
     const translations = getTranslations();
     const { t } = useTranslation();
     const translationsCount = translations.length;
@@ -67,6 +74,7 @@ export function TranslationsList({ term, getTranslations, getSources, size = 'me
                         translation={translation}
                         sources={sources[translation.id]}
                         size={size}
+                        clickable={itemsClickable}
                     />
                 ))}
                 {size === 'medium' && (
@@ -93,12 +101,14 @@ export function TranslationItem({
     size = 'small',
     sources = [],
     showMeta = false,
+    clickable = true,
 }: {
     translation: Translation;
     term: Term;
     size?: 'small' | 'medium';
     sources?: Source[];
     showMeta?: boolean;
+    clickable?: boolean;
 }) {
     const { t } = useTranslation();
     const history = useHistory();
@@ -115,7 +125,7 @@ export function TranslationItem({
         <article
             className={clsx(getDominantLanguageClass(translation.lang), s.item)}
             onClick={e => {
-                if (size === 'medium') {
+                if (clickable) {
                     history.push(link);
                     e.stopPropagation();
                 }
@@ -134,9 +144,9 @@ export function TranslationItem({
                     />
                 </div>
             )}
-            <div className={clsx(s.itemInner, { [s.clickable]: size === 'medium' })}>
+            <div className={clsx(s.itemInner, { [s.clickable]: clickable })}>
                 <header className={s.header}>
-                    {size === 'medium' ? (
+                    {clickable ? (
                         <Link to={link} onClick={stopPropagation} className={s.link} lang={translation.lang}>
                             <Heading />
                         </Link>

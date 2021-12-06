@@ -77,6 +77,7 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                                         getTranslations={getTranslations}
                                         getSources={() => EMPTY_ARRAY}
                                         size="small"
+                                        itemsClickable={false}
                                     />
                                 </div>
                             </section>
