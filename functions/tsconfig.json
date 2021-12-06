@@ -10,6 +10,11 @@
         "target": "es2017",
         "resolveJsonModule": true
     },
+    "watchOptions": {
+        "watchFile": "useFsEvents",
+        "watchDirectory": "useFsEvents",
+        "fallbackPolling": "dynamicPriority"
+    },
     "compileOnSave": true,
     "include": ["src"]
 }
