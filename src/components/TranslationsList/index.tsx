@@ -105,12 +105,20 @@ export function TranslationItem({
     const link = generatePath(TRANSLATION, { termId: term.id, translationId: translation.id });
     const addExampleLink = generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id });
 
+    const Heading = () => (
+        <h1 className={s.value}>
+            <Redact>{translation.value}</Redact>
+        </h1>
+    );
+
     return (
         <article
             className={clsx(getDominantLanguageClass(translation.lang), s.item)}
             onClick={e => {
-                history.push(link);
-                e.stopPropagation();
+                if (size === 'medium') {
+                    history.push(link);
+                    e.stopPropagation();
+                }
             }}
         >
             {showMeta && (
@@ -126,13 +134,15 @@ export function TranslationItem({
                     />
                 </div>
             )}
-            <div className={s.itemInner}>
+            <div className={clsx(s.itemInner, { [s.clickable]: size === 'medium' })}>
                 <header className={s.header}>
-                    <Link to={link} onClick={stopPropagation} className={s.link} lang={translation.lang}>
-                        <h1 className={s.value}>
-                            <Redact>{translation.value}</Redact>
-                        </h1>
-                    </Link>
+                    {size === 'medium' ? (
+                        <Link to={link} onClick={stopPropagation} className={s.link} lang={translation.lang}>
+                            <Heading />
+                        </Link>
+                    ) : (
+                        <Heading />
+                    )}
                     <div className={s.rating}>
                         <RatingContainer term={term} translation={translation} size="small" />
                     </div>

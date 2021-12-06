@@ -13,10 +13,13 @@
     flex-direction: column;
     background: var(--white);
     border: var(--thickBorder) solid var(--mainColor);
+}
+
+.itemInner.clickable {
     cursor: pointer;
 }
 
-.itemInner:hover {
+.itemInner.clickable:hover {
     --mainColor: var(--orange);
 }
 
