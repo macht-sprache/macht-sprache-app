@@ -111,7 +111,7 @@
         "emailVerification": {
             "headingVerification": "Email Verifizierung",
             "headingVerified": "Email Verifiziert",
-            "explanation": "Bitte klicke auf den Link den wir an {{email}} geschickt haben.",
+            "explanation": "Bitte klicke auf den Link, den wir an {{email}} geschickt haben.",
             "resend": "Verifizierungsemail erneut senden",
             "resent": "Verifizierungsemail gesendet",
             "continue": "Weiter",
@@ -135,7 +135,7 @@
             "newPassword": "Neues Passwort",
             "saveButton": "Passwort speichern",
             "requestLabel": "Passwort vergessen?",
-            "requestExplanation": "Gib die Email-Adresse, mit der du dich angemeldet hast, ein und wir schicken dir einen Link zur Passwortwiederherstellung.",
+            "requestExplanation": "Gib die E-Mail-Adresse ein, mit der du dich angemeldet hast, dann erhälst du einen Link zur Passwortwiederherstellung.",
             "requestButton": "Senden",
             "requestSuccessHeader": "Prüfe deinen Posteingang",
             "requestSuccessExplanation": "Wenn du ein Konto für {{email}} hast, haben wir dir einen Link zur Passwortwiederherstellung geschickt.",
@@ -268,7 +268,7 @@
         },
         "translationListNoExample": "Es gibt noch kein Beispiel. <Link>Hier</Link> klicken, um eines hinzuzufügen.",
         "deleteHeading": "Beispielübersetzung löschen?",
-        "deleteExplanation": "Bist du dir sicher, diese Beispielübersetzung zu löschen? Löschungen können nicht rückgängig gemacht werden.",
+        "deleteExplanation": "Bist du dir sicher, dass du diese Beispielübersetzung löschen möchtest? Löschungen können nicht rückgängig gemacht werden.",
         "share": "Hier ist eine interessante Diskussion über die Übersetzung von »{{example}}« auf #machtsprache"
     },
     "rating": {
@@ -292,7 +292,7 @@
         "userCommented": "<User /> kommentierte",
         "userCommentedOn": "<User /> kommentierte <DocumentLink />",
         "shareLabel": "Danke für deinen Kommentar. Jetzt kannst du andere einladen, auch mitzumachen:",
-        "shareText": "Ich habe gerade ein Kommentar auf #machtsprache geschrieben, nimm auch Teil an der Diskussion: "
+        "shareText": "Ich habe gerade einen Kommentar auf #machtsprache hinterlassen, nimm auch Teil an der Diskussion: "
     },
     "notFound": {
         "heading": "Seite nicht gefunden",
@@ -320,7 +320,7 @@
         "hideRedactedDescription": "Standardmäßig versteckt <i>macht.sprache.</i> sensible Begriffe (z.B. n***r). Wenn du diese Begriffe trotzdem ausgeschrieben sehen möchtest, kannst du sie hier anzeigen lassen. ",
         "hideRedacted": "Diskrimminierende Begriffe verstecken",
         "notifications": {
-            "digest": "Schickt mir eine wöchentliche Zusammenfassung der Aktivität auf macht.sprache.",
+            "digest": "Schickt mir eine hin und wieder eine Zusammenfassung der Aktivität auf macht.sprache.",
             "notification": "Informiert mich per Email über neue Benachrichtigungen"
         },
         "bio": "Biografie",
@@ -350,7 +350,7 @@
     },
     "textChecker": {
         "title": "Text Checker",
-        "subLine": "Hilfe bei sensiblen Übersetzungen",
+        "subLine": "Unterstützung bei sensiblen Übersetzungen",
         "entry": {
             "description": "Füge einen Text ein, den du auf sensible Begriffe überprüfen möchtest",
             "languageSelect": "Sprache des Textes",
@@ -359,7 +359,7 @@
         },
         "result": {
             "description": "Analyseergebnis:",
-            "nothingFound": "Es wurde kein sensibler Begriff gefunden. Markiere einen Begriff, um ihn hinzuzufügen.",
+            "nothingFound": "In diesem Text wurde kein sensibler Begriff gefunden. Die Datenbank von macht.sprache. wird ständig erweitert. Du kannst gerne Begriffe hinzufügen, die deiner Meinung nach noch fehlen.",
             "cancel": "Text editieren",
             "addMissing": "Klicke, um fehlenden Begriff zu macht.sprache. hinzuzufügen",
             "translationsHeading": "Mögliche Übersetzungen:",
@@ -370,7 +370,7 @@
                 "discuss": "Diskutiere oder schlage neue Übersetzung vor",
                 "headingTerms": "Beste Übereinstimmung",
                 "headingGuidelines": "Passende Leitlinien aus <ManifestoLink>dem Manifest</ManifestoLink>",
-                "guidelineManifestoText": "Hier siehst du passende Ausschnitte aus dem Übersetzungsmanifest. Das gesamte Manifest bietet Argumente für einen politisch sensiblen Umgang mit Sprache und stellt einige nützliche Grundprinzipien und Leitlinien fürs Übersetzen vor. Andere Leitlinien sind <OtherGuidelines />."
+                "guidelineManifestoText": "Hier siehst du relevante Aspekte aus dem Manifest. Weitere Leitlinien sind <OtherGuidelines />."
             }
         }
     },
