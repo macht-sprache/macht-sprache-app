@@ -1,0 +1,12 @@
+.container {
+    --padding: 1rem;
+    border: var(--thickBorder) solid var(--orange);
+    padding: var(--padding);
+    background: var(--white);
+}
+
+.heading {
+    margin: calc(var(--padding) * -1) calc(var(--padding) * -1) var(--padding);
+    padding: var(--padding);
+    background: var(--orange);
+}
