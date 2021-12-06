@@ -23,8 +23,11 @@ export const useTranslations = (translationRefs: DocReference<Translation>[]) =>
         )
     );
 
-export const getLongestEntity = <Entity extends Term | Translation>(terms: Entity[]): Entity | undefined =>
-    terms.reduce((prev, current) => (prev.value.length > current.value.length ? prev : current));
+export const getLongestEntity = <Entity extends Term | Translation>(terms: Entity[]) =>
+    terms.reduce<Entity | undefined>(
+        (prev, current) => ((prev?.value?.length ?? 0) > current.value.length ? prev : current),
+        undefined
+    );
 
 export const useLangIdentifier = () => {
     const [lang] = useLang();

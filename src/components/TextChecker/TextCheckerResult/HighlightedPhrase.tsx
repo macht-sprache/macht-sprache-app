@@ -1,24 +1,22 @@
 import clsx from 'clsx';
+import uniqBy from 'lodash/fp/uniqBy';
 import Tooltip from 'rc-tooltip';
 import React, { Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { collections, getTranslationsRef } from '../../../hooks/data';
-import { useCollection, useDocument } from '../../../hooks/fetch';
+import { GetList, useCollection, useDocuments } from '../../../hooks/fetch';
 import { DocReference, Lang, Term, Translation } from '../../../types';
 import DividedList from '../../DividedList';
 import { Redact } from '../../RedactSensitiveTerms';
 import { WrappedInLangColor } from '../../TermWithLang';
 import { sortTranslations } from '../../TranslationsList/service';
-import { getLongestEntity, useLangIdentifier, useTerms, useTranslations } from '../service';
+import { getLongestEntity, useLangIdentifier } from '../service';
 import PhraseModal from './Modal';
 import s from './style.module.css';
 
-type BaseProps = {
+type Props = {
     termRefs: DocReference<Term>[];
     translationRefs: DocReference<Translation>[];
-};
-
-type Props = BaseProps & {
     lang: Lang;
     showModal: boolean;
     openModal: () => void;
@@ -26,7 +24,12 @@ type Props = BaseProps & {
     onTooltipVisibleChange: (isVisible: boolean) => void;
 };
 
-type TooltipProps = BaseProps & {
+type InnerProps = {
+    getTerms: GetList<Term>;
+    getTranslations: GetList<Translation>;
+};
+
+type TooltipProps = InnerProps & {
     onClick: () => void;
 };
 
@@ -43,6 +46,9 @@ const HighlightedPhrase: React.FC<Props> = ({
     const { t } = useTranslation();
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
+    const getTerms = useDocuments(termRefs);
+    const getTranslations = useDocuments(translationRefs);
+
     return (
         <>
             <Tooltip
@@ -55,7 +61,7 @@ const HighlightedPhrase: React.FC<Props> = ({
                             </>
                         }
                     >
-                        <PhraseTooltip termRefs={termRefs} translationRefs={translationRefs} onClick={openModal} />
+                        <PhraseTooltip getTerms={getTerms} getTranslations={getTranslations} onClick={openModal} />
                     </Suspense>
                 }
                 placement="bottom"
@@ -78,8 +84,8 @@ const HighlightedPhrase: React.FC<Props> = ({
                 <Suspense fallback={null}>
                     <PhraseModal
                         title={<WrappedInLangColor lang={lang}>{children}</WrappedInLangColor>}
-                        termRefs={termRefs}
-                        translationRefs={translationRefs}
+                        getTerms={getTerms}
+                        getTranslations={getTranslations}
                         onClose={closeModal}
                     />
                 </Suspense>
@@ -88,21 +94,20 @@ const HighlightedPhrase: React.FC<Props> = ({
     );
 };
 
-const PhraseTooltip = ({ termRefs, translationRefs, onClick }: TooltipProps) => {
+const PhraseTooltip = ({ getTerms, getTranslations, onClick }: TooltipProps) => {
+    const terms = getTerms();
+    const translations = getTranslations();
     return (
         <div className={s.tooltip} onClick={onClick}>
-            {!!termRefs.length && <TooltipTerms termRefs={termRefs} />}
-            {!!translationRefs.length && !termRefs.length && <TooltipTranslations translationRefs={translationRefs} />}
+            <TooltipTerms terms={terms} />
+            {!!translations.length && !terms.length && <TooltipTranslations translations={translations} />}
         </div>
     );
 };
 
-const TooltipTerms = ({ termRefs }: Pick<BaseProps, 'termRefs'>) => {
-    const getTerms = useTerms(termRefs);
-    const terms = getTerms();
+const TooltipTerms = ({ terms }: { terms: Term[] }) => {
     const longestTerm = getLongestEntity(terms);
-
-    return <>{longestTerm && <TooltipTerm term={longestTerm} />}</>;
+    return longestTerm ? <TooltipTerm term={longestTerm} /> : null;
 };
 
 const TooltipTerm = ({ term }: { term: Term }) => {
@@ -131,26 +136,24 @@ const TooltipTerm = ({ term }: { term: Term }) => {
     );
 };
 
-const TooltipTranslations = ({ translationRefs }: Pick<BaseProps, 'translationRefs'>) => {
+const TooltipTranslations = ({ translations }: { translations: Translation[] }) => {
     const { t } = useTranslation();
-    const getTranslations = useTranslations(translationRefs);
-    const translations = getTranslations();
+    const termRefs = uniqBy(
+        termRef => termRef.id,
+        translations.map(translation => translation.term)
+    );
+    const getTerms = useDocuments(termRefs);
 
     return (
         <p>
             <strong>{t('textChecker.result.translationsHeading')}</strong>{' '}
             <DividedList divider=", ">
-                {translations.map(translation => (
-                    <TooltipTranslationTerm key={translation.id} translation={translation} />
+                {getTerms().map(term => (
+                    <Redact key={term.id}>{term.value}</Redact>
                 ))}
             </DividedList>
         </p>
     );
-};
-
-const TooltipTranslationTerm = ({ translation }: { translation: Translation }) => {
-    const getTerm = useDocument(translation.term);
-    return <Redact>{getTerm().value}</Redact>;
 };
 
 export default HighlightedPhrase;
