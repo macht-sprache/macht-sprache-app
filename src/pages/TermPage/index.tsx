@@ -12,7 +12,7 @@ import Button, { ButtonContainer } from '../../components/Form/Button';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { Input, Select, Textarea } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
-import { FormatDate } from '../../components/FormatDate';
+import { FormatDateShort } from '../../components/FormatDate';
 import Header from '../../components/Header';
 import { FullWidthColumn, SingleColumn } from '../../components/Layout/Columns';
 import LinkButton from '../../components/LinkButton';
@@ -81,7 +81,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                     i18nKey="common.addedOn"
                                     components={{
                                         User: <UserInlineDisplay {...term.creator} />,
-                                        FormatDate: <FormatDate date={term.createdAt} />,
+                                        FormatDate: <FormatDateShort date={term.createdAt} />,
                                     }}
                                 />
                             )}
