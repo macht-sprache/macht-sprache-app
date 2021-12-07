@@ -14,7 +14,7 @@ import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
 import { TermWithLang } from '../../../TermWithLang';
-import { getLongestEntity } from '../../service';
+import { getLongestEntity, termOrTranslations } from '../../service';
 import s from './style.module.css';
 
 type ModalProps = {
@@ -34,8 +34,10 @@ export default function PhraseModal({ title, getTerms, getTranslations, onClose 
         termRef => termRef.id,
         translations.map(translation => translation.term)
     );
+    const showTermOrTranslations = termOrTranslations(terms, translations);
 
-    const widerModal = !!longestTerm?.guidelines.length || (!terms.length && termRefsForTranslations.length > 1);
+    const widerModal =
+        showTermOrTranslations === 'term' ? !!longestTerm?.guidelines.length : termRefsForTranslations.length > 1;
 
     return (
         <ModalDialog
@@ -44,8 +46,9 @@ export default function PhraseModal({ title, getTerms, getTranslations, onClose 
             onClose={onClose}
             width={widerModal ? 'wider' : 'medium'}
         >
-            {!!terms.length && <ModalTerms longestTerm={longestTerm} otherTerms={otherTerms} title={title} />}
-            {!!translations.length && !terms.length && (
+            {showTermOrTranslations === 'term' ? (
+                <ModalTerms longestTerm={longestTerm} otherTerms={otherTerms} title={title} />
+            ) : (
                 <ModalTranslations termRefsForTranslations={termRefsForTranslations} />
             )}
 

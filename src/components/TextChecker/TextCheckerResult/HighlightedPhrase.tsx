@@ -10,7 +10,7 @@ import DividedList from '../../DividedList';
 import { Redact } from '../../RedactSensitiveTerms';
 import { WrappedInLangColor } from '../../TermWithLang';
 import { sortTranslations } from '../../TranslationsList/service';
-import { getLongestEntity, useLangIdentifier } from '../service';
+import { getLongestEntity, termOrTranslations, useLangIdentifier } from '../service';
 import PhraseModal from './Modal';
 import s from './style.module.css';
 
@@ -99,8 +99,11 @@ const PhraseTooltip = ({ getTerms, getTranslations, onClick }: TooltipProps) => 
     const translations = getTranslations();
     return (
         <div className={s.tooltip} onClick={onClick}>
-            <TooltipTerms terms={terms} />
-            {!!translations.length && !terms.length && <TooltipTranslations translations={translations} />}
+            {termOrTranslations(terms, translations) === 'term' ? (
+                <TooltipTerms terms={terms} />
+            ) : (
+                <TooltipTranslations translations={translations} />
+            )}
         </div>
     );
 };

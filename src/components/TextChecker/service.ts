@@ -33,3 +33,16 @@ export const useLangIdentifier = () => {
     const [lang] = useLang();
     return lang === langA ? 'langA' : 'langB';
 };
+
+export const termOrTranslations = (terms: Term[], translations: Translation[]): 'term' | 'translation' => {
+    const longestTerm = getLongestEntity(terms);
+    const longestTranslation = getLongestEntity(translations);
+
+    if (longestTerm && longestTranslation) {
+        return longestTerm.value.length > longestTranslation.value.length ? 'term' : 'translation';
+    }
+
+    if (longestTerm) return 'term';
+
+    return 'translation';
+};
