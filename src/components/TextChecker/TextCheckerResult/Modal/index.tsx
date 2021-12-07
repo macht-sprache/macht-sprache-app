@@ -1,8 +1,8 @@
+import uniqBy from 'lodash/fp/uniqBy';
 import xor from 'lodash/xor';
-import { useEffect, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { useDocument } from '../../../../hooks/fetch';
+import { GetList, useDocuments } from '../../../../hooks/fetch';
 import { Guideline, guidelineKeys, useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
 import { MANIFESTO } from '../../../../routes';
 import { DocReference, Term, Translation } from '../../../../types';
@@ -14,19 +14,30 @@ import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
 import { TermWithLang } from '../../../TermWithLang';
-import { getLongestEntity, useTerms, useTranslations } from '../../service';
+import { getLongestEntity, termOrTranslations } from '../../service';
 import s from './style.module.css';
 
 type ModalProps = {
-    termRefs: DocReference<Term>[];
-    translationRefs: DocReference<Translation>[];
+    getTerms: GetList<Term>;
+    getTranslations: GetList<Translation>;
     title: React.ReactNode;
     onClose: () => void;
 };
 
-export default function PhraseModal({ title, termRefs, translationRefs, onClose }: ModalProps) {
+export default function PhraseModal({ title, getTerms, getTranslations, onClose }: ModalProps) {
     const { t } = useTranslation();
-    const [widerModal, setWiderModal] = useState(false);
+    const terms = getTerms();
+    const translations = getTranslations();
+    const longestTerm = getLongestEntity(terms);
+    const otherTerms = terms.filter(term => term.value !== longestTerm?.value);
+    const termRefsForTranslations = uniqBy(
+        termRef => termRef.id,
+        translations.map(translation => translation.term)
+    );
+    const showTermOrTranslations = termOrTranslations(terms, translations);
+
+    const widerModal =
+        showTermOrTranslations === 'term' ? !!longestTerm?.guidelines.length : termRefsForTranslations.length > 1;
 
     return (
         <ModalDialog
@@ -35,9 +46,10 @@ export default function PhraseModal({ title, termRefs, translationRefs, onClose 
             onClose={onClose}
             width={widerModal ? 'wider' : 'medium'}
         >
-            {!!termRefs.length && <ModalTerms termRefs={termRefs} title={title} setWiderModal={setWiderModal} />}
-            {!!translationRefs.length && !termRefs.length && (
-                <ModalTranslations translationRefs={translationRefs} setWiderModal={setWiderModal} />
+            {showTermOrTranslations === 'term' ? (
+                <ModalTerms longestTerm={longestTerm} otherTerms={otherTerms} title={title} />
+            ) : (
+                <ModalTranslations termRefsForTranslations={termRefsForTranslations} />
             )}
 
             <div className={s.buttonContainer}>
@@ -52,20 +64,16 @@ export default function PhraseModal({ title, termRefs, translationRefs, onClose 
 }
 
 const ModalTerms = ({
-    termRefs,
+    longestTerm,
+    otherTerms,
     title,
-    setWiderModal,
-}: Pick<ModalProps, 'termRefs'> & { title: React.ReactNode; setWiderModal: (wide: boolean) => void }) => {
+}: {
+    longestTerm?: Term;
+    otherTerms: Term[];
+    title: React.ReactNode;
+}) => {
     const { t } = useTranslation();
-    const getTerms = useTerms(termRefs);
-    const terms = getTerms();
-    const longestTerm = getLongestEntity(terms);
-    const otherTerms = terms.filter(term => term.value !== longestTerm?.value);
     const TitleWrapped = () => <>{title}</>;
-
-    useEffect(() => {
-        setWiderModal(!!longestTerm?.guidelines.length);
-    }, [longestTerm, setWiderModal]);
 
     return (
         <>
@@ -158,32 +166,18 @@ const OtherGuidelines = ({ guidelines }: { guidelines: Guideline[] }) => {
     );
 };
 
-const ModalTranslations = ({
-    translationRefs,
-    setWiderModal,
-}: Pick<ModalProps, 'translationRefs'> & { setWiderModal: (wide: boolean) => void }) => {
+const ModalTranslations = ({ termRefsForTranslations }: { termRefsForTranslations: DocReference<Term>[] }) => {
     const { t } = useTranslation();
-    const getTranslations = useTranslations(translationRefs);
-    const translations = getTranslations();
-
-    useEffect(() => {
-        setWiderModal(translationRefs.length > 1);
-    }, [setWiderModal, translationRefs.length]);
+    const getTerms = useDocuments(termRefsForTranslations);
 
     return (
         <div>
             <h3>{t('textChecker.result.termsHeading')}</h3>
             <div className={s.translationList}>
-                {translations.map(translation => (
-                    <ModalTranslationTerm key={translation.id} translation={translation} />
+                {getTerms().map(term => (
+                    <TermItem key={term.id} term={term} />
                 ))}
             </div>
         </div>
     );
-};
-
-const ModalTranslationTerm = ({ translation }: { translation: Translation }) => {
-    const getTerm = useDocument(translation.term);
-    const term = getTerm();
-    return <TermItem term={term} />;
 };

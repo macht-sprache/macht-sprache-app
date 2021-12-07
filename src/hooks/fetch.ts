@@ -27,7 +27,7 @@ export type Get<T> = {
 const referenceCache: (firebase.firestore.DocumentReference | firebase.firestore.Query)[] = [];
 const readerCache = new WeakMap<firebase.firestore.DocumentReference | firebase.firestore.Query>();
 
-const useStableRef = <T extends firebase.firestore.DocumentReference | firebase.firestore.Query>(ref: T): T => {
+const getStableRef = <T extends firebase.firestore.DocumentReference | firebase.firestore.Query>(ref: T): T => {
     const cachedRef = referenceCache.find(cachedRef => {
         if (
             ref instanceof firebase.firestore.DocumentReference &&
@@ -69,7 +69,7 @@ const getInitialReader = <T, Ref extends Reference<T>>(ref: Ref) => {
 };
 
 function useSnapshot<T, Ref extends Reference<T>>(currentRef: Ref) {
-    const ref = useStableRef(currentRef);
+    const ref = getStableRef(currentRef);
     const [state, setState] = useState<{ snapshot: Snapshot<T, Ref>; ref: Ref }>();
 
     useEffect(() => {
@@ -97,6 +97,47 @@ function useSnapshot<T, Ref extends Reference<T>>(currentRef: Ref) {
             }
         }
     }, [ref, state?.ref, state?.snapshot]);
+}
+
+function useDocSnapshots<T, Ref extends DocumentReference<T>>(currentRefs: Ref[]) {
+    const refs = currentRefs.map(getStableRef);
+    const refIdentifier = refs.map(ref => ref.id).join();
+    const [state, setState] = useState<{ snapshot: Snapshot<T, Ref>; ref: Ref }[]>([]);
+
+    useEffect(() => {
+        const unsubscribes = refs.map((ref, index) => {
+            const observer = (snapshot: Snapshot<T, Ref>) => {
+                readerCache.set(ref, () => snapshot);
+                setState(prev => {
+                    const next = [...prev];
+                    next[index] = { snapshot, ref };
+                    return next;
+                });
+            };
+            // @ts-ignore
+            return ref.onSnapshot(observer);
+        });
+
+        return () => unsubscribes.forEach(unsubscribe => unsubscribe());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refIdentifier]);
+
+    return useMemo(() => {
+        return () =>
+            refs.map((ref, index) => {
+                if (ref === state[index]?.ref) {
+                    return state[index].snapshot;
+                }
+                const cachedReader: () => Snapshot<T, typeof ref> | undefined = readerCache.get(ref);
+                if (cachedReader) {
+                    return cachedReader();
+                }
+                const newReader = getInitialReader<T, typeof ref>(ref);
+                readerCache.set(ref, newReader);
+                return newReader();
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refIdentifier, state]);
 }
 
 function useCachedGetter<T extends (...args: any) => any>(getter: T, deps: DependencyList) {
@@ -150,4 +191,12 @@ export function useDocument<T>(ref: DocumentReference<T>): Get<T> {
         },
         [snapshotReader]
     ) as Get<T>;
+}
+
+export function useDocuments<T>(refs: DocumentReference<T>[]): GetList<T> {
+    const snapshotsReader = useDocSnapshots<T, DocumentReference<T>>(refs);
+    return useCachedGetter(() => {
+        const snapshots = snapshotsReader();
+        return snapshots.map(snap => snap?.data()).filter((data): data is T => data !== undefined);
+    }, [snapshotsReader]);
 }
