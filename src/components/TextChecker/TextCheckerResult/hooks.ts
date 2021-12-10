@@ -1,3 +1,4 @@
+import { uniq } from 'lodash/fp';
 import { useMemo } from 'react';
 import { GetList } from '../../../hooks/fetch';
 import { DocReference, Index, Lang, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../../types';
@@ -11,6 +12,10 @@ type MatchGroup = {
     pos: [number, number];
     termMatches: Match<Term>[];
     translationMatches: Match<Translation>[];
+};
+
+type TextTokenWithOriginal = TextToken & {
+    original: string;
 };
 
 export const useIndexGrouped = <T extends TermIndex | TranslationIndex>(getIndex: GetList<T>, lang: Lang) =>
@@ -32,17 +37,23 @@ export const useIndexGrouped = <T extends TermIndex | TranslationIndex>(getIndex
     }, [getIndex, lang]);
 
 const getCurrentMatches = <T extends Term | Translation>(
-    textToken: TextToken,
+    textToken: TextTokenWithOriginal,
     indexGrouped: { [firstLemma: string]: Index<T>[] },
-    analyzedText: TextToken[],
+    analyzedText: TextTokenWithOriginal[],
     tokenIndex: number
 ) =>
-    (indexGrouped[textToken.lemma.toLowerCase()] || []).reduce<Match<T>[]>((acc, cur) => {
+    uniq([
+        ...(indexGrouped[textToken.lemma.toLowerCase()] || []),
+        ...(indexGrouped[textToken.original.toLowerCase()] || []),
+    ]).reduce<Match<T>[]>((acc, cur) => {
         const matchedTerms = cur.lemmas.find(ll =>
-            ll.every(
-                (lemma, lemmaIndex) =>
-                    analyzedText[tokenIndex + lemmaIndex]?.lemma.toLowerCase() === lemma.toLowerCase()
-            )
+            ll.every((lemma, lemmaIndex) => {
+                const matchLemma = lemma.toLowerCase();
+                const currentToken = analyzedText[tokenIndex + lemmaIndex];
+                const textLemma = currentToken?.lemma?.toLowerCase();
+                const textOriginal = currentToken?.original?.toLowerCase();
+                return textLemma === matchLemma || textOriginal === matchLemma;
+            })
         );
         if (matchedTerms) {
             acc.push({
@@ -54,37 +65,42 @@ const getCurrentMatches = <T extends Term | Translation>(
     }, []);
 
 export const useMatchGroups = (
+    text: string,
     analyzedText: TextToken[],
     termIndex: { [firstLemma: string]: TermIndex[] },
     translationIndex: { [firstLemma: string]: TranslationIndex[] }
 ) =>
-    useMemo(
-        () =>
-            analyzedText.reduce<MatchGroup[]>((groups, textToken, index) => {
-                const termMatches = getCurrentMatches(textToken, termIndex, analyzedText, index);
-                const translationMatches = getCurrentMatches(textToken, translationIndex, analyzedText, index);
+    useMemo(() => {
+        const analyzedTextWithOriginals = analyzedText.map(
+            (textToken): TextTokenWithOriginal => ({
+                ...textToken,
+                original: text.substring(textToken.pos[0], textToken.pos[1]),
+            })
+        );
+        return analyzedTextWithOriginals.reduce<MatchGroup[]>((groups, textToken, index) => {
+            const termMatches = getCurrentMatches(textToken, termIndex, analyzedTextWithOriginals, index);
+            const translationMatches = getCurrentMatches(textToken, translationIndex, analyzedTextWithOriginals, index);
 
-                if (!termMatches.length && !translationMatches.length) {
-                    return groups;
-                }
-
-                const matchGroup: MatchGroup = {
-                    pos: [textToken.pos[0], Math.max(...[...termMatches, ...translationMatches].map(m => m.pos[1]))],
-                    termMatches,
-                    translationMatches,
-                };
-
-                const prevGroup = groups[groups.length - 1];
-
-                if (prevGroup?.pos[1] >= matchGroup.pos[0]) {
-                    prevGroup.pos[1] = Math.max(prevGroup.pos[1], prevGroup.pos[1]);
-                    prevGroup.termMatches.push(...termMatches);
-                    prevGroup.translationMatches.push(...translationMatches);
-                } else {
-                    groups.push(matchGroup);
-                }
-
+            if (!termMatches.length && !translationMatches.length) {
                 return groups;
-            }, []),
-        [analyzedText, termIndex, translationIndex]
-    );
+            }
+
+            const matchGroup: MatchGroup = {
+                pos: [textToken.pos[0], Math.max(...[...termMatches, ...translationMatches].map(m => m.pos[1]))],
+                termMatches,
+                translationMatches,
+            };
+
+            const prevGroup = groups[groups.length - 1];
+
+            if (prevGroup?.pos[1] >= matchGroup.pos[0]) {
+                prevGroup.pos[1] = Math.max(prevGroup.pos[1], prevGroup.pos[1]);
+                prevGroup.termMatches.push(...termMatches);
+                prevGroup.translationMatches.push(...translationMatches);
+            } else {
+                groups.push(matchGroup);
+            }
+
+            return groups;
+        }, []);
+    }, [analyzedText, termIndex, text, translationIndex]);
