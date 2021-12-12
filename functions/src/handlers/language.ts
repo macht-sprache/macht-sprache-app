@@ -49,7 +49,7 @@ export const findTermMatches = async (term: string, snippet: string, language: L
     return termMatches;
 };
 
-const excludedTags: (keyof typeof protos.google.cloud.language.v1.PartOfSpeech.Tag)[] = ['PUNCT', 'X'];
+const excludedTags: (keyof typeof protos.google.cloud.language.v1.PartOfSpeech.Tag)[] = ['PUNCT'];
 
 export const findLemmas = async (content: string, language: Lang): Promise<TextToken[]> => {
     const [{ tokens }] = await languageClient.analyzeSyntax({

@@ -4,7 +4,6 @@ import { Change, EventContext } from 'firebase-functions';
 import { equals } from 'rambdax';
 import type { Lang, Term, Translation } from '../../../src/types';
 import { db, functions, logger } from '../firebase';
-import { findLemmas } from '../handlers/language';
 import { getGeneratedVariants } from './generateVariants';
 
 type TermTranslation = Pick<Term | Translation, 'value' | 'variants' | 'lang'>;
@@ -85,9 +84,7 @@ const getTermTranslationIndex = async (
     ref: firestore.DocumentReference
 ): Promise<TermTranslationIndex> => {
     const variants = getVariants(term);
-    const lemmas = (await Promise.all(variants.map(variant => findLemmas(variant, term.lang)))).map(result =>
-        result.map(({ lemma }) => lemma)
-    );
+    const lemmas = variants.map(v => v.split(/\s/).filter(v => v));
     return {
         ref,
         lemmas: JSON.stringify(lemmas),

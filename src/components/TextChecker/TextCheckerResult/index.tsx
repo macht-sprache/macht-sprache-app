@@ -48,7 +48,7 @@ export default function Analysis({ lang, getTermIndex, getTranslationIndex, text
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const termIndex = useIndexGrouped(getTermIndex, lang);
     const translationIndex = useIndexGrouped(getTranslationIndex, lang);
-    const matchGroups = useMatchGroups(analyzedText, termIndex, translationIndex);
+    const matchGroups = useMatchGroups(text, analyzedText, termIndex, translationIndex);
 
     const children = [
         ...matchGroups.flatMap((matchGroup, index) => {
