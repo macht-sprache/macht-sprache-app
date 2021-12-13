@@ -110,7 +110,6 @@ function TranslationPage({ getTerm, getTranslation, getTranslationExamples, getS
                         itemTranslated={t('common.entities.translation.value')}
                         title={`macht.sprache.: ${translation.value}`}
                         text={t('translation.share', { term: term.value, translation: translation.value })}
-                        rightAlignedOnBigScreen={true}
                     />
                 }
             >

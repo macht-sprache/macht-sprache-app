@@ -111,12 +111,13 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                 }
                 mainLang={term.lang}
                 rightHandSideContent={
-                    <Share
-                        title={`macht.sprache.: ${term.value}`}
-                        text={t('term.share', { term: term.value })}
-                        itemTranslated={t('common.entities.term.value')}
-                        rightAlignedOnBigScreen={true}
-                    />
+                    <>
+                        <Share
+                            title={`macht.sprache.: ${term.value}`}
+                            text={t('term.share', { term: term.value })}
+                            itemTranslated={t('common.entities.term.value')}
+                        />
+                    </>
                 }
             >
                 <Redact>{term.value}</Redact>

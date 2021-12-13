@@ -4,28 +4,9 @@
 }
 
 .label {
-    margin-bottom: 0.5rem;
-}
-
-.medium .label {
     margin-bottom: 1rem;
 }
 
-.buttonContainer {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -0.25rem;
-}
-
 .button {
-    margin: 0.25rem;
-}
-
-@media (min-width: 900px) {
-    .container.rightAlignedOnBigScreen {
-        text-align: right;
-    }
-    .rightAlignedOnBigScreen .buttonContainer {
-        justify-content: flex-end;
-    }
+    display: inline-block;
 }

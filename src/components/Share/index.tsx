@@ -1,4 +1,4 @@
-import Button, { ButtonAnchor } from '../Form/Button';
+import Button, { ButtonAnchor, ButtonContainer } from '../Form/Button';
 import { ReactComponent as ShareIcon } from './share-alt-solid.svg';
 import { ReactComponent as TwitterIcon } from './twitter-brands.svg';
 import { ReactComponent as FacebookIcon } from './facebook-f-brands.svg';
@@ -7,12 +7,19 @@ import { ReactComponent as ClipboardIcon } from './clipboard-regular.svg';
 import s from './style.module.css';
 import { isTouchDevice } from '../../utils';
 import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { ModalDialog } from '../ModalDialog';
 
 const FACEBOOK_APP_ID = '256281597718711';
 const MATOMO_CATEGORY = 'share';
+
+type Props = {
+    text: string;
+    url: string;
+    title: string;
+    size?: 'small' | 'medium';
+};
 
 export default function Share({
     text,
@@ -21,7 +28,7 @@ export default function Share({
     label,
     itemTranslated,
     size = 'small',
-    rightAlignedOnBigScreen = false,
+    inline = false,
 }: {
     text: string;
     title?: string;
@@ -29,75 +36,109 @@ export default function Share({
     label?: React.ReactNode;
     itemTranslated?: string;
     size?: 'small' | 'medium';
-    rightAlignedOnBigScreen?: boolean;
+    inline?: boolean;
 }) {
-    const { t } = useTranslation();
-    const labelDisplayed = label || t('share.LabelDefault', { item: itemTranslated });
-    const { trackEvent } = useMatomo();
-
     // to have space between text and the link below
     const textWithLineBreaks = text + '\n\n';
 
     return (
-        <div className={clsx(s.container, s[size], { [s.rightAlignedOnBigScreen]: rightAlignedOnBigScreen })}>
-            <div className={s.label}>{labelDisplayed}</div>
+        <>
             {/* a little weird to look for touch – but this "native" thing is not that useful on desktop usually... */}
+            {label && <div className={s.label}>{label}</div>}
             {navigator.share !== undefined && isTouchDevice() ? (
                 <NativeShare text={textWithLineBreaks} title={title} url={url} size={size} />
             ) : (
-                <div className={s.buttonContainer}>
-                    <ButtonAnchor
-                        target="_blank"
-                        rel="noopener"
-                        size={size}
-                        href={getTwitterLink({ text: textWithLineBreaks, url })}
-                        onClick={() => {
-                            trackEvent({ category: MATOMO_CATEGORY, action: 'twitter' });
-                        }}
-                        className={s.button}
-                    >
-                        <TwitterIcon className={s.icon} /> Twitter
-                    </ButtonAnchor>
-                    <ButtonAnchor
-                        target="_blank"
-                        rel="noopener"
-                        size={size}
-                        href={getFacebookLink({ text: textWithLineBreaks, url })}
-                        onClick={() => {
-                            trackEvent({ category: MATOMO_CATEGORY, action: 'facebook' });
-                        }}
-                        className={s.button}
-                    >
-                        <FacebookIcon className={s.icon} /> Facebook
-                    </ButtonAnchor>
-                    <ButtonAnchor
-                        size={size}
-                        href={getMailLink({ text: textWithLineBreaks, url, title })}
-                        onClick={() => {
-                            trackEvent({ category: MATOMO_CATEGORY, action: 'mail' });
-                        }}
-                        className={s.button}
-                    >
-                        <MailIcon className={s.icon} /> Mail
-                    </ButtonAnchor>
-                    {navigator.clipboard && <CopyButton text={textWithLineBreaks} url={url} size={size} />}
-                </div>
+                <>
+                    {inline ? (
+                        <NonNativeShare text={textWithLineBreaks} title={title} url={url} size={size} />
+                    ) : (
+                        <ShareOverlay size={size} itemTranslated={itemTranslated}>
+                            <NonNativeShare text={textWithLineBreaks} title={title} url={url} size={size} />
+                        </ShareOverlay>
+                    )}
+                </>
             )}
-        </div>
+        </>
     );
 }
 
-function NativeShare({
-    text,
-    url,
-    title,
+function ShareOverlay({
     size,
+    children,
+    itemTranslated,
 }: {
-    text: string;
-    url: string;
-    title: string;
-    size?: 'small' | 'medium';
+    size: 'small' | 'medium';
+    children: React.ReactNode;
+    itemTranslated?: string;
 }) {
+    const { t } = useTranslation();
+
+    const [modalOpen, setModalOpen] = useState(false);
+    return (
+        <>
+            <Button
+                onClick={() => {
+                    setModalOpen(true);
+                }}
+                size={size}
+                className={s.button}
+            >
+                <ShareIcon className={s.icon} /> {t('share.buttonLabel')}
+            </Button>
+            {modalOpen && (
+                <ModalDialog
+                    onClose={() => setModalOpen(false)}
+                    title={t('share.LabelDefault', { item: itemTranslated })}
+                >
+                    {children}
+                </ModalDialog>
+            )}
+        </>
+    );
+}
+
+function NonNativeShare({ text, url, title, size }: Props) {
+    const { trackEvent } = useMatomo();
+
+    return (
+        <ButtonContainer align="left">
+            <ButtonAnchor
+                target="_blank"
+                rel="noopener"
+                href={getTwitterLink({ text: text, url })}
+                onClick={() => {
+                    trackEvent({ category: MATOMO_CATEGORY, action: 'twitter' });
+                }}
+                className={s.button}
+            >
+                <TwitterIcon className={s.icon} /> Twitter
+            </ButtonAnchor>
+            <ButtonAnchor
+                target="_blank"
+                rel="noopener"
+                href={getFacebookLink({ text: text, url })}
+                onClick={() => {
+                    trackEvent({ category: MATOMO_CATEGORY, action: 'facebook' });
+                }}
+                className={s.button}
+            >
+                <FacebookIcon className={s.icon} /> Facebook
+            </ButtonAnchor>
+            <ButtonAnchor
+                href={getMailLink({ text: text, url, title })}
+                onClick={() => {
+                    trackEvent({ category: MATOMO_CATEGORY, action: 'mail' });
+                }}
+                className={s.button}
+            >
+                <MailIcon className={s.icon} /> Mail
+            </ButtonAnchor>
+            {navigator.clipboard && <CopyButton text={text} url={url} size={size} />}
+        </ButtonContainer>
+    );
+}
+
+function NativeShare({ text, url, title, size }: Props) {
     const { t } = useTranslation();
     const { trackEvent } = useMatomo();
 
