@@ -1,3 +1,4 @@
+import { extract, ratio } from 'fuzzball';
 import { uniq } from 'lodash/fp';
 import { useMemo } from 'react';
 import { GetList } from '../../../hooks/fetch';
@@ -41,18 +42,25 @@ const getCurrentMatches = <T extends Term | Translation>(
     indexGrouped: { [firstLemma: string]: Index<T>[] },
     analyzedText: TextTokenWithOriginal[],
     tokenIndex: number
-) =>
-    uniq([
-        ...(indexGrouped[textToken.lemma.toLowerCase()] || []),
-        ...(indexGrouped[textToken.original.toLowerCase()] || []),
-    ]).reduce<Match<T>[]>((acc, cur) => {
+) => {
+    const keys = Object.keys(indexGrouped);
+    const minScore = 90;
+
+    return uniq(
+        [textToken.lemma, textToken.original].flatMap(s =>
+            extract(s, keys, { cutoff: minScore - 1 }).flatMap(([key]) => indexGrouped[key] ?? [])
+        )
+    ).reduce<Match<T>[]>((acc, cur) => {
         const matchedTerms = cur.lemmas.find(ll =>
             ll.every((lemma, lemmaIndex) => {
-                const matchLemma = lemma.toLowerCase();
                 const currentToken = analyzedText[tokenIndex + lemmaIndex];
-                const textLemma = currentToken?.lemma?.toLowerCase();
-                const textOriginal = currentToken?.original?.toLowerCase();
-                return textLemma === matchLemma || textOriginal === matchLemma;
+                if (!currentToken) {
+                    return false;
+                }
+
+                return [ratio(lemma, currentToken.lemma), ratio(lemma, currentToken.original)].some(
+                    score => score >= minScore
+                );
             })
         );
         if (matchedTerms) {
@@ -63,6 +71,7 @@ const getCurrentMatches = <T extends Term | Translation>(
         }
         return acc;
     }, []);
+};
 
 export const useMatchGroups = (
     text: string,

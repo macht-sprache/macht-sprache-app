@@ -26,6 +26,7 @@
         "eslint-plugin-mdx": "1.16.0",
         "firebase": "9.4.1",
         "firebase-tools": "9.22.0",
+        "fuzzball": "2.1.2",
         "i18next": "20.6.1",
         "i18next-browser-languagedetector": "6.1.2",
         "linkify-it": "3.0.3",
