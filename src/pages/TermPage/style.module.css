@@ -5,6 +5,10 @@
     white-space: pre-wrap;
 }
 
+.defintion {
+    font-style: italic;
+}
+
 .guidelines {
     display: flex;
     flex-wrap: wrap;
