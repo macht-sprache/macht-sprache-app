@@ -31,7 +31,7 @@ import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
 import { langA, langB } from '../../languages';
 import { Guideline, guidelineKeys, useGuidelines } from '../../Manifesto/guidelines/guidelines';
 import { MANIFESTO } from '../../routes';
-import { Lang, Source, Term, Translation, User, UserProperties } from '../../types';
+import { Lang, Source, Term, Translation, User } from '../../types';
 import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import s from './style.module.css';
@@ -102,9 +102,16 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                             </Suspense>
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
+                        {adminComment && (
+                            <SingleColumn>
+                                <div className={s.adminComment}>
+                                    <Linkify>{adminComment}</Linkify>
+                                </div>
+                            </SingleColumn>
+                        )}
                         <BetaWrapper>
                             <Suspense fallback={null}>
-                                <Guidelines getGuidelines={getGuidelines} userProperties={userProperties} />
+                                <Guidelines getGuidelines={getGuidelines} />
                             </Suspense>
                         </BetaWrapper>
                     </>
@@ -122,14 +129,6 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
             >
                 <Redact>{term.value}</Redact>
             </Header>
-
-            {adminComment && (
-                <SingleColumn>
-                    <div className={s.adminComment}>
-                        <Linkify>{adminComment}</Linkify>
-                    </div>
-                </SingleColumn>
-            )}
 
             <FullWidthColumn>
                 <TranslationsList term={term} getTranslations={getTranslations} getSources={getSources} />
@@ -190,28 +189,25 @@ function SubscribeTerm({ term, user }: { term: Term; user: User }) {
     return <Checkbox label={t('notifications.subscribe')} checked={active} onChange={toggleSubscription} />;
 }
 
-function Guidelines({
-    getGuidelines,
-    userProperties,
-}: {
-    getGuidelines: () => Guideline[];
-    userProperties?: UserProperties;
-}) {
+function Guidelines({ getGuidelines }: { getGuidelines: () => Guideline[] }) {
+    const { t } = useTranslation();
     const guidelines = getGuidelines();
 
-    if (!userProperties?.admin || !guidelines.length) {
+    if (!guidelines.length) {
         return null;
     }
 
     return (
-        <p className={s.guidelines}>
-            Guidelines:{' '}
-            {guidelines.map(guideline => (
-                <span className={s.guideline} key={guideline.id}>
-                    <Link to={`${MANIFESTO}#${guideline.id}`}>{guideline.title}</Link>
-                </span>
-            ))}
-        </p>
+        <>
+            <h3 className={s.guidelineHeading}>{t('manifesto.guidelines')}</h3>
+            <div className={s.guidelines}>
+                {guidelines.map(guideline => (
+                    <Link className={s.guideline} key={guideline.id} to={`${MANIFESTO}#${guideline.id}`}>
+                        {guideline.title}
+                    </Link>
+                ))}
+            </div>
+        </>
     );
 }
 

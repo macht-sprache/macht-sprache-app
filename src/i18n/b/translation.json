@@ -401,12 +401,14 @@
         "subscribe": "Diskussion folgen"
     },
     "share": {
+        "buttonLabel": "Teilen",
         "NativeShareButton": "Teile via Twitter, WhatsApp, Mail etc.",
         "LabelDefault": "Teile diese Seite:",
         "copyToClipboard": "Zwischenablage",
         "copyToClipboardDone": "Kopiert!"
     },
     "manifesto": {
-        "title": "Manifest"
+        "title": "Manifest",
+        "guidelines": "Leitlinien"
     }
 }

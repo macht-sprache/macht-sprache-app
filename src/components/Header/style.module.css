@@ -80,14 +80,19 @@
     }
 }
 
+.rightHandSideSublineContainer {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
 @media (min-width: 900px) {
     .rightHandSideSublineContainer {
-        display: grid;
-        grid-gap: 1rem;
         grid-template-columns: 1fr 14rem;
     }
 
     .rightHandSide {
         margin-top: 0.5rem;
+        text-align: right;
     }
 }
