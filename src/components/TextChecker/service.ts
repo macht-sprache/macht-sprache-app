@@ -39,7 +39,7 @@ export const termOrTranslations = (terms: Term[], translations: Translation[]): 
     const longestTranslation = getLongestEntity(translations);
 
     if (longestTerm && longestTranslation) {
-        return longestTerm.value.length > longestTranslation.value.length ? 'term' : 'translation';
+        return longestTerm.value.length >= longestTranslation.value.length ? 'term' : 'translation';
     }
 
     if (longestTerm) return 'term';
