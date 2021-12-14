@@ -1,5 +1,6 @@
 import { firestore } from 'firebase-admin';
 import { TEXT_CHECKER_MAX_LENGTH } from '../../../src/constants';
+import { langA, langB } from '../../../src/languages';
 import { TranslationExampleModel } from '../../../src/modelTypes';
 import {
     BookSource,
@@ -26,6 +27,10 @@ export const analyzeText = functions.https.onCall(async ({ text, lang }: { text:
 
     if (text.length > TEXT_CHECKER_MAX_LENGTH) {
         throw new HttpsError('invalid-argument', 'text too long');
+    }
+
+    if (![langA, langB].includes(lang)) {
+        throw new HttpsError('invalid-argument', 'unsupported lang');
     }
 
     return findLemmas(text, lang);
