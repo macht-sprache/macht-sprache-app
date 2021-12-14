@@ -56,7 +56,8 @@
             "close": "less"
         },
         "error": {
-            "general": "Something went wrong"
+            "general": "Something went wrong",
+            "tooManyRequests": "Too many requests. Please try again later."
         },
         "textAeraCharWarning": "{{count}} characters left.",
         "formNav": {

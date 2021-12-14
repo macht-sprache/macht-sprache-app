@@ -1,4 +1,7 @@
 import { firestore } from 'firebase-admin';
+import { RateLimiterMemory, RateLimiterRes } from 'rate-limiter-flexible';
+import { TEXT_CHECKER_MAX_LENGTH } from '../../../src/constants';
+import { langA, langB } from '../../../src/languages';
 import { TranslationExampleModel } from '../../../src/modelTypes';
 import {
     BookSource,
@@ -13,17 +16,42 @@ import {
     User,
     WebPageSource,
 } from '../../../src/types';
-import { convertRef, db, functions, verifyBeta, verifyUser, WithoutId } from '../firebase';
+import { convertRef, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
-import { findTermMatches, findLemmas } from './language';
+import { findLemmas, findTermMatches } from './language';
 import { getMovie, searchMovies } from './movies';
 import { getWebPage, searchWebPage } from './webpages';
 
-export const analyzeText = functions.https.onCall(async ({ text, lang }: { text: string; lang: Lang }, context) => {
-    const userId = verifyUser(context);
-    await verifyBeta(userId);
-    return findLemmas(text, lang);
+const rateLimiterAnalyze = new RateLimiterMemory({
+    points: 2,
+    duration: 20,
 });
+
+export const analyzeText = functions
+    .runWith({ maxInstances: 1 })
+    .https.onCall(async ({ text, lang }: { text: string; lang: Lang }, context) => {
+        if (typeof text !== 'string') {
+            throw new HttpsError('invalid-argument', 'no text provided');
+        }
+
+        if (text.length > TEXT_CHECKER_MAX_LENGTH) {
+            throw new HttpsError('invalid-argument', 'text too long');
+        }
+
+        if (![langA, langB].includes(lang)) {
+            throw new HttpsError('invalid-argument', 'unsupported lang');
+        }
+
+        return rateLimiterAnalyze.consume(context.rawRequest.ip).then(
+            () => findLemmas(text, lang),
+            error => {
+                if (error instanceof RateLimiterRes) {
+                    logger.warn('hit rate limiting', error);
+                    throw new HttpsError('resource-exhausted', 'too many requests');
+                }
+            }
+        );
+    });
 
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {
     verifyUser(context);

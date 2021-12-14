@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { analyzeText } from '../../functions';
 import { collections } from '../../hooks/data';
@@ -42,12 +43,15 @@ export default function TextChecker() {
 function EntryPage() {
     const history = useHistory<ResultPageState | EntryPageState>();
     const { state, pathname } = useLocation<EntryPageState>();
-    const [requestState, setRequestState] = useRequestState();
+    const [requestState, setRequestState, error] = useRequestState();
+    const errorLabel = useErrorLabel(error);
     const value = state || { text: '', lang: undefined, textType: undefined };
+
     return (
         <TextCheckerEntry
             busy={requestState === 'IN_PROGRESS'}
             value={value}
+            error={errorLabel}
             onChange={newValue => history.replace(pathname, newValue)}
             onSubmit={() => {
                 const { lang, text } = value;
@@ -92,3 +96,17 @@ function ResultPage({
         />
     );
 }
+
+const useErrorLabel = (error: any) => {
+    const { t } = useTranslation();
+
+    if (!error) {
+        return;
+    }
+
+    if (error.code === 'functions/resource-exhausted') {
+        return t('common.error.tooManyRequests');
+    }
+
+    return t('common.error.general');
+};
