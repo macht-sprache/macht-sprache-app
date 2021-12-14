@@ -32,8 +32,8 @@ export default function Home() {
     return (
         <>
             <HomePageHeader />
-            <TermsWeekHighlights />
             <TextCheckerAd />
+            <TermsWeekHighlights />
             <Columns>
                 <div>
                     {user ? (

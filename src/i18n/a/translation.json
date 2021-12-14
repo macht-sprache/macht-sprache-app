@@ -315,8 +315,8 @@
         "moreAbout": "more about macht.sprache.",
         "claim": "Text checker, translation manifesto and discussion platform for sensitive translations",
         "ad": {
-            "heading": "Search for sensitive terms automatically",
-            "text": "Get help finding sensible words with the new <TextCheckerLink>text checker</TextCheckerLink> or read about how to translate in our <ManifestoLink>manifesto</ManifestoLink>."
+            "heading": "New: Search for sensitive terms automatically",
+            "text": "Check a text for sensitive translations with the macht.sprache. <TextCheckerLink>Text Checker</TextCheckerLink>. <ManifestoLink>Read the manifesto</ManifestoLink>, if you are interested in some fundamental principles and overarching guidelines for politically sensitive translation."
         }
     },
     "newsFeed": {

@@ -1,12 +1,30 @@
 .container {
     --padding: 1rem;
     border: var(--thickBorder) solid var(--orange);
-    padding: var(--padding);
     background: var(--white);
 }
 
 .heading {
-    margin: calc(var(--padding) * -1) calc(var(--padding) * -1) var(--padding);
+    margin: 0;
     padding: var(--padding);
     background: var(--orange);
+}
+
+.body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.image {
+    width: 100%;
+    height: auto;
+}
+
+.bodyParagraph {
+    font-family: var(--paragraphFont);
+    margin: 0 0 1rem;
+}
+
+.bodyText {
+    padding: var(--padding);
 }
