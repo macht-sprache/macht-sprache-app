@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { TEXT_CHECKER_MAX_LENGTH } from '../../../constants';
 import { Lang } from '../../../types';
 import { Textarea } from '../../Form/Input';
 import InputContainer from '../../Form/InputContainer';
@@ -25,6 +26,7 @@ export default function TextCheckerEntry({ value: { lang, text }, onChange, onSu
         <>
             <InputContainer>
                 <Textarea
+                    maxLength={TEXT_CHECKER_MAX_LENGTH}
                     disabled={busy}
                     label={t('textChecker.entry.description')}
                     value={text}
@@ -40,7 +42,7 @@ export default function TextCheckerEntry({ value: { lang, text }, onChange, onSu
                     buttonLabel={t(busy ? 'textChecker.entry.submitBusy' : 'textChecker.entry.submit')}
                     busy={busy}
                     onSubmit={onSubmit}
-                    buttonDisabled={!lang || text === '' || busy}
+                    buttonDisabled={!lang || text === '' || busy || text.length > TEXT_CHECKER_MAX_LENGTH}
                     lang={lang}
                 />
             </InputContainer>

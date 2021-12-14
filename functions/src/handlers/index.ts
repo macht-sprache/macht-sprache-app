@@ -1,4 +1,5 @@
 import { firestore } from 'firebase-admin';
+import { TEXT_CHECKER_MAX_LENGTH } from '../../../src/constants';
 import { TranslationExampleModel } from '../../../src/modelTypes';
 import {
     BookSource,
@@ -13,7 +14,7 @@ import {
     User,
     WebPageSource,
 } from '../../../src/types';
-import { convertRef, db, functions, verifyBeta, verifyUser, WithoutId } from '../firebase';
+import { convertRef, db, functions, HttpsError, verifyBeta, verifyUser, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
 import { findTermMatches, findLemmas } from './language';
 import { getMovie, searchMovies } from './movies';
@@ -22,6 +23,11 @@ import { getWebPage, searchWebPage } from './webpages';
 export const analyzeText = functions.https.onCall(async ({ text, lang }: { text: string; lang: Lang }, context) => {
     const userId = verifyUser(context);
     await verifyBeta(userId);
+
+    if (text.length > TEXT_CHECKER_MAX_LENGTH) {
+        throw new HttpsError('invalid-argument', 'text too long');
+    }
+
     return findLemmas(text, lang);
 });
 
