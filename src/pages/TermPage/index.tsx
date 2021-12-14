@@ -103,11 +103,9 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         )}
                         {definition && <p className={s.defintion}>{definition}</p>}
                         {adminComment && (
-                            <SingleColumn>
-                                <div className={s.adminComment}>
-                                    <Linkify>{adminComment}</Linkify>
-                                </div>
-                            </SingleColumn>
+                            <p className={s.adminComment}>
+                                <Linkify>{adminComment}</Linkify>
+                            </p>
                         )}
                         <BetaWrapper>
                             <Suspense fallback={null}>
