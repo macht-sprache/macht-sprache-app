@@ -1,7 +1,8 @@
 import { CollectionReference, DocumentSnapshot } from '@google-cloud/firestore';
 import { firestore } from 'firebase-admin';
 import { Change, EventContext } from 'firebase-functions';
-import { equals } from 'rambdax';
+import { equals, sortBy } from 'rambdax';
+import { split } from 'unicode-default-word-boundary';
 import type { Lang, Term, Translation } from '../../../src/types';
 import { db, functions, logger } from '../firebase';
 import { getGeneratedVariants } from './generateVariants';
@@ -84,7 +85,15 @@ const getTermTranslationIndex = async (
     ref: firestore.DocumentReference
 ): Promise<TermTranslationIndex> => {
     const variants = getVariants(term);
-    const lemmas = variants.map(v => v.split(/\s/).filter(v => v));
+    const lemmas = sortBy(
+        l => l.length,
+        variants.map(v =>
+            split(v)
+                .flatMap(string => string.split(/(:)/g)) // to mimic Google NLP's behaviour
+                .map(v => v.trim())
+                .filter(v => v)
+        )
+    ).reverse();
     return {
         ref,
         lemmas: JSON.stringify(lemmas),

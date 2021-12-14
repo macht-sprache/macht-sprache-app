@@ -10,7 +10,7 @@ const handleGermanGenderNeutralForms: VariantGenerator = value => {
     if (!match) {
         return [];
     }
-    return [match[1], match[1] + match[2]];
+    return [match[1], match[1] + match[2], ...['*', ':'].map(char => match[1] + char + match[2])];
 };
 
 const generators: { [lang in Lang]: VariantGenerator[] } = {
