@@ -125,12 +125,12 @@ function AppRouter() {
                                 <LaunchedRoute path={routes.NEWS} exact>
                                     <NewsPage />
                                 </LaunchedRoute>
-                                <BetaRoute path={routes.TEXT_CHECKER}>
+                                <Route path={routes.TEXT_CHECKER}>
                                     <TextCheckerPage />
-                                </BetaRoute>
-                                <BetaRoute path={routes.MANIFESTO} exact>
+                                </Route>
+                                <Route path={routes.MANIFESTO} exact>
                                     <ManifestoPage />
-                                </BetaRoute>
+                                </Route>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
                                         slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }}
