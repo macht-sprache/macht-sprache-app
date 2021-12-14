@@ -25,6 +25,10 @@ export const analyzeText = functions.https.onCall(async ({ text, lang }: { text:
     const userId = verifyUser(context);
     await verifyBeta(userId);
 
+    if (typeof text !== 'string') {
+        throw new HttpsError('invalid-argument', 'no text provided');
+    }
+
     if (text.length > TEXT_CHECKER_MAX_LENGTH) {
         throw new HttpsError('invalid-argument', 'text too long');
     }
