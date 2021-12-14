@@ -309,7 +309,11 @@
         "termsOfTheWeekDescription": "Jede Woche legen wir einen besonderen Fokus auf bestimmte Begriffe. Diese Woche:",
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
-        "claim": "Text Checker, Übersetzungsmanifest und Diskussionsplattform für sensibles Übersetzen"
+        "claim": "Text Checker, Übersetzungsmanifest und Diskussionsplattform für sensibles Übersetzen",
+        "ad": {
+            "heading": "Neu: Lass deinen Text automatisch überprüfen",
+            "text": "Prüfe den Text, den du übersetzen möchtest, mithilfe des <TextCheckerLink>Text Checkers</TextCheckerLink> auf sensible Begriffe. Lies <ManifestoLink>das Manifest</ManifestoLink>, um einige Grundprinzipien für politisch sensibles Übersetzen kennen zu lernen."
+        }
     },
     "newsFeed": {
         "clickForMore": "Hier klicken für mehr...",
