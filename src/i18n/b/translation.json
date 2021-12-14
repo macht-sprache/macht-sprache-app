@@ -56,7 +56,8 @@
             "close": "weniger"
         },
         "error": {
-            "general": "Da ist etwas schief gegangen"
+            "general": "Da ist etwas schief gegangen",
+            "tooManyRequests": "Zu viele Zugriffe. Bitte später erneut versuchen."
         },
         "textAeraCharWarning": "Noch {{count}} Zeichen übrig.",
         "formNav": {

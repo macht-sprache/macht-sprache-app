@@ -16,9 +16,10 @@ type Props = {
     onChange: (value: TextCheckerValue) => void;
     onSubmit: () => void;
     busy?: boolean;
+    error?: string;
 };
 
-export default function TextCheckerEntry({ value: { lang, text }, onChange, onSubmit, busy }: Props) {
+export default function TextCheckerEntry({ value: { lang, text }, onChange, onSubmit, busy, error }: Props) {
     const { t } = useTranslation();
     const updateModel = (update: Partial<TextCheckerValue>) => onChange({ lang, text, ...update });
 
@@ -34,6 +35,7 @@ export default function TextCheckerEntry({ value: { lang, text }, onChange, onSu
                     onChange={({ target }) => updateModel({ text: target.value })}
                     dontAnimateLabel={true}
                     inputClassName={s.textarea}
+                    error={error}
                 />
                 <BottomBar
                     onLanguageChange={lang => {
