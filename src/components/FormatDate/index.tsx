@@ -3,16 +3,17 @@ import { DateInput, formatDate } from './service';
 
 type formatDateProps = {
     date: DateInput;
+    length?: 'medium' | 'short';
 };
 
-export function FormatDate({ date }: formatDateProps) {
+export function FormatDate({ date, length = 'medium' }: formatDateProps) {
     const [lang] = useLang();
-    return <>{formatDate(date, lang)}</>;
-}
 
-export function FormatDateShort({ date }: formatDateProps) {
-    const [lang] = useLang();
-    return <span title={formatDate(date, lang)}>{formatDate(date, lang, 'short')}</span>;
+    if (length === 'short') {
+        return <span title={formatDate(date, lang)}>{formatDate(date, lang, 'short')}</span>;
+    }
+
+    return <>{formatDate(date, lang)}</>;
 }
 
 export { formatDate };
