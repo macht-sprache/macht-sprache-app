@@ -405,12 +405,14 @@
         "subscribe": "Follow discussion"
     },
     "share": {
+        "buttonLabel": "Share",
         "NativeShareButton": "Share via Twitter, WhatsApp, Mail etc.",
         "LabelDefault": "Share this {{item}}:",
         "copyToClipboard": "To clipboard",
         "copyToClipboardDone": "Copied!"
     },
     "manifesto": {
-        "title": "Manifesto"
+        "title": "Manifesto",
+        "guidelines": "Guidelines"
     }
 }

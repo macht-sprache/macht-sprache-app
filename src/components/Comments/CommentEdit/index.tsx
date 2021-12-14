@@ -55,7 +55,7 @@ export function CommentEdit({
     if (submitState === 'DONE') {
         return (
             <div className={s.shareBox}>
-                <Share size="medium" label={t('comment.shareLabel')} text={t('comment.shareText')} />
+                <Share size="medium" label={t('comment.shareLabel')} text={t('comment.shareText')} inline={true} />
                 <Button
                     className={s.shareBoxClose}
                     aria-label={t('common.formNav.close')}
