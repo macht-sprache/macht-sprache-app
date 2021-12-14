@@ -196,15 +196,15 @@ function AdminRoute(props: RouteProps) {
     return <NotFoundPage />;
 }
 
-function BetaRoute(props: RouteProps) {
-    const userProperties = useUserProperties();
+// function BetaRoute(props: RouteProps) {
+//     const userProperties = useUserProperties();
 
-    if (userProperties?.betaAccess) {
-        return <Route {...props} />;
-    }
+//     if (userProperties?.betaAccess) {
+//         return <Route {...props} />;
+//     }
 
-    return <NotFoundPage />;
-}
+//     return <NotFoundPage />;
+// }
 
 function RedirectToLogin() {
     const addContinueParam = useAddContinueParam();
