@@ -40,7 +40,8 @@
         "nodemailer": "6.7.0",
         "path-to-regexp": "^6.2.0",
         "rambdax": "7.4.1",
-        "rate-limiter-flexible": "2.3.6"
+        "rate-limiter-flexible": "2.3.6",
+        "unicode-default-word-boundary": "13.0.0"
     },
     "devDependencies": {
         "@types/html-to-text": "8.0.1",
