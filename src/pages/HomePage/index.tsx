@@ -14,6 +14,7 @@ import { TermsWeekHighlights } from '../../components/Terms/TermsWeekHighlights'
 import { WpStyle } from '../../components/WpStyle';
 import { HomePageHeader } from './Header';
 import s from './style.module.css';
+import TextCheckerAd from './TextCheckerAd';
 
 const ABOUT_SLUGS = {
     en: 'about-macht-sprache-short-version-landing-page',
@@ -31,6 +32,7 @@ export default function Home() {
     return (
         <>
             <HomePageHeader />
+            <TextCheckerAd />
             <TermsWeekHighlights />
             <Columns>
                 <div>

@@ -125,12 +125,12 @@ function AppRouter() {
                                 <LaunchedRoute path={routes.NEWS} exact>
                                     <NewsPage />
                                 </LaunchedRoute>
-                                <BetaRoute path={routes.TEXT_CHECKER}>
+                                <Route path={routes.TEXT_CHECKER}>
                                     <TextCheckerPage />
-                                </BetaRoute>
-                                <BetaRoute path={routes.MANIFESTO} exact>
+                                </Route>
+                                <Route path={routes.MANIFESTO} exact>
                                     <ManifestoPage />
-                                </BetaRoute>
+                                </Route>
                                 <Route path={routes.ABOUT} exact>
                                     <StaticContentPage
                                         slugs={{ en: 'about-case-sensitive', de: 'ueber-macht-sprache' }}
@@ -196,15 +196,15 @@ function AdminRoute(props: RouteProps) {
     return <NotFoundPage />;
 }
 
-function BetaRoute(props: RouteProps) {
-    const userProperties = useUserProperties();
+// function BetaRoute(props: RouteProps) {
+//     const userProperties = useUserProperties();
 
-    if (userProperties?.betaAccess) {
-        return <Route {...props} />;
-    }
+//     if (userProperties?.betaAccess) {
+//         return <Route {...props} />;
+//     }
 
-    return <NotFoundPage />;
-}
+//     return <NotFoundPage />;
+// }
 
 function RedirectToLogin() {
     const addContinueParam = useAddContinueParam();

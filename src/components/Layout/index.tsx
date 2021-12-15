@@ -109,12 +109,8 @@ function Sidebar() {
             <nav className={s.sidebarInner}>
                 {launched && (
                     <>
-                        {userProperties?.betaAccess && (
-                            <>
-                                <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
-                                <NavItem to={MANIFESTO} label={'Manifesto'} />
-                            </>
-                        )}
+                        <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
+                        <NavItem to={MANIFESTO} label={'Manifesto'} />
                         <NavItem to={TERMS} label={t('common.entities.term.value_plural')} />
                         <Suspense fallback={null}>
                             <SidebarTerms />

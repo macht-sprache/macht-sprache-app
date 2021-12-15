@@ -3,7 +3,6 @@ import xor from 'lodash/xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
-import BetaWrapper from '../../components/BetaWrapper';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import DividedList from '../../components/DividedList';
@@ -107,11 +106,9 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                 <Linkify>{adminComment}</Linkify>
                             </p>
                         )}
-                        <BetaWrapper>
-                            <Suspense fallback={null}>
-                                <Guidelines getGuidelines={getGuidelines} />
-                            </Suspense>
-                        </BetaWrapper>
+                        <Suspense fallback={null}>
+                            <Guidelines getGuidelines={getGuidelines} />
+                        </Suspense>
                     </>
                 }
                 mainLang={term.lang}
