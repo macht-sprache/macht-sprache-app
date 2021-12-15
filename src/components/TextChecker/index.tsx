@@ -1,3 +1,4 @@
+import { useMatomo } from '@datapunt/matomo-tracker-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';
@@ -41,6 +42,7 @@ export default function TextChecker() {
 }
 
 function EntryPage() {
+    const { trackEvent } = useMatomo();
     const history = useHistory<ResultPageState | EntryPageState>();
     const { state, pathname } = useLocation<EntryPageState>();
     const [requestState, setRequestState, error] = useRequestState();
@@ -63,6 +65,17 @@ function EntryPage() {
                     analyzedText => {
                         setRequestState('DONE');
                         history.push(TEXT_CHECKER_RESULT, { lang, text, analyzedText });
+                        trackEvent({
+                            category: 'text-checker',
+                            action: 'check-text',
+                            value: text.length,
+                            customDimensions: [
+                                {
+                                    id: 1,
+                                    value: lang,
+                                },
+                            ],
+                        });
                     },
                     error => setRequestState('ERROR', error)
                 );
