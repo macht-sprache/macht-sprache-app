@@ -138,8 +138,13 @@ const TranslationIndexConverter: firebase.firestore.FirestoreDataConverter<Trans
         return { lemmas: JSON.stringify(lemmas), ...rest };
     },
     fromFirestore: (snapshot): TranslationIndex => {
-        const { ref, lang, lemmas } = snapshot.data(defaultSnapshotOptions);
-        return { ref: addConverterToRef(ref), lang, lemmas: JSON.parse(lemmas) };
+        const { ref, lang, lemmas, termRef } = snapshot.data(defaultSnapshotOptions);
+        return {
+            ref: addConverterToRef(ref),
+            lang,
+            lemmas: JSON.parse(lemmas),
+            termRef: addConverterToRef(termRef),
+        };
     },
 };
 

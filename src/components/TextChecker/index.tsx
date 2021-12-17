@@ -8,7 +8,7 @@ import { GetList, useCollection } from '../../hooks/fetch';
 import { useRequestState } from '../../hooks/useRequestState';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 import { TEXT_CHECKER, TEXT_CHECKER_RESULT } from '../../routes';
-import { Lang, TermIndex, TextToken, TranslationIndex } from '../../types';
+import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../../types';
 import TextCheckerEntry, { TextCheckerValue } from './TextCheckerEntry';
 import TextCheckerResult from './TextCheckerResult';
 
@@ -23,6 +23,7 @@ type ResultPageState =
     | undefined;
 
 export default function TextChecker() {
+    const getHiddenTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', true));
     const getTermIndex = useCollection(collections.termIndex);
     const getTranslationIndex = useCollection(collections.translationIndex);
 
@@ -32,7 +33,11 @@ export default function TextChecker() {
                 <EntryPage />
             </Route>
             <Route path={TEXT_CHECKER_RESULT} exact>
-                <ResultPage getTermIndex={getTermIndex} getTranslationIndex={getTranslationIndex} />
+                <ResultPage
+                    getTermIndex={getTermIndex}
+                    getTranslationIndex={getTranslationIndex}
+                    getHiddenTerms={getHiddenTerms}
+                />
             </Route>
             <Route>
                 <NotFoundPage />
@@ -87,9 +92,11 @@ function EntryPage() {
 function ResultPage({
     getTermIndex,
     getTranslationIndex,
+    getHiddenTerms,
 }: {
     getTermIndex: GetList<TermIndex>;
     getTranslationIndex: GetList<TranslationIndex>;
+    getHiddenTerms: GetList<Term>;
 }) {
     const history = useHistory();
     const { state } = useLocation<ResultPageState>();
@@ -102,6 +109,7 @@ function ResultPage({
         <TextCheckerResult
             getTermIndex={getTermIndex}
             getTranslationIndex={getTranslationIndex}
+            getHiddenTerms={getHiddenTerms}
             lang={state.lang}
             text={state.text}
             analyzedText={state.analyzedText}

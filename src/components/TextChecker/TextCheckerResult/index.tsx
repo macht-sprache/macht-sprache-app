@@ -6,19 +6,20 @@ import { GetList } from '../../../hooks/fetch';
 import { addSearchParam } from '../../../hooks/location';
 import { AddTermPageState } from '../../../pages/AddTermPage';
 import { TERM_ADD } from '../../../routes';
-import { Lang, TermIndex, TextToken, TranslationIndex } from '../../../types';
+import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../../../types';
 import BlankBox from '../../Form/BlankBox';
 import InputContainer from '../../Form/InputContainer';
 import { SelectTooltipContainer, SelectTooltipLink } from '../../SelectTooltip';
 import BottomBar from '../BottomBar';
 import HighlightedPhrase from './HighlightedPhrase';
-import { useIndexGrouped, useMatchGroups } from './hooks';
+import { useFilteredIndex, useIndexGrouped, useMatchGroups } from './hooks';
 import s from './style.module.css';
 
 type Props = {
     lang: Lang;
     text: string;
     analyzedText: TextToken[];
+    getHiddenTerms: GetList<Term>;
     getTermIndex: GetList<TermIndex>;
     getTranslationIndex: GetList<TranslationIndex>;
     onCancel: () => void;
@@ -42,12 +43,20 @@ const useShowModal = () => {
     return { showModal, openModal, closeModal };
 };
 
-export default function Analysis({ lang, getTermIndex, getTranslationIndex, text, analyzedText, onCancel }: Props) {
+export default function Analysis({
+    lang,
+    getTermIndex,
+    getTranslationIndex,
+    getHiddenTerms,
+    text,
+    analyzedText,
+    onCancel,
+}: Props) {
     const { t } = useTranslation();
     const { showModal, openModal, closeModal } = useShowModal();
     const [tooltipOpen, setTooltipOpen] = useState(false);
-    const termIndex = useIndexGrouped(getTermIndex, lang);
-    const translationIndex = useIndexGrouped(getTranslationIndex, lang);
+    const termIndex = useIndexGrouped(useFilteredIndex(getTermIndex, getHiddenTerms, lang));
+    const translationIndex = useIndexGrouped(useFilteredIndex(getTranslationIndex, getHiddenTerms, lang));
     const matchGroups = useMatchGroups(text, analyzedText, termIndex, translationIndex);
 
     const children = [

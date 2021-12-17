@@ -18,10 +18,24 @@ type TextTokenWithOriginal = TextToken & {
     original: string;
 };
 
-export const useIndexGrouped = <T extends TermIndex | TranslationIndex>(getIndex: GetList<T>, lang: Lang) =>
+export const useFilteredIndex = <T extends TermIndex | TranslationIndex>(
+    getIndex: GetList<T>,
+    getHiddenTerms: GetList<Term>,
+    lang: Lang
+) =>
     useMemo(() => {
-        const termIndex = getIndex().filter(i => i.lang === lang);
-        return termIndex.reduce<{ [firstLemma: string]: T[] }>((acc, cur) => {
+        const hiddenTermIds = new Set(getHiddenTerms().map(t => t.id));
+        return getIndex()
+            .filter(i => i.lang === lang)
+            .filter(i => {
+                const termId = 'termRef' in i ? i.termRef.id : i.ref.id;
+                return !hiddenTermIds.has(termId);
+            });
+    }, [getHiddenTerms, getIndex, lang]);
+
+export const useIndexGrouped = <T extends TermIndex | TranslationIndex>(index: T[]) =>
+    useMemo(() => {
+        return index.reduce<{ [firstLemma: string]: T[] }>((acc, cur) => {
             cur.lemmas.forEach(lemmaList => {
                 const firstLemma = lemmaList[0]?.toLowerCase();
                 if (firstLemma) {
@@ -34,7 +48,7 @@ export const useIndexGrouped = <T extends TermIndex | TranslationIndex>(getIndex
             });
             return acc;
         }, {});
-    }, [getIndex, lang]);
+    }, [index]);
 
 const getCurrentMatches = <T extends Term | Translation>(
     textToken: TextTokenWithOriginal,

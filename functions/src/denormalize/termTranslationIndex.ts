@@ -4,16 +4,24 @@ import { Change, EventContext } from 'firebase-functions';
 import { equals, sortBy } from 'rambdax';
 import { split } from 'unicode-default-word-boundary';
 import type { Lang, Term, Translation } from '../../../src/types';
-import { db, functions, logger } from '../firebase';
+import { convertRefToAdmin, db, functions, logger } from '../firebase';
 import { getGeneratedVariants } from './generateVariants';
 
-type TermTranslation = Pick<Term | Translation, 'value' | 'variants' | 'lang'>;
+type TermTranslation =
+    | Pick<Term, 'value' | 'variants' | 'lang'>
+    | Pick<Translation, 'value' | 'variants' | 'lang' | 'term'>;
 
-type TermTranslationIndex = {
+type TermIndex = {
     ref: firestore.DocumentReference;
     lang: Lang;
     lemmas: string;
 };
+
+type TranslationIndex = TermIndex & {
+    termRef: firestore.DocumentReference;
+};
+
+type TermTranslationIndex = TermIndex | TranslationIndex;
 
 const getDenormalizeTermTranslationIndex = (indexCollection: CollectionReference) => async (
     change: Change<DocumentSnapshot>,
@@ -94,9 +102,16 @@ const getTermTranslationIndex = async (
                 .filter(v => v)
         )
     ).reverse();
-    return {
+
+    const base = {
         ref,
         lemmas: JSON.stringify(lemmas),
         lang: term.lang,
     };
+
+    if ('term' in term) {
+        return { ...base, termRef: convertRefToAdmin(term.term) };
+    }
+
+    return base;
 };

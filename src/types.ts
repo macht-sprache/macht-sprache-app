@@ -50,7 +50,7 @@ export interface Index<T> {
 
 export type TermIndex = Index<Term>;
 
-export type TranslationIndex = Index<Translation>;
+export type TranslationIndex = Index<Translation> & { termRef: DocReference<Term> };
 
 export interface Translation extends Commentable {
     id: string;
