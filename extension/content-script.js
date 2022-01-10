@@ -1,30 +1,32 @@
 const initializeInterval = setInterval(initialize, 100);
 
 function initialize() {
-    const textAreaSource = document.querySelector('textarea[aria-label="Source text"]');
-
-    if (textAreaSource) {
+    const textAreaTranslated = document.querySelector('[data-language][data-original-language]');
+    if (textAreaTranslated) {
         clearInterval(initializeInterval);
-        const button = document.createElement('button');
-        button.classList.add('check-button');
-        button.textContent = 'check!';
-        textAreaSource.parentElement.classList.add('textarea-source-parent');
-        textAreaSource.parentElement.appendChild(button);
-
-        button.addEventListener('click', () => {
-            alert(textAreaSource.value);
-        });
-
-        console.log(getElementByContent('Translation results', 'h2'));
+        initialize2();
+        const observer = new MutationObserver(observe);
+        observer.observe(textAreaTranslated.parentNode, { attributes: true, childList: true, subtree: true });
     }
 }
 
-function getElementByContent(content, elType) {
-    return document.evaluate(
-        `//${elType}[text()='${content}']`,
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-    ).singleNodeValue;
+function observe(mutationsList) {
+    mutationsList.forEach(mutation => {
+        mutation.removedNodes.forEach(() => {
+            initialize2();
+        });
+    });
+}
+
+function initialize2() {
+    const textAreaTranslatedEn = document.querySelector('[data-language="en"][data-original-language="de"]');
+    const textAreaTranslatedDe = document.querySelector('[data-language="de"][data-original-language="en"]');
+
+    if (textAreaTranslatedDe || textAreaTranslatedEn) {
+        const translatedTextLang = textAreaTranslatedDe ? 'de' : 'en';
+        const translatedTextNode = (textAreaTranslatedDe || textAreaTranslatedEn)?.firstChild;
+
+        console.log('translated Text lang:', translatedTextLang);
+        console.log('translated Text:', translatedTextNode.innerText);
+    }
 }
