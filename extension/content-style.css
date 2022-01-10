@@ -1,0 +1,10 @@
+.textarea-source-parent {
+    position: relative;
+}
+
+.check-button {
+    position: absolute;
+    inset: auto 0 0 auto;
+    background: red;
+    z-index: 10;
+}
