@@ -1,12 +1,16 @@
+const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
+let translatedTextElementParent;
+
 const initializeInterval = setInterval(initialize, 100);
 
 function initialize() {
-    const textAreaTranslated = document.querySelector('[data-language][data-original-language]');
-    if (textAreaTranslated) {
+    const translatedTextElement = document.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
+    if (translatedTextElement) {
+        translatedTextElementParent = translatedTextElement.parentNode;
         clearInterval(initializeInterval);
         initialize2();
         const observer = new MutationObserver(observe);
-        observer.observe(textAreaTranslated.parentNode, { attributes: true, childList: true, subtree: true });
+        observer.observe(translatedTextElementParent, { attributes: false, childList: true, subtree: false });
     }
 }
 
@@ -19,14 +23,16 @@ function observe(mutationsList) {
 }
 
 function initialize2() {
-    const textAreaTranslatedEn = document.querySelector('[data-language="en"][data-original-language="de"]');
-    const textAreaTranslatedDe = document.querySelector('[data-language="de"][data-original-language="en"]');
+    const translatedTextElement = translatedTextElementParent.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
 
-    if (textAreaTranslatedDe || textAreaTranslatedEn) {
-        const translatedTextLang = textAreaTranslatedDe ? 'de' : 'en';
-        const translatedTextNode = (textAreaTranslatedDe || textAreaTranslatedEn)?.firstChild;
+    if (translatedTextElement) {
+        const translatedTextLang = translatedTextElement.dataset.language;
+        const translatedText = translatedTextElement?.firstChild?.innerText;
 
-        console.log('translated Text lang:', translatedTextLang);
-        console.log('translated Text:', translatedTextNode.innerText);
+        translationUpdated({ lang: translatedTextLang, text: translatedText, el: translatedTextElement });
     }
+}
+
+function translationUpdated({ text, lang, el }) {
+    console.log('text updated', lang, ': ', text, el);
 }
