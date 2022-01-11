@@ -6,14 +6,13 @@
     "content_scripts": [
         {
             "matches": ["https://translate.google.com/*"],
-            "css": ["./content-style.css"],
-            "js": ["./content-script.js"]
+            "js": ["./dist/content-google-translate.js"]
         }
     ],
     "web_accessible_resources": [
         {
             "matches": ["https://translate.google.com/*"],
-            "resources": ["images/*"]
+            "resources": ["dist/*"]
         }
     ]
 }

@@ -1,4 +1,4 @@
-.machtsprache-button {
+.button {
     all: unset;
     position: relative;
     width: 3em;
@@ -7,7 +7,7 @@
     cursor: pointer;
 }
 
-.machtsprache-button:before {
+.button:before {
     content: '';
     position: absolute;
     top: 0.3em;
@@ -15,21 +15,21 @@
     height: 2.4em;
     width: 2.4em;
     border-radius: 50%;
-    background-image: url('chrome-extension://__MSG_@@extension_id__/images/logo_without_text.svg');
+    background-image: url('./logo_without_text.svg');
     background-repeat: no-repeat;
     background-size: 2em;
     background-position: 0.2em 0.2em;
 }
 
-.machtsprache-button:hover:before {
+.button:hover:before {
     background-color: #ebebeb;
 }
 
-.machtsprache-parent {
+.parent {
     position: relative;
 }
 
-.machtsprache-overlay {
+.overlay {
     position: absolute;
     top: 0;
     color: red !important;
