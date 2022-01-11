@@ -26,13 +26,24 @@ function initialize2() {
     const translatedTextElement = translatedTextElementParent.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
 
     if (translatedTextElement) {
-        const translatedTextLang = translatedTextElement.dataset.language;
-        const translatedText = translatedTextElement?.firstChild?.innerText;
-
-        translationUpdated({ lang: translatedTextLang, text: translatedText, el: translatedTextElement });
+        translationUpdated({
+            lang: translatedTextElement.dataset.language,
+            text: translatedTextElement?.firstChild?.innerText,
+            el: translatedTextElement,
+        });
     }
 }
 
 function translationUpdated({ text, lang, el }) {
     console.log('text updated', lang, ': ', text, el);
+    addButton(el);
+}
+
+function addButton(parentElement) {
+    const buttonRow = parentElement.lastChild;
+    const button = document.createElement('button');
+    button.setAttribute('aria-label', 'macht.sprache.');
+    button.classList.add('machtsprache-button');
+
+    buttonRow.prepend(button);
 }

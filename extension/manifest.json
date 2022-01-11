@@ -9,5 +9,11 @@
             "css": ["./content-style.css"],
             "js": ["./content-script.js"]
         }
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": ["https://translate.google.com/*"],
+            "resources": ["images/*"]
+        }
     ]
 }

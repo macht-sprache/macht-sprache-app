@@ -1,0 +1,26 @@
+.machtsprache-button {
+    all: unset;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.machtsprache-button:before {
+    content: '';
+    position: absolute;
+    top: 0.3em;
+    left: 0.3em;
+    height: 2.4em;
+    width: 2.4em;
+    border-radius: 50%;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/logo_without_text.svg');
+    background-repeat: no-repeat;
+    background-size: 2em;
+    background-position: 0.2em 0.2em;
+}
+
+.machtsprache-button:hover:before {
+    background-color: #ebebeb;
+}
