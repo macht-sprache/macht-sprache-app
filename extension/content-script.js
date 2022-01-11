@@ -24,19 +24,22 @@ function observe(mutationsList) {
 
 function initialize2() {
     const translatedTextElement = translatedTextElementParent.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
-
     if (translatedTextElement) {
         translationUpdated({
             lang: translatedTextElement.dataset.language,
+            originalLang: translatedTextElement.dataset.originalLanguage,
             text: translatedTextElement?.firstChild?.innerText,
             el: translatedTextElement,
         });
     }
 }
 
-function translationUpdated({ text, lang, el }) {
+function translationUpdated({ text, lang, el, originalLang }) {
     console.log('text updated', lang, ': ', text, el);
-    addButton(el);
+    if ((lang === 'de' || lang === 'en') && (originalLang === 'de' || originalLang === 'en')) {
+        addButton(el);
+        addText(el, text);
+    }
 }
 
 function addButton(parentElement) {
@@ -46,4 +49,13 @@ function addButton(parentElement) {
     button.classList.add('machtsprache-button');
 
     buttonRow.prepend(button);
+}
+
+function addText(parentElement, text) {
+    const textElement = parentElement.firstChild;
+    const textOverlay = document.createElement('div');
+    textOverlay.innerHTML = text;
+    textOverlay.classList.add('machtsprache-overlay', [...textElement.classList]);
+    parentElement.classList.add('machtsprache-parent');
+    parentElement.firstChild.after(textOverlay);
 }

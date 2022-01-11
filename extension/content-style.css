@@ -24,3 +24,14 @@
 .machtsprache-button:hover:before {
     background-color: #ebebeb;
 }
+
+.machtsprache-parent {
+    position: relative;
+}
+
+.machtsprache-overlay {
+    position: absolute;
+    top: 0;
+    color: red !important;
+    pointer-events: none;
+}
