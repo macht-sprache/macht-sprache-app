@@ -9,6 +9,9 @@
             "js": ["./dist/content-google-translate.js"]
         }
     ],
+    "background": {
+        "service_worker": "./dist/serviceWorker.js"
+    },
     "web_accessible_resources": [
         {
             "matches": ["https://translate.google.com/*"],

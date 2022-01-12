@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill';
 import './setup';
 import styles from './style.module.css';
 
@@ -52,10 +53,13 @@ function translationUpdated({
     el: HTMLElement;
     originalLang?: string;
 }) {
-    console.log('text updated', lang, ': ', text, el);
-    if ((lang === 'de' || lang === 'en') && (originalLang === 'de' || originalLang === 'en')) {
+    if (text && (lang === 'de' || lang === 'en') && (originalLang === 'de' || originalLang === 'en')) {
         addButton(el);
         addText(el, text || '');
+
+        browser.runtime.sendMessage(undefined, { lang, text }, {}).then(response => {
+            console.log('service worker response:', response);
+        });
     }
 }
 
