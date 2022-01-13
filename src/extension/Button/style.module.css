@@ -24,14 +24,3 @@
 .button:hover:before {
     background-color: #ebebeb;
 }
-
-.parent {
-    position: relative;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    color: red !important;
-    pointer-events: none;
-}
