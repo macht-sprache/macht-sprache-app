@@ -9,10 +9,11 @@ export function TranslationOverlay({ parentElement, text }: { parentElement?: HT
         if (parentElement) {
             const textOverlay = document.createElement('div');
             const textElement = parentElement?.firstChild as HTMLElement;
-            textElement?.after(textOverlay);
             parentElement.classList.add(styles.parent);
             textOverlay.classList.add(styles.overlay);
             textOverlay.classList.add(textElement?.classList.toString());
+            textElement?.after(textOverlay);
+            setTextOverlay(textOverlay);
         } else {
             setTextOverlay(null);
         }
