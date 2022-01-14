@@ -16,22 +16,22 @@ export const useGoogleTranslatedEnvironment = (): googleTranslatedEnvironment =>
             if (!translatedTextElement) {
                 return;
             }
-            translatedTextElementParent = translatedTextElement.parentNode as HTMLElement;
             clearInterval(initializeInterval);
-            initialize2();
+            translatedTextElementParent = translatedTextElement.parentNode as HTMLElement;
             const observer = new MutationObserver(observe);
             observer.observe(translatedTextElementParent!, { attributes: false, childList: true, subtree: false });
+            update();
         }
 
         const observe: MutationCallback = mutationsList => {
             mutationsList.forEach(mutation => {
                 mutation.removedNodes.forEach(() => {
-                    initialize2();
+                    update();
                 });
             });
         };
 
-        function initialize2() {
+        function update() {
             const translatedTextElement = translatedTextElementParent!.querySelector(
                 TRANSLATED_TEXT_ELEMENT_SELECTOR
             ) as HTMLElement;
