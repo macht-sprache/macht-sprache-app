@@ -12,28 +12,23 @@ const appConfig = {
     appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
+const emulatorHost = process.env.REACT_APP_EMULATOR_HOST || window.location.hostname;
+
 const app = firebase.initializeApp(appConfig);
 const auth = getAuth(app);
 const db = app.firestore();
 const functions = getFunctions(app, process.env.REACT_APP_FIREBASE_REGION);
 
 if (process.env.REACT_APP_AUTH_EMULATOR_PORT) {
-    connectAuthEmulator(
-        auth,
-        window.location.origin.replace(window.location.port, process.env.REACT_APP_AUTH_EMULATOR_PORT)
-    );
+    connectAuthEmulator(auth, `http://${emulatorHost}:${process.env.REACT_APP_AUTH_EMULATOR_PORT}`);
 }
 
 if (process.env.REACT_APP_FIRESTORE_EMULATOR_PORT) {
-    db.useEmulator(window.location.hostname, parseInt(process.env.REACT_APP_FIRESTORE_EMULATOR_PORT));
+    db.useEmulator(emulatorHost, parseInt(process.env.REACT_APP_FIRESTORE_EMULATOR_PORT));
 }
 
 if (process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT) {
-    connectFunctionsEmulator(
-        functions,
-        window.location.hostname,
-        parseInt(process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT)
-    );
+    connectFunctionsEmulator(functions, emulatorHost, parseInt(process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT));
 }
 
 const Timestamp = firebase.firestore.Timestamp;
