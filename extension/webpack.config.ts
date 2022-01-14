@@ -4,7 +4,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 const config: webpack.Configuration = {
     entry: {
-        'content-google-translate': '../src/extension/googleTranslate.ts',
+        'content-google-translate': '../src/extension/googleTranslate.tsx',
         serviceWorker: '../src/extension/serviceWorker.ts',
     },
     output: {

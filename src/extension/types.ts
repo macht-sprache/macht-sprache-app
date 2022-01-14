@@ -1,3 +1,6 @@
-import { Lang } from '../types';
-
-export type backgroundMessage = { lang: Lang; text: string };
+export type googleTranslatedEnvironment = {
+    lang?: string;
+    text?: string;
+    originalLang?: string;
+    el?: HTMLElement;
+};
