@@ -25,7 +25,7 @@ export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
 
         const observe: MutationCallback = mutationsList => {
             mutationsList.forEach(mutation => {
-                mutation.removedNodes.forEach(() => {
+                mutation.addedNodes.forEach(() => {
                     update();
                 });
             });
