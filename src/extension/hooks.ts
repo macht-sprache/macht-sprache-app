@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { googleTranslatedEnvironment } from './types';
+import { TranslatorEnvironment } from './types';
 
 const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
 
-export const useGoogleTranslatedEnvironment = (): googleTranslatedEnvironment => {
-    const [text, setText] = useState<googleTranslatedEnvironment>({});
+export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
+    const [text, setText] = useState<TranslatorEnvironment>({});
 
     useEffect(() => {
         let translatedTextElementParent: HTMLElement | null = null;

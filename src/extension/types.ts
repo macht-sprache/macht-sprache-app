@@ -1,4 +1,4 @@
-export type googleTranslatedEnvironment = {
+export type TranslatorEnvironment = {
     lang?: string;
     text?: string;
     originalLang?: string;
