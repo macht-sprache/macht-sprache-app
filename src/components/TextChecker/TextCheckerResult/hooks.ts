@@ -8,7 +8,7 @@ type Match<T extends Term | Translation> = {
     ref: DocReference<T>;
 };
 
-type MatchGroup = {
+export type MatchGroup = {
     pos: [number, number];
     termMatches: Match<Term>[];
     translationMatches: Match<Translation>[];
