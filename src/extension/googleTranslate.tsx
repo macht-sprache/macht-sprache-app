@@ -1,11 +1,11 @@
 import './setup';
-// import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-// import { Button } from './Button';
+import ReactDOMServer from 'react-dom/server';
 import { useGoogleTranslatedEnvironment } from './hooks';
+import { Button } from './Button';
 // import { TranslationOverlay } from './TranslationOverlay';
 import { Checker, OnUpdate } from './Checker';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
@@ -17,24 +17,18 @@ function App() {
         console.log('onUpdate', status, matches);
     }, []);
 
-    // const [buttonContainer, setButtonContainer] = useState<HTMLElement | null>();
-    // const buttonRow = translatedText?.el?.lastChild as HTMLElement;
+    const buttonRow = translatorEnv?.el?.lastChild as HTMLElement;
 
-    // useEffect(() => {
-    //     if (buttonRow) {
-    //         const container = document.createElement('div');
-    //         buttonRow.prepend(container);
-    //         setButtonContainer(container);
-    //     } else {
-    //         setButtonContainer(null);
-    //     }
-    // }, [buttonRow]);
+    useEffect(() => {
+        if (buttonRow) {
+            buttonRow.insertAdjacentHTML('afterbegin', ReactDOMServer.renderToStaticMarkup(<Button />));
+        }
+    }, [buttonRow]);
 
     return (
         <>
             <Checker env={translatorEnv} onUpdate={onUpdate} />
-            {/* {buttonContainer && ReactDOM.createPortal(<Button />, buttonContainer)}
-            {translatedText.el && <TranslationOverlay parentElement={translatedText.el} text={translatedText.text} />} */}
+            {/* {translatedText.el && <TranslationOverlay parentElement={translatedText.el} text={translatedText.text} />} */} */}
         </>
     );
 }
