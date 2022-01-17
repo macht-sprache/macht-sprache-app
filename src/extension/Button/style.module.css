@@ -24,3 +24,19 @@
 .button:hover:before {
     background-color: #ebebeb;
 }
+
+.loading {
+    animation-name: load;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(8, start);
+}
+
+@keyframes load {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

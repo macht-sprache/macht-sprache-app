@@ -12,11 +12,9 @@ import { collections } from '../hooks/data';
 import { GetList, useCollection, useDocuments } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../types';
-import { TranslatorEnvironment } from './types';
+import { Status, TranslatorEnvironment } from './types';
 
 export type OnUpdate = (status: Status, matches?: MatchGroup[], openModal?: (startPos: number) => void) => void;
-
-type Status = 'loading' | 'inactive' | 'idle';
 
 type Props = {
     env: TranslatorEnvironment;

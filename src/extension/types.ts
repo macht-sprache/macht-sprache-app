@@ -4,3 +4,5 @@ export type TranslatorEnvironment = {
     originalLang?: string;
     el?: HTMLElement;
 };
+
+export type Status = 'loading' | 'inactive' | 'idle';
