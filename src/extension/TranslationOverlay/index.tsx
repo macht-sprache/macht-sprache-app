@@ -1,27 +1,55 @@
-import { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import styles from './style.module.css';
+import React, { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks';
+import { TranslatorEnvironment } from '../types';
+import s from './style.module.css';
 
-export function TranslationOverlay({ parentElement, text }: { parentElement?: HTMLElement; text?: string }) {
+export function TranslationOverlay({ env, matches }: { env: TranslatorEnvironment; matches?: MatchGroup[] }) {
     const [textOverlay, setTextOverlay] = useState<HTMLElement | null>();
 
     useEffect(() => {
-        if (parentElement) {
+        if (env.el) {
             const textOverlay = document.createElement('div');
-            const textElement = parentElement?.firstChild as HTMLElement;
-            parentElement.classList.add(styles.parent);
-            textOverlay.classList.add(styles.overlay);
+            const textElement = env.el.firstChild as HTMLElement;
+            env.el.classList.add(s.parent);
+            textOverlay.classList.add(s.overlay);
             textOverlay.classList.add(textElement?.classList.toString());
             textElement?.after(textOverlay);
             setTextOverlay(textOverlay);
         } else {
             setTextOverlay(null);
         }
-    }, [parentElement]);
+    }, [env.el]);
 
-    if (textOverlay) {
-        return <>{ReactDOM.createPortal(<>{text}</>, textOverlay)}</>;
-    }
+    useEffect(() => {
+        if (textOverlay && !!matches?.length && env.text) {
+            textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={env.text} matches={matches} />);
+        }
+    }, [env.text, matches, textOverlay]);
 
     return null;
+}
+
+function Overlay({ text, matches }: { text: string; matches: MatchGroup[] }) {
+    const children = [
+        ...matches.flatMap((matchGroup, index) => {
+            const prevEnd = matches[index - 1]?.pos[1] || 0;
+            const [start, end] = matchGroup.pos;
+
+            if (prevEnd > start) {
+                return [];
+            }
+
+            return [
+                <span key={index + 'a'}>{text.substring(prevEnd, start)}</span>,
+                <HighlightedPhrase key={index + 'b'}>{text.substring(start, end)}</HighlightedPhrase>,
+            ];
+        }),
+        <span key="last">{text.substring(matches[matches.length - 1]?.pos?.[1] || 0)}</span>,
+    ];
+    return <>{children}</>;
+}
+
+function HighlightedPhrase({ children }: { children: React.ReactNode }) {
+    return <button className={s.highlightedPhrase}>{children}</button>;
 }

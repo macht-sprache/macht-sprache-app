@@ -5,6 +5,17 @@
 .overlay {
     position: absolute;
     top: 0;
-    color: red !important;
     pointer-events: none;
+    color: transparent;
+}
+
+.highlightedPhrase {
+    --color: #9cdcb2;
+    --backgroundMargin: 0.2rem;
+    all: unset;
+    pointer-events: all;
+    cursor: pointer;
+    background: var(--color);
+    box-shadow: var(--backgroundMargin) 0 0 var(--color), calc(var(--backgroundMargin) * -1) 0 0 var(--color);
+    color: black;
 }

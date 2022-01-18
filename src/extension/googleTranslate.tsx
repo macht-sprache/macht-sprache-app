@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import ReactDOMServer from 'react-dom/server';
 import { useGoogleTranslatedEnvironment } from './hooks';
 import { Button } from './Button';
-// import { TranslationOverlay } from './TranslationOverlay';
+import { TranslationOverlay } from './TranslationOverlay';
 import { Checker, OnUpdate } from './Checker';
 import { useCallback, useEffect, useState } from 'react';
 import { Status } from './types';
+import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
@@ -14,8 +15,10 @@ document.body.append(reactRootElement);
 function App() {
     const translatorEnv = useGoogleTranslatedEnvironment();
     const [status, setStatus] = useState<Status>();
+    const [matches, setMatches] = useState<MatchGroup[]>();
     const onUpdate = useCallback<OnUpdate>((status, matches, openModal) => {
         setStatus(status);
+        setMatches(matches);
         // update google translate UI here
         console.log('onUpdate', status, matches);
     }, []);
@@ -40,7 +43,7 @@ function App() {
     return (
         <>
             <Checker env={translatorEnv} onUpdate={onUpdate} />
-            {/* {translatedText.el && <TranslationOverlay parentElement={translatedText.el} text={translatedText.text} />} */}
+            <TranslationOverlay matches={matches} env={translatorEnv} />
         </>
     );
 }
