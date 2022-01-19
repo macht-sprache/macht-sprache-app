@@ -18,17 +18,32 @@ export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
             }
             clearInterval(initializeInterval);
             translatedTextElementParent = translatedTextElement.parentNode as HTMLElement;
-            const observer = new MutationObserver(observe);
-            observer.observe(translatedTextElementParent!, { attributes: false, childList: true, subtree: false });
+            const observerChildren = new MutationObserver(observeChildren);
+            observerChildren.observe(translatedTextElementParent, {
+                childList: true,
+                subtree: true,
+            });
+            const observerParent = new MutationObserver(observeParent);
+            observerParent.observe(translatedTextElementParent, {
+                childList: true,
+            });
             update();
         }
 
-        const observe: MutationCallback = mutationsList => {
+        const observeChildren: MutationCallback = mutationsList => {
             mutationsList.forEach(mutation => {
-                mutation.addedNodes.forEach(() => {
-                    update();
+                mutation.addedNodes.forEach(node => {
+                    // these get changed if a user selects an alternative translation suggested by google
+                    // @ts-ignore
+                    if (node?.parentElement?.parentElement?.attributes['data-language-for-alternatives']) {
+                        update();
+                    }
                 });
             });
+        };
+
+        const observeParent: MutationCallback = () => {
+            update();
         };
 
         function update() {
@@ -37,8 +52,8 @@ export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
             ) as HTMLElement;
             if (translatedTextElement) {
                 setText({
-                    lang: translatedTextElement.dataset.language!,
-                    originalLang: translatedTextElement.dataset.originalLanguage!,
+                    lang: translatedTextElement.dataset.language,
+                    originalLang: translatedTextElement.dataset.originalLanguage,
                     // @ts-ignore
                     text: translatedTextElement.firstChild?.innerText,
                     el: translatedTextElement,

@@ -4,7 +4,12 @@ import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks
 import { TranslatorEnvironment } from '../types';
 import s from './style.module.css';
 
-export function TranslationOverlay({ env, matches }: { env: TranslatorEnvironment; matches?: MatchGroup[] }) {
+type Props = {
+    env: TranslatorEnvironment;
+    matches?: MatchGroup[];
+};
+
+export function TranslationOverlay({ env, matches }: Props) {
     const [textOverlay, setTextOverlay] = useState<HTMLElement | null>();
 
     useEffect(() => {
@@ -22,8 +27,12 @@ export function TranslationOverlay({ env, matches }: { env: TranslatorEnvironmen
     }, [env.el]);
 
     useEffect(() => {
-        if (textOverlay && !!matches?.length && env.text) {
-            textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={env.text} matches={matches} />);
+        if (textOverlay) {
+            if (!!matches?.length && env.text) {
+                textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={env.text} matches={matches} />);
+            } else {
+                textOverlay.innerHTML = '';
+            }
         }
     }, [env.text, matches, textOverlay]);
 

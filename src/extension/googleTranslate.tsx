@@ -27,14 +27,16 @@ function App() {
     const [buttonContainer, setButtonContainer] = useState<HTMLElement>();
 
     useEffect(() => {
+        // console.log('adding container', buttonRow);
         if (buttonRow) {
             const container = document.createElement('div');
             buttonRow.prepend(container);
             setButtonContainer(container);
         }
-    }, [buttonRow]);
+    }, [buttonRow, translatorEnv?.el]);
 
     useEffect(() => {
+        // console.log('updating html', buttonContainer);
         if (buttonContainer) {
             buttonContainer.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} />);
         }
