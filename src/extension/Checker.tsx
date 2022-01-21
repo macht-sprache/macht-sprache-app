@@ -1,4 +1,5 @@
 import { OverlayProvider } from '@react-aria/overlays';
+import memoize from 'lodash/memoize';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import {
     MatchGroup,
@@ -12,7 +13,7 @@ import { collections } from '../hooks/data';
 import { GetList, useCollection, useDocuments } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../types';
-import { CheckerResult, Status, TranslatorEnvironment } from './types';
+import { CheckerResult, TranslatorEnvironment } from './types';
 
 export type OnUpdate = (result: CheckerResult, openModal?: (startPos: number) => void) => void;
 
@@ -30,6 +31,8 @@ type InnerProps = {
     getTranslationIndex: GetList<TranslationIndex>;
     onUpdate: OnUpdate;
 };
+
+const memoizedAnalyzeText = memoize(analyzeText, (...args) => args.join(''));
 
 const useConvertEnv = ({
     lang,
@@ -79,7 +82,7 @@ function Loader({ lang, text, onUpdate }: { lang: Lang; text: string; onUpdate: 
         let isCurrent = true;
         setAnalyzedText(undefined);
         onUpdate({ status: 'loading' });
-        analyzeText(text, lang).then(analyzedText => {
+        memoizedAnalyzeText(text, lang).then(analyzedText => {
             if (isCurrent) {
                 setAnalyzedText(analyzedText);
             }
