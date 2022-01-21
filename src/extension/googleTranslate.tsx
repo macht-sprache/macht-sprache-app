@@ -6,46 +6,41 @@ import { Button } from './Button';
 import { TranslationOverlay } from './TranslationOverlay';
 import { Checker, OnUpdate } from './Checker';
 import { useCallback, useEffect, useState } from 'react';
-import { Status } from './types';
+import { CheckerResult, Status } from './types';
 import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
+import { Lang } from '../types';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
 
 function App() {
-    const translatorEnv = useGoogleTranslatedEnvironment();
-    const [status, setStatus] = useState<Status>();
-    const [matches, setMatches] = useState<MatchGroup[]>();
-    const onUpdate = useCallback<OnUpdate>((status, matches, openModal) => {
-        setStatus(status);
-        setMatches(matches);
-        // update google translate UI here
-        console.log('onUpdate', status, matches);
-    }, []);
+    // setState (translatorenv (text, languages))
+    // setState (text w/ matches, lang)
+    const { env, onUpdate } = useGoogleTranslatedEnvironment();
 
-    const buttonRow = translatorEnv?.el?.lastChild as HTMLElement;
-    const [buttonContainer, setButtonContainer] = useState<HTMLElement>();
+    // const buttonRow = translatorEnv?.el?.lastChild as HTMLElement;
+    // const [buttonContainer, setButtonContainer] = useState<HTMLElement>();
 
-    useEffect(() => {
-        // console.log('adding container', buttonRow);
-        if (buttonRow) {
-            const container = document.createElement('div');
-            buttonRow.prepend(container);
-            setButtonContainer(container);
-        }
-    }, [buttonRow, translatorEnv?.el]);
+    // useEffect(() => {
+    //     // console.log('adding container', buttonRow);
+    //     if (buttonRow) {
+    //         const container = document.createElement('div');
+    //         buttonRow.prepend(container);
+    //         setButtonContainer(container);
+    //     }
+    // // }, [buttonRow, translatorEnv?.el]);
 
-    useEffect(() => {
-        // console.log('updating html', buttonContainer);
-        if (buttonContainer) {
-            buttonContainer.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} />);
-        }
-    }, [buttonContainer, status]);
+    // useEffect(() => {
+    //     // console.log('updating html', buttonContainer);
+    //     if (buttonContainer) {
+    //         buttonContainer.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} />);
+    //     }
+    // }, [buttonContainer, status]);
 
     return (
         <>
-            <Checker env={translatorEnv} onUpdate={onUpdate} />
-            <TranslationOverlay matches={matches} env={translatorEnv} />
+            <Checker env={env} onUpdate={onUpdate} />
+            {/* <TranslationOverlay matches={matches} env={translatorEnv} /> */}
         </>
     );
 }

@@ -12,9 +12,9 @@ import { collections } from '../hooks/data';
 import { GetList, useCollection, useDocuments } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../types';
-import { Status, TranslatorEnvironment } from './types';
+import { CheckerResult, Status, TranslatorEnvironment } from './types';
 
-export type OnUpdate = (status: Status, matches?: MatchGroup[], openModal?: (startPos: number) => void) => void;
+export type OnUpdate = (result: CheckerResult, openModal?: (startPos: number) => void) => void;
 
 type Props = {
     env: TranslatorEnvironment;
@@ -52,7 +52,7 @@ export function Checker({ env, onUpdate }: Props) {
 
     useEffect(() => {
         if (!checkerInput) {
-            onUpdate('inactive');
+            onUpdate({ status: 'inactive' });
         }
     }, [checkerInput, onUpdate]);
 
@@ -78,7 +78,7 @@ function Loader({ lang, text, onUpdate }: { lang: Lang; text: string; onUpdate: 
     useEffect(() => {
         let isCurrent = true;
         setAnalyzedText(undefined);
-        onUpdate('loading');
+        onUpdate({ status: 'loading' });
         analyzeText(text, lang).then(analyzedText => {
             if (isCurrent) {
                 setAnalyzedText(analyzedText);
@@ -114,8 +114,8 @@ function Inner({ lang, getTermIndex, getTranslationIndex, getHiddenTerms, text, 
     const showModalMatch = showModal !== undefined && matchGroups.find(matchGroup => matchGroup.pos[0] === showModal);
 
     useEffect(() => {
-        onUpdate('idle', matchGroups, setShowModal);
-    }, [matchGroups, onUpdate]);
+        onUpdate({ status: 'idle', text, matches: matchGroups, lang }, setShowModal);
+    }, [lang, matchGroups, onUpdate, text]);
 
     if (showModalMatch) {
         return <ModalWrapper matchGroup={showModalMatch} text={text} onClose={() => setShowModal(undefined)} />;
@@ -131,12 +131,12 @@ function ModalWrapper({ matchGroup, text, onClose }: { matchGroup: MatchGroup; t
 
     return (
         <Suspense fallback={null}>
-            <PhraseModal
+            {/* <PhraseModal
                 title={text.substring(start, end)}
                 getTerms={getTerms}
                 getTranslations={getTranslations}
                 onClose={onClose}
-            />
+            /> */}
         </Suspense>
     );
 }

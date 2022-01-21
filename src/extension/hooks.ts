@@ -1,14 +1,36 @@
-import { useEffect, useState } from 'react';
-import { TranslatorEnvironment } from './types';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { OnUpdate } from './Checker';
+import { renderOverlay } from './googleTranslate/overlay';
+import { CheckerResult, TranslatorEnvironment } from './types';
 
 const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
 
-export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
-    const [text, setText] = useState<TranslatorEnvironment>({});
+export const useGoogleTranslatedEnvironment = () => {
+    const elRef = useRef<HTMLElement>();
+    const [env, setEnv] = useState<TranslatorEnvironment>({});
+    const checkerResultRef = useRef<CheckerResult>({ status: 'inactive' });
+    const envRef = useRef<TranslatorEnvironment>({});
+
+    useEffect(() => {
+        envRef.current = env;
+    }, [env]);
+
+    const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
+        if (newEnv.lang === newResult.lang && newEnv.text === newResult.text) {
+            renderOverlay({ el: elRef.current, ...newResult });
+        }
+    }, []);
+
+    const onUpdate: OnUpdate = useCallback(
+        (result: CheckerResult) => {
+            checkerResultRef.current = result;
+            render(envRef.current, result);
+        },
+        [render]
+    );
 
     useEffect(() => {
         let translatedTextElementParent: HTMLElement | null = null;
-
         const initializeInterval = setInterval(initialize, 100);
 
         function initialize() {
@@ -23,26 +45,10 @@ export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
                 childList: true,
                 subtree: true,
             });
-            const observerParent = new MutationObserver(observeParent);
-            observerParent.observe(translatedTextElementParent, {
-                childList: true,
-            });
             update();
         }
 
-        const observeChildren: MutationCallback = mutationsList => {
-            mutationsList.forEach(mutation => {
-                mutation.addedNodes.forEach(node => {
-                    // these get changed if a user selects an alternative translation suggested by google
-                    // @ts-ignore
-                    if (node?.parentElement?.parentElement?.attributes['data-language-for-alternatives']) {
-                        update();
-                    }
-                });
-            });
-        };
-
-        const observeParent: MutationCallback = () => {
+        const observeChildren: MutationCallback = () => {
             update();
         };
 
@@ -51,16 +57,21 @@ export const useGoogleTranslatedEnvironment = (): TranslatorEnvironment => {
                 TRANSLATED_TEXT_ELEMENT_SELECTOR
             ) as HTMLElement;
             if (translatedTextElement) {
-                setText({
+                elRef.current = translatedTextElement;
+                console.log('setting');
+                const newEnv = {
                     lang: translatedTextElement.dataset.language,
                     originalLang: translatedTextElement.dataset.originalLanguage,
                     // @ts-ignore
                     text: translatedTextElement.firstChild?.innerText,
-                    el: translatedTextElement,
-                });
+                    // el: translatedTextElement,
+                };
+
+                render(newEnv, checkerResultRef.current);
+                setEnv(newEnv);
             }
         }
-    }, []);
+    }, [render]);
 
-    return text;
+    return { env, onUpdate };
 };
