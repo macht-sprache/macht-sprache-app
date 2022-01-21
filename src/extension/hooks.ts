@@ -16,14 +16,18 @@ export const useGoogleTranslatedEnvironment = () => {
     }, [env]);
 
     const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
-        const canUpdate = newEnv.lang === newResult.lang && newEnv.text === newResult.text;
+        const textToCheck = newResult.text?.substring(
+            0,
+            newResult.matches?.length && newResult.matches[newResult.matches.length - 1].pos[1]
+        );
+        const canUpdate = newEnv.lang === newResult.lang && textToCheck && newEnv.text?.startsWith(textToCheck);
         renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(
         (result: CheckerResult) => {
-            checkerResultRef.current = result;
-            render(envRef.current, result);
+            checkerResultRef.current = { ...checkerResultRef.current, ...result };
+            render(envRef.current, checkerResultRef.current);
         },
         [render]
     );
@@ -66,7 +70,6 @@ export const useGoogleTranslatedEnvironment = () => {
                     originalLang: translatedTextElement.dataset.originalLanguage,
                     // @ts-ignore
                     text: translatedTextElement.firstChild?.innerText,
-                    // el: translatedTextElement,
                 };
 
                 render(newEnv, checkerResultRef.current);
