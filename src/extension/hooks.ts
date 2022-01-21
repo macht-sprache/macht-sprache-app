@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { OnUpdate } from './Checker';
+import { isButton, renderButton } from './googleTranslate/button';
 import { isOverlay, renderOverlay } from './googleTranslate/overlay';
 import { CheckerResult, TranslatorEnvironment } from './types';
 
@@ -22,6 +23,7 @@ export const useGoogleTranslatedEnvironment = () => {
         );
         const canUpdate = newEnv.lang === newResult.lang && textToCheck && newEnv.text?.startsWith(textToCheck);
         renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) });
+        renderButton({ el: elRef.current, status: newResult.status });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(
@@ -52,7 +54,7 @@ export const useGoogleTranslatedEnvironment = () => {
         }
 
         const observeChildren: MutationCallback = mutations => {
-            if (mutations.every(mutation => isOverlay(mutation.target))) {
+            if (mutations.every(mutation => isOverlay(mutation.target) || isButton(mutation.target))) {
                 return;
             }
             update();

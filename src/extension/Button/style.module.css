@@ -14,7 +14,8 @@
     left: 0.3em;
     height: 2.4em;
     width: 2.4em;
-    border-radius: 50%;
+    /* border-radius: 50%; */
+    background-color: red;
     background-image: url('./logo_without_text.svg');
     background-repeat: no-repeat;
     background-size: 2em;
