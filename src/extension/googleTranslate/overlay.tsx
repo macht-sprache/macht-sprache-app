@@ -12,6 +12,10 @@ type Props = {
 
 let textOverlay: HTMLElement | null = null;
 
+export function isOverlay(el: Node) {
+    return el === textOverlay;
+}
+
 export function renderOverlay({ el, matches, lang, text }: Props) {
     if (!el) {
         return;

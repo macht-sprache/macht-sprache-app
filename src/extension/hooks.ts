@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { OnUpdate } from './Checker';
-import { renderOverlay } from './googleTranslate/overlay';
+import { isOverlay, renderOverlay } from './googleTranslate/overlay';
 import { CheckerResult, TranslatorEnvironment } from './types';
 
 const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
@@ -48,7 +48,10 @@ export const useGoogleTranslatedEnvironment = () => {
             update();
         }
 
-        const observeChildren: MutationCallback = () => {
+        const observeChildren: MutationCallback = mutations => {
+            if (mutations.every(mutation => isOverlay(mutation.target))) {
+                return;
+            }
             update();
         };
 
