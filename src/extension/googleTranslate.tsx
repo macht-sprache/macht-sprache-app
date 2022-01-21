@@ -1,7 +1,7 @@
+import './setup';
 import ReactDOM from 'react-dom';
 import { Checker } from './Checker';
 import { useGoogleTranslatedEnvironment } from './hooks';
-import './setup';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
