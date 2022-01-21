@@ -16,9 +16,8 @@ export const useGoogleTranslatedEnvironment = () => {
     }, [env]);
 
     const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
-        if (newEnv.lang === newResult.lang && newEnv.text === newResult.text) {
-            renderOverlay({ el: elRef.current, ...newResult });
-        }
+        const canUpdate = newEnv.lang === newResult.lang && newEnv.text === newResult.text;
+        renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(
