@@ -16,19 +16,19 @@ export function isOverlay(el: Node) {
     return el === textOverlay;
 }
 
-export function renderOverlay({ el, matches, lang, text }: Props) {
+export function renderOverlay({ el, matches, text }: Props) {
     if (!el) {
         return;
     }
 
     el.classList.add(s.parent);
-    const textElement = el.firstChild as HTMLElement;
 
-    if (!textOverlay) {
+    if (!textOverlay || !el.contains(textOverlay)) {
+        const textElement = el.firstElementChild;
         textOverlay = document.createElement('div');
         textOverlay.classList.add(s.overlay);
-        textOverlay.classList.add(textElement?.classList.toString());
-        textElement.after(textOverlay);
+        textOverlay.classList.add(textElement?.classList?.toString() ?? '');
+        el.appendChild(textOverlay);
     }
 
     if (!!matches?.length && text) {
