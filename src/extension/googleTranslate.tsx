@@ -1,14 +1,7 @@
-import './setup';
 import ReactDOM from 'react-dom';
-import ReactDOMServer from 'react-dom/server';
+import { Checker } from './Checker';
 import { useGoogleTranslatedEnvironment } from './hooks';
-import { Button } from './Button';
-import { TranslationOverlay } from './TranslationOverlay';
-import { Checker, OnUpdate } from './Checker';
-import { useCallback, useEffect, useState } from 'react';
-import { CheckerResult, Status } from './types';
-import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
-import { Lang } from '../types';
+import './setup';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
