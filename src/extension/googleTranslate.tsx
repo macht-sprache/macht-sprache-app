@@ -2,6 +2,7 @@ import './setup';
 import ReactDOM from 'react-dom';
 import { Checker } from './Checker';
 import { useGoogleTranslatedEnvironment } from './hooks';
+import { TranslationProviderExtension } from '../i18n/config';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
@@ -38,4 +39,9 @@ function App() {
     );
 }
 
-ReactDOM.render(<App />, reactRootElement);
+ReactDOM.render(
+    <TranslationProviderExtension>
+        <App />
+    </TranslationProviderExtension>,
+    reactRootElement
+);
