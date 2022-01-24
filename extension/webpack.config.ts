@@ -55,12 +55,19 @@ const config: webpack.Configuration = {
                 use: ['style-loader', 'css-loader'],
             },
             {
-                test: /\.svg$/,
-                use: ['@svgr/webpack', 'file-loader'],
-            },
-            {
                 test: /\.(png|jpe?g|gif)$/i,
                 type: 'asset/resource',
+            },
+
+            {
+                test: /\.svg$/i,
+                issuer: /\.css$/,
+                type: 'asset/resource',
+            },
+            {
+                test: /\.svg$/,
+                issuer: /\.[jt]sx?$/,
+                use: ['@svgr/webpack', 'file-loader'],
             },
         ],
     },
