@@ -10,6 +10,7 @@ export const useGoogleTranslatedEnvironment = () => {
     const elRef = useRef<HTMLElement>();
     const [env, setEnv] = useState<TranslatorEnvironment>({});
     const checkerResultRef = useRef<CheckerResult>({ status: 'inactive' });
+    const openModalRef = useRef<(startPos: number) => void>(() => {});
     const envRef = useRef<TranslatorEnvironment>({});
 
     useEffect(() => {
@@ -22,14 +23,16 @@ export const useGoogleTranslatedEnvironment = () => {
             newResult.matches?.length && newResult.matches[newResult.matches.length - 1].pos[1]
         );
         const canUpdate = newEnv.lang === newResult.lang && textToCheck && newEnv.text?.startsWith(textToCheck);
-        renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) });
-
+        renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) }, openModalRef.current);
         renderButton({ el: elRef.current, status: newResult.status, hasResult: !!newResult.matches?.length });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(
-        (result: CheckerResult) => {
+        (result, openModal) => {
             checkerResultRef.current = { ...checkerResultRef.current, ...result };
+            if (openModal) {
+                openModalRef.current = openModal;
+            }
             render(envRef.current, checkerResultRef.current);
         },
         [render]

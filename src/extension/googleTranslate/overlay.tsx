@@ -18,7 +18,7 @@ export function isOverlay(el: Node) {
     return el === textOverlay;
 }
 
-export function renderOverlay({ el, matches, text, lang }: Props) {
+export function renderOverlay({ el, matches, text, lang }: Props, openModal: (startPos: number) => void) {
     if (!el) {
         return;
     }
@@ -35,8 +35,16 @@ export function renderOverlay({ el, matches, text, lang }: Props) {
 
     if (!!matches?.length && text) {
         textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={text} matches={matches} lang={lang} />);
+        textOverlay.onclick = (event: MouseEvent) => {
+            if (!(event.target instanceof HTMLElement)) {
+                return;
+            }
+            const startIndex = parseInt(event.target.dataset.start ?? '');
+            openModal(startIndex);
+        };
     } else {
         textOverlay.innerHTML = '';
+        textOverlay.onclick = null;
     }
 }
 
