@@ -1,4 +1,5 @@
 import { OverlayProvider } from '@react-aria/overlays';
+import clsx from 'clsx';
 import memoize from 'lodash/memoize';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import {
@@ -8,11 +9,13 @@ import {
     useMatchGroups,
 } from '../components/TextChecker/TextCheckerResult/hooks';
 import PhraseModal from '../components/TextChecker/TextCheckerResult/Modal';
+import { CSS_CONTEXT_CLASS_NAME } from '../constants';
 import { analyzeText } from '../functions';
 import { collections } from '../hooks/data';
 import { GetList, useCollection, useDocuments } from '../hooks/fetch';
 import { langA, langB } from '../languages';
 import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../types';
+import styles from './style.module.css';
 import { CheckerResult, TranslatorEnvironment } from './types';
 
 export type OnUpdate = (result: CheckerResult, openModal?: (startPos: number) => void) => void;
@@ -139,6 +142,7 @@ function ModalWrapper({ matchGroup, text, onClose }: { matchGroup: MatchGroup; t
                 getTerms={getTerms}
                 getTranslations={getTranslations}
                 onClose={onClose}
+                containerClassName={clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle)}
             />
         </Suspense>
     );

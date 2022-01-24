@@ -4,7 +4,6 @@ import { OverlayContainer, useModal, useOverlay, usePreventScroll } from '@react
 import clsx from 'clsx';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import s from './style.module.css';
 
 type ModalDialogProps = {
@@ -13,9 +12,17 @@ type ModalDialogProps = {
     children: React.ReactNode;
     isDismissable?: boolean;
     width?: 'medium' | 'wide' | 'wider';
+    containerClassName?: string;
 };
 
-export function ModalDialog({ title, children, onClose, isDismissable = true, width = 'medium' }: ModalDialogProps) {
+export function ModalDialog({
+    title,
+    children,
+    onClose,
+    isDismissable = true,
+    width = 'medium',
+    containerClassName,
+}: ModalDialogProps) {
     usePreventScroll();
     const { t } = useTranslation();
     const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +31,7 @@ export function ModalDialog({ title, children, onClose, isDismissable = true, wi
     const { dialogProps, titleProps } = useDialog({}, ref);
 
     return (
-        <OverlayContainer className={CSS_CONTEXT_CLASS_NAME}>
+        <OverlayContainer className={containerClassName}>
             <div className={s.background}>
                 <FocusScope contain restoreFocus autoFocus>
                     <div

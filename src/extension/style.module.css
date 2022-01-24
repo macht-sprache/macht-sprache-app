@@ -1,0 +1,35 @@
+.globalStyle {
+    font-family: var(--monospaceFont);
+    color: var(--black);
+}
+
+.globalStyle h1 {
+    font-size: var(--fontSizeXXL);
+}
+
+.globalStyle h2 {
+    font-size: var(--fontSizeL);
+}
+
+.globalStyle h3 {
+    font-size: var(--fontSizeM);
+}
+
+.globalStyle a {
+    color: inherit;
+}
+
+.globalStyle p {
+    line-height: var(--lineHeightParagraph);
+}
+
+.globalStyle [lang='de'] p,
+.globalStyle p[lang='de'] {
+    hyphens: auto;
+}
+
+.globalStyle *,
+.globalStyle *:before,
+.globalStyle *:after {
+    box-sizing: border-box;
+}

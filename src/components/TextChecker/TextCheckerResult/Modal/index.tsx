@@ -22,9 +22,10 @@ type ModalProps = {
     getTranslations: GetList<Translation>;
     title: React.ReactNode;
     onClose: () => void;
+    containerClassName?: string;
 };
 
-export default function PhraseModal({ title, getTerms, getTranslations, onClose }: ModalProps) {
+export default function PhraseModal({ title, getTerms, getTranslations, onClose, containerClassName }: ModalProps) {
     const { t } = useTranslation();
     const terms = getTerms();
     const translations = getTranslations();
@@ -45,6 +46,7 @@ export default function PhraseModal({ title, getTerms, getTranslations, onClose 
             isDismissable
             onClose={onClose}
             width={widerModal ? 'wider' : 'medium'}
+            containerClassName={containerClassName}
         >
             {showTermOrTranslations === 'term' ? (
                 <ModalTerms longestTerm={longestTerm} otherTerms={otherTerms} title={title} />
