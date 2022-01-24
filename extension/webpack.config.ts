@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import * as fs from 'fs';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import * as path from 'path';
 import * as webpack from 'webpack';
 
@@ -69,9 +68,11 @@ const config: webpack.Configuration = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: [
-        new MiniCssExtractPlugin(),
         new webpack.DefinePlugin({
             'process.env': { REACT_APP_EMULATOR_HOST: JSON.stringify('localhost'), ...getEnvVars() },
+        }),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1,
         }),
     ],
 };
