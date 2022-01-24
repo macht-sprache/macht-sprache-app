@@ -23,7 +23,8 @@ export const useGoogleTranslatedEnvironment = () => {
         );
         const canUpdate = newEnv.lang === newResult.lang && textToCheck && newEnv.text?.startsWith(textToCheck);
         renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) });
-        renderButton({ el: elRef.current, status: newResult.status });
+
+        renderButton({ el: elRef.current, status: newResult.status, hasResult: !!newResult.matches?.length });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(
