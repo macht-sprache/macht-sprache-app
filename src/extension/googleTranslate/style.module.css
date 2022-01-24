@@ -10,7 +10,7 @@
 }
 
 .highlightedPhrase {
-    --color: #9cdcb2;
+    --color: var(--dominantLanguageColor);
     --backgroundMargin: 0.2rem;
     all: unset;
     pointer-events: all;
