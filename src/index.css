@@ -1,63 +1,7 @@
 body {
     margin: 0;
-    --paragraphFont: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
-        'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-
-    --monospaceFont: 'Courier New', Courier, monospace;
-
     font-family: var(--monospaceFont);
-
-    --pink: #ceb9d2;
-    --blue: #1e5166;
-    --green: #9cdcb2;
-    --orange: #eda37b;
-
-    --red: #e70f0f;
-
-    --white: #fff;
-    --black: var(--blue);
-    --blackDark: #000;
-
-    --fontColorOnColor: var(--blackDark);
-    --disabledGrey: rgb(128, 128, 128);
-    --placeholderGrey: rgb(184, 184, 184);
-    --disabledGreyBackground: rgb(250, 248, 248);
-    --disabledGreyBackgroundDark: rgb(224, 224, 224);
-    --backgroundColor: var(--white);
-
-    --thickBorder: 2px;
-    --thinBorder: 1px;
-
-    --fontSizeXXL: 2rem;
-    --fontSizeXL: 1.5rem;
-    --fontSizeL: 1.3rem;
-    --fontSizeM: 1rem;
-    --fontSizeS: 0.8rem;
-    --fontSizeXS: 0.6rem;
-
-    --colorLangA: var(--green);
-    --colorLangB: var(--pink);
-
-    --lineHeightParagraph: 1.6;
-
-    --singleColumnWidth: 600px;
-
-    --sidebarWidth: 11rem;
-    --contentWidth: 65rem;
-
     color: var(--black);
-
-    /*
-        dominantLanguageColor: to color things according to the language of the page
-        set here is just the default if there's no page color
-    */
-    --dominantLanguageColor: var(--black);
-
-    --fullWidthInNarrowCollumn: clamp(
-        100%,
-        calc(100% + (100vw - 100% - var(--sidebarWidth) - 10rem)),
-        var(--contentWidth)
-    );
 }
 
 h1 {

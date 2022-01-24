@@ -4,6 +4,7 @@ import { OverlayContainer, useModal, useOverlay, usePreventScroll } from '@react
 import clsx from 'clsx';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import s from './style.module.css';
 
 type ModalDialogProps = {
@@ -23,7 +24,7 @@ export function ModalDialog({ title, children, onClose, isDismissable = true, wi
     const { dialogProps, titleProps } = useDialog({}, ref);
 
     return (
-        <OverlayContainer>
+        <OverlayContainer className={CSS_CONTEXT_CLASS_NAME}>
             <div className={s.background}>
                 <FocusScope contain restoreFocus autoFocus>
                     <div
