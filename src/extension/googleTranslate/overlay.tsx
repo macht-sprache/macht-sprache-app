@@ -52,7 +52,9 @@ function Overlay({ text, matches, lang }: { text: string; matches: MatchGroup[];
 
             return [
                 <span key={index + 'a'}>{text.substring(prevEnd, start)}</span>,
-                <HighlightedPhrase key={index + 'b'}>{text.substring(start, end)}</HighlightedPhrase>,
+                <HighlightedPhrase key={index + 'b'} start={start}>
+                    {text.substring(start, end)}
+                </HighlightedPhrase>,
             ];
         }),
         <span key="last">{text.substring(matches[matches.length - 1]?.pos?.[1] || 0)}</span>,
@@ -64,6 +66,10 @@ function Overlay({ text, matches, lang }: { text: string; matches: MatchGroup[];
     );
 }
 
-function HighlightedPhrase({ children }: { children: React.ReactNode }) {
-    return <button className={s.highlightedPhrase}>{children}</button>;
+function HighlightedPhrase({ start, children }: { children: React.ReactNode; start: number }) {
+    return (
+        <button className={s.highlightedPhrase} data-start={start}>
+            {children}
+        </button>
+    );
 }
