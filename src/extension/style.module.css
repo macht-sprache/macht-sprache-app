@@ -1,35 +1,35 @@
-.globalStyle {
+:where(.globalStyle) {
     font-family: var(--monospaceFont);
     color: var(--black);
 }
 
-.globalStyle h1 {
+:where(.globalStyle) h1 {
     font-size: var(--fontSizeXXL);
 }
 
-.globalStyle h2 {
+:where(.globalStyle) h2 {
     font-size: var(--fontSizeL);
 }
 
-.globalStyle h3 {
+:where(.globalStyle) h3 {
     font-size: var(--fontSizeM);
 }
 
-.globalStyle a {
+:where(.globalStyle) a {
     color: inherit;
 }
 
-.globalStyle p {
+:where(.globalStyle) p {
     line-height: var(--lineHeightParagraph);
 }
 
-.globalStyle [lang='de'] p,
-.globalStyle p[lang='de'] {
+:where(.globalStyle)[lang='de'] p,
+:where(.globalStyle) p[lang='de'] {
     hyphens: auto;
 }
 
-.globalStyle *,
-.globalStyle *:before,
-.globalStyle *:after {
+:where(.globalStyle) *,
+:where(.globalStyle) *:before,
+:where(.globalStyle) *:after {
     box-sizing: border-box;
 }
