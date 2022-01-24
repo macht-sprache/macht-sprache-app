@@ -58,7 +58,7 @@
     border: none;
     height: 3rem;
     width: 3rem;
-    background: var(--white);
+    background: transparent;
     cursor: pointer;
     border-radius: 50%;
 }
