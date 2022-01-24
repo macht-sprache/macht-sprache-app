@@ -415,5 +415,8 @@
     "manifesto": {
         "title": "Manifest",
         "guidelines": "Leitlinien"
+    },
+    "extension": {
+        "noResults": "Keine Ergebnisse"
     }
 }
