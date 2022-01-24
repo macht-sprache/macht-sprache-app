@@ -16,8 +16,9 @@ export function renderButton({ el, status, hasResult }: Props) {
     }
 
     if (!el.contains(container)) {
-        const buttonRow = el?.querySelector('[data-aria-label-on="Stop listening"]')?.parentElement?.parentElement
-            ?.parentElement?.parentElement?.parentElement as HTMLElement;
+        const buttonRow = el?.querySelector(
+            '[data-aria-label-on="Stop listening"], [data-aria-label-on="Spracheingabe beenden"]'
+        )?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement as HTMLElement;
         container = document.createElement('div');
         buttonRow.prepend(container);
     }
