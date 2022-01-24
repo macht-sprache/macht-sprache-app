@@ -1,7 +1,7 @@
 import { MDXProviderComponents } from '@mdx-js/react';
-import { Link } from 'react-router-dom';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import CollapsableSection, { CollapsableSectionContainer } from '../../Layout/CollapsableSection';
+import Link from '../../Link';
 import PullQuote from '../../PullQuote';
 import TermExample from '../../TermExample';
 import TermExampleContainer from '../../TermExampleContainer';

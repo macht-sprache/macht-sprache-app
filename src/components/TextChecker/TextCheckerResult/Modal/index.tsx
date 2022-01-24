@@ -1,7 +1,6 @@
 import uniqBy from 'lodash/fp/uniqBy';
 import xor from 'lodash/xor';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 import { GetList, useDocuments } from '../../../../hooks/fetch';
 import { Guideline, guidelineKeys, useGuidelines } from '../../../../Manifesto/guidelines/guidelines';
 import { MANIFESTO } from '../../../../routes';
@@ -10,6 +9,7 @@ import DividedList from '../../../DividedList';
 import Button, { ButtonContainer } from '../../../Form/Button';
 import CollapsableSection from '../../../Layout/CollapsableSection';
 import { Columns } from '../../../Layout/Columns';
+import Link from '../../../Link';
 import MdxWrapper from '../../../MdxWrapper';
 import { ModalDialog } from '../../../ModalDialog';
 import { TermItem } from '../../../Terms/TermItem';
