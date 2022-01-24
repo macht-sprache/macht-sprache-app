@@ -134,12 +134,12 @@ function ModalWrapper({ matchGroup, text, onClose }: { matchGroup: MatchGroup; t
 
     return (
         <Suspense fallback={null}>
-            {/* <PhraseModal
+            <PhraseModal
                 title={text.substring(start, end)}
                 getTerms={getTerms}
                 getTranslations={getTranslations}
                 onClose={onClose}
-            /> */}
+            />
         </Suspense>
     );
 }
