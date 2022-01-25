@@ -32,8 +32,6 @@
     hyphens: auto;
 }
 
-:where(.globalStyle) *,
-:where(.globalStyle) *:before,
-:where(.globalStyle) *:after {
+:where(.globalStyle) :where(*, *:before, *:after) {
     box-sizing: border-box;
 }
