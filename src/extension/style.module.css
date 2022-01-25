@@ -5,14 +5,17 @@
 
 :where(.globalStyle) h1 {
     font-size: var(--fontSizeXXL);
+    margin-bottom: 0.7em;
 }
 
 :where(.globalStyle) h2 {
     font-size: var(--fontSizeL);
+    margin-bottom: 0.8em;
 }
 
 :where(.globalStyle) h3 {
     font-size: var(--fontSizeM);
+    margin-bottom: 1em;
 }
 
 :where(.globalStyle) :is(h1, h2, h3) {
