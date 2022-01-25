@@ -2,6 +2,7 @@ import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
 import memoize from 'lodash/memoize';
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { WrappedInLangColor } from '../components/TermWithLang';
 import {
     MatchGroup,
     useFilteredIndex,
@@ -124,13 +125,25 @@ function Inner({ lang, getTermIndex, getTranslationIndex, getHiddenTerms, text, 
     }, [lang, matchGroups, onUpdate, text]);
 
     if (showModalMatch) {
-        return <ModalWrapper matchGroup={showModalMatch} text={text} onClose={() => setShowModal(undefined)} />;
+        return (
+            <ModalWrapper matchGroup={showModalMatch} text={text} onClose={() => setShowModal(undefined)} lang={lang} />
+        );
     }
 
     return null;
 }
 
-function ModalWrapper({ matchGroup, text, onClose }: { matchGroup: MatchGroup; text: string; onClose: () => void }) {
+function ModalWrapper({
+    matchGroup,
+    text,
+    onClose,
+    lang,
+}: {
+    matchGroup: MatchGroup;
+    text: string;
+    onClose: () => void;
+    lang: Lang;
+}) {
     const getTerms = useDocuments(matchGroup.termMatches.map(match => match.ref));
     const getTranslations = useDocuments(matchGroup.translationMatches.map(match => match.ref));
     const [start, end] = matchGroup.pos;
@@ -138,7 +151,7 @@ function ModalWrapper({ matchGroup, text, onClose }: { matchGroup: MatchGroup; t
     return (
         <Suspense fallback={null}>
             <PhraseModal
-                title={text.substring(start, end)}
+                title={<WrappedInLangColor lang={lang}>{text.substring(start, end)}</WrappedInLangColor>}
                 getTerms={getTerms}
                 getTranslations={getTranslations}
                 onClose={onClose}
