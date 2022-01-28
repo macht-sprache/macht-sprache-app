@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as webpack from 'webpack';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
 const getEnvVars = () => {
     const dotenvPath = path.resolve(__dirname, '..', '.env');
@@ -81,6 +82,7 @@ const config: webpack.Configuration = {
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1,
         }),
+        new CleanWebpackPlugin(),
     ],
 };
 
