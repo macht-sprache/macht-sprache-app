@@ -1,8 +1,9 @@
 import clsx from 'clsx';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, Link, useHistory } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { useGroupedSources } from '../../hooks/data';
 import { GetList } from '../../hooks/fetch';
+import { useSafeNavigate } from '../../hooks/location';
 import { langA, langB } from '../../languages';
 import { TRANSLATION, TRANSLATION_ADD, TRANSLATION_EXAMPLE_ADD } from '../../routes';
 import { Source, Term, Translation } from '../../types';
@@ -111,7 +112,7 @@ export function TranslationItem({
     clickable?: boolean;
 }) {
     const { t } = useTranslation();
-    const history = useHistory();
+    const navigate = useSafeNavigate();
     const link = generatePath(TRANSLATION, { termId: term.id, translationId: translation.id });
     const addExampleLink = generatePath(TRANSLATION_EXAMPLE_ADD, { termId: term.id, translationId: translation.id });
 
@@ -126,7 +127,7 @@ export function TranslationItem({
             className={clsx(getDominantLanguageClass(translation.lang), s.item)}
             onClick={e => {
                 if (clickable) {
-                    history.push(link);
+                    navigate(link);
                     e.stopPropagation();
                 }
             }}

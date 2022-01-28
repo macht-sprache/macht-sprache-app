@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useLocationSafe } from './useLocationSafe';
+import { useSafeLocation } from './location';
 
 export const useScrollHashIntoView = (onScrollIntoView?: () => void) => {
     const ref = useRef<HTMLElement | null>(null);
     const refCallback = useCallback((el: HTMLElement | null) => (ref.current = el), []);
-    const location = useLocationSafe();
+    const location = useSafeLocation();
     const hash = location?.hash || '';
     useEffect(() => {
         const element = ref.current;
