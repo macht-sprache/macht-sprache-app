@@ -44,15 +44,16 @@ export default function Home() {
                         <>
                             <About />
                             <TermsWrapped />
+                            <Events />
                         </>
                     )}
                 </div>
                 <div>
-                    <Events />
                     {user ? (
                         <>
                             <TermsWrapped />
                             <About />
+                            <Events />
                         </>
                     ) : (
                         <Suspense fallback={null}>
