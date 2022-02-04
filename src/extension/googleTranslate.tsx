@@ -1,5 +1,6 @@
 import './setup';
 import ReactDOM from 'react-dom';
+import { AppContextProviderExtension } from '../hooks/appContext';
 import { TranslationProviderExtension } from '../i18n/config';
 import { useLangCssVars } from '../useLangCssVars';
 import '../vars.css';
@@ -16,8 +17,10 @@ function App() {
 }
 
 ReactDOM.render(
-    <TranslationProviderExtension>
-        <App />
-    </TranslationProviderExtension>,
+    <AppContextProviderExtension>
+        <TranslationProviderExtension>
+            <App />
+        </TranslationProviderExtension>
+    </AppContextProviderExtension>,
     reactRootElement
 );
