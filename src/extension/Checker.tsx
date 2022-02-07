@@ -1,7 +1,6 @@
 import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
-import memoize from 'lodash/memoize';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { WrappedInLangColor } from '../components/TermWithLang';
 import {
     MatchGroup,
@@ -36,8 +35,6 @@ type InnerProps = {
     onUpdate: OnUpdate;
 };
 
-const memoizedAnalyzeText = memoize(analyzeText, (...args) => args.join(''));
-
 const useConvertEnv = ({
     lang,
     originalLang,
@@ -53,6 +50,48 @@ const useConvertEnv = ({
         }
         return null;
     }, [lang, originalLang, text]);
+
+const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) => {
+    const [analyzedText, setAnalyzedText] = useState<TextToken[]>();
+    const timeoutRef = useRef<number>();
+    const cacheMapRef = useRef<Map<string, Promise<TextToken[]>>>(new Map());
+
+    useEffect(() => {
+        onUpdate({ status: 'loading' });
+        let isCurrent = true;
+        window.clearTimeout(timeoutRef.current);
+        const cacheKey = [text, lang].join('-');
+        const cacheMap = cacheMapRef.current;
+        const cachedPromise = cacheMap.get(cacheKey);
+        const handleSuccess = (analyzedText: TextToken[]) => {
+            if (isCurrent) {
+                setAnalyzedText(analyzedText);
+            }
+        };
+        const handleFail = () => {
+            if (isCurrent) {
+                onUpdate({ status: 'idle' });
+            }
+        };
+
+        if (cachedPromise) {
+            cachedPromise.then(handleSuccess, handleFail);
+        } else {
+            timeoutRef.current = window.setTimeout(() => {
+                const promise = analyzeText(text, lang);
+                cacheMap.set(cacheKey, promise);
+                promise.catch(() => cacheMap.delete(cacheKey));
+                promise.then(handleSuccess, handleFail);
+            }, 500);
+        }
+
+        return () => {
+            isCurrent = false;
+        };
+    }, [lang, onUpdate, text]);
+
+    return analyzedText;
+};
 
 export function Checker({ env, onUpdate }: Props) {
     const checkerInput = useConvertEnv(env);
@@ -80,21 +119,7 @@ function Loader({ lang, text, onUpdate }: { lang: Lang; text: string; onUpdate: 
     const getHiddenTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', true));
     const getTermIndex = useCollection(collections.termIndex);
     const getTranslationIndex = useCollection(collections.translationIndex);
-    const [analyzedText, setAnalyzedText] = useState<TextToken[]>();
-
-    useEffect(() => {
-        let isCurrent = true;
-        setAnalyzedText(undefined);
-        onUpdate({ status: 'loading' });
-        memoizedAnalyzeText(text, lang).then(analyzedText => {
-            if (isCurrent) {
-                setAnalyzedText(analyzedText);
-            }
-        });
-        return () => {
-            isCurrent = false;
-        };
-    }, [lang, onUpdate, text]);
+    const analyzedText = useAnalyzedText(lang, text, onUpdate);
 
     if (!analyzedText) {
         return null;
