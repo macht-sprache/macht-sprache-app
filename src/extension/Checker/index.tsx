@@ -1,24 +1,21 @@
 import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { WrappedInLangColor } from '../components/TermWithLang';
+import { Suspense, useEffect, useState } from 'react';
+import { WrappedInLangColor } from '../../components/TermWithLang';
 import {
     MatchGroup,
     useFilteredIndex,
     useIndexGrouped,
     useMatchGroups,
-} from '../components/TextChecker/TextCheckerResult/hooks';
-import PhraseModal from '../components/TextChecker/TextCheckerResult/Modal';
-import { CSS_CONTEXT_CLASS_NAME } from '../constants';
-import { analyzeText } from '../functions';
-import { collections } from '../hooks/data';
-import { GetList, useCollection, useDocuments } from '../hooks/fetch';
-import { langA, langB } from '../languages';
-import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../types';
-import styles from './style.module.css';
-import { CheckerResult, TranslatorEnvironment } from './types';
-
-export type OnUpdate = (result: CheckerResult, openModal?: (startPos: number) => void) => void;
+} from '../../components/TextChecker/TextCheckerResult/hooks';
+import PhraseModal from '../../components/TextChecker/TextCheckerResult/Modal';
+import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
+import { collections } from '../../hooks/data';
+import { GetList, useCollection, useDocuments } from '../../hooks/fetch';
+import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../../types';
+import { OnUpdate, TranslatorEnvironment } from '../types';
+import { useAnalyzedText, useConvertEnv } from './hooks';
+import styles from '../style.module.css';
 
 type Props = {
     env: TranslatorEnvironment;
@@ -33,64 +30,6 @@ type InnerProps = {
     getTermIndex: GetList<TermIndex>;
     getTranslationIndex: GetList<TranslationIndex>;
     onUpdate: OnUpdate;
-};
-
-const useConvertEnv = ({
-    lang,
-    originalLang,
-    text,
-}: TranslatorEnvironment): { translatedLang: Lang; text: string } | null =>
-    useMemo(() => {
-        const langs = [langA, langB];
-        if (lang && langs.includes(lang) && originalLang && langs.includes(originalLang) && text) {
-            return {
-                translatedLang: lang as Lang,
-                text: text,
-            };
-        }
-        return null;
-    }, [lang, originalLang, text]);
-
-const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) => {
-    const [analyzedText, setAnalyzedText] = useState<TextToken[]>();
-    const timeoutRef = useRef<number>();
-    const cacheMapRef = useRef<Map<string, Promise<TextToken[]>>>(new Map());
-
-    useEffect(() => {
-        onUpdate({ status: 'loading' });
-        let isCurrent = true;
-        window.clearTimeout(timeoutRef.current);
-        const cacheKey = [text, lang].join('-');
-        const cacheMap = cacheMapRef.current;
-        const cachedPromise = cacheMap.get(cacheKey);
-        const handleSuccess = (analyzedText: TextToken[]) => {
-            if (isCurrent) {
-                setAnalyzedText(analyzedText);
-            }
-        };
-        const handleFail = () => {
-            if (isCurrent) {
-                onUpdate({ status: 'idle' });
-            }
-        };
-
-        if (cachedPromise) {
-            cachedPromise.then(handleSuccess, handleFail);
-        } else {
-            timeoutRef.current = window.setTimeout(() => {
-                const promise = analyzeText(text, lang);
-                cacheMap.set(cacheKey, promise);
-                promise.catch(() => cacheMap.delete(cacheKey));
-                promise.then(handleSuccess, handleFail);
-            }, 500);
-        }
-
-        return () => {
-            isCurrent = false;
-        };
-    }, [lang, onUpdate, text]);
-
-    return analyzedText;
 };
 
 export function Checker({ env, onUpdate }: Props) {

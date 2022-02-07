@@ -15,3 +15,5 @@ export type CheckerResult = {
 };
 
 export type Status = 'loading' | 'inactive' | 'idle';
+
+export type OnUpdate = (result: CheckerResult, openModal?: (startPos: number) => void) => void;

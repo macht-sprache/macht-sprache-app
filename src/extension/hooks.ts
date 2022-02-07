@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { OnUpdate } from './Checker';
 import { isButton, renderButton } from './googleTranslate/button';
 import { isOverlay, renderOverlay } from './googleTranslate/overlay';
-import { CheckerResult, TranslatorEnvironment } from './types';
+import { CheckerResult, OnUpdate, TranslatorEnvironment } from './types';
 
 const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
 
