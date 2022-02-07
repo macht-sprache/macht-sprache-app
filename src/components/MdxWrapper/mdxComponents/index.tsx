@@ -1,4 +1,5 @@
 import { MDXProviderComponents } from '@mdx-js/react';
+import React, { createContext, useCallback, useContext } from 'react';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import CollapsableSection, { CollapsableSectionContainer } from '../../Layout/CollapsableSection';
 import Link from '../../Link';
@@ -6,6 +7,32 @@ import PullQuote from '../../PullQuote';
 import TermExample from '../../TermExample';
 import TermExampleContainer from '../../TermExampleContainer';
 import s from './style.module.css';
+
+const mdxLinkBaseContext = createContext(() => window.location.href);
+
+export const MdxLinkBaseProvider: React.FC<{ base: string }> = ({ base, children }) => {
+    const getBase = useCallback(() => new URL(base, process.env.REACT_APP_MAIN_ORIGIN ?? window.location.origin).href, [
+        base,
+    ]);
+    return <mdxLinkBaseContext.Provider value={getBase}>{children}</mdxLinkBaseContext.Provider>;
+};
+
+const MdxLink = (props: React.ComponentProps<'a'>) => {
+    const base = useContext(mdxLinkBaseContext)();
+    const origin = process.env.REACT_APP_MAIN_ORIGIN ?? window.location.origin;
+    const url = new URL(props.href ?? '', base);
+
+    if (url.origin === origin) {
+        return (
+            <Link {...props} to={url.href.replace(origin, '')}>
+                {props.children}
+            </Link>
+        );
+    }
+
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    return <a rel="noopener noreferrer" {...props} />;
+};
 
 const components: MDXProviderComponents = {
     Button: props => <Button {...props} />,
@@ -22,17 +49,7 @@ const components: MDXProviderComponents = {
     li: ({ children }) => <li className={s.li}>{children}</li>,
     ul: ({ children }) => <ul className={s.ul}>{children}</ul>,
     Columns: ({ children }) => <div className={s.columns}>{children}</div>,
-    a: ({ href, ...props }) => {
-        if (href?.startsWith('/')) {
-            return (
-                <Link to={href} title={props.title}>
-                    {props.children}
-                </Link>
-            );
-        }
-        // eslint-disable-next-line jsx-a11y/anchor-has-content
-        return <a href={href} {...props} />;
-    },
+    a: MdxLink,
 };
 
 export default components;

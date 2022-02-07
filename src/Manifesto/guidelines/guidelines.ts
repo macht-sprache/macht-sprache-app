@@ -4,6 +4,8 @@ import React from 'react';
 import { langA, langB } from '../../languages';
 import { Lang } from '../../types';
 import { useLang } from '../../useLang';
+import { MdxLinkBaseProvider } from '../../components/MdxWrapper/mdxComponents';
+import { MANIFESTO } from '../../routes';
 
 type GuidelineContent = {
     default: React.ComponentType;
@@ -71,6 +73,9 @@ const guidelinesList: GuidelineInternal[] = [
 
 export const guidelineKeys = guidelinesList.map(guideline => guideline.id);
 
+const wrapWithBaseProvider = (Component: React.ComponentType) => () =>
+    React.createElement(MdxLinkBaseProvider, { base: MANIFESTO }, React.createElement(Component));
+
 const getInitialReader = <T>(initialPromise: Promise<T>) => {
     let initialData: T;
     let initialError: any;
@@ -104,7 +109,7 @@ const getReader = (lang: Lang, guidelines: GuidelineInternal[]) => {
                     id: guideline.id,
                     title: content.title,
                     intro: content.intro,
-                    Content: content.default,
+                    Content: wrapWithBaseProvider(content.default),
                 })
             )
         )
