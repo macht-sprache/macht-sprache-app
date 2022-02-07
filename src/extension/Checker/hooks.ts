@@ -20,6 +20,9 @@ export const useConvertEnv = ({
         return null;
     }, [lang, originalLang, text]);
 
+const DEBOUNCE_MS = 500;
+const MAX_CACHE_SIZE = 25;
+
 export const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) => {
     const [analyzedText, setAnalyzedText] = useState<TextToken[]>();
     const timeoutRef = useRef<number>();
@@ -51,8 +54,10 @@ export const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) =>
                 cacheMap.set(cacheKey, promise);
                 promise.catch(() => cacheMap.delete(cacheKey));
                 promise.then(handleSuccess, handleFail);
-            }, 500);
+            }, DEBOUNCE_MS);
         }
+
+        ensureCacheMapSize(cacheMap, MAX_CACHE_SIZE);
 
         return () => {
             isCurrent = false;
@@ -61,3 +66,9 @@ export const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) =>
 
     return analyzedText;
 };
+
+function ensureCacheMapSize(cacheMap: Map<unknown, unknown>, maxSize: number) {
+    while (cacheMap.size > maxSize) {
+        cacheMap.delete(cacheMap.keys().next().value);
+    }
+}
