@@ -23,8 +23,8 @@ import { getMovie, searchMovies } from './movies';
 import { getWebPage, searchWebPage } from './webpages';
 
 const rateLimiterAnalyze = new RateLimiterMemory({
-    points: 2,
-    duration: 20,
+    points: 10,
+    duration: 40,
 });
 
 export const analyzeText = functions
