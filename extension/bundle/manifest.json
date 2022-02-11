@@ -1,6 +1,7 @@
 {
     "name": "macht.sprache.",
-    "description": "automatically find sensitive translations",
+    "description": "__MSG_description__",
+    "default_locale": "en",
     "version": "1.0",
     "manifest_version": 3,
     "content_scripts": [
