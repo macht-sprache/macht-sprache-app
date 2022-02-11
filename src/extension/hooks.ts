@@ -38,50 +38,59 @@ export const useGoogleTranslatedEnvironment = () => {
     );
 
     useEffect(() => {
-        let translatedTextElementParent: HTMLElement | null = null;
-        const initializeInterval = setInterval(initialize, 100);
-
-        function initialize() {
-            const translatedTextElement = document.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
-            if (!translatedTextElement) {
-                return;
-            }
-            clearInterval(initializeInterval);
-            translatedTextElementParent = translatedTextElement.parentNode as HTMLElement;
-            const observerChildren = new MutationObserver(observeChildren);
+        async function observeTranslator() {
+            const translatedTextElementParent = await getTranslatedTextElementParent();
+            const observerChildren = new MutationObserver(mutations => {
+                if (mutations.every(mutation => isOverlay(mutation.target) || isButton(mutation.target))) {
+                    return;
+                }
+                update();
+            });
             observerChildren.observe(translatedTextElementParent, {
                 childList: true,
                 subtree: true,
             });
-            update();
-        }
 
-        const observeChildren: MutationCallback = mutations => {
-            if (mutations.every(mutation => isOverlay(mutation.target) || isButton(mutation.target))) {
-                return;
-            }
-            update();
-        };
+            function update() {
+                const translatedTextElement = translatedTextElementParent.querySelector(
+                    TRANSLATED_TEXT_ELEMENT_SELECTOR
+                ) as HTMLElement | null;
 
-        function update() {
-            const translatedTextElement = translatedTextElementParent!.querySelector(
-                TRANSLATED_TEXT_ELEMENT_SELECTOR
-            ) as HTMLElement;
-            if (translatedTextElement) {
+                if (!translatedTextElement) {
+                    return;
+                }
+
                 elRef.current = translatedTextElement;
-                console.log('setting');
                 const newEnv = {
                     lang: translatedTextElement.dataset.language,
                     originalLang: translatedTextElement.dataset.originalLanguage,
-                    // @ts-ignore
-                    text: translatedTextElement.firstChild?.innerText,
+                    text: (translatedTextElement.firstElementChild as HTMLElement | null)?.innerText,
                 };
-
                 render(newEnv, checkerResultRef.current);
                 setEnv(newEnv);
             }
         }
+        observeTranslator();
     }, [render]);
 
     return { env, onUpdate };
 };
+
+const getTranslatedTextElementParent = (): Promise<HTMLElement> =>
+    new Promise((resolve, reject) => {
+        const checkInterval = setInterval(() => {
+            const translatedTextElement = document.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
+            if (!translatedTextElement) {
+                return;
+            }
+
+            clearInterval(checkInterval);
+            const { parentElement } = translatedTextElement;
+
+            if (parentElement) {
+                resolve(parentElement);
+            } else {
+                reject('parent missing');
+            }
+        }, 100);
+    });
