@@ -24,6 +24,7 @@ type ModalProps = {
     title: React.ReactNode;
     onClose: () => void;
     containerClassName?: string;
+    translationsSortFn?: (translation: Translation) => number;
 };
 
 type InnerProps = {
@@ -35,10 +36,17 @@ type InnerProps = {
     otherMatches: Term[];
 };
 
-export default function PhraseModal({ title, getTerms, getTranslations, onClose, containerClassName }: ModalProps) {
+export default function PhraseModal({
+    title,
+    getTerms,
+    getTranslations,
+    onClose,
+    containerClassName,
+    translationsSortFn,
+}: ModalProps) {
     const { t } = useTranslation();
     const terms = sortEntities(getTerms());
-    const translations = sortEntities(getTranslations());
+    const translations = sortEntities(getTranslations(), translationsSortFn);
     const termRefsForTranslations = uniqBy(
         translations.map(translation => translation.term),
         termRef => termRef.id

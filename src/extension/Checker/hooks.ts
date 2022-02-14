@@ -2,23 +2,35 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { analyzeText } from '../../functions';
 import { langA, langB } from '../../languages';
 import { Lang, TextToken } from '../../types';
-import { OnUpdate, TranslatorEnvironment } from '../types';
+import { TranslatorEnvironment } from '../types';
 
-export const useConvertEnv = ({
-    lang,
-    originalLang,
-    text,
-}: TranslatorEnvironment): { translatedLang: Lang; text: string } | null =>
+export type CheckerInput = {
+    original: TextWithLang;
+    translation: TextWithLang;
+};
+
+type TextWithLang = {
+    text: string;
+    lang: Lang;
+};
+
+export const useConvertEnv = ({ lang, originalLang, text, originalText }: TranslatorEnvironment): CheckerInput | null =>
     useMemo(() => {
         const langs = [langA, langB];
         if (lang && langs.includes(lang) && originalLang && langs.includes(originalLang) && text) {
             return {
-                translatedLang: lang as Lang,
-                text: text,
+                original: {
+                    lang: originalLang as Lang,
+                    text: originalText ?? '',
+                },
+                translation: {
+                    lang: lang as Lang,
+                    text,
+                },
             };
         }
         return null;
-    }, [lang, originalLang, text]);
+    }, [lang, originalLang, originalText, text]);
 
 const DEBOUNCE_MS = 500;
 const MAX_CACHE_SIZE = 25;

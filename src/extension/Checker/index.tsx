@@ -6,15 +6,16 @@ import {
     MatchGroup,
     useFilteredIndex,
     useIndexGrouped,
+    useMatches,
     useMatchGroups,
 } from '../../components/TextChecker/TextCheckerResult/hooks';
 import PhraseModal from '../../components/TextChecker/TextCheckerResult/Modal';
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { collections } from '../../hooks/data';
 import { GetList, useCollection, useDocuments } from '../../hooks/fetch';
-import { Lang, Term, TermIndex, TextToken, TranslationIndex } from '../../types';
+import { Lang, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../types';
 import { OnUpdate, TranslatorEnvironment } from '../types';
-import { useAnalyzedText, useConvertEnv } from './hooks';
+import { CheckerInput, useAnalyzedText, useConvertEnv } from './hooks';
 import styles from '../style.module.css';
 
 type Props = {
@@ -23,14 +24,13 @@ type Props = {
 };
 
 type InnerProps = {
-    lang: Lang;
-    text: string;
     analyzedText: TextToken[];
+    analyzedOriginal: TextToken[];
     getHiddenTerms: GetList<Term>;
     getTermIndex: GetList<TermIndex>;
     getTranslationIndex: GetList<TranslationIndex>;
     onUpdate: OnUpdate;
-};
+} & CheckerInput;
 
 export function Checker({ env, onUpdate }: Props) {
     const checkerInput = useConvertEnv(env);
@@ -48,31 +48,35 @@ export function Checker({ env, onUpdate }: Props) {
     return (
         <OverlayProvider>
             <Suspense fallback={null}>
-                <Loader text={checkerInput.text} lang={checkerInput.translatedLang} onUpdate={onUpdate} />;
+                <Loader checkerInput={checkerInput} onUpdate={onUpdate} />;
             </Suspense>
         </OverlayProvider>
     );
 }
 
-function Loader({ lang, text, onUpdate }: { lang: Lang; text: string; onUpdate: OnUpdate }) {
+function Loader({
+    checkerInput: { original, translation },
+    onUpdate,
+}: {
+    checkerInput: CheckerInput;
+    onUpdate: OnUpdate;
+}) {
     const getHiddenTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', true));
     const getTermIndex = useCollection(collections.termIndex);
     const getTranslationIndex = useCollection(collections.translationIndex);
-    const [loadingAnalyzedText, analyzedText] = useAnalyzedText(lang, text);
+    const [loadingAnalyzedText, analyzedText] = useAnalyzedText(translation.lang, translation.text);
+    const [loadingAnalyzedOriginal, analyzedOriginal] = useAnalyzedText(original.lang, original.text);
 
     useEffect(() => {
-        onUpdate({ status: loadingAnalyzedText ? 'loading' : 'idle' });
-    }, [loadingAnalyzedText, onUpdate]);
-
-    if (!analyzedText) {
-        return null;
-    }
+        onUpdate({ status: loadingAnalyzedText || loadingAnalyzedOriginal ? 'loading' : 'idle' });
+    }, [loadingAnalyzedOriginal, loadingAnalyzedText, onUpdate]);
 
     return (
         <Inner
-            text={text}
-            lang={lang}
-            analyzedText={analyzedText}
+            original={original}
+            translation={translation}
+            analyzedText={analyzedText ?? []}
+            analyzedOriginal={analyzedOriginal ?? []}
             getHiddenTerms={getHiddenTerms}
             getTermIndex={getTermIndex}
             getTranslationIndex={getTranslationIndex}
@@ -81,20 +85,54 @@ function Loader({ lang, text, onUpdate }: { lang: Lang; text: string; onUpdate: 
     );
 }
 
-function Inner({ lang, getTermIndex, getTranslationIndex, getHiddenTerms, text, analyzedText, onUpdate }: InnerProps) {
+function Inner({
+    original,
+    translation,
+    getTermIndex,
+    getTranslationIndex,
+    getHiddenTerms,
+    analyzedText,
+    analyzedOriginal,
+    onUpdate,
+}: InnerProps) {
     const [showModal, setShowModal] = useState<number>();
-    const termIndex = useIndexGrouped(useFilteredIndex(getTermIndex, getHiddenTerms, lang));
-    const translationIndex = useIndexGrouped(useFilteredIndex(getTranslationIndex, getHiddenTerms, lang));
-    const matchGroups = useMatchGroups(text, analyzedText, termIndex, translationIndex);
+    const termIndex = useIndexGrouped(useFilteredIndex(getTermIndex, getHiddenTerms, translation.lang));
+    const translationIndex = useIndexGrouped(useFilteredIndex(getTranslationIndex, getHiddenTerms, translation.lang));
+    const matchGroups = useMatchGroups(translation.text, analyzedText, termIndex, translationIndex);
+
+    const termIndexForOriginal = useIndexGrouped(useFilteredIndex(getTermIndex, getHiddenTerms, original.lang));
+    const termMatchesForOriginal = useMatches(original.text, analyzedOriginal, termIndexForOriginal);
+
     const showModalMatch = showModal !== undefined && matchGroups.find(matchGroup => matchGroup.pos[0] === showModal);
 
     useEffect(() => {
-        onUpdate({ status: 'idle', text, matches: matchGroups, lang }, setShowModal);
-    }, [lang, matchGroups, onUpdate, text]);
+        onUpdate(
+            { status: 'idle', text: translation.text, matches: matchGroups, lang: translation.lang },
+            setShowModal
+        );
+    }, [matchGroups, onUpdate, translation.lang, translation.text]);
 
     if (showModalMatch) {
+        const translationsSortFn = (entity: Translation) => {
+            const positionInText = (pos: [number, number], length: number) => (pos[0] + pos[1]) / 2 / length;
+            const posInTranslation = positionInText(showModalMatch.pos, translation.text.length);
+            return Math.min(
+                ...termMatchesForOriginal
+                    .filter(({ ref }) => ref.id === entity.term.id)
+                    .map(({ pos }) => positionInText(pos, original.text.length))
+                    .map(pos => posInTranslation - pos)
+                    .map(Math.abs)
+            );
+        };
+
         return (
-            <ModalWrapper matchGroup={showModalMatch} text={text} onClose={() => setShowModal(undefined)} lang={lang} />
+            <ModalWrapper
+                matchGroup={showModalMatch}
+                text={translation.text}
+                onClose={() => setShowModal(undefined)}
+                lang={translation.lang}
+                translationsSortFn={translationsSortFn}
+            />
         );
     }
 
@@ -106,11 +144,13 @@ function ModalWrapper({
     text,
     onClose,
     lang,
+    translationsSortFn,
 }: {
     matchGroup: MatchGroup;
     text: string;
     onClose: () => void;
     lang: Lang;
+    translationsSortFn: (entity: Translation) => number;
 }) {
     const getTerms = useDocuments(matchGroup.termMatches.map(match => match.ref));
     const getTranslations = useDocuments(matchGroup.translationMatches.map(match => match.ref));
@@ -124,6 +164,7 @@ function ModalWrapper({
                 getTranslations={getTranslations}
                 onClose={onClose}
                 containerClassName={clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle)}
+                translationsSortFn={translationsSortFn}
             />
         </Suspense>
     );
