@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { analyzeText } from '../../functions';
 import { langA, langB } from '../../languages';
 import { Lang, TextToken } from '../../types';
@@ -23,13 +23,16 @@ export const useConvertEnv = ({
 const DEBOUNCE_MS = 500;
 const MAX_CACHE_SIZE = 25;
 
-export const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) => {
-    const [analyzedText, setAnalyzedText] = useState<TextToken[]>();
+type State = { loading: boolean; analyzedText?: TextToken[] };
+
+export const useAnalyzedText = (lang: Lang, text: string) => {
+    const [state, setState] = useState<State>({ loading: false });
+    const updateState = useCallback((update: State) => setState(prev => ({ ...prev, ...update })), []);
     const timeoutRef = useRef<number>();
     const cacheMapRef = useRef<Map<string, Promise<TextToken[]>>>(new Map());
 
     useEffect(() => {
-        onUpdate({ status: 'loading' });
+        updateState({ loading: true });
         let isCurrent = true;
         window.clearTimeout(timeoutRef.current);
         const cacheKey = [text, lang].join('-');
@@ -37,12 +40,12 @@ export const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) =>
         const cachedPromise = cacheMap.get(cacheKey);
         const handleSuccess = (analyzedText: TextToken[]) => {
             if (isCurrent) {
-                setAnalyzedText(analyzedText);
+                updateState({ loading: false, analyzedText });
             }
         };
         const handleFail = () => {
             if (isCurrent) {
-                onUpdate({ status: 'idle' });
+                updateState({ loading: false });
             }
         };
 
@@ -62,9 +65,9 @@ export const useAnalyzedText = (lang: Lang, text: string, onUpdate: OnUpdate) =>
         return () => {
             isCurrent = false;
         };
-    }, [lang, onUpdate, text]);
+    }, [lang, text, updateState]);
 
-    return analyzedText;
+    return [state.loading, state.analyzedText] as const;
 };
 
 function ensureCacheMapSize(cacheMap: Map<unknown, unknown>, maxSize: number) {

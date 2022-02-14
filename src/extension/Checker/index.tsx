@@ -58,7 +58,11 @@ function Loader({ lang, text, onUpdate }: { lang: Lang; text: string; onUpdate: 
     const getHiddenTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', true));
     const getTermIndex = useCollection(collections.termIndex);
     const getTranslationIndex = useCollection(collections.translationIndex);
-    const analyzedText = useAnalyzedText(lang, text, onUpdate);
+    const [loadingAnalyzedText, analyzedText] = useAnalyzedText(lang, text);
+
+    useEffect(() => {
+        onUpdate({ status: loadingAnalyzedText ? 'loading' : 'idle' });
+    }, [loadingAnalyzedText, onUpdate]);
 
     if (!analyzedText) {
         return null;
