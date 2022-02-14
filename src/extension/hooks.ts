@@ -52,20 +52,26 @@ export const useGoogleTranslatedEnvironment = () => {
             });
 
             function update() {
-                const translatedTextElement = translatedTextElementParent.querySelector(
+                const translatedTextElement = translatedTextElementParent.querySelector<HTMLElement>(
                     TRANSLATED_TEXT_ELEMENT_SELECTOR
-                ) as HTMLElement | null;
+                );
 
                 if (!translatedTextElement) {
                     return;
                 }
 
                 elRef.current = translatedTextElement;
-                const newEnv = {
+
+                const [originalTextArea, translatedTextArea] = Array.from(
+                    document.querySelectorAll<HTMLTextAreaElement>('c-wiz[role="main"] textarea')
+                );
+                const newEnv: TranslatorEnvironment = {
                     lang: translatedTextElement.dataset.language,
                     originalLang: translatedTextElement.dataset.originalLanguage,
-                    text: (translatedTextElement.firstElementChild as HTMLElement | null)?.innerText,
+                    text: translatedTextArea.value,
+                    originalText: originalTextArea.value,
                 };
+
                 render(newEnv, checkerResultRef.current);
                 setEnv(newEnv);
             }

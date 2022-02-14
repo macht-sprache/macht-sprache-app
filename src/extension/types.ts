@@ -5,6 +5,7 @@ export type TranslatorEnvironment = {
     lang?: string;
     text?: string;
     originalLang?: string;
+    originalText?: string;
 };
 
 export type CheckerResult = {
