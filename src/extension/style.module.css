@@ -24,6 +24,7 @@
 
 :where(.globalStyle) a {
     color: inherit;
+    text-decoration: underline;
 }
 
 :where(.globalStyle) p {
