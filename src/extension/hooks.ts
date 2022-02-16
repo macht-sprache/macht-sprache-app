@@ -105,6 +105,8 @@ export const useGoogleTranslatedEnvironment = () => {
                 render(newEnv, checkerResultRef.current);
                 setEnv(newEnv);
             }
+
+            update();
         }
         observeTranslator();
     }, [render]);
