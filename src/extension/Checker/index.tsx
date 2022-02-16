@@ -13,10 +13,12 @@ import PhraseModal from '../../components/TextChecker/TextCheckerResult/Modal';
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { collections } from '../../hooks/data';
 import { GetList, useCollection, useDocuments } from '../../hooks/fetch';
-import { Lang, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../types';
+import { Lang, PersonToken, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../types';
 import { OnUpdate, TranslatorEnvironment } from '../types';
-import { CheckerInput, useAnalyzedText, useConvertEnv } from './hooks';
+import { CheckerInput, useAnalyzedText, useConvertEnv, usePersonTokens } from './hooks';
 import styles from '../style.module.css';
+
+const EMPTY_ARRAY: never[] = [];
 
 type Props = {
     env: TranslatorEnvironment;
@@ -26,6 +28,7 @@ type Props = {
 type InnerProps = {
     analyzedText: TextToken[];
     analyzedOriginal: TextToken[];
+    personTokens: PersonToken[];
     getHiddenTerms: GetList<Term>;
     getTermIndex: GetList<TermIndex>;
     getTranslationIndex: GetList<TranslationIndex>;
@@ -66,17 +69,20 @@ function Loader({
     const getTranslationIndex = useCollection(collections.translationIndex);
     const [loadingAnalyzedText, analyzedText] = useAnalyzedText(translation.lang, translation.text);
     const [loadingAnalyzedOriginal, analyzedOriginal] = useAnalyzedText(original.lang, original.text);
+    const [loadingPersons, personTokens] = usePersonTokens(original.lang, original.text);
+    const loading = loadingAnalyzedText || loadingAnalyzedOriginal || loadingPersons;
 
     useEffect(() => {
-        onUpdate({ status: loadingAnalyzedText || loadingAnalyzedOriginal ? 'loading' : 'idle' });
-    }, [loadingAnalyzedOriginal, loadingAnalyzedText, onUpdate]);
+        onUpdate({ status: loading ? 'loading' : 'idle' });
+    }, [loading, onUpdate]);
 
     return (
         <Inner
             original={original}
             translation={translation}
-            analyzedText={analyzedText ?? []}
-            analyzedOriginal={analyzedOriginal ?? []}
+            analyzedText={analyzedText ?? EMPTY_ARRAY}
+            analyzedOriginal={analyzedOriginal ?? EMPTY_ARRAY}
+            personTokens={personTokens ?? EMPTY_ARRAY}
             getHiddenTerms={getHiddenTerms}
             getTermIndex={getTermIndex}
             getTranslationIndex={getTranslationIndex}
@@ -93,6 +99,7 @@ function Inner({
     getHiddenTerms,
     analyzedText,
     analyzedOriginal,
+    personTokens,
     onUpdate,
 }: InnerProps) {
     const [showModal, setShowModal] = useState<number>();
@@ -107,10 +114,14 @@ function Inner({
 
     useEffect(() => {
         onUpdate(
-            { status: 'idle', text: translation.text, matches: matchGroups, lang: translation.lang },
+            {
+                status: 'idle',
+                translation: { ...translation, tokens: matchGroups },
+                original: { ...original, tokens: personTokens },
+            },
             setShowModal
         );
-    }, [matchGroups, onUpdate, translation.lang, translation.text]);
+    }, [matchGroups, onUpdate, original, personTokens, translation]);
 
     if (showModalMatch) {
         const translationsSortFn = (entity: Translation) => {

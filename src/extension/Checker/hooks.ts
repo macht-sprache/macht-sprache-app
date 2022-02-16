@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { analyzeText } from '../../functions';
+import { analyzeText, analyzeTextForPersons } from '../../functions';
 import { langA, langB } from '../../languages';
-import { Lang, TextToken } from '../../types';
+import { Lang } from '../../types';
 import { TranslatorEnvironment } from '../types';
 
 export type CheckerInput = {
@@ -14,34 +14,33 @@ type TextWithLang = {
     lang: Lang;
 };
 
-export const useConvertEnv = ({ lang, originalLang, text, originalText }: TranslatorEnvironment): CheckerInput | null =>
-    useMemo(() => {
-        const langs = [langA, langB];
-        if (lang && langs.includes(lang) && originalLang && langs.includes(originalLang) && text) {
-            return {
-                original: {
-                    lang: originalLang as Lang,
-                    text: originalText ?? '',
-                },
-                translation: {
-                    lang: lang as Lang,
-                    text,
-                },
-            };
-        }
-        return null;
-    }, [lang, originalLang, originalText, text]);
+const isValidCheckerInput = (env: TranslatorEnvironment): env is CheckerInput => {
+    const envLangs = new Set([env.original.lang, env.translation.lang]);
+    return envLangs.has(langA) && envLangs.has(langB);
+};
+
+export const useConvertEnv = (env: TranslatorEnvironment): CheckerInput | null =>
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useMemo(() => (isValidCheckerInput(env) ? env : null), [JSON.stringify(env)]);
 
 const DEBOUNCE_MS = 500;
 const MAX_CACHE_SIZE = 25;
 
-type State = { loading: boolean; analyzedText?: TextToken[] };
+type State<T> = { loading: boolean; result?: T };
 
 export const useAnalyzedText = (lang: Lang, text: string) => {
-    const [state, setState] = useState<State>({ loading: false });
-    const updateState = useCallback((update: State) => setState(prev => ({ ...prev, ...update })), []);
+    return useAnalyzeCall(lang, text, analyzeText);
+};
+
+export const usePersonTokens = (lang: Lang, text: string) => {
+    return useAnalyzeCall(lang, text, analyzeTextForPersons);
+};
+
+const useAnalyzeCall = <T>(lang: Lang, text: string, fn: (text: string, lang: Lang) => Promise<T>) => {
+    const [state, setState] = useState<State<T>>({ loading: false });
+    const updateState = useCallback((update: State<T>) => setState(prev => ({ ...prev, ...update })), []);
     const timeoutRef = useRef<number>();
-    const cacheMapRef = useRef<Map<string, Promise<TextToken[]>>>(new Map());
+    const cacheMapRef = useRef<Map<string, Promise<T>>>(new Map());
 
     useEffect(() => {
         updateState({ loading: true });
@@ -50,9 +49,9 @@ export const useAnalyzedText = (lang: Lang, text: string) => {
         const cacheKey = [text, lang].join('-');
         const cacheMap = cacheMapRef.current;
         const cachedPromise = cacheMap.get(cacheKey);
-        const handleSuccess = (analyzedText: TextToken[]) => {
+        const handleSuccess = (result: T) => {
             if (isCurrent) {
-                updateState({ loading: false, analyzedText });
+                updateState({ loading: false, result });
             }
         };
         const handleFail = () => {
@@ -65,7 +64,7 @@ export const useAnalyzedText = (lang: Lang, text: string) => {
             cachedPromise.then(handleSuccess, handleFail);
         } else {
             timeoutRef.current = window.setTimeout(() => {
-                const promise = analyzeText(text, lang);
+                const promise = fn(text, lang);
                 cacheMap.set(cacheKey, promise);
                 promise.catch(() => cacheMap.delete(cacheKey));
                 promise.then(handleSuccess, handleFail);
@@ -77,9 +76,9 @@ export const useAnalyzedText = (lang: Lang, text: string) => {
         return () => {
             isCurrent = false;
         };
-    }, [lang, text, updateState]);
+    }, [fn, lang, text, updateState]);
 
-    return [state.loading, state.analyzedText] as const;
+    return [state.loading, state.result] as const;
 };
 
 function ensureCacheMapSize(cacheMap: Map<unknown, unknown>, maxSize: number) {

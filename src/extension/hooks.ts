@@ -1,29 +1,55 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
+import { PersonToken } from '../types';
 import { isButton, renderButton } from './googleTranslate/button';
 import { isOverlay, renderOverlay } from './googleTranslate/overlay';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from './types';
 
 const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
 
+const INITIAL_ENV = {
+    translation: {
+        lang: '',
+        text: '',
+    },
+    original: {
+        lang: '',
+        text: '',
+    },
+};
+
+const canUpdateOverlay = (
+    env: { text?: string; lang?: string },
+    result?: { text: string; lang: string; tokens: MatchGroup[] | PersonToken[] }
+) => {
+    if (!result) {
+        return false;
+    }
+    const { tokens } = result;
+    const textToCheck = result.text.substring(0, tokens.length && tokens[tokens.length - 1].pos[1]);
+    return env.lang === result.lang && textToCheck && env.text?.startsWith(textToCheck);
+};
+
 export const useGoogleTranslatedEnvironment = () => {
     const elRef = useRef<HTMLElement>();
-    const [env, setEnv] = useState<TranslatorEnvironment>({});
+    const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
     const checkerResultRef = useRef<CheckerResult>({ status: 'inactive' });
     const openModalRef = useRef<(startPos: number) => void>(() => {});
-    const envRef = useRef<TranslatorEnvironment>({});
+    const envRef = useRef<TranslatorEnvironment>(INITIAL_ENV);
 
     useEffect(() => {
         envRef.current = env;
     }, [env]);
 
     const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
-        const textToCheck = newResult.text?.substring(
-            0,
-            newResult.matches?.length && newResult.matches[newResult.matches.length - 1].pos[1]
+        const canUpdateTranslationOverlay = canUpdateOverlay(newEnv.translation, newResult.translation);
+        renderOverlay(
+            { el: elRef.current, ...(canUpdateTranslationOverlay ? newResult.translation : {}) },
+            openModalRef.current
         );
-        const canUpdate = newEnv.lang === newResult.lang && textToCheck && newEnv.text?.startsWith(textToCheck);
-        renderOverlay({ el: elRef.current, ...(canUpdate ? newResult : {}) }, openModalRef.current);
-        renderButton({ el: elRef.current, status: newResult.status, hasResult: !!newResult.matches?.length });
+
+        const hasResult = !!(newResult.original?.tokens.length || newResult.translation?.tokens.length);
+        renderButton({ el: elRef.current, status: newResult.status, hasResult });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(
@@ -66,10 +92,14 @@ export const useGoogleTranslatedEnvironment = () => {
                     document.querySelectorAll<HTMLTextAreaElement>('c-wiz[role="main"] textarea')
                 );
                 const newEnv: TranslatorEnvironment = {
-                    lang: translatedTextElement.dataset.language,
-                    originalLang: translatedTextElement.dataset.originalLanguage,
-                    text: translatedTextArea.value,
-                    originalText: originalTextArea.value,
+                    translation: {
+                        lang: translatedTextElement.dataset.language ?? '',
+                        text: translatedTextArea?.value,
+                    },
+                    original: {
+                        lang: translatedTextElement.dataset.originalLanguage ?? '',
+                        text: originalTextArea?.value,
+                    },
                 };
 
                 render(newEnv, checkerResultRef.current);

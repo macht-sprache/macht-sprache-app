@@ -279,3 +279,7 @@ export interface TextToken {
     lemma: string;
     pos: [number, number];
 }
+
+export interface PersonToken {
+    pos: [number, number];
+}

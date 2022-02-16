@@ -1,11 +1,19 @@
 import { httpsCallable } from 'firebase/functions';
 import { functions } from './firebase';
 import { TranslationExampleModel } from './modelTypes';
-import { Book, Lang, Movie, TextToken, WebPage } from './types';
+import { Book, Lang, Movie, PersonToken, TextToken, WebPage } from './types';
 
 const _analyzeText = httpsCallable<{ text: string; lang: Lang }, TextToken[]>(functions, 'handlers-analyzeText');
 
 export const analyzeText = (text: string, lang: Lang) => _analyzeText({ text, lang }).then(({ data }) => data);
+
+const _analyzeTextForPersons = httpsCallable<{ text: string; lang: Lang }, PersonToken[]>(
+    functions,
+    'handlers-analyzeTextForPersons'
+);
+
+export const analyzeTextForPersons = (text: string, lang: Lang) =>
+    _analyzeTextForPersons({ text, lang }).then(({ data }) => data);
 
 const _findBooks = httpsCallable<{ query: string; lang: Lang }, Book[]>(functions, 'handlers-findBooks');
 

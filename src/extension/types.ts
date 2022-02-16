@@ -1,18 +1,29 @@
 import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
-import { Lang } from '../types';
+import { Lang, PersonToken } from '../types';
 
 export type TranslatorEnvironment = {
-    lang?: string;
-    text?: string;
-    originalLang?: string;
-    originalText?: string;
+    translation: {
+        lang: string;
+        text: string;
+    };
+    original: {
+        lang: string;
+        text: string;
+    };
 };
 
 export type CheckerResult = {
     status: Status;
-    text?: string;
-    matches?: MatchGroup[];
-    lang?: Lang;
+    translation?: {
+        lang: Lang;
+        text: string;
+        tokens: MatchGroup[];
+    };
+    original?: {
+        lang: Lang;
+        text: string;
+        tokens: PersonToken[];
+    };
 };
 
 export type Status = 'loading' | 'inactive' | 'idle';

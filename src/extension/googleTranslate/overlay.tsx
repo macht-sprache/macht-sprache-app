@@ -8,7 +8,7 @@ import s from './style.module.css';
 type Props = {
     el?: HTMLElement | null;
     text?: string;
-    matches?: MatchGroup[];
+    tokens?: MatchGroup[];
     lang?: Lang;
 };
 
@@ -18,7 +18,7 @@ export function isOverlay(el: Node) {
     return el === textOverlay;
 }
 
-export function renderOverlay({ el, matches, text, lang }: Props, openModal: (startPos: number) => void) {
+export function renderOverlay({ el, tokens, text, lang }: Props, openModal: (startPos: number) => void) {
     if (!el) {
         return;
     }
@@ -33,8 +33,8 @@ export function renderOverlay({ el, matches, text, lang }: Props, openModal: (st
         el.appendChild(textOverlay);
     }
 
-    if (!!matches?.length && text) {
-        textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={text} matches={matches} lang={lang} />);
+    if (!!tokens?.length && text) {
+        textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={text} matches={tokens} lang={lang} />);
         textOverlay.onclick = (event: MouseEvent) => {
             if (!(event.target instanceof HTMLElement)) {
                 return;
