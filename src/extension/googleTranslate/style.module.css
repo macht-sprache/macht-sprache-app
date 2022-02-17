@@ -16,17 +16,8 @@
 }
 
 .originalHighlight {
-    position: relative;
-}
-
-.originalHighlight::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-color: var(--orange);
+    border-bottom: 4px solid var(--orange);
+    margin-bottom: -4px;
 }
 
 .highlightedPhrase {
