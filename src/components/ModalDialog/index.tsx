@@ -44,6 +44,7 @@ export function ModalDialog({
                         ref={ref}
                         className={clsx(s[width], s.overlay, { [s.showLogo]: showLogo })}
                     >
+                        {showLogo && <img className={s.logo} src={Logo} alt="" />}
                         <header className={s.header}>
                             <h3 {...titleProps} className={s.title}>
                                 {title}
@@ -57,7 +58,6 @@ export function ModalDialog({
                             )}
                         </header>
                         {children}
-                        {showLogo && <img className={s.logo} src={Logo} alt="" />}
                     </div>
                 </FocusScope>
             </div>

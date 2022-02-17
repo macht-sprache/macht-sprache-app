@@ -37,10 +37,6 @@
     width: min(1200px, 100vw);
 }
 
-.overlay.showLogo {
-    padding-top: calc(var(--logo-size) + var(--padding));
-}
-
 @media (max-width: 500px) {
     .overlay {
         --padding: 1rem;
@@ -95,10 +91,8 @@
 }
 
 .logo {
-    width: var(--logo-size);
+    width: 100%;
     height: var(--logo-size);
     object-fit: contain;
-    position: absolute;
-    right: calc(50% - var(--logo-size) / 2);
-    bottom: calc(100% - var(--logo-size) - var(--padding) / 2);
+    margin: calc(var(--padding) * -0.5) 0 calc(var(--padding) * 0.5);
 }
