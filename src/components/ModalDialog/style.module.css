@@ -24,7 +24,6 @@
     --padding: 2rem;
     --lang-color: var(--orange);
     --logo-size: 6rem;
-    position: relative;
     padding: var(--padding);
     width: min(600px, 100vw);
 }
