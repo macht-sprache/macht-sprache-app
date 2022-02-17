@@ -81,6 +81,7 @@ export const findPersons = async (content: string, language: Lang): Promise<Pers
 
     return (entities || [])
         .filter(entity => entity.type === 'PERSON' && !entity.metadata?.mid)
+        .filter(entity => !entity.mentions?.every(mention => mention.type === 'PROPER'))
         .flatMap(
             (entity): PersonToken[] =>
                 entity.mentions?.map(({ text }) => ({
