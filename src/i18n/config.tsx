@@ -36,19 +36,3 @@ export const TranslationProvider: React.FC = ({ children }) => (
 );
 
 export { i18n };
-
-i18n.use(initReactI18next).init({
-    lng: document.documentElement.lang,
-    fallbackLng: langA,
-    resources,
-    react: {
-        useSuspense: false,
-    },
-    interpolation: {
-        escapeValue: false,
-    },
-});
-
-export const TranslationProviderExtension: React.FC = ({ children }) => (
-    <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
-);
