@@ -275,11 +275,12 @@ export interface Subscription {
     active: boolean;
 }
 
-export interface TextToken {
-    lemma: string;
+export interface Token {
     pos: [number, number];
 }
 
-export interface PersonToken {
-    pos: [number, number];
+export interface TextToken extends Token {
+    lemma: string;
 }
+
+export interface PersonToken extends Token {}

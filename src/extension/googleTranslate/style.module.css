@@ -9,6 +9,26 @@
     color: transparent;
 }
 
+.originalOverlay {
+    pointer-events: none;
+    color: transparent;
+    visibility: visible;
+}
+
+.originalHighlight {
+    position: relative;
+}
+
+.originalHighlight::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--orange);
+}
+
 .highlightedPhrase {
     --color: var(--dominantLanguageColor);
     --backgroundMargin: 0.2rem;

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
 import { PersonToken } from '../types';
 import { isButton, renderButton } from './googleTranslate/button';
-import { isOverlay, renderOverlay } from './googleTranslate/overlay';
+import { isOverlay, renderOriginalOverlay, renderOverlay } from './googleTranslate/overlay';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from './types';
 
 const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
@@ -32,6 +32,7 @@ const canUpdateOverlay = (
 
 export const useGoogleTranslatedEnvironment = () => {
     const elRef = useRef<HTMLElement>();
+    const textareaElRef = useRef<HTMLTextAreaElement>();
     const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
     const checkerResultRef = useRef<CheckerResult>({ status: 'inactive' });
     const openModalRef = useRef<(startPos: number) => void>(() => {});
@@ -43,12 +44,14 @@ export const useGoogleTranslatedEnvironment = () => {
 
     const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
         const canUpdateTranslationOverlay = canUpdateOverlay(newEnv.translation, newResult.translation);
+        const canUpdateOriginalOverlay = canUpdateOverlay(newEnv.original, newResult.original);
+        const hasResult = !!(newResult.original?.tokens.length || newResult.translation?.tokens.length);
+
         renderOverlay(
             { el: elRef.current, ...(canUpdateTranslationOverlay ? newResult.translation : {}) },
             openModalRef.current
         );
-
-        const hasResult = !!(newResult.original?.tokens.length || newResult.translation?.tokens.length);
+        renderOriginalOverlay({ el: textareaElRef.current, ...(canUpdateOriginalOverlay ? newResult.original : {}) });
         renderButton({ el: elRef.current, status: newResult.status, hasResult });
     }, []);
 
@@ -85,12 +88,13 @@ export const useGoogleTranslatedEnvironment = () => {
                 if (!translatedTextElement) {
                     return;
                 }
-
-                elRef.current = translatedTextElement;
-
                 const [originalTextArea, translatedTextArea] = Array.from(
                     document.querySelectorAll<HTMLTextAreaElement>('c-wiz[role="main"] textarea')
                 );
+
+                elRef.current = translatedTextElement;
+                textareaElRef.current = originalTextArea;
+
                 const newEnv: TranslatorEnvironment = {
                     translation: {
                         lang: translatedTextElement.dataset.language ?? '',
