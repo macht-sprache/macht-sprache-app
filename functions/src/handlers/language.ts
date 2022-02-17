@@ -82,9 +82,10 @@ export const findPersons = async (content: string, language: Lang): Promise<Pers
     return (entities || [])
         .filter(entity => entity.type === 'PERSON' && !entity.metadata?.mid)
         .flatMap(
-            entity =>
+            (entity): PersonToken[] =>
                 entity.mentions?.map(({ text }) => ({
                     pos: [text!.beginOffset!, text!.beginOffset! + text!.content!.length],
                 })) || []
-        );
+        )
+        .sort((a, b) => a.pos[0] - b.pos[0]);
 };
