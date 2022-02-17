@@ -48,7 +48,7 @@ const useAnalyzeCall = <T>(lang: Lang, text: string, fn?: (text: string, lang: L
 
     useEffect(() => {
         if (!fn) {
-            setState({ loading: false });
+            return setState({ loading: false });
         }
 
         updateState({ loading: true });
