@@ -25,6 +25,7 @@ type ModalProps = {
     onClose: () => void;
     containerClassName?: string;
     translationsSortFn?: (translation: Translation) => number;
+    showLogo?: boolean;
 };
 
 type InnerProps = {
@@ -43,6 +44,7 @@ export default function PhraseModal({
     onClose,
     containerClassName,
     translationsSortFn,
+    showLogo,
 }: ModalProps) {
     const { t } = useTranslation();
     const terms = sortEntities(getTerms());
@@ -70,6 +72,7 @@ export default function PhraseModal({
             onClose={onClose}
             width={!!topMatch.guidelines.length ? 'wider' : 'medium'}
             containerClassName={containerClassName}
+            showLogo={showLogo}
         >
             <ModalInner
                 topMatch={{ term: topMatch, source: showTermOrTranslations }}

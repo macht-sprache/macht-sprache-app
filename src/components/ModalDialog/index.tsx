@@ -4,6 +4,7 @@ import { OverlayContainer, useModal, useOverlay, usePreventScroll } from '@react
 import clsx from 'clsx';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import Logo from '../Layout/logo.svg';
 import s from './style.module.css';
 
 type ModalDialogProps = {
@@ -13,6 +14,7 @@ type ModalDialogProps = {
     isDismissable?: boolean;
     width?: 'medium' | 'wide' | 'wider';
     containerClassName?: string;
+    showLogo?: boolean;
 };
 
 export function ModalDialog({
@@ -22,6 +24,7 @@ export function ModalDialog({
     isDismissable = true,
     width = 'medium',
     containerClassName,
+    showLogo,
 }: ModalDialogProps) {
     usePreventScroll();
     const { t } = useTranslation();
@@ -39,7 +42,7 @@ export function ModalDialog({
                         {...dialogProps}
                         {...modalProps}
                         ref={ref}
-                        className={clsx(s[width], s.overlay)}
+                        className={clsx(s[width], s.overlay, { [s.showLogo]: showLogo })}
                     >
                         <header className={s.header}>
                             <h3 {...titleProps} className={s.title}>
@@ -54,6 +57,7 @@ export function ModalDialog({
                             )}
                         </header>
                         {children}
+                        {showLogo && <img className={s.logo} src={Logo} alt="" />}
                     </div>
                 </FocusScope>
             </div>

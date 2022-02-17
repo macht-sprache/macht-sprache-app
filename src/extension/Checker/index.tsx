@@ -176,6 +176,7 @@ function ModalWrapper({
                 onClose={onClose}
                 containerClassName={clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle)}
                 translationsSortFn={translationsSortFn}
+                showLogo
             />
         </Suspense>
     );

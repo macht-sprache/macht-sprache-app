@@ -21,9 +21,12 @@
 }
 
 .overlay {
-    padding: 2rem;
-    width: min(600px, 100vw);
+    --padding: 2rem;
     --lang-color: var(--orange);
+    --logo-size: 6rem;
+    position: relative;
+    padding: var(--padding);
+    width: min(600px, 100vw);
 }
 
 .overlay.wide {
@@ -34,9 +37,13 @@
     width: min(1200px, 100vw);
 }
 
+.overlay.showLogo {
+    padding-top: calc(var(--logo-size) + var(--padding));
+}
+
 @media (max-width: 500px) {
     .overlay {
-        padding: 1rem;
+        --padding: 1rem;
     }
 }
 
@@ -85,4 +92,13 @@
 
 .closeButton:after {
     transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.logo {
+    width: var(--logo-size);
+    height: var(--logo-size);
+    object-fit: contain;
+    position: absolute;
+    right: calc(50% - var(--logo-size) / 2);
+    bottom: calc(100% - var(--logo-size) - var(--padding) / 2);
 }
