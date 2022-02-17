@@ -45,14 +45,17 @@ export const useGoogleTranslatedEnvironment = () => {
     const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
         const canUpdateTranslationOverlay = canUpdateOverlay(newEnv.translation, newResult.translation);
         const canUpdateOriginalOverlay = canUpdateOverlay(newEnv.original, newResult.original);
-        const hasResult = !!(newResult.original?.tokens.length || newResult.translation?.tokens.length);
 
         renderOverlay(
             { el: elRef.current, ...(canUpdateTranslationOverlay ? newResult.translation : {}) },
             openModalRef.current
         );
         renderOriginalOverlay({ el: textareaElRef.current, ...(canUpdateOriginalOverlay ? newResult.original : {}) });
-        renderButton({ el: elRef.current, status: newResult.status, hasResult });
+        renderButton({
+            el: elRef.current,
+            status: newResult.status,
+            results: newResult.translation?.tokens.length ?? 0,
+        });
     }, []);
 
     const onUpdate: OnUpdate = useCallback(

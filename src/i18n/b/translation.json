@@ -417,6 +417,8 @@
         "guidelines": "Leitlinien"
     },
     "extension": {
+        "result": "Ergebnis",
+        "result_plural": "Ergebnisse",
         "noResults": "Keine Ergebnisse"
     }
 }

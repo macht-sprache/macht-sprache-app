@@ -5,12 +5,12 @@ import { Status } from '../types';
 type Props = {
     el?: HTMLElement;
     status: Status;
-    hasResult: boolean;
+    results: number;
 };
 
 let container: HTMLElement;
 
-export function renderButton({ el, status, hasResult }: Props) {
+export function renderButton({ el, status, results }: Props) {
     if (!el) {
         return;
     }
@@ -23,7 +23,7 @@ export function renderButton({ el, status, hasResult }: Props) {
         buttonRow.prepend(container);
     }
 
-    container.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} hasResult={hasResult} />);
+    container.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} results={results} />);
 
     return null;
 }
