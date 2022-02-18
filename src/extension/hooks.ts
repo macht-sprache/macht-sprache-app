@@ -60,7 +60,8 @@ export const useGoogleTranslatedEnvironment = () => {
 
     const onUpdate: OnUpdate = useCallback(
         (result, openModal) => {
-            checkerResultRef.current = { ...checkerResultRef.current, ...result };
+            checkerResultRef.current =
+                result.status === 'inactive' ? result : { ...checkerResultRef.current, ...result };
             if (openModal) {
                 openModalRef.current = openModal;
             }
