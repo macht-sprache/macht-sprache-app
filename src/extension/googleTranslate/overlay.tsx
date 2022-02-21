@@ -4,7 +4,6 @@ import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { Lang, PersonToken, Token } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
-import { renderGenderHint } from './genderHint';
 import s from './style.module.css';
 
 type Props = {
@@ -79,7 +78,7 @@ export function renderOriginalOverlay({
     text?: string;
     tokens?: PersonToken[];
 }) {
-    renderGenderHint(el, tokens);
+    // renderGenderHint(el, tokens);
     const overlay = getOriginalOverlayEl(el);
 
     if (!overlay) {
