@@ -13,7 +13,7 @@ const getButton = (stableParent: HTMLElement) =>
         attachElement: (el, parent) => {
             const container = parent.querySelector<HTMLElement>(TRANSLATED_TEXT_ELEMENT_SELECTOR);
             const buttonRow = findLast(container?.children, child => !!child.getAttribute('jsaction'));
-            buttonRow?.prepend(el);
+            buttonRow?.append(el);
         },
         validateInput: ({ status, results }) => (status && results && results > 0 ? { status, results } : null),
         render: ({ status, results }, el) => {
