@@ -88,24 +88,20 @@ export const useGoogleTranslatedEnvironment = () => {
                 const translatedTextElement = translatedTextElementParent.querySelector<HTMLElement>(
                     TRANSLATED_TEXT_ELEMENT_SELECTOR
                 );
-
-                if (!translatedTextElement) {
-                    return;
-                }
                 const [originalTextArea, translatedTextArea] = Array.from(
                     document.querySelectorAll<HTMLTextAreaElement>('c-wiz[role="main"] textarea')
                 );
 
-                elRef.current = translatedTextElement;
+                elRef.current = translatedTextElement ?? undefined;
                 textareaElRef.current = originalTextArea;
 
                 const newEnv: TranslatorEnvironment = {
                     translation: {
-                        lang: translatedTextElement.dataset.language ?? '',
+                        lang: translatedTextElement?.dataset.language ?? '',
                         text: translatedTextArea?.value,
                     },
                     original: {
-                        lang: translatedTextElement.dataset.originalLanguage ?? '',
+                        lang: translatedTextElement?.dataset.originalLanguage ?? '',
                         text: originalTextArea?.value,
                     },
                 };

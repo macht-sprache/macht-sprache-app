@@ -51,11 +51,11 @@ export function renderOverlay({ el, tokens, text, lang }: Props, openModal: (sta
 }
 
 let originalOverlayEl: HTMLElement | null = null;
-const getOriginalOverlayEl = (textarea: HTMLTextAreaElement) => {
-    const googleClone = textarea.nextElementSibling;
+const getOriginalOverlayEl = (textarea?: HTMLTextAreaElement) => {
+    const googleClone = textarea?.nextElementSibling;
 
     if (!googleClone) {
-        return null;
+        return originalOverlayEl;
     }
 
     if (!originalOverlayEl) {
@@ -80,11 +80,6 @@ export function renderOriginalOverlay({
     tokens?: PersonToken[];
 }) {
     renderGenderHint(el, tokens);
-
-    if (!el) {
-        return;
-    }
-
     const overlay = getOriginalOverlayEl(el);
 
     if (!overlay) {
