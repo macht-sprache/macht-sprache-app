@@ -6,49 +6,6 @@ import { Lang, PersonToken, Token } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import s from './style.module.css';
 
-type Props = {
-    el?: HTMLElement | null;
-    text?: string;
-    tokens?: MatchGroup[];
-    lang?: Lang;
-};
-
-let textOverlay: HTMLElement | null = null;
-
-export function isOverlay(el: Node) {
-    return el === textOverlay;
-}
-
-export function renderOverlay({ el, tokens, text, lang }: Props, openModal: (startPos: number) => void) {
-    if (!el) {
-        return;
-    }
-
-    el.classList.add(s.parent);
-
-    if (!textOverlay || !el.contains(textOverlay)) {
-        const textElement = el.firstElementChild;
-        textOverlay = document.createElement('div');
-        textOverlay.classList.add(s.overlay);
-        textOverlay.classList.add(textElement?.classList?.toString() ?? '');
-        el.appendChild(textOverlay);
-    }
-
-    if (!!tokens?.length && text) {
-        textOverlay.innerHTML = ReactDOMServer.renderToString(<Overlay text={text} matches={tokens} lang={lang} />);
-        textOverlay.onclick = (event: MouseEvent) => {
-            if (!(event.target instanceof HTMLElement)) {
-                return;
-            }
-            const startIndex = parseInt(event.target.dataset.start ?? '');
-            openModal(startIndex);
-        };
-    } else {
-        textOverlay.innerHTML = '';
-        textOverlay.onclick = null;
-    }
-}
-
 let originalOverlayEl: HTMLElement | null = null;
 const getOriginalOverlayEl = (textarea?: HTMLTextAreaElement) => {
     const googleClone = textarea?.nextElementSibling;
@@ -92,26 +49,6 @@ export function renderOriginalOverlay({
     }
 }
 
-function Overlay({ text, matches, lang }: { text: string; matches: MatchGroup[]; lang?: Lang }) {
-    return (
-        <div className={CSS_CONTEXT_CLASS_NAME}>
-            <div className={getDominantLanguageClass(lang)}>
-                {renderTokenChildren(text, matches, (substring, match) => (
-                    <HighlightedPhrase start={match.pos[0]}>{substring}</HighlightedPhrase>
-                ))}
-            </div>
-        </div>
-    );
-}
-
-function HighlightedPhrase({ start, children }: { children: React.ReactNode; start: number }) {
-    return (
-        <button className={s.highlightedPhrase} data-start={start}>
-            {children}
-        </button>
-    );
-}
-
 function OriginalOverlay({ text, tokens }: { text: string; tokens: PersonToken[] }) {
     return (
         <>
@@ -122,7 +59,7 @@ function OriginalOverlay({ text, tokens }: { text: string; tokens: PersonToken[]
     );
 }
 
-function renderTokenChildren<T extends Token>(
+export function renderTokenChildren<T extends Token>(
     text: string,
     tokens: T[],
     renderMatch: (substring: string, token: T, index: number) => React.ReactNode
