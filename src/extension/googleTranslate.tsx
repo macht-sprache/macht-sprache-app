@@ -6,14 +6,14 @@ import { LangProvider } from '../useLang';
 import { useLangCssVars } from '../useLangCssVars';
 import '../vars.css';
 import { Checker } from './Checker';
-import { useGoogleTranslatedEnvironment } from './hooks';
+import { useGoogleTranslateEnvironment } from './googleTranslate/useEnvironment';
 
 const reactRootElement = document.createElement('div');
 document.body.append(reactRootElement);
 
 function App() {
     useLangCssVars();
-    const { env, onUpdate } = useGoogleTranslatedEnvironment();
+    const { env, onUpdate } = useGoogleTranslateEnvironment();
     return <Checker env={env} onUpdate={onUpdate} />;
 }
 

@@ -1,13 +1,13 @@
 import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
-import { PersonToken } from '../types';
-import { useRenderButton } from './googleTranslate/button';
-import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './googleTranslate/constants';
-import { useRenderGenderHint } from './googleTranslate/genderHint';
-import { useRenderOriginalOverlay } from './googleTranslate/originalOverlay';
-import { useRenderTranslationOverlay } from './googleTranslate/translationOverlay';
-import { CheckerResult, OnUpdate, TranslatorEnvironment } from './types';
+import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks';
+import { PersonToken } from '../../types';
+import { useRenderButton } from './button';
+import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
+import { useRenderGenderHint } from './genderHint';
+import { useRenderOriginalOverlay } from './originalOverlay';
+import { useRenderTranslationOverlay } from './translationOverlay';
+import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 
 const INITIAL_ENV = {
     translation: {
@@ -53,7 +53,7 @@ const useStableElements = () => {
     return stableElements;
 };
 
-export const useGoogleTranslatedEnvironment = () => {
+export const useGoogleTranslateEnvironment = () => {
     const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
     const { originalSide, translatedSide } = useStableElements();
 
@@ -76,13 +76,12 @@ export const useGoogleTranslatedEnvironment = () => {
             const canUpdateOriginalOverlay = canUpdateOverlay(newEnv.original, newResult.original);
 
             renderGenderHint(canUpdateOriginalOverlay ? newResult.original : {});
-
-            renderTranslationOverlay(
-                canUpdateTranslationOverlay ? { ...newResult.translation, openModal: openModalRef.current } : {}
-            );
             renderOriginalOverlay({
                 ...(canUpdateOriginalOverlay ? newResult.original : {}),
             });
+            renderTranslationOverlay(
+                canUpdateTranslationOverlay ? { ...newResult.translation, openModal: openModalRef.current } : {}
+            );
             renderButton({
                 status: newResult.status,
                 results: newResult.translation?.tokens.length ?? 0,
