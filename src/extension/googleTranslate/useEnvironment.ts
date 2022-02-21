@@ -1,5 +1,5 @@
 import isEqual from 'lodash/isEqual';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks';
 import { PersonToken } from '../../types';
 import { useRenderButton } from './button';
@@ -33,24 +33,14 @@ const canUpdateOverlay = (
 };
 
 const useStableElements = () => {
-    const [stableElements, setStableElements] = useState<
-        Partial<{ originalSide: HTMLElement; translatedSide: HTMLElement }>
-    >({});
-
-    useEffect(() => {
-        async function init() {
-            const originalSide = document.querySelector('c-wiz[role="main"] textarea')?.closest<HTMLElement>('c-wiz');
-            const translatedSide = document.querySelector<HTMLElement>('c-wiz[role="main"] c-wiz[role="region"]');
-            setStableElements({
-                originalSide: originalSide ?? undefined,
-                translatedSide: translatedSide ?? undefined,
-            });
-        }
-
-        init();
+    return useMemo(() => {
+        const originalSide = document.querySelector('c-wiz[role="main"] textarea')?.closest<HTMLElement>('c-wiz');
+        const translatedSide = document.querySelector<HTMLElement>('c-wiz[role="main"] c-wiz[role="region"]');
+        return {
+            originalSide: originalSide ?? undefined,
+            translatedSide: translatedSide ?? undefined,
+        };
     }, []);
-
-    return stableElements;
 };
 
 export const useGoogleTranslateEnvironment = () => {
