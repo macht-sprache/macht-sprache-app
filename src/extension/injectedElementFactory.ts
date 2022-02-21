@@ -4,7 +4,7 @@ type Config<T extends {}, El extends HTMLElement> = {
     stableParent: HTMLElement;
     createElement: (stableParent: HTMLElement) => El | null;
     attachElement: (el: El, stableParent: HTMLElement) => void;
-    render: (input: T, el: El) => void;
+    render: (input: T, el: El, stableParent: HTMLElement) => void;
     validateInput: (input: Partial<T>) => T | null;
 };
 
@@ -49,7 +49,7 @@ export function injectedElementFactory<T extends {}, El extends HTMLElement = HT
         }
 
         if (input && el) {
-            config.render(input, el);
+            config.render(input, el, config.stableParent);
         }
 
         prevIsActive = newIsActive;

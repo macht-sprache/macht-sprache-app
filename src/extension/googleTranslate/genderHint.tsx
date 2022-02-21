@@ -26,15 +26,14 @@ const genderHintFactory = (stableParent: HTMLElement) =>
         validateInput: ({ tokens }) => (tokens && tokens.length ? { tokens } : null),
     });
 
-export function useRenderGenderHint(textarea?: HTMLTextAreaElement) {
+export function useRenderGenderHint(stableParent?: HTMLElement) {
     const { render, destroy } = useMemo(() => {
-        const stableParent = textarea?.closest('c-wiz');
-        if (stableParent instanceof HTMLElement) {
+        if (stableParent) {
             return genderHintFactory(stableParent);
         } else {
             return { render: () => {}, destroy: () => {} };
         }
-    }, [textarea]);
+    }, [stableParent]);
 
     useEffect(() => destroy, [destroy]);
 

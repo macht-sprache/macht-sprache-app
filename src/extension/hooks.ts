@@ -4,7 +4,7 @@ import { PersonToken } from '../types';
 import { useRenderButton } from './googleTranslate/button';
 import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './googleTranslate/constants';
 import { useRenderGenderHint } from './googleTranslate/genderHint';
-import { renderOriginalOverlay } from './googleTranslate/overlay';
+import { useRenderOriginalOverlay } from './googleTranslate/originalOverlay';
 import { useRenderTranslationOverlay } from './googleTranslate/translationOverlay';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from './types';
 
@@ -33,15 +33,15 @@ const canUpdateOverlay = (
 
 const useStableElements = () => {
     const [stableElements, setStableElements] = useState<
-        Partial<{ inputTextArea: HTMLTextAreaElement; translatedSide: HTMLElement }>
+        Partial<{ originalSide: HTMLElement; translatedSide: HTMLElement }>
     >({});
 
     useEffect(() => {
         async function init() {
-            const inputTextArea = document.querySelector<HTMLTextAreaElement>('c-wiz[role="main"] textarea');
+            const originalSide = document.querySelector('c-wiz[role="main"] textarea')?.closest<HTMLElement>('c-wiz');
             const translatedSide = document.querySelector<HTMLElement>('c-wiz[role="main"] c-wiz[role="region"]');
             setStableElements({
-                inputTextArea: inputTextArea ?? undefined,
+                originalSide: originalSide ?? undefined,
                 translatedSide: translatedSide ?? undefined,
             });
         }
@@ -54,7 +54,7 @@ const useStableElements = () => {
 
 export const useGoogleTranslatedEnvironment = () => {
     const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
-    const stableElements = useStableElements();
+    const { originalSide, translatedSide } = useStableElements();
 
     const elRef = useRef<HTMLElement>();
     const textareaElRef = useRef<HTMLTextAreaElement>();
@@ -62,9 +62,10 @@ export const useGoogleTranslatedEnvironment = () => {
     const openModalRef = useRef<(startPos: number) => void>(() => {});
     const envRef = useRef<TranslatorEnvironment>(INITIAL_ENV);
 
-    const renderGenderHint = useRenderGenderHint(stableElements.inputTextArea);
-    const renderTranslationOverlay = useRenderTranslationOverlay(stableElements.translatedSide);
-    const renderButton = useRenderButton(stableElements.translatedSide);
+    const renderOriginalOverlay = useRenderOriginalOverlay(originalSide);
+    const renderGenderHint = useRenderGenderHint(originalSide);
+    const renderTranslationOverlay = useRenderTranslationOverlay(translatedSide);
+    const renderButton = useRenderButton(translatedSide);
 
     useEffect(() => {
         envRef.current = env;
@@ -81,7 +82,6 @@ export const useGoogleTranslatedEnvironment = () => {
                 canUpdateTranslationOverlay ? { ...newResult.translation, openModal: openModalRef.current } : {}
             );
             renderOriginalOverlay({
-                el: textareaElRef.current,
                 ...(canUpdateOriginalOverlay ? newResult.original : {}),
             });
             renderButton({
@@ -89,7 +89,7 @@ export const useGoogleTranslatedEnvironment = () => {
                 results: newResult.translation?.tokens.length ?? 0,
             });
         },
-        [renderButton, renderGenderHint, renderTranslationOverlay]
+        [renderButton, renderGenderHint, renderOriginalOverlay, renderTranslationOverlay]
     );
 
     const onUpdate: OnUpdate = useCallback(
