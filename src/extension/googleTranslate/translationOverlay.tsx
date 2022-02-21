@@ -20,6 +20,11 @@ const getTranslationOverlay = (stableParent: HTMLElement) =>
         attachElement: (el, parent) => {
             const translatedTextEl = parent.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
             const textEl = translatedTextEl?.firstElementChild;
+
+            if (!textEl) {
+                return;
+            }
+
             translatedTextEl?.classList.add(s.parent);
             el.classList.add(textEl?.classList?.toString() ?? '');
             translatedTextEl?.appendChild(el);
