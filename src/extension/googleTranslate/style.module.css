@@ -13,6 +13,7 @@
     pointer-events: none;
     color: transparent;
     visibility: visible;
+    max-height: unset;
 }
 
 .originalHighlight {
