@@ -69,7 +69,15 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                                 {!!translations.length && (
                                     <h2 className={s.bodyHeading}>
                                         {translations.length}{' '}
-                                        {t('common.entities.translation.value', { count: translations.length })}:
+                                        {t(
+                                            term.adminTags.translationsAsVariants
+                                                ? 'term.variants.variant'
+                                                : 'common.entities.translation.value',
+                                            {
+                                                count: translations.length,
+                                            }
+                                        )}
+                                        :
                                     </h2>
                                 )}
                                 <div className={s.sectionBody}>

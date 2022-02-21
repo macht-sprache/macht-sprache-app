@@ -7,10 +7,10 @@ import { injectedElementFactory } from '../injectedElementFactory';
 import { useEffect, useMemo } from 'react';
 
 const genderHintFactory = (stableParent: HTMLElement) =>
-    injectedElementFactory<{ tokens: PersonToken[] }>({
+    injectedElementFactory<{ tokens: PersonToken[]; onOpenGenderModal: () => void }>({
         stableParent,
         createElement: parent => {
-            const genderHintEl = document.createElement('div');
+            const genderHintEl = document.createElement('button');
             genderHintEl.classList.add(CSS_CONTEXT_CLASS_NAME, s.genderHint);
             genderHintEl.textContent = 'What about Gender?';
             genderHintEl.onmouseenter = () => parent.classList.add(s.genderHintHovered);
@@ -22,8 +22,11 @@ const genderHintFactory = (stableParent: HTMLElement) =>
             const characterLabel = find(buttonBar?.children, child => child.tagName === 'SPAN');
             characterLabel?.before(el);
         },
-        render: () => {},
-        validateInput: ({ tokens }) => (tokens && tokens.length ? { tokens } : null),
+        render: ({ onOpenGenderModal }, el) => {
+            el.onclick = onOpenGenderModal;
+        },
+        validateInput: ({ tokens, onOpenGenderModal }) =>
+            tokens && tokens.length && onOpenGenderModal ? { tokens, onOpenGenderModal } : null,
     });
 
 export function useRenderGenderHint(stableParent?: HTMLElement) {

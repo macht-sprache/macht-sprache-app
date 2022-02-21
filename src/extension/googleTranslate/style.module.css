@@ -42,6 +42,7 @@
     color: white;
     background-color: var(--orange);
     user-select: none;
+    cursor: pointer;
 }
 
 .highlightedPhrase {

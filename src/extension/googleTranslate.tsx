@@ -1,4 +1,5 @@
 import './setup';
+import { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AppContextProviderExtension } from '../hooks/appContext';
 import { TranslationProvider } from '../i18n/config';
@@ -13,8 +14,18 @@ document.body.append(reactRootElement);
 
 function App() {
     useLangCssVars();
-    const { env, onUpdate } = useGoogleTranslateEnvironment();
-    return <Checker env={env} onUpdate={onUpdate} />;
+    const [showGenderModal, setShowGenderModal] = useState(false);
+    const onCloseGenderModal = useCallback(() => setShowGenderModal(false), []);
+    const onOpenGenderModal = useCallback(() => setShowGenderModal(true), []);
+    const { env, onUpdate } = useGoogleTranslateEnvironment(onOpenGenderModal);
+    return (
+        <Checker
+            env={env}
+            onUpdate={onUpdate}
+            showGenderModal={showGenderModal}
+            onCloseGenderModal={onCloseGenderModal}
+        />
+    );
 }
 
 ReactDOM.render(

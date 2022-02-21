@@ -43,7 +43,7 @@ const useStableElements = () => {
     }, []);
 };
 
-export const useGoogleTranslateEnvironment = () => {
+export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => {
     const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
     const { originalSide, translatedSide } = useStableElements();
 
@@ -61,7 +61,7 @@ export const useGoogleTranslateEnvironment = () => {
             const canUpdateTranslationOverlay = canUpdateOverlay(newEnv.translation, newResult.translation);
             const canUpdateOriginalOverlay = canUpdateOverlay(newEnv.original, newResult.original);
 
-            renderGenderHint(canUpdateOriginalOverlay ? newResult.original : {});
+            renderGenderHint(canUpdateOriginalOverlay ? { tokens: newResult.original?.tokens, onOpenGenderModal } : {});
             renderOriginalOverlay({
                 ...(canUpdateOriginalOverlay ? newResult.original : {}),
             });
@@ -73,7 +73,7 @@ export const useGoogleTranslateEnvironment = () => {
                 results: newResult.translation?.tokens.length ?? 0,
             });
         },
-        [renderButton, renderGenderHint, renderOriginalOverlay, renderTranslationOverlay]
+        [onOpenGenderModal, renderButton, renderGenderHint, renderOriginalOverlay, renderTranslationOverlay]
     );
 
     const onUpdate: OnUpdate = useCallback(

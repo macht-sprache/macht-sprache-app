@@ -14,15 +14,18 @@ import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { collections } from '../../hooks/data';
 import { GetList, useCollection, useDocuments } from '../../hooks/fetch';
 import { Lang, PersonToken, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../types';
+import { GenderOverlay } from '../GenderOverlay';
+import styles from '../style.module.css';
 import { OnUpdate, TranslatorEnvironment } from '../types';
 import { CheckerInput, useAnalyzedText, useConvertEnv, usePersonTokens } from './hooks';
-import styles from '../style.module.css';
 
 const EMPTY_ARRAY: never[] = [];
 
 type Props = {
     env: TranslatorEnvironment;
     onUpdate: OnUpdate;
+    showGenderModal: boolean;
+    onCloseGenderModal: () => void;
 };
 
 type InnerProps = {
@@ -35,7 +38,7 @@ type InnerProps = {
     onUpdate: OnUpdate;
 } & CheckerInput;
 
-export function Checker({ env, onUpdate }: Props) {
+export function Checker({ env, onUpdate, showGenderModal, onCloseGenderModal }: Props) {
     const checkerInput = useConvertEnv(env);
 
     useEffect(() => {
@@ -53,6 +56,7 @@ export function Checker({ env, onUpdate }: Props) {
             <Suspense fallback={null}>
                 <Loader checkerInput={checkerInput} onUpdate={onUpdate} />;
             </Suspense>
+            <GenderOverlay isOpen={showGenderModal} onClose={onCloseGenderModal} />
         </OverlayProvider>
     );
 }
