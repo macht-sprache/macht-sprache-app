@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
 import { PersonToken } from '../types';
@@ -56,8 +57,6 @@ export const useGoogleTranslatedEnvironment = () => {
     const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
     const { originalSide, translatedSide } = useStableElements();
 
-    const elRef = useRef<HTMLElement>();
-    const textareaElRef = useRef<HTMLTextAreaElement>();
     const checkerResultRef = useRef<CheckerResult>({ status: 'inactive' });
     const openModalRef = useRef<(startPos: number) => void>(() => {});
     const envRef = useRef<TranslatorEnvironment>(INITIAL_ENV);
@@ -105,63 +104,41 @@ export const useGoogleTranslatedEnvironment = () => {
     );
 
     useEffect(() => {
-        async function observeTranslator() {
-            const translatedTextElementParent = await getTranslatedTextElementParent();
-            const observerChildren = new MutationObserver(update);
-            observerChildren.observe(translatedTextElementParent, {
-                childList: true,
-                subtree: true,
-            });
+        const originalTextArea = originalSide?.querySelector<HTMLTextAreaElement>('textarea');
 
-            function update() {
-                const translatedTextElement = translatedTextElementParent.querySelector<HTMLElement>(
-                    TRANSLATED_TEXT_ELEMENT_SELECTOR
-                );
-                const [originalTextArea, translatedTextArea] = Array.from(
-                    document.querySelectorAll<HTMLTextAreaElement>('c-wiz[role="main"] textarea')
-                );
+        const update = () => {
+            const translatedTextElement = translatedSide?.querySelector<HTMLElement>(TRANSLATED_TEXT_ELEMENT_SELECTOR);
+            const translatedTextArea = translatedSide?.querySelector<HTMLTextAreaElement>('textarea');
 
-                elRef.current = translatedTextElement ?? undefined;
-                textareaElRef.current = originalTextArea;
+            const newEnv: TranslatorEnvironment = {
+                translation: {
+                    lang: translatedTextElement?.dataset.language ?? '',
+                    text: translatedTextArea?.value ?? '',
+                },
+                original: {
+                    lang: translatedTextElement?.dataset.originalLanguage ?? '',
+                    text: originalTextArea?.value ?? '',
+                },
+            };
 
-                const newEnv: TranslatorEnvironment = {
-                    translation: {
-                        lang: translatedTextElement?.dataset.language ?? '',
-                        text: translatedTextArea?.value,
-                    },
-                    original: {
-                        lang: translatedTextElement?.dataset.originalLanguage ?? '',
-                        text: originalTextArea?.value,
-                    },
-                };
+            render(newEnv, checkerResultRef.current);
+            setEnv(prevEnv => (isEqual(prevEnv, newEnv) ? prevEnv : newEnv));
+        };
 
-                render(newEnv, checkerResultRef.current);
-                setEnv(newEnv);
-            }
+        originalTextArea?.addEventListener('input', update);
 
-            update();
+        const translatedAreaObserver = new MutationObserver(update);
+        if (translatedSide) {
+            translatedAreaObserver.observe(translatedSide, { childList: true, subtree: true });
         }
-        observeTranslator();
-    }, [render]);
+
+        update();
+
+        return () => {
+            translatedAreaObserver.disconnect();
+            originalTextArea?.removeEventListener('input', update);
+        };
+    }, [render, originalSide, translatedSide]);
 
     return { env, onUpdate };
 };
-
-const getTranslatedTextElementParent = (): Promise<HTMLElement> =>
-    new Promise((resolve, reject) => {
-        const checkInterval = setInterval(() => {
-            const translatedTextElement = document.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
-            if (!translatedTextElement) {
-                return;
-            }
-
-            clearInterval(checkInterval);
-            const { parentElement } = translatedTextElement;
-
-            if (parentElement) {
-                resolve(parentElement);
-            } else {
-                reject('parent missing');
-            }
-        }, 100);
-    });
