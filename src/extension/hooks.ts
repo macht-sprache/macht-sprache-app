@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MatchGroup } from '../components/TextChecker/TextCheckerResult/hooks';
 import { PersonToken } from '../types';
-import { isButton, renderButton } from './googleTranslate/button';
+import { useRenderButton } from './googleTranslate/button';
+import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './googleTranslate/constants';
 import { useRenderGenderHint } from './googleTranslate/genderHint';
 import { renderOriginalOverlay } from './googleTranslate/overlay';
 import { useRenderTranslationOverlay } from './googleTranslate/translationOverlay';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from './types';
-
-const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
 
 const INITIAL_ENV = {
     translation: {
@@ -65,6 +64,7 @@ export const useGoogleTranslatedEnvironment = () => {
 
     const renderGenderHint = useRenderGenderHint(stableElements.inputTextArea);
     const renderTranslationOverlay = useRenderTranslationOverlay(stableElements.translatedSide);
+    const renderButton = useRenderButton(stableElements.translatedSide);
 
     useEffect(() => {
         envRef.current = env;
@@ -85,12 +85,11 @@ export const useGoogleTranslatedEnvironment = () => {
                 ...(canUpdateOriginalOverlay ? newResult.original : {}),
             });
             renderButton({
-                el: elRef.current,
                 status: newResult.status,
                 results: newResult.translation?.tokens.length ?? 0,
             });
         },
-        [renderGenderHint, renderTranslationOverlay]
+        [renderButton, renderGenderHint, renderTranslationOverlay]
     );
 
     const onUpdate: OnUpdate = useCallback(
@@ -108,12 +107,7 @@ export const useGoogleTranslatedEnvironment = () => {
     useEffect(() => {
         async function observeTranslator() {
             const translatedTextElementParent = await getTranslatedTextElementParent();
-            const observerChildren = new MutationObserver(mutations => {
-                if (mutations.every(mutation => isButton(mutation.target))) {
-                    return;
-                }
-                update();
-            });
+            const observerChildren = new MutationObserver(update);
             observerChildren.observe(translatedTextElementParent, {
                 childList: true,
                 subtree: true,

@@ -5,10 +5,9 @@ import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { Lang } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import { injectedElementFactory } from '../injectedElementFactory';
+import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { renderTokenChildren } from './overlay';
 import s from './style.module.css';
-
-const TRANSLATED_TEXT_ELEMENT_SELECTOR = '[data-language][data-original-language]';
 
 const getTranslationOverlay = (stableParent: HTMLElement) =>
     injectedElementFactory<{ text: string; tokens: MatchGroup[]; lang: Lang; openModal: (startPos: number) => void }>({
