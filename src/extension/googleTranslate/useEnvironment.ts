@@ -66,10 +66,6 @@ export const useGoogleTranslateEnvironment = () => {
     const renderTranslationOverlay = useRenderTranslationOverlay(translatedSide);
     const renderButton = useRenderButton(translatedSide);
 
-    useEffect(() => {
-        envRef.current = env;
-    }, [env]);
-
     const render = useCallback(
         (newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
             const canUpdateTranslationOverlay = canUpdateOverlay(newEnv.translation, newResult.translation);
@@ -120,8 +116,13 @@ export const useGoogleTranslateEnvironment = () => {
                 },
             };
 
+            if (isEqual(envRef.current, newEnv)) {
+                return;
+            }
+
+            envRef.current = newEnv;
             render(newEnv, checkerResultRef.current);
-            setEnv(prevEnv => (isEqual(prevEnv, newEnv) ? prevEnv : newEnv));
+            setEnv(newEnv);
         };
 
         originalTextArea?.addEventListener('input', update);
