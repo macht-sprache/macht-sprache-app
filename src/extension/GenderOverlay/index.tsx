@@ -32,6 +32,7 @@ export function GenderOverlay({ isOpen, onClose }: Props) {
             title="What about Gender?"
             onClose={onClose}
             containerClassName={clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle)}
+            showLogo
         >
             <MdxWrapper>
                 <Content />
