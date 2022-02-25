@@ -1,4 +1,5 @@
 import firebase from 'firebase/compat/app';
+import orderBy from 'lodash/orderBy';
 import { collections } from '../../hooks/data';
 import { useCollection } from '../../hooks/fetch';
 import { langA } from '../../languages';
@@ -28,6 +29,11 @@ export const getLongestEntity = <Entity extends Term | Translation>(terms: Entit
         (prev, current) => ((prev?.value?.length ?? 0) > current.value.length ? prev : current),
         undefined
     );
+
+export const sortEntities = <Entity extends Term | Translation>(
+    entities: Entity[],
+    extraSortFn?: (entity: Entity) => number
+) => orderBy(entities, entity => [entity.value.length, extraSortFn], ['desc', 'asc']);
 
 export const useLangIdentifier = () => {
     const [lang] = useLang();

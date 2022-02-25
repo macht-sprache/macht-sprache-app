@@ -16,5 +16,10 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "include": ["src", "@types"]
+    "include": ["src", "@types"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    }
 }

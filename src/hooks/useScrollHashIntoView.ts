@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSafeLocation } from './location';
 
 export const useScrollHashIntoView = (onScrollIntoView?: () => void) => {
     const ref = useRef<HTMLElement | null>(null);
     const refCallback = useCallback((el: HTMLElement | null) => (ref.current = el), []);
-    const location = useLocation();
+    const location = useSafeLocation();
+    const hash = location?.hash || '';
     useEffect(() => {
         const element = ref.current;
-        if (element && element.id && location.hash === `#${element.id}`) {
+        if (element && element.id && hash === `#${element.id}`) {
             element.scrollIntoView();
             handleFocus(element);
             onScrollIntoView?.();
         }
-    }, [location.hash, onScrollIntoView]);
+    }, [hash, onScrollIntoView]);
     return refCallback;
 };
 

@@ -1,0 +1,45 @@
+:where(.globalStyle) {
+    font-family: var(--monospaceFont);
+    color: var(--black);
+}
+
+:where(.globalStyle) h1 {
+    font-size: var(--fontSizeXXL);
+    margin-bottom: 0.7em;
+}
+
+:where(.globalStyle) h2 {
+    font-size: var(--fontSizeL);
+    margin-bottom: 0.8em;
+}
+
+:where(.globalStyle) h3 {
+    font-size: var(--fontSizeM);
+    margin-bottom: 1em;
+}
+
+:where(.globalStyle) :is(h1, h2, h3) {
+    font-weight: bold;
+}
+
+:where(.globalStyle) a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+:where(.globalStyle) p {
+    line-height: var(--lineHeightParagraph);
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+:where(.globalStyle)[lang='de'] p,
+:where(.globalStyle) p[lang='de'] {
+    hyphens: auto;
+}
+
+:where(.globalStyle) :where(*, *:before, *:after) {
+    box-sizing: border-box;
+}

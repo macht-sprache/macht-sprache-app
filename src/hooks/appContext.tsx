@@ -64,6 +64,16 @@ export const AppContextProvider: React.FC = ({ children }) => {
     );
 };
 
+export const AppContextProviderExtension: React.FC = ({ children }) => {
+    const [sensitiveTerms] = useLoadSensitiveTerms();
+
+    if (!sensitiveTerms) {
+        return null;
+    }
+
+    return <appContext.Provider value={{ accountState: 'ANONYMOUS', sensitiveTerms }}>{children}</appContext.Provider>;
+};
+
 function useAuthUser() {
     const [{ authUser, loading, error }, setState] = useState<{
         authUser?: AuthUser;

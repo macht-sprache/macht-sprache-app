@@ -1,0 +1,22 @@
+{
+    "name": "__MSG_title__",
+    "description": "__MSG_description__",
+    "default_locale": "en",
+    "version": "1.0",
+    "manifest_version": 3,
+    "icons": {
+        "128": "logo128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://translate.google.com/*", "https://translate.google.de/*"],
+            "js": ["./dist/content-google-translate.js"]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "matches": ["https://translate.google.com/*", "https://translate.google.de/*"],
+            "resources": ["dist/*"]
+        }
+    ]
+}

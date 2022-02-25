@@ -1,4 +1,6 @@
-import { useCallback } from 'react';
+import type { History, Location } from 'history';
+import { useCallback, useContext } from 'react';
+import { useHistory, __RouterContext as RouterContext } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { HOME } from '../routes';
 
@@ -29,3 +31,24 @@ export const useAddContinueParam = () => {
 
     return useCallback((url: string) => addContinueParam(url, pathname), [pathname]);
 };
+
+export function useSafeLocation(): Location | undefined {
+    const routerContext = useContext(RouterContext);
+    return routerContext?.location;
+}
+
+export function useSafeNavigate() {
+    const history: History | undefined = useHistory();
+
+    return useCallback(
+        (to: string) => {
+            if (history) {
+                history.push(to);
+            } else {
+                const url = (process.env.REACT_APP_MAIN_ORIGIN || '') + to;
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        },
+        [history]
+    );
+}

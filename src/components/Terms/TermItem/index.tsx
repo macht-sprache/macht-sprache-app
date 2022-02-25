@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { generatePath, useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
+import { generatePath } from 'react-router';
 import { collections, getCommentsRef, getTranslationsRef } from '../../../hooks/data';
 import { GetList, useCollection } from '../../../hooks/fetch';
+import { useSafeNavigate } from '../../../hooks/location';
 import { langA } from '../../../languages';
 import { TERM } from '../../../routes';
 import { Comment, Term } from '../../../types';
@@ -13,6 +13,7 @@ import { getDominantLanguageClass } from '../../../useLangCssVars';
 import { stopPropagation } from '../../../utils';
 import { CommentItem } from '../../Comments/CommentItem';
 import { FormatDate } from '../../FormatDate';
+import Link from '../../Link';
 import { Redact } from '../../RedactSensitiveTerms';
 import { TermWithLang } from '../../TermWithLang';
 import { TranslationsList } from '../../TranslationsList';
@@ -27,7 +28,7 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
     const termRef = collections.terms.doc(term.id);
     const getComments = useCollection(getCommentsRef(termRef));
     const getTranslations = useCollection(getTranslationsRef(termRef));
-    const history = useHistory();
+    const navigate = useSafeNavigate();
     const { t } = useTranslation();
     const [lang] = useLang();
     const definition = term.definition[lang === langA ? 'langA' : 'langB'];
@@ -38,7 +39,7 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
     return (
         <article
             className={clsx(s.term, s[size], getDominantLanguageClass(term.lang))}
-            onClick={() => history.push(pathToTerm)}
+            onClick={() => navigate(pathToTerm)}
         >
             {showMeta && (
                 <div className={s.meta}>
@@ -68,7 +69,15 @@ export function TermItem({ term, size = 'medium', showMeta = false }: TermItemPr
                                 {!!translations.length && (
                                     <h2 className={s.bodyHeading}>
                                         {translations.length}{' '}
-                                        {t('common.entities.translation.value', { count: translations.length })}:
+                                        {t(
+                                            term.adminTags.translationsAsVariants
+                                                ? 'term.variants.variant'
+                                                : 'common.entities.translation.value',
+                                            {
+                                                count: translations.length,
+                                            }
+                                        )}
+                                        :
                                     </h2>
                                 )}
                                 <div className={s.sectionBody}>

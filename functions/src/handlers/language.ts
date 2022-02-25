@@ -1,6 +1,6 @@
 import { LanguageServiceClient } from '@google-cloud/language';
 import { all, isNil, last, partition, slice, zip } from 'rambdax';
-import { Lang, TextToken } from '../../../src/types';
+import { Lang, PersonToken, TextToken } from '../../../src/types';
 
 const languageClient = new LanguageServiceClient();
 
@@ -65,4 +65,28 @@ export const findLemmas = async (content: string, language: Lang): Promise<TextT
         lemma: token.lemma!,
         pos: [token.text!.beginOffset!, token.text!.beginOffset! + token.text!.content!.length],
     }));
+};
+
+export const findPersons = async (content: string, language: Lang): Promise<PersonToken[]> => {
+    const [result] = await languageClient.analyzeEntities({
+        document: {
+            type: 'PLAIN_TEXT',
+            content,
+            language,
+        },
+        encodingType: 'UTF16',
+    });
+
+    const { entities } = result;
+
+    return (entities || [])
+        .filter(entity => entity.type === 'PERSON' && !entity.metadata?.mid)
+        .filter(entity => !entity.mentions?.every(mention => mention.type === 'PROPER'))
+        .flatMap(
+            (entity): PersonToken[] =>
+                entity.mentions?.map(({ text }) => ({
+                    pos: [text!.beginOffset!, text!.beginOffset! + text!.content!.length],
+                })) || []
+        )
+        .sort((a, b) => a.pos[0] - b.pos[0]);
 };

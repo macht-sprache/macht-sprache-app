@@ -1,0 +1,57 @@
+.parent {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    pointer-events: none;
+    color: transparent;
+}
+
+.originalOverlay {
+    pointer-events: none;
+    color: transparent;
+    visibility: visible;
+    max-height: unset;
+}
+
+.originalHighlight {
+    border-color: var(--orange);
+    border-style: solid;
+    border-width: 0;
+    border-bottom-width: 4px;
+}
+
+.genderHintHovered .originalHighlight {
+    background-color: var(--orange);
+    box-shadow: 0 0 0 2px var(--orange);
+    border-bottom-width: 2px;
+    border-top-width: 2px;
+}
+
+.genderHint {
+    all: unset;
+    max-width: 70px;
+    border-radius: 100em;
+    padding: 0.3em;
+    line-height: 1;
+    font-size: 0.7em;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background-color: var(--orange);
+    user-select: none;
+    cursor: pointer;
+}
+
+.highlightedPhrase {
+    --color: var(--dominantLanguageColor);
+    --backgroundMargin: 0.2rem;
+    all: unset;
+    pointer-events: all;
+    cursor: pointer;
+    background: var(--color);
+    box-shadow: var(--backgroundMargin) 0 0 var(--color), calc(var(--backgroundMargin) * -1) 0 0 var(--color);
+    color: black;
+}

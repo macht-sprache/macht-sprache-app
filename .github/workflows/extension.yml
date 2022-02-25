@@ -1,0 +1,29 @@
+name: extension
+on: [push]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '16'
+            - name: Install app dependencies
+              run: npm ci
+            - name: Install extension dependencies
+              run: npm ci
+              working-directory: ./extension
+            - name: Build extension
+              run: npm run build
+              working-directory: ./extension
+              env:
+                  REACT_APP_FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT }}
+                  REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+                  REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
+                  REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+                  REACT_APP_FIREBASE_REGION: ${{ secrets.FIREBASE_REGION }}
+                  REACT_APP_MAIN_ORIGIN: ${{ secrets.MAIN_ORIGIN }}
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: extension-build
+                  path: extension/bundle

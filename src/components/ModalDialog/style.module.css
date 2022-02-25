@@ -21,9 +21,11 @@
 }
 
 .overlay {
-    padding: 2rem;
-    width: min(600px, 100vw);
+    --padding: 2rem;
     --lang-color: var(--orange);
+    --logo-size: 6rem;
+    padding: var(--padding);
+    width: min(600px, 100vw);
 }
 
 .overlay.wide {
@@ -36,7 +38,7 @@
 
 @media (max-width: 500px) {
     .overlay {
-        padding: 1rem;
+        --padding: 1rem;
     }
 }
 
@@ -58,7 +60,7 @@
     border: none;
     height: 3rem;
     width: 3rem;
-    background: var(--white);
+    background: transparent;
     cursor: pointer;
     border-radius: 50%;
 }
@@ -85,4 +87,11 @@
 
 .closeButton:after {
     transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.logo {
+    width: 100%;
+    height: var(--logo-size);
+    object-fit: contain;
+    margin: calc(var(--padding) * -0.5) 0 calc(var(--padding) * 0.5);
 }

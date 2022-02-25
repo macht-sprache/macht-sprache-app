@@ -419,5 +419,10 @@
     "manifesto": {
         "title": "Manifesto",
         "guidelines": "Guidelines"
+    },
+    "extension": {
+        "result": "result",
+        "result_plural": "results",
+        "noResults": "No results"
     }
 }

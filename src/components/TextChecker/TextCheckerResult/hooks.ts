@@ -8,7 +8,7 @@ type Match<T extends Term | Translation> = {
     ref: DocReference<T>;
 };
 
-type MatchGroup = {
+export type MatchGroup = {
     pos: [number, number];
     termMatches: Match<Term>[];
     translationMatches: Match<Translation>[];
@@ -78,6 +78,14 @@ const getCurrentMatches = <T extends Term | Translation>(
         return acc;
     }, []);
 
+const getAnalyzedTextWithOriginals = (text: string, analyzedText: TextToken[]) =>
+    analyzedText.map(
+        (textToken): TextTokenWithOriginal => ({
+            ...textToken,
+            original: text.substring(textToken.pos[0], textToken.pos[1]),
+        })
+    );
+
 export const useMatchGroups = (
     text: string,
     analyzedText: TextToken[],
@@ -85,12 +93,8 @@ export const useMatchGroups = (
     translationIndex: { [firstLemma: string]: TranslationIndex[] }
 ) =>
     useMemo(() => {
-        const analyzedTextWithOriginals = analyzedText.map(
-            (textToken): TextTokenWithOriginal => ({
-                ...textToken,
-                original: text.substring(textToken.pos[0], textToken.pos[1]),
-            })
-        );
+        const analyzedTextWithOriginals = getAnalyzedTextWithOriginals(text, analyzedText);
+
         return analyzedTextWithOriginals.reduce<MatchGroup[]>((groups, textToken, index) => {
             const termMatches = getCurrentMatches(textToken, termIndex, analyzedTextWithOriginals, index);
             const translationMatches = getCurrentMatches(textToken, translationIndex, analyzedTextWithOriginals, index);
@@ -118,3 +122,15 @@ export const useMatchGroups = (
             return groups;
         }, []);
     }, [analyzedText, termIndex, text, translationIndex]);
+
+export const useMatches = <T extends Term | Translation>(
+    text: string,
+    analyzedText: TextToken[],
+    indexGrouped: { [firstLemma: string]: Index<T>[] }
+) =>
+    useMemo(() => {
+        const analyzedTextWithOriginals = getAnalyzedTextWithOriginals(text, analyzedText);
+        return analyzedTextWithOriginals.flatMap((textToken, index) =>
+            getCurrentMatches(textToken, indexGrouped, analyzedTextWithOriginals, index)
+        );
+    }, [analyzedText, indexGrouped, text]);

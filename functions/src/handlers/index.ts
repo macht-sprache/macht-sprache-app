@@ -18,39 +18,59 @@ import {
 } from '../../../src/types';
 import { convertRef, db, functions, HttpsError, logger, verifyUser, WithoutId } from '../firebase';
 import { getBook, searchBooks } from './books';
-import { findLemmas, findTermMatches } from './language';
+import { findLemmas, findPersons, findTermMatches } from './language';
 import { getMovie, searchMovies } from './movies';
 import { getWebPage, searchWebPage } from './webpages';
 
 const rateLimiterAnalyze = new RateLimiterMemory({
-    points: 2,
-    duration: 20,
+    points: 10,
+    duration: 40,
 });
+
+type AnalyzeInput = {
+    text: string;
+    lang: Lang;
+};
+
+const validateAnalyzeInput = ({ text, lang }: AnalyzeInput) => {
+    if (typeof text !== 'string') {
+        throw new HttpsError('invalid-argument', 'no text provided');
+    }
+
+    if (text.length > TEXT_CHECKER_MAX_LENGTH) {
+        throw new HttpsError('invalid-argument', 'text too long');
+    }
+
+    if (![langA, langB].includes(lang)) {
+        throw new HttpsError('invalid-argument', 'unsupported lang');
+    }
+};
+
+const handleRateLimitError = (error: unknown) => {
+    if (error instanceof RateLimiterRes) {
+        logger.warn('hit rate limiting', error);
+        throw new HttpsError('resource-exhausted', 'too many requests');
+    }
+};
 
 export const analyzeText = functions
     .runWith({ maxInstances: 1 })
-    .https.onCall(async ({ text, lang }: { text: string; lang: Lang }, context) => {
-        if (typeof text !== 'string') {
-            throw new HttpsError('invalid-argument', 'no text provided');
-        }
+    .https.onCall(async ({ text, lang }: AnalyzeInput, context) => {
+        validateAnalyzeInput({ text, lang });
 
-        if (text.length > TEXT_CHECKER_MAX_LENGTH) {
-            throw new HttpsError('invalid-argument', 'text too long');
-        }
+        return rateLimiterAnalyze
+            .consume(context.rawRequest.ip)
+            .then(() => findLemmas(text, lang), handleRateLimitError);
+    });
 
-        if (![langA, langB].includes(lang)) {
-            throw new HttpsError('invalid-argument', 'unsupported lang');
-        }
+export const analyzeTextForPersons = functions
+    .runWith({ maxInstances: 1 })
+    .https.onCall(async ({ text, lang }: AnalyzeInput, context) => {
+        validateAnalyzeInput({ text, lang });
 
-        return rateLimiterAnalyze.consume(context.rawRequest.ip).then(
-            () => findLemmas(text, lang),
-            error => {
-                if (error instanceof RateLimiterRes) {
-                    logger.warn('hit rate limiting', error);
-                    throw new HttpsError('resource-exhausted', 'too many requests');
-                }
-            }
-        );
+        return rateLimiterAnalyze
+            .consume(context.rawRequest.ip)
+            .then(() => findPersons(text, lang), handleRateLimitError);
     });
 
 export const findBooks = functions.https.onCall(async ({ query, lang }: { query: string; lang: Lang }, context) => {

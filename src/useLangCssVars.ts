@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
+import { CSS_CONTEXT_CLASS_NAME } from './constants';
 import { langA, langB } from './languages';
 import { Lang } from './types';
 
 const DOMINANT_LANG_CLASS_NAME = 'dominantLanguageColor';
 
 const style = `
-[lang=${langA}] {
+.${CSS_CONTEXT_CLASS_NAME} [lang=${langA}] {
     --lang-color: var(--colorLangA);
 }
-[lang=${langB}] {
+.${CSS_CONTEXT_CLASS_NAME} [lang=${langB}] {
     --lang-color: var(--colorLangB);
 }
-.${DOMINANT_LANG_CLASS_NAME}-${langA} {
+.${CSS_CONTEXT_CLASS_NAME} .${DOMINANT_LANG_CLASS_NAME}-${langA} {
     --dominantLanguageColor: var(--colorLangA);
 }
-.${DOMINANT_LANG_CLASS_NAME}-${langB} {
+.${CSS_CONTEXT_CLASS_NAME} .${DOMINANT_LANG_CLASS_NAME}-${langB} {
     --dominantLanguageColor: var(--colorLangB);
 }
 `;

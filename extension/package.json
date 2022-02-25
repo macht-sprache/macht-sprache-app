@@ -1,0 +1,22 @@
+{
+    "name": "extension",
+    "scripts": {
+        "start": "NODE_ENV=development webpack --watch",
+        "build": "NODE_ENV=production webpack"
+    },
+    "private": true,
+    "devDependencies": {
+        "@svgr/webpack": "6.2.0",
+        "@types/mini-css-extract-plugin": "2.4.0",
+        "clean-webpack-plugin": "4.0.0",
+        "css-loader": "6.5.1",
+        "dotenv": "11.0.0",
+        "file-loader": "6.2.0",
+        "mini-css-extract-plugin": "2.4.6",
+        "style-loader": "3.3.1",
+        "ts-loader": "9.2.6",
+        "ts-node": "10.4.0",
+        "webpack": "5.65.0",
+        "webpack-cli": "4.9.1"
+    }
+}

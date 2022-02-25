@@ -1,0 +1,41 @@
+.button {
+    all: unset;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    display: inline-block;
+}
+
+.button:before {
+    content: '';
+    position: absolute;
+    top: 0.3em;
+    left: 0.3em;
+    height: 2.4em;
+    width: 2.4em;
+    border-radius: 50%;
+    background-image: url('./logo_without_text.svg');
+    background-repeat: no-repeat;
+    background-size: 2em;
+    background-position: 0.2em 0.2em;
+}
+
+.loading {
+    animation-name: load;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(8, start);
+}
+
+@keyframes load {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.noResult {
+    filter: saturate(0);
+}
