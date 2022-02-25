@@ -30,9 +30,10 @@ export const useConvertEnv = (env: TranslatorEnvironment): CheckerInput | null =
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useMemo(() => (isValidCheckerInput(env) ? env : null), [JSON.stringify(env)]);
 
-type State<T> = { loading: boolean; result?: T };
+export type AnalyzeResult<T> = { tokens: T; lang: Lang; text: string };
+type State<T> = { loading: boolean; result?: AnalyzeResult<T> };
 
-export const useAnalyzedText = (lang: Lang, text: string) => {
+export const useTextTokens = (lang: Lang, text: string) => {
     return useAnalyzeCall(lang, text, analyzeText);
 };
 
@@ -57,9 +58,9 @@ const useAnalyzeCall = <T>(lang: Lang, text: string, fn?: (text: string, lang: L
         const cacheKey = [text, lang].join('-');
         const cacheMap = cacheMapRef.current;
         const cachedPromise = cacheMap.get(cacheKey);
-        const handleSuccess = (result: T) => {
+        const handleSuccess = (tokens: T) => {
             if (isCurrent) {
-                updateState({ loading: false, result });
+                updateState({ loading: false, result: { tokens, lang, text } });
             }
         };
         const handleFail = () => {

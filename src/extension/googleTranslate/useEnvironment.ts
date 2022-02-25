@@ -1,7 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks';
-import { PersonToken } from '../../types';
+import { Lang, PersonToken, Token } from '../../types';
 import { useRenderButton } from './button';
 import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { useRenderGenderHint } from './genderHint';
@@ -20,16 +20,23 @@ const INITIAL_ENV = {
     },
 };
 
-const canUpdateOverlay = (
+const getUpdateableResult = <T extends Token>(
     env: { text?: string; lang?: string },
-    result?: { text: string; lang: string; tokens: MatchGroup[] | PersonToken[] }
-) => {
-    if (!result) {
-        return false;
+    result?: { text: string; lang: Lang; tokens: T[] }
+): Partial<{ text: string; lang: Lang; tokens: T[] }> => {
+    if (!result || env.lang !== result.lang) {
+        return {};
     }
-    const { tokens } = result;
-    const textToCheck = result.text.substring(0, tokens.length && tokens[tokens.length - 1].pos[1]);
-    return env.lang === result.lang && textToCheck && env.text?.startsWith(textToCheck);
+
+    return {
+        ...result,
+        tokens: result.tokens.filter(token => {
+            const [start, end] = token.pos;
+            const envMatch = env.text?.substring(start, end);
+            const resultMatch = result.text.substring(start, end);
+            return envMatch === resultMatch;
+        }),
+    };
 };
 
 const useStableElements = () => {
@@ -58,19 +65,15 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
 
     const render = useCallback(
         (newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
-            const canUpdateTranslationOverlay = canUpdateOverlay(newEnv.translation, newResult.translation);
-            const canUpdateOriginalOverlay = canUpdateOverlay(newEnv.original, newResult.original);
+            const translationResult = getUpdateableResult(newEnv.translation, newResult.translation);
+            const originalResult = getUpdateableResult(newEnv.original, newResult.original);
 
-            renderGenderHint(canUpdateOriginalOverlay ? { tokens: newResult.original?.tokens, onOpenGenderModal } : {});
-            renderOriginalOverlay({
-                ...(canUpdateOriginalOverlay ? newResult.original : {}),
-            });
-            renderTranslationOverlay(
-                canUpdateTranslationOverlay ? { ...newResult.translation, openModal: openModalRef.current } : {}
-            );
+            renderGenderHint({ ...originalResult, onOpenGenderModal });
+            renderOriginalOverlay(originalResult);
+            renderTranslationOverlay({ ...translationResult, openModal: openModalRef.current });
             renderButton({
                 status: newResult.status,
-                results: newResult.translation?.tokens.length ?? 0,
+                results: translationResult.tokens?.length ?? 0,
             });
         },
         [onOpenGenderModal, renderButton, renderGenderHint, renderOriginalOverlay, renderTranslationOverlay]
