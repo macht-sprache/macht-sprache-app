@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { auth } from './firebase';
 import { useAppContext } from './hooks/appContext';
+import { useOptionalFirebaseAuth } from './hooks/auth';
 import { collections } from './hooks/data';
 import { langA, langB } from './languages';
 import { Lang } from './types';
@@ -15,6 +15,7 @@ type LangContextValue = { lang: Lang; setLang: (newLang: Lang) => void };
 const langContext = createContext<LangContextValue>({ lang: langA, setLang: () => {} });
 
 const useLangContext = (): LangContextValue => {
+    const auth = useOptionalFirebaseAuth();
     const { i18n } = useTranslation();
     const [i18nLang, set18nLang] = useState(i18n.language);
     const { user, userSettings } = useAppContext();
@@ -34,8 +35,10 @@ const useLangContext = (): LangContextValue => {
 
     useEffect(() => {
         document.documentElement.setAttribute('lang', lang);
-        auth.languageCode = lang;
-    }, [lang]);
+        if (auth) {
+            auth.languageCode = lang;
+        }
+    }, [auth, lang]);
 
     const setLang = useCallback(
         (newLang: Lang) => {

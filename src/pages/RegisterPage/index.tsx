@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { Auth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { FormEventHandler, useCallback, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link, Redirect } from 'react-router-dom';
@@ -10,9 +10,9 @@ import InputContainer from '../../components/Form/InputContainer';
 import { SimpleHeader } from '../../components/Header';
 import { SingleColumn } from '../../components/Layout/Columns';
 import { DISPLAY_NAME_REGEX } from '../../constants';
-import { auth } from '../../firebase';
 import { isDisplayNameAvailable, postRegistrationHandler, sendEmailVerification } from '../../functions';
 import { useUser } from '../../hooks/appContext';
+import { useFirebaseAuth } from '../../hooks/auth';
 import { addContinueParam, useContinuePath } from '../../hooks/location';
 import { useRequestState } from '../../hooks/useRequestState';
 import { IMPRINT, PRIVACY, REGISTER_POST } from '../../routes';
@@ -21,6 +21,7 @@ import { useLang } from '../../useLang';
 import s from './style.module.css';
 
 const signUp = async (
+    auth: Auth,
     lang: Lang,
     displayName: string,
     newsletter: boolean,
@@ -89,6 +90,7 @@ const useRegistrationErrorLabels = (
 };
 
 export default function RegisterPage() {
+    const auth = useFirebaseAuth();
     const user = useUser();
     const [lang] = useLang();
     const { t } = useTranslation();
@@ -115,7 +117,7 @@ export default function RegisterPage() {
     const onSubmit: FormEventHandler = event => {
         event.preventDefault();
         setRegistrationState('IN_PROGRESS');
-        signUp(lang, displayName, newsletter, email, password, continuePath)
+        signUp(auth, lang, displayName, newsletter, email, password, continuePath)
             .then(() => setRegistrationState('DONE'))
             .catch(error => {
                 setRegistrationState('ERROR', error);

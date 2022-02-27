@@ -1,23 +1,24 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, Link } from 'react-router-dom';
-import { auth } from '../../firebase';
 import { useUser } from '../../hooks/appContext';
+import { useFirebaseAuth } from '../../hooks/auth';
 import { useAddContinueParam } from '../../hooks/location';
 import { langA, langB } from '../../languages';
-import LinkButton from '../LinkButton';
 import { LOGIN, REGISTER, USER } from '../../routes';
 import { useLang } from '../../useLang';
 import { useLaunched } from '../../useLaunched';
+import LinkButton from '../LinkButton';
 
 export function TopMenu() {
+    const auth = useFirebaseAuth();
     const user = useUser();
     const { t } = useTranslation();
     const launched = useLaunched();
     const addContinueParam = useAddContinueParam();
     const logout = useCallback(() => {
         auth.signOut();
-    }, []);
+    }, [auth]);
 
     return (
         <>

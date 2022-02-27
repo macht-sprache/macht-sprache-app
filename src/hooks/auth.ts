@@ -1,7 +1,6 @@
-import { signInWithEmailAndPassword, User } from 'firebase/auth';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Auth, signInWithEmailAndPassword, User } from 'firebase/auth';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { auth } from '../firebase';
 import { postVerifyHandler } from '../functions';
 import { HOME, REGISTER_POST } from '../routes';
 import { useAppContext } from './appContext';
@@ -14,6 +13,7 @@ export type AuthHandlerParams = {
 };
 
 export const useLogin = (continuePath: string = HOME, isVerification = false) => {
+    const auth = useFirebaseAuth();
     const { user, authUser, accountState } = useAppContext();
     const history = useHistory();
     const [loginUser, setLoginUser] = useState<User>();
@@ -33,7 +33,7 @@ export const useLogin = (continuePath: string = HOME, isVerification = false) =>
                 error => setLoginState('ERROR', error)
             );
         },
-        [isVerification, setLoginState]
+        [auth, isVerification, setLoginState]
     );
 
     useEffect(() => {
@@ -66,3 +66,19 @@ export const useAuthHandlerParams = (
         return { actionCode, continueUrl };
     }, [location.search, mode]);
 };
+
+const authContext = createContext<Auth | undefined>(undefined);
+
+export const AuthProvider = authContext.Provider;
+
+export const useFirebaseAuth = () => {
+    const auth = useContext(authContext);
+
+    if (!auth) {
+        throw new Error('used outside AuthContext');
+    }
+
+    return auth;
+};
+
+export const useOptionalFirebaseAuth = () => useContext(authContext);

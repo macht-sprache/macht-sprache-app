@@ -1,10 +1,14 @@
+import { getAuth } from '@firebase/auth';
+import { connectAuthEmulator } from 'firebase/auth';
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Redirect, Route, RouteProps, Switch } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import PageLoadingState from './components/PageLoadingState';
 import { PageTitleProvider } from './components/PageTitle';
+import { app } from './firebase';
 import { AppContextProvider, useUser, useUserProperties } from './hooks/appContext';
+import { AuthProvider } from './hooks/auth';
 import { useAddContinueParam } from './hooks/location';
 import { TranslationProvider } from './i18n/config';
 import AddTermPage from './pages/AddTermPage';
@@ -35,17 +39,24 @@ import { LangProvider } from './useLang';
 import { useLangCssVars } from './useLangCssVars';
 import { useLaunched } from './useLaunched';
 
+const auth = getAuth(app);
+if (process.env.REACT_APP_AUTH_EMULATOR_PORT) {
+    connectAuthEmulator(auth, `http://${window.location.hostname}:${process.env.REACT_APP_AUTH_EMULATOR_PORT}`);
+}
+
 function App() {
     useLangCssVars();
 
     return (
-        <AppContextProvider>
-            <TranslationProvider>
-                <LangProvider>
-                    <AppRouter />
-                </LangProvider>
-            </TranslationProvider>
-        </AppContextProvider>
+        <AuthProvider value={auth}>
+            <AppContextProvider>
+                <TranslationProvider>
+                    <LangProvider>
+                        <AppRouter />
+                    </LangProvider>
+                </TranslationProvider>
+            </AppContextProvider>
+        </AuthProvider>
     );
 }
 

@@ -1,8 +1,8 @@
 import { onAuthStateChanged, User as AuthUser } from 'firebase/auth';
 import type firebase from 'firebase/compat';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { auth } from '../firebase';
 import { DocReference, User, UserProperties, UserSettings } from '../types';
+import { useFirebaseAuth } from './auth';
 import { collections } from './data';
 
 export type AccountState = 'ANONYMOUS' | 'ACTIVE' | 'NEEDS_VERIFICATION' | 'DISABLED';
@@ -75,6 +75,7 @@ export const AppContextProviderExtension: React.FC = ({ children }) => {
 };
 
 function useAuthUser() {
+    const auth = useFirebaseAuth();
     const [{ authUser, loading, error }, setState] = useState<{
         authUser?: AuthUser;
         loading: boolean;
@@ -93,7 +94,7 @@ function useAuthUser() {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [auth]);
     return [authUser, loading, error] as const;
 }
 

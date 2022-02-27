@@ -8,9 +8,8 @@ import { Input } from '../../components/Form/Input';
 import InputContainer from '../../components/Form/InputContainer';
 import { SimpleHeader } from '../../components/Header';
 import { SingleColumn } from '../../components/Layout/Columns';
-import { auth } from '../../firebase';
 import { sendPasswordReset } from '../../functions';
-import { AuthHandlerParams, useAuthHandlerParams, useLogin } from '../../hooks/auth';
+import { AuthHandlerParams, useAuthHandlerParams, useFirebaseAuth, useLogin } from '../../hooks/auth';
 import { useContinuePath } from '../../hooks/location';
 import { useRequestState } from '../../hooks/useRequestState';
 import { FORGOT_PASSWORD } from '../../routes';
@@ -27,6 +26,7 @@ export default function ForgotPasswordPage() {
 }
 
 function ResetPassword({ actionCode, continueUrl }: AuthHandlerParams) {
+    const auth = useFirebaseAuth();
     const { t } = useTranslation();
     const [email, setEmail] = useState<string>();
     const [error, setError] = useState(false);
@@ -36,7 +36,7 @@ function ResetPassword({ actionCode, continueUrl }: AuthHandlerParams) {
             setError(true);
             console.error(error);
         });
-    }, [actionCode]);
+    }, [actionCode, auth]);
 
     if (error) {
         return (
@@ -61,6 +61,7 @@ function ResetPassword({ actionCode, continueUrl }: AuthHandlerParams) {
 }
 
 function ResetPasswordForm({ email, actionCode, continueUrl }: { email: string } & AuthHandlerParams) {
+    const auth = useFirebaseAuth();
     const { t } = useTranslation();
     const [password, setPassword] = useState('');
     const [requestState, setRequestState] = useRequestState();

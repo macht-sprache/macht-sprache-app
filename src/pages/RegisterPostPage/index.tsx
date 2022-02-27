@@ -5,10 +5,9 @@ import { Redirect } from 'react-router-dom';
 import Button, { ButtonContainer, ButtonLink } from '../../components/Form/Button';
 import { SimpleHeader } from '../../components/Header';
 import { SingleColumn } from '../../components/Layout/Columns';
-import { auth } from '../../firebase';
 import { postVerifyHandler, sendEmailVerification } from '../../functions';
 import { AccountState, useAppContext } from '../../hooks/appContext';
-import { useAuthHandlerParams } from '../../hooks/auth';
+import { useAuthHandlerParams, useFirebaseAuth } from '../../hooks/auth';
 import { addContinueParam, useContinuePath } from '../../hooks/location';
 import { HOME, LOGIN, REGISTER_POST } from '../../routes';
 import { User } from '../../types';
@@ -47,6 +46,7 @@ function VerifyEmail({
     actionCode: string;
     continueUrl: string | null;
 }) {
+    const auth = useFirebaseAuth();
     const { t } = useTranslation();
     const [verifyState, setVerifyState] = useState<'VERIFYING' | 'VERIFIED' | 'ERROR'>('VERIFYING');
 
@@ -60,7 +60,7 @@ function VerifyEmail({
                 console.error(error);
             }
         );
-    }, [actionCode]);
+    }, [actionCode, auth]);
 
     useEffect(() => {
         if (verifyState === 'VERIFIED' && authUser) {
