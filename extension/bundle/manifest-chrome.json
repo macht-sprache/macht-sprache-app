@@ -1,0 +1,9 @@
+{
+    "manifest_version": 3,
+    "web_accessible_resources": [
+        {
+            "matches": ["https://translate.google.com/*", "https://translate.google.de/*"],
+            "resources": ["dist/*"]
+        }
+    ]
+}
