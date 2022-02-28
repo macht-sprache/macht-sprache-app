@@ -25,5 +25,9 @@ jobs:
                   REACT_APP_MAIN_ORIGIN: ${{ secrets.MAIN_ORIGIN }}
             - uses: actions/upload-artifact@v2
               with:
-                  name: extension-build
-                  path: extension/bundle
+                  name: extension-build-chrome
+                  path: extension/bundle-chrome
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: extension-build-firefox
+                  path: extension/bundle-firefox
