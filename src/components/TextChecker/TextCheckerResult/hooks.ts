@@ -1,4 +1,4 @@
-import { uniq } from 'lodash/fp';
+import uniq from 'lodash/uniq';
 import { useMemo } from 'react';
 import { GetList } from '../../../hooks/fetch';
 import { DocReference, Index, Lang, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../../types';

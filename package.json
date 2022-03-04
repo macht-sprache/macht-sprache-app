@@ -71,6 +71,14 @@
             "lodash/import-scope": [
                 2,
                 "method"
+            ],
+            "no-restricted-imports": [
+                "error",
+                {
+                    "paths": [
+                        "lodash/fp"
+                    ]
+                }
             ]
         },
         "overrides": [
