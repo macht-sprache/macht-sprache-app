@@ -1,5 +1,5 @@
 {
     "manifest_version": 2,
-    "web_accessible_resources": ["dist/*"],
+    "web_accessible_resources": ["dist/*.png", "dist/*.svg", "dist/*.map"],
     "permissions": ["https://*.googleapis.com/*", "https://europe-west3-macht-sprache.cloudfunctions.net/*"]
 }

@@ -3,7 +3,8 @@
     "web_accessible_resources": [
         {
             "matches": ["https://translate.google.com/*", "https://translate.google.de/*"],
-            "resources": ["dist/*"]
+            "resources": ["dist/*.png", "dist/*.svg", "dist/*.map"],
+            "use_dynamic_url": true
         }
     ]
 }
