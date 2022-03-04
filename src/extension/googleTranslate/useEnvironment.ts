@@ -23,12 +23,13 @@ const getUpdateableResult = <T extends Token>(
     env: { text?: string; lang?: string },
     result?: { text: string; lang: Lang; tokens: T[] }
 ): Partial<{ text: string; lang: Lang; tokens: T[] }> => {
-    if (!result || env.lang !== result.lang) {
+    if (!result || !env.text || env.lang !== result.lang) {
         return {};
     }
 
     return {
-        ...result,
+        text: env.text,
+        lang: result.lang,
         tokens: result.tokens.filter(token => {
             const [start, end] = token.pos;
             const envMatch = env.text?.substring(start, end);

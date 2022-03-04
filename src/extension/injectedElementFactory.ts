@@ -6,6 +6,7 @@ type Config<T extends {}, El extends HTMLElement> = {
     attachElement: (el: El, stableParent: HTMLElement) => void;
     render: (input: T, el: El, stableParent: HTMLElement) => void;
     validateInput: (input: Partial<T>) => T | null;
+    destroy?: () => void;
 };
 
 export function injectedElementFactory<T extends {}, El extends HTMLElement = HTMLElement>(config: Config<T, El>) {
@@ -24,6 +25,7 @@ export function injectedElementFactory<T extends {}, El extends HTMLElement = HT
     const destroy = () => {
         observer.disconnect();
         el?.remove();
+        config.destroy?.();
         el = null;
     };
 
