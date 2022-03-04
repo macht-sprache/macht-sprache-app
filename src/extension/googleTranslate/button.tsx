@@ -15,7 +15,7 @@ const getButton = (stableParent: HTMLElement) =>
             const buttonRow = findLast(container?.children, child => !!child.getAttribute('jsaction'));
             buttonRow?.append(el);
         },
-        validateInput: ({ status, results }) => (status && results && results > 0 ? { status, results } : null),
+        validateInput: ({ status, results }) => (status ? { status, results: results ?? 0 } : null),
         render: ({ status, results }, el) => {
             el.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} results={results} />);
         },

@@ -1,13 +1,12 @@
 import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks';
-import { Lang, PersonToken, Token } from '../../types';
+import { Lang, Token } from '../../types';
+import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 import { useRenderButton } from './button';
 import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { useRenderGenderHint } from './genderHint';
 import { useRenderOriginalOverlay } from './originalOverlay';
 import { useRenderTranslationOverlay } from './translationOverlay';
-import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 
 const INITIAL_ENV = {
     translation: {

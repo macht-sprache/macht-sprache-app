@@ -16,7 +16,7 @@ import { GetList, useCollection, useDocuments } from '../../hooks/fetch';
 import { Lang, PersonToken, Term, TermIndex, TextToken, Translation, TranslationIndex } from '../../types';
 import { GenderOverlay } from '../GenderOverlay';
 import styles from '../style.module.css';
-import { OnUpdate, TranslatorEnvironment } from '../types';
+import { OnUpdate, Status, TranslatorEnvironment } from '../types';
 import { AnalyzeResult, CheckerInput, useConvertEnv, usePersonTokens, useTextTokens } from './hooks';
 
 type Props = {
@@ -33,6 +33,7 @@ type InnerProps = {
     getHiddenTerms: GetList<Term>;
     getTermIndex: GetList<TermIndex>;
     getTranslationIndex: GetList<TranslationIndex>;
+    status: Status;
     onUpdate: OnUpdate;
 };
 
@@ -73,7 +74,9 @@ function Loader({
     const loading = loadingTranslationResult || loadingOriginalResult || loadingPersonResult;
 
     useEffect(() => {
-        onUpdate({ status: loading ? 'loading' : 'idle' });
+        if (loading) {
+            onUpdate({ status: 'loading' });
+        }
     }, [loading, onUpdate]);
 
     return (
@@ -85,6 +88,7 @@ function Loader({
                 getHiddenTerms={getHiddenTerms}
                 getTermIndex={getTermIndex}
                 getTranslationIndex={getTranslationIndex}
+                status={loading ? 'loading' : 'idle'}
                 onUpdate={onUpdate}
             />
         </Suspense>
@@ -98,6 +102,7 @@ function Inner({
     translationResult,
     originalResult,
     personResult,
+    status,
     onUpdate,
 }: InnerProps) {
     const [showModal, setShowModal] = useState<number>();
@@ -115,13 +120,13 @@ function Inner({
     useEffect(() => {
         onUpdate(
             {
-                status: 'idle',
+                status,
                 translation: { ...translationResult, tokens: matchGroups },
                 original: personResult,
             },
             setShowModal
         );
-    }, [matchGroups, onUpdate, personResult, translationResult]);
+    }, [matchGroups, onUpdate, personResult, status, translationResult]);
 
     if (showModalMatch) {
         const translationsSortFn = (entity: Translation) => {
