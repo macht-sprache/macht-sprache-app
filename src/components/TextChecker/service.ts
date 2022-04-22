@@ -12,7 +12,7 @@ export const getLongestEntity = <Entity extends Term | Translation>(terms: Entit
 export const sortEntities = <Entity extends Term | Translation>(
     entities: Entity[],
     extraSortFn?: (entity: Entity) => number
-) => orderBy(entities, entity => [entity.value.length, extraSortFn], ['desc', 'asc']);
+) => orderBy(entities, [(entity: Entity) => entity.value.length, extraSortFn], ['desc', 'asc']) as Entity[];
 
 export const useLangIdentifier = () => {
     const [lang] = useLang();
