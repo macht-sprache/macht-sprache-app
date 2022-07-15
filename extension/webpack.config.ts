@@ -33,6 +33,7 @@ const getEnvVars = () => {
 const config: webpack.Configuration = {
     entry: {
         'content-google-translate': '../src/extension/googleTranslate.tsx',
+        'content-deepl': '../src/extension/deepl.tsx',
     },
     output: {
         path: path.resolve(__dirname, 'bundle', 'dist'),

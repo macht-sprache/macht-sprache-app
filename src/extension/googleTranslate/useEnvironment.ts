@@ -1,43 +1,12 @@
 import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Lang, Token } from '../../types';
+import { getUpdateableResult, INITIAL_ENV } from '../common';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 import { useRenderButton } from './button';
 import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { useRenderGenderHint } from './genderHint';
 import { useRenderOriginalOverlay } from './originalOverlay';
 import { useRenderTranslationOverlay } from './translationOverlay';
-
-const INITIAL_ENV = {
-    translation: {
-        lang: '',
-        text: '',
-    },
-    original: {
-        lang: '',
-        text: '',
-    },
-};
-
-const getUpdateableResult = <T extends Token>(
-    env: { text?: string; lang?: string },
-    result?: { text: string; lang: Lang; tokens: T[] }
-): Partial<{ text: string; lang: Lang; tokens: T[] }> => {
-    if (!result || !env.text || env.lang !== result.lang) {
-        return {};
-    }
-
-    return {
-        text: env.text,
-        lang: result.lang,
-        tokens: result.tokens.filter(token => {
-            const [start, end] = token.pos;
-            const envMatch = env.text?.substring(start, end);
-            const resultMatch = result.text.substring(start, end);
-            return envMatch === resultMatch;
-        }),
-    };
-};
 
 const useStableElements = () => {
     return useMemo(() => {
