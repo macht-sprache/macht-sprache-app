@@ -7,9 +7,10 @@ import s from './style.module.css';
 interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
     status?: Status;
     results: number;
+    size?: 'google' | 'deepl';
 }
 
-export function Button({ className, status, results, ...props }: Props) {
+export function Button({ className, status, results, size = 'google', ...props }: Props) {
     const { t } = useTranslation();
 
     if (status === 'inactive') {
@@ -18,7 +19,11 @@ export function Button({ className, status, results, ...props }: Props) {
 
     return (
         <span
-            className={clsx(s.button, className, { [s.loading]: status === 'loading', [s.noResult]: !results })}
+            className={clsx(s.button, className, {
+                [s.loading]: status === 'loading',
+                [s.noResult]: !results,
+                [s.deepl]: (size = 'deepl'),
+            })}
             aria-label="macht.sprache."
             title={results ? `${results} ${t('extension.result', { count: results })}` : t('extension.noResults')}
             {...props}
