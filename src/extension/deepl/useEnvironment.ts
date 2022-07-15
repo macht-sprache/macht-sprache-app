@@ -2,11 +2,12 @@ import isEqual from 'lodash/isEqual';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getUpdateableResult, INITIAL_ENV } from '../common';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
+import { useRenderButton } from './button';
 
 const useStableElements = () => {
     return useMemo(() => {
-        const originalSide = document.querySelector('[dl-test="translator-source"]');
-        const translatedSide = document.querySelector('[dl-test="translator-target"]');
+        const originalSide = document.querySelector<HTMLElement>('[dl-test="translator-source"]');
+        const translatedSide = document.querySelector<HTMLElement>('[dl-test="translator-target"]');
         return {
             originalSide: originalSide ?? undefined,
             translatedSide: translatedSide ?? undefined,
@@ -22,12 +23,22 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
     const openModalRef = useRef<(startPos: number) => void>(() => {});
     const envRef = useRef<TranslatorEnvironment>(INITIAL_ENV);
 
-    const render = useCallback((newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
-        const translationResult = getUpdateableResult(newEnv.translation, newResult.translation);
-        const originalResult = getUpdateableResult(newEnv.original, newResult.original);
+    const renderButton = useRenderButton(translatedSide);
 
-        console.log('would render', translationResult, originalResult);
-    }, []);
+    const render = useCallback(
+        (newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
+            const translationResult = getUpdateableResult(newEnv.translation, newResult.translation);
+            const originalResult = getUpdateableResult(newEnv.original, newResult.original);
+
+            renderButton({
+                status: newResult.status,
+                results: translationResult.tokens?.length ?? 0,
+            });
+
+            console.log('would render', translationResult, originalResult);
+        },
+        [renderButton]
+    );
 
     const onUpdate: OnUpdate = useCallback(
         (result, openModal) => {
