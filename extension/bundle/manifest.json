@@ -10,6 +10,10 @@
         {
             "matches": ["https://translate.google.com/*", "https://translate.google.de/*"],
             "js": ["./dist/content-google-translate.js"]
+        },
+        {
+            "matches": ["https://www.deepl.com/*"],
+            "js": ["./dist/content-deepl.js"]
         }
     ]
 }
