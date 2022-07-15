@@ -20,6 +20,20 @@
     background-position: 0.2em 0.2em;
 }
 
+.deepl {
+    width: 2em;
+    height: 2em;
+}
+
+.deepl:before {
+    top: 0em;
+    left: 0em;
+    height: 2em;
+    width: 2em;
+    background-size: 1.6em;
+    background-position: 0.2em 0.2em;
+}
+
 .loading {
     animation-name: load;
     animation-duration: 2s;
