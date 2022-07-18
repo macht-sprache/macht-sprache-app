@@ -10,6 +10,20 @@
     visibility: visible !important;
 }
 
+.originalOverlay {
+    pointer-events: none;
+    color: transparent !important;
+    visibility: visible !important;
+    position: absolute !important;
+}
+
+.originalHighlight {
+    border-color: var(--orange);
+    border-style: solid;
+    border-width: 0;
+    border-bottom-width: 4px;
+}
+
 .highlightedPhrase {
     --color: var(--dominantLanguageColor);
     --backgroundMargin: 0.2rem;
