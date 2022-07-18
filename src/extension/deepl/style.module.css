@@ -1,0 +1,22 @@
+.parent {
+    position: relative;
+}
+
+.overlay {
+    position: absolute !important;
+    top: 0 !important;
+    pointer-events: none;
+    color: transparent !important;
+    visibility: visible !important;
+}
+
+.highlightedPhrase {
+    --color: var(--dominantLanguageColor);
+    --backgroundMargin: 0.2rem;
+    all: unset;
+    pointer-events: all;
+    cursor: pointer;
+    background: var(--color);
+    box-shadow: var(--backgroundMargin) 0 0 var(--color), calc(var(--backgroundMargin) * -1) 0 0 var(--color);
+    color: black;
+}
