@@ -1,10 +1,9 @@
-import findLast from 'lodash/findLast';
 import find from 'lodash/find';
-import { PersonToken } from '../../types';
-import s from './style.module.css';
+import findLast from 'lodash/findLast';
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
-import { injectedElementFactory } from '../injectedElementFactory';
-import { useEffect, useMemo } from 'react';
+import { PersonToken } from '../../types';
+import { getUseRenderElement, injectedElementFactory } from '../injectedElementFactory';
+import s from './style.module.css';
 
 const genderHintFactory = (stableParent: HTMLElement) =>
     injectedElementFactory<{ tokens: PersonToken[]; onOpenGenderModal: () => void }>({
@@ -29,16 +28,4 @@ const genderHintFactory = (stableParent: HTMLElement) =>
             tokens && tokens.length && onOpenGenderModal ? { tokens, onOpenGenderModal } : null,
     });
 
-export function useRenderGenderHint(stableParent?: HTMLElement) {
-    const { render, destroy } = useMemo(() => {
-        if (stableParent) {
-            return genderHintFactory(stableParent);
-        } else {
-            return { render: () => {}, destroy: () => {} };
-        }
-    }, [stableParent]);
-
-    useEffect(() => destroy, [destroy]);
-
-    return render;
-}
+export const useRenderGenderHint = getUseRenderElement(genderHintFactory);

@@ -1,8 +1,7 @@
-import { useEffect, useMemo } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { PersonToken } from '../../types';
-import { injectedElementFactory } from '../injectedElementFactory';
+import { getUseRenderElement, injectedElementFactory } from '../injectedElementFactory';
 import { renderTokenChildren } from './overlay';
 import s from './style.module.css';
 
@@ -46,19 +45,7 @@ const getOriginalOverlay = (stableParent: HTMLElement) => {
     });
 };
 
-export function useRenderOriginalOverlay(parent?: HTMLElement) {
-    const { render, destroy } = useMemo(() => {
-        if (parent) {
-            return getOriginalOverlay(parent);
-        } else {
-            return { render: () => {}, destroy: () => {} };
-        }
-    }, [parent]);
-
-    useEffect(() => destroy, [destroy]);
-
-    return render;
-}
+export const useRenderOriginalOverlay = getUseRenderElement(getOriginalOverlay);
 
 function OriginalOverlay({ text, tokens }: { text: string; tokens: PersonToken[] }) {
     return (

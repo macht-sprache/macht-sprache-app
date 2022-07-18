@@ -1,10 +1,9 @@
-import { useEffect, useMemo } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { MatchGroup } from '../../components/TextChecker/TextCheckerResult/hooks';
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { Lang } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
-import { injectedElementFactory } from '../injectedElementFactory';
+import { getUseRenderElement, injectedElementFactory } from '../injectedElementFactory';
 import { renderTokenChildren } from './overlay';
 import s from './style.module.css';
 
@@ -42,19 +41,7 @@ const getTranslationOverlay = (stableParent: HTMLElement) =>
         },
     });
 
-export function useRenderTranslationOverlay(parent?: HTMLElement) {
-    const { render, destroy } = useMemo(() => {
-        if (parent) {
-            return getTranslationOverlay(parent);
-        } else {
-            return { render: () => {}, destroy: () => {} };
-        }
-    }, [parent]);
-
-    useEffect(() => destroy, [destroy]);
-
-    return render;
-}
+export const useRenderTranslationOverlay = getUseRenderElement(getTranslationOverlay);
 
 function Overlay({ text, matches, lang }: { text: string; matches: MatchGroup[]; lang?: Lang }) {
     return (
