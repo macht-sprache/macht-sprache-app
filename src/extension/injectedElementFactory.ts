@@ -1,4 +1,5 @@
 import isEqual from 'lodash/isEqual';
+import { useEffect, useMemo } from 'react';
 
 type Config<T extends {}, El extends HTMLElement> = {
     stableParent: HTMLElement;
@@ -59,3 +60,21 @@ export function injectedElementFactory<T extends {}, El extends HTMLElement = HT
 
     return { render, destroy };
 }
+
+// Remove when we can update ts-lint
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function getUseRenderElement<T extends {}, El extends HTMLElement = HTMLElement>(fn: (el: El) => ReturnType<typeof injectedElementFactory<T, El>>) {
+    return (stableParent?: El) => {
+        const { render, destroy } = useMemo(() => {
+            if (stableParent) {
+                return fn(stableParent);
+            } else {
+                return { render: () => {}, destroy: () => {} };
+            }
+        }, [stableParent]);
+    
+        useEffect(() => destroy, [destroy]);
+    
+        return render;
+    }
+ }

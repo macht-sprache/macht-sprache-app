@@ -1,8 +1,7 @@
 import findLast from 'lodash/findLast';
-import { useEffect, useMemo } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { Button } from '../Button';
-import { injectedElementFactory } from '../injectedElementFactory';
+import { getUseRenderElement, injectedElementFactory } from '../injectedElementFactory';
 import { Status } from '../types';
 import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 
@@ -23,16 +22,4 @@ const getButton = (stableParent: HTMLElement) =>
         },
     });
 
-export function useRenderButton(stableParent?: HTMLElement) {
-    const { render, destroy } = useMemo(() => {
-        if (stableParent) {
-            return getButton(stableParent);
-        } else {
-            return { render: () => {}, destroy: () => {} };
-        }
-    }, [stableParent]);
-
-    useEffect(() => destroy, [destroy]);
-
-    return render;
-}
+export const useRenderButton = getUseRenderElement(getButton);
