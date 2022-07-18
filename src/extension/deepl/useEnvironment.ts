@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getUpdateableResult, INITIAL_ENV } from '../common';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 import { useRenderButton } from './button';
+import { useRenderOriginalOverlay } from './originalOverlay';
 import { useRenderTranslationOverlay } from './translationOverlay';
 
 const useStableElements = () => {
@@ -26,6 +27,7 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
 
     const renderButton = useRenderButton(translatedSide);
     const renderTranslationOverlay = useRenderTranslationOverlay(translatedSide);
+    const renderOriginalOverlay = useRenderOriginalOverlay(originalSide);
 
     const render = useCallback(
         (newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
@@ -33,6 +35,7 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
             const originalResult = getUpdateableResult(newEnv.original, newResult.original);
 
             renderTranslationOverlay({ ...translationResult, openModal: openModalRef.current });
+            renderOriginalOverlay(originalResult);
             renderButton({
                 status: newResult.status,
                 results: translationResult.tokens?.length ?? 0,
@@ -40,7 +43,7 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
 
             console.log('would render', translationResult, originalResult);
         },
-        [renderButton, renderTranslationOverlay]
+        [renderButton, renderOriginalOverlay, renderTranslationOverlay]
     );
 
     const onUpdate: OnUpdate = useCallback(
