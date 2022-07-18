@@ -22,7 +22,7 @@ export function Button({ className, status, results, size = 'google', ...props }
             className={clsx(s.button, className, {
                 [s.loading]: status === 'loading',
                 [s.noResult]: !results,
-                [s.deepl]: (size = 'deepl'),
+                [s.deepl]: size === 'deepl',
             })}
             aria-label="macht.sprache."
             title={results ? `${results} ${t('extension.result', { count: results })}` : t('extension.noResults')}
