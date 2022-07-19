@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getUpdateableResult, INITIAL_ENV } from '../common';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 import { useRenderButton } from './button';
+import { useRenderGenderHint } from './genderHint';
 import { useRenderOriginalOverlay } from './originalOverlay';
 import { useRenderTranslationOverlay } from './translationOverlay';
 
@@ -28,6 +29,7 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
     const renderButton = useRenderButton(translatedSide);
     const renderTranslationOverlay = useRenderTranslationOverlay(translatedSide);
     const renderOriginalOverlay = useRenderOriginalOverlay(originalSide);
+    const renderGenderHint = useRenderGenderHint(originalSide);
 
     const render = useCallback(
         (newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
@@ -40,6 +42,7 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
                 status: newResult.status,
                 results: translationResult.tokens?.length ?? 0,
             });
+            renderGenderHint({ ...originalResult, onOpenGenderModal });
 
             console.log('would render', translationResult, originalResult);
         },
