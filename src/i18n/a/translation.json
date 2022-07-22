@@ -316,7 +316,7 @@
         "claim": "Text checker, translation manifesto and discussion platform for sensitive translations",
         "ad": {
             "heading": "Search for sensitive terms automatically",
-            "text": "Check a text for sensitive translations with the macht.sprache. <TextCheckerLink>Text Checker</TextCheckerLink>. <ManifestoLink>Read the manifesto</ManifestoLink>, if you are interested in some fundamental principles and overarching guidelines for politically sensitive translation."
+            "text": "Check a text for sensitive translations with the macht.sprache. <TextCheckerLink>Text Checker</TextCheckerLink>. <ManifestoLink>Read the manifesto</ManifestoLink>, if you are interested in some fundamental principles and overarching guidelines for politically sensitive translation. Or integrate sensitivity into your Google Translate with <ExtensionLink>our extension</ExtensionLink>."
         }
     },
     "newsFeed": {
