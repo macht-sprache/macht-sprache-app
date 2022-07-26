@@ -29,4 +29,5 @@ export const HOME = '/',
     CODE_OF_CONDUCT = '/code-of-conduct',
     NEWS = '/news',
     IMPRINT = '/imprint',
+    EXTENSION = '/extension',
     PRIVACY = '/privacy';

@@ -22,13 +22,6 @@
                     }
                 ]
             }
-        ],
-        "redirects": [
-            {
-                "source": "/extension",
-                "destination": "https://chrome.google.com/webstore/detail/machtsprache-for-sensitiv/dichlnekfmanlagciihdnkgiefppilol/",
-                "type": 302
-            }
         ]
     },
     "emulators": {
