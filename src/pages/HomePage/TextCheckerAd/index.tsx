@@ -1,43 +1,59 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ButtonAnchor, ButtonContainer, ButtonLink } from '../../../components/Form/Button';
-import { FullWidthColumn } from '../../../components/Layout/Columns';
-import { MANIFESTO, TEXT_CHECKER } from '../../../routes';
+import { ButtonContainer, ButtonLink } from '../../../components/Form/Button';
+import { Columns } from '../../../components/Layout/Columns';
+import { EXTENSION, MANIFESTO, TEXT_CHECKER } from '../../../routes';
 import s from './style.module.css';
 import Illustration from './illustration.jpg';
-
-const EXTENSION_LINK = 'https://pocolit.com/2022/03/02/die-macht-sprache-browsererweiterung-ist-da/';
+import Extension from './extension.jpg';
 
 export default function TextCheckerAd() {
     const { t } = useTranslation();
 
     return (
-        <FullWidthColumn>
+        <Columns>
             <div className={s.container}>
-                <h2 className={s.heading}>{t('home.ad.heading')}</h2>
+                <h2 className={s.heading}>{t('home.ad.heading.automatically')}</h2>
                 <div className={s.body}>
-                    <img src={Illustration} className={s.image} alt="" width="700" height="700" />
+                    <img src={Extension} className={s.image} alt="" width="1000" height="519" />
                     <div className={s.bodyText}>
                         <p className={s.bodyParagraph}>
                             <Trans
-                                i18nKey="home.ad.text"
+                                i18nKey="home.ad.text.automatically"
                                 components={{
                                     TextCheckerLink: <Link to={TEXT_CHECKER} />,
-                                    ManifestoLink: <Link to={MANIFESTO} />,
-                                    // eslint-disable-next-line jsx-a11y/anchor-has-content
-                                    ExtensionLink: <a href={EXTENSION_LINK} />,
+                                    ExtensionLink: <Link to={EXTENSION} />,
                                 }}
                             />
                         </p>
 
                         <ButtonContainer>
                             <ButtonLink to={TEXT_CHECKER}>{t('textChecker.title')}</ButtonLink>
-                            <ButtonLink to={MANIFESTO}>{t('manifesto.title')}</ButtonLink>
-                            <ButtonAnchor href={EXTENSION_LINK}>Browser Extension</ButtonAnchor>
+                            <ButtonLink to={EXTENSION}>Browser Extension</ButtonLink>
                         </ButtonContainer>
                     </div>
                 </div>
             </div>
-        </FullWidthColumn>
+            <div className={s.container}>
+                <h2 className={s.heading}>{t('home.ad.heading.manifesto')}</h2>
+                <div className={s.body}>
+                    <img src={Illustration} className={s.image} alt="" width="700" height="700" />
+                    <div className={s.bodyText}>
+                        <p className={s.bodyParagraph}>
+                            <Trans
+                                i18nKey="home.ad.text.manifesto"
+                                components={{
+                                    ManifestoLink: <Link to={MANIFESTO} />,
+                                }}
+                            />
+                        </p>
+
+                        <ButtonContainer>
+                            <ButtonLink to={MANIFESTO}>{t('manifesto.title')}</ButtonLink>
+                        </ButtonContainer>
+                    </div>
+                </div>
+            </div>
+        </Columns>
     );
 }

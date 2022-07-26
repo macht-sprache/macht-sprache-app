@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 4rem;
+    align-items: start;
 }
 
 @media (max-width: 1400px) {

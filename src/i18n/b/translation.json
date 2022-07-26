@@ -311,8 +311,14 @@
         "moreAbout": "mehr über macht.sprache.",
         "claim": "Text Checker, Übersetzungsmanifest und Diskussionsplattform für sensibles Übersetzen",
         "ad": {
-            "heading": "Lass deinen Text automatisch überprüfen",
-            "text": "Prüfe den Text, den du übersetzen möchtest, mithilfe des <TextCheckerLink>Text Checkers</TextCheckerLink> auf sensible Begriffe. Lies <ManifestoLink>das Manifest</ManifestoLink>, um einige Grundprinzipien für politisch sensibles Übersetzen kennen zu lernen. Oder integriere Google Translate in deinen Browser mit <ExtensionLink>unserer Erweiterung</ExtensionLink>."
+            "heading": {
+                "automatically": "Lass deinen Text automatisch überprüfen",
+                "manifesto": "Lies unser Manifest"
+            },
+            "text": {
+                "automatically": "Prüfe den Text, den du übersetzen möchtest, mithilfe des <TextCheckerLink>Text Checkers</TextCheckerLink> auf sensible Begriffe oder integriere Google Translate in deinen Browser mit <ExtensionLink>unserer Erweiterung</ExtensionLink>.",
+                "manifesto": "Lies unser Manifest"
+            }
         }
     },
     "newsFeed": {
