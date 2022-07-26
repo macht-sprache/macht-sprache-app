@@ -22,6 +22,11 @@
     font-size: 1.1rem;
 }
 
+.container :global(.wp-block-buttons) {
+    display: flex;
+    gap: 1rem;
+}
+
 .container :global(.wp-block-button__link) {
     display: inline-block;
     font-size: inherit;
