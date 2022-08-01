@@ -77,12 +77,14 @@ const config: webpack.Configuration = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env': { REACT_APP_EMULATOR_HOST: JSON.stringify('localhost'), ...getEnvVars() },
-        }),
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 1,
         }),
         new BuildBundlesPlugin(),
         new CleanWebpackPlugin(),
