@@ -153,6 +153,11 @@ function AppRouter() {
                                         slugs={{ en: 'macht-sprache-imprint', de: 'macht-sprache-imprint' }}
                                     />
                                 </Route>
+                                <Route path={routes.EXTENSION} exact>
+                                    <StaticContentPage
+                                        slugs={{ en: 'macht-sprache-extension', de: 'macht-sprache-extension' }}
+                                    />
+                                </Route>
 
                                 <Route path="/elementTest" exact>
                                     <ElementTestPage />
