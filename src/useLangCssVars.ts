@@ -20,15 +20,15 @@ const style = `
 }
 `;
 
-export function useLangCssVars() {
+export function useLangCssVars(targetEl: Node = document.head) {
     useEffect(() => {
         const styleEl = document.createElement('style');
         styleEl.innerHTML = style;
-        document.head.appendChild(styleEl);
+        targetEl.appendChild(styleEl);
         return () => {
-            document.head.removeChild(styleEl);
+            targetEl.removeChild(styleEl);
         };
-    }, []);
+    }, [targetEl]);
 }
 
 export function getDominantLanguageClass(lang?: Lang) {

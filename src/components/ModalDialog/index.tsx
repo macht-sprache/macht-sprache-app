@@ -1,10 +1,11 @@
 import { useDialog } from '@react-aria/dialog';
 import { FocusScope } from '@react-aria/focus';
-import { OverlayContainer, useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
+import { useModal, useOverlay, usePreventScroll } from '@react-aria/overlays';
 import clsx from 'clsx';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import Logo from '../Layout/logo.svg';
+import { ModalDialogContainer } from './Provider';
 import s from './style.module.css';
 
 type ModalDialogProps = {
@@ -13,7 +14,6 @@ type ModalDialogProps = {
     children: React.ReactNode;
     isDismissable?: boolean;
     width?: 'medium' | 'wide' | 'wider';
-    containerClassName?: string;
     showLogo?: boolean;
 };
 
@@ -23,7 +23,6 @@ export function ModalDialog({
     onClose,
     isDismissable = true,
     width = 'medium',
-    containerClassName,
     showLogo,
 }: ModalDialogProps) {
     usePreventScroll();
@@ -34,7 +33,7 @@ export function ModalDialog({
     const { dialogProps, titleProps } = useDialog({}, ref);
 
     return (
-        <OverlayContainer className={containerClassName}>
+        <ModalDialogContainer>
             <div className={s.background}>
                 <FocusScope contain restoreFocus autoFocus>
                     <div
@@ -61,6 +60,6 @@ export function ModalDialog({
                     </div>
                 </FocusScope>
             </div>
-        </OverlayContainer>
+        </ModalDialogContainer>
     );
 }

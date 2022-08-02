@@ -1,4 +1,4 @@
-import './setup';
+import { overlayPortalElement, reactRootElement, shadowRoot } from './setup';
 import { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AppContextProviderExtension } from '../hooks/appContext';
@@ -9,11 +9,9 @@ import '../vars.css';
 import { Checker } from './Checker';
 import { useDeeplEnvironment } from './deepl/useEnvironment';
 
-const reactRootElement = document.createElement('div');
-document.body.append(reactRootElement);
-
 function App() {
     useLangCssVars();
+    useLangCssVars(shadowRoot);
     const [showGenderModal, setShowGenderModal] = useState(false);
     const onCloseGenderModal = useCallback(() => setShowGenderModal(false), []);
     const onOpenGenderModal = useCallback(() => setShowGenderModal(true), []);
@@ -24,6 +22,7 @@ function App() {
             onUpdate={onUpdate}
             showGenderModal={showGenderModal}
             onCloseGenderModal={onCloseGenderModal}
+            portalContainer={overlayPortalElement}
         />
     );
 }

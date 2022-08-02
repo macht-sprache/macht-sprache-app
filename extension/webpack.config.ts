@@ -55,7 +55,23 @@ const config: webpack.Configuration = {
             },
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            styleTagTransform: (css: string, element: HTMLStyleElement) => {
+                                element.innerHTML = css;
+                                document.head.appendChild(element);
+                                // @ts-ignore
+                                if (window.__machtSpracheShadowRoot) {
+                                    // @ts-ignore
+                                    window.__machtSpracheShadowRoot.appendChild(element.cloneNode(true));
+                                }
+                            },
+                        },
+                    },
+                    'css-loader',
+                ],
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,

@@ -2,12 +2,9 @@
 import ContentDe from '!babel-loader!@mdx-js/loader!./content.de.mdx';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import ContentEn from '!babel-loader!@mdx-js/loader!./content.en.mdx';
-import clsx from 'clsx';
 import MdxWrapper from '../../components/MdxWrapper';
 import { ModalDialog } from '../../components/ModalDialog';
-import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { useLang } from '../../useLang';
-import styles from '../style.module.css';
 
 type Props = {
     isOpen: boolean;
@@ -28,12 +25,7 @@ export function GenderOverlay({ isOpen, onClose }: Props) {
     }
 
     return (
-        <ModalDialog
-            title="What about Gender?"
-            onClose={onClose}
-            containerClassName={clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle)}
-            showLogo
-        >
+        <ModalDialog title="What about Gender?" onClose={onClose} showLogo>
             <MdxWrapper>
                 <Content />
             </MdxWrapper>

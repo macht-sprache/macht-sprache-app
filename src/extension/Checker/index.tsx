@@ -1,6 +1,6 @@
-import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
 import { Suspense, useEffect, useState } from 'react';
+import { ModalDialogProvider } from '../../components/ModalDialog/Provider';
 import { WrappedInLangColor } from '../../components/TermWithLang';
 import {
     MatchGroup,
@@ -24,6 +24,7 @@ type Props = {
     onUpdate: OnUpdate;
     showGenderModal: boolean;
     onCloseGenderModal: () => void;
+    portalContainer?: HTMLElement;
 };
 
 type InnerProps = {
@@ -37,7 +38,7 @@ type InnerProps = {
     onUpdate: OnUpdate;
 };
 
-export function Checker({ env, onUpdate, showGenderModal, onCloseGenderModal }: Props) {
+export function Checker({ env, onUpdate, showGenderModal, onCloseGenderModal, portalContainer }: Props) {
     const checkerInput = useConvertEnv(env);
 
     useEffect(() => {
@@ -51,10 +52,12 @@ export function Checker({ env, onUpdate, showGenderModal, onCloseGenderModal }: 
     }
 
     return (
-        <OverlayProvider>
+        <ModalDialogProvider
+            containerProps={{ className: clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle), portalContainer }}
+        >
             <Loader checkerInput={checkerInput} onUpdate={onUpdate} />
             <GenderOverlay isOpen={showGenderModal} onClose={onCloseGenderModal} />
-        </OverlayProvider>
+        </ModalDialogProvider>
     );
 }
 
@@ -179,7 +182,6 @@ function ModalWrapper({
                 getTerms={getTerms}
                 getTranslations={getTranslations}
                 onClose={onClose}
-                containerClassName={clsx(CSS_CONTEXT_CLASS_NAME, styles.globalStyle)}
                 translationsSortFn={translationsSortFn}
                 showLogo
             />
