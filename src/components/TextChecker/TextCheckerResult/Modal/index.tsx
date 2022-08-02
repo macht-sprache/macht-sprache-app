@@ -23,7 +23,6 @@ type ModalProps = {
     getTranslations: GetList<Translation>;
     title: React.ReactNode;
     onClose: () => void;
-    containerClassName?: string;
     translationsSortFn?: (translation: Translation) => number;
     showLogo?: boolean;
 };
@@ -42,7 +41,6 @@ export default function PhraseModal({
     getTerms,
     getTranslations,
     onClose,
-    containerClassName,
     translationsSortFn,
     showLogo,
 }: ModalProps) {
@@ -71,7 +69,6 @@ export default function PhraseModal({
             isDismissable
             onClose={onClose}
             width={!!topMatch.guidelines.length ? 'wider' : 'medium'}
-            containerClassName={containerClassName}
             showLogo={showLogo}
         >
             <ModalInner
