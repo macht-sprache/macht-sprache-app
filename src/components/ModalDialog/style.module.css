@@ -1,5 +1,10 @@
-.background {
-    z-index: 2000;
+.overlay {
+    all: unset;
+
+    --padding: 2rem;
+    --lang-color: var(--orange);
+    --logo-size: 6rem;
+
     background: var(--white);
     display: grid;
     grid-template-columns: 1fr;
@@ -13,33 +18,34 @@
     left: 0;
 }
 
+.overlay::backdrop {
+    all: unset;
+}
+
 @supports (backdrop-filter: blur(20px)) {
-    .background {
+    .overlay {
         background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(20px);
     }
-}
-
-.overlay {
-    --padding: 2rem;
-    --lang-color: var(--orange);
-    --logo-size: 6rem;
-    padding: var(--padding);
-    width: min(600px, 100vw);
-}
-
-.overlay.wide {
-    width: min(800px, 100vw);
-}
-
-.overlay.wider {
-    width: min(1200px, 100vw);
 }
 
 @media (max-width: 500px) {
     .overlay {
         --padding: 1rem;
     }
+}
+
+.overlayInner {
+    padding: var(--padding);
+    width: min(600px, 100vw);
+}
+
+.overlayInner.wide {
+    width: min(800px, 100vw);
+}
+
+.overlayInner.wider {
+    width: min(1200px, 100vw);
 }
 
 .title {
@@ -94,4 +100,8 @@
     height: var(--logo-size);
     object-fit: contain;
     margin: calc(var(--padding) * -0.5) 0 calc(var(--padding) * 0.5);
+}
+
+.noScroll {
+    overflow: hidden !important;
 }

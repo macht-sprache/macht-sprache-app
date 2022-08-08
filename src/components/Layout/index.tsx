@@ -1,4 +1,3 @@
-import { OverlayProvider } from '@react-aria/overlays';
 import clsx from 'clsx';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,39 +55,33 @@ function Layout({ children }: Props) {
     }, [history.action, location.hash, location.pathname]);
 
     return (
-        <OverlayProvider>
-            <div className={s.container}>
-                <div className={s.mobileHeaderBar}>
-                    <Link className={s.mobileHeaderBarLogo} to="/">
-                        <img className={s.mobileHeaderBarLogoImage} src={LogoSmall} alt={t('nav.logoAlt')} />
+        <div className={s.container}>
+            <div className={s.mobileHeaderBar}>
+                <Link className={s.mobileHeaderBarLogo} to="/">
+                    <img className={s.mobileHeaderBarLogoImage} src={LogoSmall} alt={t('nav.logoAlt')} />
+                </Link>
+                <LinkButton onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls={id('menu')}>
+                    Menu
+                </LinkButton>
+                {user && <Notifications userId={user.id} />}
+            </div>
+            <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
+                <div className={s.header}>
+                    <Link className={s.logo} to="/">
+                        <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
                     </Link>
-                    <LinkButton
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        aria-expanded={menuOpen}
-                        aria-controls={id('menu')}
-                    >
-                        Menu
-                    </LinkButton>
+                </div>
+                <div className={s.topRightMenu}>
+                    <TopMenu />
                     {user && <Notifications userId={user.id} />}
                 </div>
-                <div id={id('menu')} className={clsx(s.menus, { [s.open]: menuOpen })}>
-                    <div className={s.header}>
-                        <Link className={s.logo} to="/">
-                            <img className={s.logoImg} src={Logo} alt={t('nav.logoAlt')} />
-                        </Link>
-                    </div>
-                    <div className={s.topRightMenu}>
-                        <TopMenu />
-                        {user && <Notifications userId={user.id} />}
-                    </div>
-                    <Sidebar />
-                </div>
-                <main className={s.main}>{children}</main>
-                <Footer className={s.footer} />
-                <div className={s.background} />
-                <ContentWarning />
+                <Sidebar />
             </div>
-        </OverlayProvider>
+            <main className={s.main}>{children}</main>
+            <Footer className={s.footer} />
+            <div className={s.background} />
+            <ContentWarning />
+        </div>
     );
 }
 
