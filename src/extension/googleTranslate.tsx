@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { AppContextProviderExtension } from '../hooks/appContext';
 import { TranslationProvider } from '../i18n/config';
-import { LangProvider } from '../useLang';
+import { PageLangProvider } from '../useLang';
 import { useLangCssVars } from '../useLangCssVars';
 import '../vars.css';
 import { Checker } from './Checker';
@@ -30,9 +30,9 @@ function App() {
 ReactDOM.render(
     <AppContextProviderExtension>
         <TranslationProvider>
-            <LangProvider>
+            <PageLangProvider>
                 <App />
-            </LangProvider>
+            </PageLangProvider>
         </TranslationProvider>
     </AppContextProviderExtension>,
     reactRootElement
