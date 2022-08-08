@@ -14,7 +14,9 @@ const getButton = (stableParent: HTMLElement) =>
         },
         validateInput: ({ status, results }) => (status ? { status, results: results ?? 0 } : null),
         render: ({ status, results }, el) => {
-            el.innerHTML = ReactDOMServer.renderToStaticMarkup(<Button status={status} results={results} />);
+            el.innerHTML = ReactDOMServer.renderToStaticMarkup(
+                <Button status={status} results={results} size="deepl" />
+            );
         },
     });
 
