@@ -32,7 +32,7 @@
     cursor: pointer;
     background: var(--color);
     box-shadow: var(--backgroundMargin) 0 0 var(--color), calc(var(--backgroundMargin) * -1) 0 0 var(--color);
-    color: black;
+    color: #333;
 }
 
 .genderHintHovered .originalHighlight {
@@ -40,6 +40,7 @@
     box-shadow: 0 0 0 2px var(--orange);
     border-bottom-width: 2px;
     border-top-width: 2px;
+    color: #333 !important;
 }
 
 .genderHint {
