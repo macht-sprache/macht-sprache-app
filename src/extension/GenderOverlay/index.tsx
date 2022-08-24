@@ -25,7 +25,7 @@ export function GenderOverlay({ isOpen, onClose }: Props) {
     }
 
     return (
-        <ModalDialog title="What about Gender?" onClose={onClose} showLogo>
+        <ModalDialog title="What about Gender?" onClose={onClose} showLogo isDismissable>
             <MdxWrapper>
                 <Content />
             </MdxWrapper>
