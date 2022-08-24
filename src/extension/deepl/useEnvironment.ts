@@ -43,8 +43,6 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
                 results: translationResult.tokens?.length ?? 0,
             });
             renderGenderHint({ ...originalResult, onOpenGenderModal });
-
-            console.log('would render', translationResult, originalResult);
         },
         [renderButton, renderOriginalOverlay, renderTranslationOverlay]
     );
