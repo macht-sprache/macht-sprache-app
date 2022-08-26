@@ -31,3 +31,25 @@ jobs:
               with:
                   name: extension-build-firefox
                   path: extension/bundle-firefox
+    bundle-source:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '16'
+            - name: Write .env
+              run: node ./extension/log-cra-env.js > .env.local
+              env:
+                  REACT_APP_FIREBASE_PROJECT: ${{ secrets.FIREBASE_PROJECT }}
+                  REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+                  REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
+                  REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+                  REACT_APP_FIREBASE_REGION: ${{ secrets.FIREBASE_REGION }}
+                  REACT_APP_MAIN_ORIGIN: ${{ secrets.MAIN_ORIGIN }}
+            - name: Clear .git
+              run: rm -rf .git
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: extension-source-bundle
+                  path: .
