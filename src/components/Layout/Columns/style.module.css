@@ -4,6 +4,10 @@
     grid-gap: 4rem;
 }
 
+.narrower {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
 @media (max-width: 1400px) {
     .columns {
         grid-gap: 3rem;
