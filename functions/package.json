@@ -14,12 +14,12 @@
     },
     "main": "lib/functions/src/index.js",
     "dependencies": {
-        "@google-cloud/firestore": "4.15.1",
-        "@google-cloud/language": "4.3.1",
-        "@google-cloud/tasks": "2.4.2",
-        "firebase-admin": "9.12.0",
-        "firebase-functions": "3.15.7",
-        "googleapis": "88.2.0",
+        "@google-cloud/firestore": "5.0.2",
+        "@google-cloud/language": "5.0.0",
+        "@google-cloud/tasks": "3.0.2",
+        "firebase-admin": "11.0.1",
+        "firebase-functions": "3.23.0",
+        "googleapis": "107.0.0",
         "html-to-text": "8.0.0",
         "i18next": "21.3.1",
         "lodash.escape": "4.0.1",
@@ -50,7 +50,7 @@
         "@types/mjml": "4.7.0",
         "@types/node-fetch": "2.5.12",
         "@types/nodemailer": "6.4.4",
-        "firebase-functions-test": "0.3.3"
+        "firebase-functions-test": "2.3.0"
     },
     "private": true
 }
