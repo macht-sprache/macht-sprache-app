@@ -7,7 +7,7 @@ import { PageLangProvider } from '../useLang';
 import { useLangCssVars } from '../useLangCssVars';
 import '../vars.css';
 import { Checker } from './Checker';
-import { useGoogleTranslateEnvironment } from './googleTranslate/useEnvironment';
+import { useDeeplEnvironment } from './deepl/useEnvironment';
 
 function App() {
     useLangCssVars();
@@ -15,7 +15,7 @@ function App() {
     const [showGenderModal, setShowGenderModal] = useState(false);
     const onCloseGenderModal = useCallback(() => setShowGenderModal(false), []);
     const onOpenGenderModal = useCallback(() => setShowGenderModal(true), []);
-    const { env, onUpdate } = useGoogleTranslateEnvironment(onOpenGenderModal);
+    const { env, onUpdate } = useDeeplEnvironment(onOpenGenderModal);
     return (
         <Checker
             env={env}

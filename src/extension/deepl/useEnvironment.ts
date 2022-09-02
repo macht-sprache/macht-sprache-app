@@ -3,15 +3,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getUpdateableResult, INITIAL_ENV } from '../common';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 import { useRenderButton } from './button';
-import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { useRenderGenderHint } from './genderHint';
 import { useRenderOriginalOverlay } from './originalOverlay';
 import { useRenderTranslationOverlay } from './translationOverlay';
 
 const useStableElements = () => {
     return useMemo(() => {
-        const originalSide = document.querySelector('c-wiz[role="main"] textarea')?.closest<HTMLElement>('c-wiz');
-        const translatedSide = document.querySelector<HTMLElement>('c-wiz[role="main"] c-wiz[role="region"]');
+        const originalSide = document.querySelector<HTMLElement>('[dl-test="translator-source"]');
+        const translatedSide = document.querySelector<HTMLElement>('[dl-test="translator-target"]');
         return {
             originalSide: originalSide ?? undefined,
             translatedSide: translatedSide ?? undefined,
@@ -19,7 +18,7 @@ const useStableElements = () => {
     }, []);
 };
 
-export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => {
+export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
     const [env, setEnv] = useState<TranslatorEnvironment>(INITIAL_ENV);
     const { originalSide, translatedSide } = useStableElements();
 
@@ -27,25 +26,25 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
     const openModalRef = useRef<(startPos: number) => void>(() => {});
     const envRef = useRef<TranslatorEnvironment>(INITIAL_ENV);
 
+    const renderButton = useRenderButton(translatedSide);
+    const renderTranslationOverlay = useRenderTranslationOverlay(translatedSide);
     const renderOriginalOverlay = useRenderOriginalOverlay(originalSide);
     const renderGenderHint = useRenderGenderHint(originalSide);
-    const renderTranslationOverlay = useRenderTranslationOverlay(translatedSide);
-    const renderButton = useRenderButton(translatedSide);
 
     const render = useCallback(
         (newEnv: TranslatorEnvironment, newResult: CheckerResult) => {
             const translationResult = getUpdateableResult(newEnv.translation, newResult.translation);
             const originalResult = getUpdateableResult(newEnv.original, newResult.original);
 
-            renderGenderHint({ ...originalResult, onOpenGenderModal });
-            renderOriginalOverlay(originalResult);
             renderTranslationOverlay({ ...translationResult, openModal: openModalRef.current });
+            renderOriginalOverlay(originalResult);
             renderButton({
                 status: newResult.status,
                 results: translationResult.tokens?.length ?? 0,
             });
+            renderGenderHint({ ...originalResult, onOpenGenderModal });
         },
-        [onOpenGenderModal, renderButton, renderGenderHint, renderOriginalOverlay, renderTranslationOverlay]
+        [renderButton, renderOriginalOverlay, renderTranslationOverlay]
     );
 
     const onUpdate: OnUpdate = useCallback(
@@ -62,21 +61,22 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
 
     useEffect(() => {
         const originalTextArea = originalSide?.querySelector<HTMLTextAreaElement>('textarea');
+        const translatedTextArea = translatedSide?.querySelector<HTMLTextAreaElement>('textarea');
+        const translatedDummyElement = translatedSide?.querySelector('#target-dummydiv');
 
         const update = () => {
-            const translatedTextElement = translatedSide?.querySelector<HTMLElement>(TRANSLATED_TEXT_ELEMENT_SELECTOR);
-            const translatedTextArea = translatedSide?.querySelector<HTMLTextAreaElement>('textarea');
-
             const newEnv: TranslatorEnvironment = {
                 translation: {
-                    lang: translatedTextElement?.dataset.language ?? '',
+                    lang: translatedTextArea?.lang.split('-')[0] ?? '',
                     text: translatedTextArea?.value ?? '',
                 },
                 original: {
-                    lang: translatedTextElement?.dataset.originalLanguage ?? '',
+                    lang: originalTextArea?.lang.split('-')[0] ?? '',
                     text: originalTextArea?.value ?? '',
                 },
             };
+
+            console.log('update', newEnv);
 
             if (isEqual(envRef.current, newEnv)) {
                 return;
@@ -88,10 +88,11 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
         };
 
         originalTextArea?.addEventListener('input', update);
+        translatedTextArea?.addEventListener('input', update);
 
         const translatedAreaObserver = new MutationObserver(update);
-        if (translatedSide) {
-            translatedAreaObserver.observe(translatedSide, { childList: true, subtree: true });
+        if (translatedDummyElement) {
+            translatedAreaObserver.observe(translatedDummyElement, { childList: true, characterData: true });
         }
 
         update();
@@ -99,8 +100,9 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
         return () => {
             translatedAreaObserver.disconnect();
             originalTextArea?.removeEventListener('input', update);
+            translatedTextArea?.removeEventListener('input', update);
         };
-    }, [render, originalSide, translatedSide]);
+    }, [originalSide, translatedSide, render]);
 
     return { env, onUpdate };
 };

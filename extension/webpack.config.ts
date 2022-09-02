@@ -33,6 +33,7 @@ const getEnvVars = () => {
 const config: webpack.Configuration = {
     entry: {
         'content-google-translate': '../src/extension/googleTranslate.tsx',
+        'content-deepl': '../src/extension/deepl.tsx',
     },
     output: {
         path: path.resolve(__dirname, 'bundle', 'dist'),
@@ -54,7 +55,23 @@ const config: webpack.Configuration = {
             },
             {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            styleTagTransform: (css: string, element: HTMLStyleElement) => {
+                                element.innerHTML = css;
+                                document.head.appendChild(element);
+                                // @ts-ignore
+                                if (window.__machtSpracheShadowRoot) {
+                                    // @ts-ignore
+                                    window.__machtSpracheShadowRoot.appendChild(element.cloneNode(true));
+                                }
+                            },
+                        },
+                    },
+                    'css-loader',
+                ],
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
@@ -76,12 +93,14 @@ const config: webpack.Configuration = {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
+    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env': { REACT_APP_EMULATOR_HOST: JSON.stringify('localhost'), ...getEnvVars() },
-        }),
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 1,
         }),
         new BuildBundlesPlugin(),
         new CleanWebpackPlugin(),

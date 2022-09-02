@@ -1,5 +1,3 @@
-import find from 'lodash/find';
-import findLast from 'lodash/findLast';
 import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { PersonToken } from '../../types';
 import { getUseRenderElement, injectedElementFactory } from '../injectedElementFactory';
@@ -10,6 +8,7 @@ const genderHintFactory = (stableParent: HTMLElement) =>
         stableParent,
         createElement: parent => {
             const genderHintEl = document.createElement('button');
+
             genderHintEl.classList.add(CSS_CONTEXT_CLASS_NAME, s.genderHint);
             genderHintEl.textContent = 'What about Gender?';
             genderHintEl.onmouseenter = () => parent.classList.add(s.genderHintHovered);
@@ -17,9 +16,8 @@ const genderHintFactory = (stableParent: HTMLElement) =>
             return genderHintEl;
         },
         attachElement: (el, parent) => {
-            const buttonBar = findLast(parent.children, child => child.tagName === 'DIV');
-            const characterLabel = find(buttonBar?.children, child => child.tagName === 'SPAN');
-            characterLabel?.before(el);
+            const buttonRow = parent.querySelector('[dl-test="translator-source-toolbar"]');
+            buttonRow?.append(el);
         },
         render: ({ onOpenGenderModal }, el) => {
             el.onclick = onOpenGenderModal;

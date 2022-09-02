@@ -9,16 +9,18 @@ const getOriginalOverlay = (stableParent: HTMLElement) => {
     const el = document.createElement('div');
     el.classList.add(s.originalOverlay, CSS_CONTEXT_CLASS_NAME);
 
-    const updateStyle = (textarea: HTMLTextAreaElement) => {
-        const textareaStyles = getComputedStyle(textarea);
-        el.style.fontSize = textareaStyles.getPropertyValue('font-size');
-        el.style.lineHeight = textareaStyles.getPropertyValue('line-height');
+    const updateStyle = () => {
+        const textarea = stableParent.querySelector('textarea');
+        if (textarea) {
+            const textareaStyles = getComputedStyle(textarea);
+            el.style.fontSize = textareaStyles.getPropertyValue('font-size');
+            el.style.lineHeight = textareaStyles.getPropertyValue('line-height');
+        }
     };
-    const textareaObserver = new MutationObserver(records => {
-        records.forEach(({ target }) => {
-            if (target instanceof HTMLTextAreaElement) {
-                updateStyle(target);
-            }
+
+    const observer = new MutationObserver(records => {
+        records.forEach(() => {
+            updateStyle();
         });
     });
 
@@ -27,19 +29,18 @@ const getOriginalOverlay = (stableParent: HTMLElement) => {
         createElement: () => el,
         attachElement: (el, parent) => {
             const textarea = parent.querySelector('textarea');
-            const googleClone = textarea?.nextElementSibling;
-            if (googleClone) {
-                el.classList.add(...Array.from(googleClone.classList));
-                googleClone.after(el);
-            }
-            if (textarea) {
-                textareaObserver.observe(textarea, { attributes: true });
-                updateStyle(textarea);
+            const containerToObserve = document.getElementById('dl_translator');
+
+            if (textarea && containerToObserve) {
+                observer.observe(containerToObserve, { attributes: true });
+                el.classList.add(...Array.from(textarea.classList));
+                textarea.after(el);
+                updateStyle();
             }
         },
-        destroy: () => textareaObserver.disconnect(),
+        destroy: () => observer.disconnect(),
         validateInput: ({ text, tokens }) => (text && tokens?.length ? { text, tokens } : null),
-        render: ({ text, tokens }, el, parent) => {
+        render: ({ text, tokens }, el) => {
             el.innerHTML = ReactDOMServer.renderToString(<OriginalOverlay text={text} tokens={tokens} />);
         },
     });
