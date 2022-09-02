@@ -313,10 +313,29 @@
         "termsOfTheWeekDescription": "Every week we pick different terms to focus on. This week:",
         "viewAllTerms": "View all terms",
         "moreAbout": "more about macht.sprache.",
-        "claim": "Text checker, translation manifesto and discussion platform for sensitive translations",
+        "claim": "Helping you handle the challanges of politically sensitive language",
         "ad": {
-            "heading": "Search for sensitive terms automatically",
-            "text": "Check a text for sensitive translations with the macht.sprache. <TextCheckerLink>Text Checker</TextCheckerLink>. <ManifestoLink>Read the manifesto</ManifestoLink>, if you are interested in some fundamental principles and overarching guidelines for politically sensitive translation. Or integrate sensitivity into your Google Translate with <ExtensionLink>our extension</ExtensionLink>."
+            "heading": "What we offer",
+            "textchecker": {
+                "title": "Check your text",
+                "text": "Unsure about weather there are words that hm? Lorem here is some Blindtext. Something to convince you. Check your text:",
+                "ctaEn": "In English",
+                "ctaDe": "In German"
+            },
+            "terms": {
+                "title": "Browse & discuss sensitive terms",
+                "text": "Browsing and discussing is fun! Lorem here is some Blindtext. Something to convince you. Browse and discuss terms:",
+                "all": "All",
+                "de": "EN",
+                "en": "DE"
+            },
+            "extension": {
+                "title": "Check text in deepL & Google Translate",
+                "text": "Check translations for sensitive language while translating it. It's easy, just head over to the according store and install out extension:",
+                "chrome": "Chrome",
+                "firefox": "Firefox"
+            },
+            "manifesto": { "title": "Read out manifesto" }
         }
     },
     "newsFeed": {

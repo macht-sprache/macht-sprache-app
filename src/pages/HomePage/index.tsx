@@ -34,7 +34,7 @@ export default function Home() {
             <HomePageHeader />
             <TextCheckerAd />
             <TermsWeekHighlights />
-            <Columns>
+            {/* <Columns>
                 <div>
                     {user ? (
                         <Suspense fallback={null}>
@@ -61,7 +61,7 @@ export default function Home() {
                         </Suspense>
                     )}
                 </div>
-            </Columns>
+            </Columns> */}
         </>
     );
 }
