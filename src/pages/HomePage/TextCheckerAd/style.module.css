@@ -9,11 +9,11 @@
     margin-top: 8rem;
 }
 
-.box:nth-of-type(2) .image {
+.box:nth-of-type(odd) .image {
     grid-row: 1;
 }
 
-.box:nth-of-type(2) .buttons {
+.box:nth-of-type(odd) .buttons {
     justify-content: flex-start;
 }
 
