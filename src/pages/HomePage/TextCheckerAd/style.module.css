@@ -28,6 +28,9 @@
 
 .image {
     width: 100%;
+    padding: 1rem;
+    background-image: url(./backgroundImage.svg);
+    background-size: 100% 100%;
 }
 
 .buttons {
