@@ -1,5 +1,3 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-
 import React from 'react';
 import { langA, langB } from '../../languages';
 import { Lang } from '../../types';
@@ -31,43 +29,43 @@ const cache = new Map<string, () => Guideline[]>();
 const guidelinesList: GuidelineInternal[] = [
     {
         id: 'context-specificity',
-        en: () => import('!babel-loader!@mdx-js/loader!./context-specificity.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./context-specificity.de.mdx'),
+        en: () => import('./context-specificity.en.mdx'),
+        de: () => import('./context-specificity.de.mdx'),
     },
     {
         id: 'positionalities',
-        en: () => import('!babel-loader!@mdx-js/loader!./positionalities.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./positionalities.de.mdx'),
+        en: () => import('./positionalities.en.mdx'),
+        de: () => import('./positionalities.de.mdx'),
     },
     {
         id: 'genre',
-        en: () => import('!babel-loader!@mdx-js/loader!./genre.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./genre.de.mdx'),
+        en: () => import('./genre.en.mdx'),
+        de: () => import('./genre.de.mdx'),
     },
     {
         id: 'tone-and-attitude',
-        en: () => import('!babel-loader!@mdx-js/loader!./tone-and-attitude.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./tone-and-attitude.de.mdx'),
+        en: () => import('./tone-and-attitude.en.mdx'),
+        de: () => import('./tone-and-attitude.de.mdx'),
     },
     {
         id: 'maintaining-the-original-language',
-        en: () => import('!babel-loader!@mdx-js/loader!./maintaining-the-original-language.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./maintaining-the-original-language.de.mdx'),
+        en: () => import('./maintaining-the-original-language.en.mdx'),
+        de: () => import('./maintaining-the-original-language.de.mdx'),
     },
     {
         id: 'typographic-options',
-        en: () => import('!babel-loader!@mdx-js/loader!./typographic-options.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./typographic-options.de.mdx'),
+        en: () => import('./typographic-options.en.mdx'),
+        de: () => import('./typographic-options.de.mdx'),
     },
     {
         id: 'harmful-language',
-        en: () => import('!babel-loader!@mdx-js/loader!./harmful-language.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./harmful-language.de.mdx'),
+        en: () => import('./harmful-language.en.mdx'),
+        de: () => import('./harmful-language.de.mdx'),
     },
     {
         id: 'creative-solutions',
-        en: () => import('!babel-loader!@mdx-js/loader!./creative-solutions.en.mdx'),
-        de: () => import('!babel-loader!@mdx-js/loader!./creative-solutions.de.mdx'),
+        en: () => import('./creative-solutions.en.mdx'),
+        de: () => import('./creative-solutions.de.mdx'),
     },
 ];
 

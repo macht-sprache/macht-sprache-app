@@ -1,4 +1,4 @@
-import { MDXProviderComponents } from '@mdx-js/react';
+import { MDXComponents } from 'mdx/types';
 import React, { createContext, useCallback, useContext } from 'react';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import CollapsableSection, { CollapsableSectionContainer } from '../../Layout/CollapsableSection';
@@ -34,7 +34,7 @@ const MdxLink = (props: React.ComponentProps<'a'>) => {
     return <a rel="noopener noreferrer" {...props} />;
 };
 
-const components: MDXProviderComponents = {
+const components: MDXComponents = {
     Button: props => <Button {...props} />,
     ButtonAnchor,
     ButtonContainer,
