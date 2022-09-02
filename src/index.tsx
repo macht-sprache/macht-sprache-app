@@ -4,7 +4,7 @@ import './vars.css';
 import './index.css';
 import './tooltip.css';
 import App from './App';
-import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react';
+import { MatomoProvider, createInstance } from '@jonkoops/matomo-tracker-react';
 
 const instance = createInstance({
     urlBase: 'https://piwik.volligohne.de/',
