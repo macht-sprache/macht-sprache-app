@@ -9,12 +9,14 @@
     margin-top: 8rem;
 }
 
-.box:nth-of-type(odd) .image {
-    grid-row: 1;
-}
+@media (min-width: 600px) {
+    .box:nth-of-type(odd) .image {
+        grid-row: 1;
+    }
 
-.box:nth-of-type(odd) .buttons {
-    justify-content: flex-start;
+    .box:nth-of-type(odd) .buttons {
+        justify-content: flex-start;
+    }
 }
 
 .boxTitle {
@@ -45,4 +47,25 @@
 
 .buttonDe {
     --buttonBorderColor: var(--colorLangB);
+}
+
+@media (max-width: 600px) {
+    .box {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        justify-items: center;
+    }
+
+    .buttons {
+        justify-content: center;
+    }
+
+    .image {
+        grid-row: 1;
+        width: 66%;
+    }
+
+    .box + .box {
+        margin-top: 4rem;
+    }
 }

@@ -13,3 +13,9 @@
     font-size: var(--fontSizeL);
     max-width: var(--singleColumnWidth);
 }
+
+@media (max-width: 600px) {
+    .claim {
+        font-size: var(--fontSizeM);
+    }
+}
