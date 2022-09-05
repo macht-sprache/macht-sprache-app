@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { ButtonLink } from '../../../components/Form/Button';
-import { EXTENSION, TERMS, TEXT_CHECKER } from '../../../routes';
+import { EXTENSION, MANIFESTO, TERMS, TEXT_CHECKER } from '../../../routes';
 import s from './style.module.css';
 import React from 'react';
 import textCheckerIllustration from './textChecker.svg';
 import termsAndDiscussion from './termsDiscussionHorizontal.svg';
 import googleDeepL from './googleDeepL.svg';
+import manifestoIllustration from './manifesto.svg';
 
 export default function TextCheckerAd() {
     const { t } = useTranslation();
@@ -48,6 +49,17 @@ export default function TextCheckerAd() {
                 image={googleDeepL}
             >
                 <p>{t('home.ad.extension.text')}</p>
+            </Box>
+            <Box
+                title={t('home.ad.manifesto.title')}
+                buttons={
+                    <>
+                        <ButtonLink to={MANIFESTO}>{t('home.ad.manifesto.read')}</ButtonLink>
+                    </>
+                }
+                image={manifestoIllustration}
+            >
+                <p>{t('home.ad.manifesto.text')}</p>
             </Box>
         </>
     );

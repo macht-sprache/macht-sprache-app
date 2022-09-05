@@ -335,7 +335,11 @@
                 "chrome": "Chrome",
                 "firefox": "Firefox"
             },
-            "manifesto": { "title": "Read out manifesto" }
+            "manifesto": {
+                "title": "Read out manifesto",
+                "text": "Read our manifesto. Here is some more teaser text, to make you click it. please! thanks.",
+                "read": "Read the Manifesto"
+            }
         }
     },
     "newsFeed": {
