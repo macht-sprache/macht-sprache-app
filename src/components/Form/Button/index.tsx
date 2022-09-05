@@ -5,7 +5,7 @@ import s from './style.module.css';
 
 type extraButtonProps = {
     primary?: boolean;
-    size?: 'small' | 'medium';
+    size?: 'small' | 'medium' | 'large';
     busy?: boolean;
 };
 
@@ -38,7 +38,7 @@ export function ButtonAnchor({ children, ...props }: ButtonAnchorProps) {
 }
 
 function getButtonClasses({ primary, size = 'medium', busy, className }: extraButtonProps & { className?: string }) {
-    return clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small', [s.busy]: busy }, className);
+    return clsx(s.button, s[size], { [s.buttonPrimary]: primary, [s.busy]: busy }, className);
 }
 
 type ButtonContainerProps = {

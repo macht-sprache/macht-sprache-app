@@ -52,6 +52,12 @@
     font-size: var(--fontSizeS);
 }
 
+.large {
+    padding: 0.7rem;
+    font-size: var(--fontSizeL);
+    font-weight: bold;
+}
+
 :global(.inputContainer) + .buttonContainer {
     margin-top: 1rem;
 }
