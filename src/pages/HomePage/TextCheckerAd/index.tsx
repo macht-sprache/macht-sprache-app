@@ -17,8 +17,12 @@ export default function TextCheckerAd() {
                 title={t('home.ad.textchecker.title')}
                 buttons={
                     <>
-                        <ButtonLink to={TEXT_CHECKER}>{t('home.ad.textchecker.ctaEn')}</ButtonLink>
-                        <ButtonLink to={TEXT_CHECKER}>{t('home.ad.textchecker.ctaDe')}</ButtonLink>
+                        <ButtonLink to={{ pathname: TEXT_CHECKER, state: { lang: 'en', text: '' } }}>
+                            {t('home.ad.textchecker.ctaEn')}
+                        </ButtonLink>
+                        <ButtonLink to={{ pathname: TEXT_CHECKER, state: { lang: 'de', text: '' } }}>
+                            {t('home.ad.textchecker.ctaDe')}
+                        </ButtonLink>
                     </>
                 }
                 image={textCheckerIllustration}
