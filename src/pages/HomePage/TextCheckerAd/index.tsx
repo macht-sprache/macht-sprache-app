@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { ButtonLink } from '../../../components/Form/Button';
-import { EXTENSION, MANIFESTO, TERMS, TEXT_CHECKER } from '../../../routes';
+import { ButtonAnchor, ButtonLink } from '../../../components/Form/Button';
+import { MANIFESTO, TERMS, TEXT_CHECKER } from '../../../routes';
 import s from './style.module.css';
 import React from 'react';
 import textCheckerIllustration from './textChecker.svg';
@@ -33,9 +33,7 @@ export default function TextCheckerAd() {
                 title={t('home.ad.terms.title')}
                 buttons={
                     <>
-                        <ButtonLink to={TERMS}>{t('home.ad.terms.all')}</ButtonLink>
-                        <ButtonLink to={TERMS}>{t('home.ad.terms.de')}</ButtonLink>
-                        <ButtonLink to={TERMS}>{t('home.ad.terms.en')}</ButtonLink>
+                        <ButtonLink to={TERMS}>{t('home.ad.terms.button')}</ButtonLink>
                     </>
                 }
                 image={termsAndDiscussion}
@@ -46,8 +44,18 @@ export default function TextCheckerAd() {
                 title={t('home.ad.extension.title')}
                 buttons={
                     <>
-                        <ButtonLink to={EXTENSION}>{t('home.ad.extension.chrome')}</ButtonLink>
-                        <ButtonLink to={EXTENSION}>{t('home.ad.extension.firefox')}</ButtonLink>
+                        <ButtonAnchor
+                            target="_blank"
+                            href="https://chrome.google.com/webstore/detail/machtsprache-for-sensitiv/dichlnekfmanlagciihdnkgiefppilol/"
+                        >
+                            {t('home.ad.extension.chrome')}
+                        </ButtonAnchor>
+                        <ButtonAnchor
+                            target="_blank"
+                            href="https://addons.mozilla.org/en-GB/firefox/addon/macht-sprache/"
+                        >
+                            {t('home.ad.extension.firefox')}
+                        </ButtonAnchor>
                     </>
                 }
                 image={googleDeepL}

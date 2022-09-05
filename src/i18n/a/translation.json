@@ -325,9 +325,7 @@
             "terms": {
                 "title": "Browse & discuss sensitive terms",
                 "text": "Browsing and discussing is fun! Lorem here is some Blindtext. Something to convince you. Browse and discuss terms:",
-                "all": "All",
-                "de": "EN",
-                "en": "DE"
+                "button": "Browse terms"
             },
             "extension": {
                 "title": "Check text in deepL & Google Translate",
