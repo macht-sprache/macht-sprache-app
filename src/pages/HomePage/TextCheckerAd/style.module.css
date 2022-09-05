@@ -38,3 +38,11 @@
     gap: 0.5rem;
     justify-content: flex-end;
 }
+
+.buttonEn {
+    --buttonBorderColor: var(--colorLangA);
+}
+
+.buttonDe {
+    --buttonBorderColor: var(--colorLangB);
+}

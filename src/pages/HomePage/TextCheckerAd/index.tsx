@@ -17,10 +17,20 @@ export default function TextCheckerAd() {
                 title={t('home.ad.textchecker.title')}
                 buttons={
                     <>
-                        <ButtonLink to={{ pathname: TEXT_CHECKER, state: { lang: 'en', text: '' } }}>
+                        <ButtonLink
+                            to={{ pathname: TEXT_CHECKER, state: { lang: 'en', text: '' } }}
+                            size="large"
+                            className={s.buttonEn}
+                            primary
+                        >
                             {t('home.ad.textchecker.ctaEn')}
                         </ButtonLink>
-                        <ButtonLink to={{ pathname: TEXT_CHECKER, state: { lang: 'de', text: '' } }}>
+                        <ButtonLink
+                            to={{ pathname: TEXT_CHECKER, state: { lang: 'de', text: '' } }}
+                            size="large"
+                            className={s.buttonDe}
+                            primary
+                        >
                             {t('home.ad.textchecker.ctaDe')}
                         </ButtonLink>
                     </>
@@ -33,7 +43,9 @@ export default function TextCheckerAd() {
                 title={t('home.ad.terms.title')}
                 buttons={
                     <>
-                        <ButtonLink to={TERMS}>{t('home.ad.terms.button')}</ButtonLink>
+                        <ButtonLink primary to={TERMS} size="large">
+                            {t('home.ad.terms.button')}
+                        </ButtonLink>
                     </>
                 }
                 image={termsAndDiscussion}
@@ -45,14 +57,18 @@ export default function TextCheckerAd() {
                 buttons={
                     <>
                         <ButtonAnchor
+                            primary
                             target="_blank"
                             href="https://chrome.google.com/webstore/detail/machtsprache-for-sensitiv/dichlnekfmanlagciihdnkgiefppilol/"
+                            size="large"
                         >
                             {t('home.ad.extension.chrome')}
                         </ButtonAnchor>
                         <ButtonAnchor
+                            primary
                             target="_blank"
                             href="https://addons.mozilla.org/en-GB/firefox/addon/macht-sprache/"
+                            size="large"
                         >
                             {t('home.ad.extension.firefox')}
                         </ButtonAnchor>
@@ -66,7 +82,9 @@ export default function TextCheckerAd() {
                 title={t('home.ad.manifesto.title')}
                 buttons={
                     <>
-                        <ButtonLink to={MANIFESTO}>{t('home.ad.manifesto.read')}</ButtonLink>
+                        <ButtonLink primary to={MANIFESTO} size="large">
+                            {t('home.ad.manifesto.read')}
+                        </ButtonLink>
                     </>
                 }
                 image={manifestoIllustration}
