@@ -1,16 +1,16 @@
-// import { Suspense } from 'react';
+import { Suspense } from 'react';
 // import { ErrorBoundary } from 'react-error-boundary';
-// import { useTranslation } from 'react-i18next';
-// import { ContentItemList } from '../../components/ContentItemList';
+import { useTranslation } from 'react-i18next';
+import { ContentItemList } from '../../components/ContentItemList';
 // import { ButtonContainer, ButtonLink } from '../../components/Form/Button';
 // import { useUser } from '../../hooks/appContext';
-// import { collections } from '../../hooks/data';
-// import { useCollection } from '../../hooks/fetch';
+import { collections } from '../../hooks/data';
+import { useCollection } from '../../hooks/fetch';
 // import { useWpPage } from '../../hooks/wp';
-// import { ColumnHeading, Columns } from '../../components/Layout/Columns';
+import { ColumnHeading, Columns, FullWidthColumn } from '../../components/Layout/Columns';
 // import { ABOUT, TERMS } from '../../routes';
 // import { Terms } from '../../components/Terms/TermsSmall';
-import { TermsWeekHighlights } from '../../components/Terms/TermsWeekHighlights';
+// import { TermsWeekHighlights } from '../../components/Terms/TermsWeekHighlights';
 // import { WpStyle } from '../../components/WpStyle';
 import { HomePageHeader } from './Header';
 // import s from './style.module.css';
@@ -32,8 +32,15 @@ export default function Home() {
     return (
         <>
             <HomePageHeader />
-            <TextCheckerAd />
-            <TermsWeekHighlights />
+            <FullWidthColumn>
+                <TextCheckerAd />
+            </FullWidthColumn>
+            <Columns>
+                <Suspense fallback={null}>
+                    <LatestActivity />
+                </Suspense>
+            </Columns>
+            {/* <TermsWeekHighlights /> */}
             {/* <Columns>
                 <div>
                     {user ? (
@@ -114,22 +121,23 @@ export default function Home() {
 //     );
 // }
 
-// function LatestActivity() {
-//     const { t } = useTranslation();
-//     const getComments = useCollection(collections.comments.orderBy('createdAt', 'desc').limit(10));
-//     const getTerms = useCollection(collections.terms.orderBy('createdAt', 'desc').limit(5));
-//     const getTranslations = useCollection(collections.translations.orderBy('createdAt', 'desc').limit(5));
-//     const getTranslationExamples = useCollection(collections.translationExamples.orderBy('createdAt', 'desc').limit(5));
+function LatestActivity() {
+    const { t } = useTranslation();
+    const getComments = useCollection(collections.comments.orderBy('createdAt', 'desc').limit(5));
+    const getTerms = useCollection(collections.terms.orderBy('createdAt', 'desc').limit(5));
+    const getTranslations = useCollection(collections.translations.orderBy('createdAt', 'desc').limit(5));
+    const getTranslationExamples = useCollection(collections.translationExamples.orderBy('createdAt', 'desc').limit(5));
 
-//     return (
-//         <>
-//             <ColumnHeading>{t('common.activity')}</ColumnHeading>
-//             <ContentItemList
-//                 comments={getComments()}
-//                 terms={getTerms()}
-//                 translations={getTranslations()}
-//                 translationExamples={getTranslationExamples()}
-//             />
-//         </>
-//     );
-// }
+    return (
+        <div>
+            <ColumnHeading>{t('home.activity')}</ColumnHeading>
+            <ContentItemList
+                comments={getComments()}
+                terms={getTerms()}
+                translations={getTranslations()}
+                translationExamples={getTranslationExamples()}
+                limit={5}
+            />
+        </div>
+    );
+}
