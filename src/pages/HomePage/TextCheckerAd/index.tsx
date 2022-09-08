@@ -17,21 +17,8 @@ export default function TextCheckerAd() {
                 title={t('home.ad.textchecker.title')}
                 buttons={
                     <>
-                        <ButtonLink
-                            to={{ pathname: TEXT_CHECKER, state: { lang: 'en', text: '' } }}
-                            size="large"
-                            className={s.buttonEn}
-                            primary
-                        >
-                            {t('home.ad.textchecker.ctaEn')}
-                        </ButtonLink>
-                        <ButtonLink
-                            to={{ pathname: TEXT_CHECKER, state: { lang: 'de', text: '' } }}
-                            size="large"
-                            className={s.buttonDe}
-                            primary
-                        >
-                            {t('home.ad.textchecker.ctaDe')}
+                        <ButtonLink to={{ pathname: TEXT_CHECKER }} size="large" className={s.buttonEn} primary>
+                            {t('home.ad.textchecker.button')}
                         </ButtonLink>
                     </>
                 }
@@ -44,8 +31,11 @@ export default function TextCheckerAd() {
                 buttons={
                     <>
                         <ButtonLink primary to={TERMS} size="large">
-                            {t('home.ad.terms.button')}
+                            {t('home.ad.terms.buttonBrowse')}
                         </ButtonLink>
+                        {/* <ButtonLink primary to={REGISTER} size="large">
+                            {t('home.ad.terms.buttonRegister')}
+                        </ButtonLink> */}
                     </>
                 }
                 image={termsAndDiscussion}
