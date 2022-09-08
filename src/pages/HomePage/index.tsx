@@ -14,7 +14,13 @@ import { ColumnHeading, Columns, FullWidthColumn } from '../../components/Layout
 // import { WpStyle } from '../../components/WpStyle';
 import { HomePageHeader } from './Header';
 // import s from './style.module.css';
-import TextCheckerAd from './TextCheckerAd';
+import { IllustrationSection } from './IllustrationSection';
+import { ButtonAnchor, ButtonLink } from '../../components/Form/Button';
+import textCheckerIllustration from './Illustrations/textChecker.svg';
+import termsAndDiscussion from './Illustrations/termsDiscussionHorizontal.svg';
+import googleDeepL from './Illustrations/googleDeepL.svg';
+import manifestoIllustration from './Illustrations/manifesto.svg';
+import { MANIFESTO, TERMS, TEXT_CHECKER } from '../../routes';
 
 // const ABOUT_SLUGS = {
 //     en: 'about-macht-sprache-short-version-landing-page',
@@ -28,12 +34,80 @@ import TextCheckerAd from './TextCheckerAd';
 
 export default function Home() {
     // const user = useUser();
+    const { t } = useTranslation();
 
     return (
         <>
             <HomePageHeader />
             <FullWidthColumn>
-                <TextCheckerAd />
+                <IllustrationSection
+                    title={t('home.ad.textchecker.title')}
+                    buttons={
+                        <>
+                            <ButtonLink to={{ pathname: TEXT_CHECKER }} size="large" primary>
+                                {t('home.ad.textchecker.button')}
+                            </ButtonLink>
+                        </>
+                    }
+                    image={textCheckerIllustration}
+                >
+                    <p>{t('home.ad.textchecker.text')}</p>
+                </IllustrationSection>
+                <IllustrationSection
+                    title={t('home.ad.terms.title')}
+                    buttons={
+                        <>
+                            <ButtonLink primary to={TERMS} size="large">
+                                {t('home.ad.terms.buttonBrowse')}
+                            </ButtonLink>
+                            {/* <ButtonLink primary to={REGISTER} size="large">
+                            {t('home.ad.terms.buttonRegister')}
+                        </ButtonLink> */}
+                        </>
+                    }
+                    image={termsAndDiscussion}
+                >
+                    <p>{t('home.ad.terms.text')}</p>
+                </IllustrationSection>
+                <IllustrationSection
+                    title={t('home.ad.extension.title')}
+                    buttons={
+                        <>
+                            <ButtonAnchor
+                                primary
+                                target="_blank"
+                                href="https://chrome.google.com/webstore/detail/machtsprache-for-sensitiv/dichlnekfmanlagciihdnkgiefppilol/"
+                                size="large"
+                            >
+                                {t('home.ad.extension.chrome')}
+                            </ButtonAnchor>
+                            <ButtonAnchor
+                                primary
+                                target="_blank"
+                                href="https://addons.mozilla.org/en-GB/firefox/addon/macht-sprache/"
+                                size="large"
+                            >
+                                {t('home.ad.extension.firefox')}
+                            </ButtonAnchor>
+                        </>
+                    }
+                    image={googleDeepL}
+                >
+                    <p>{t('home.ad.extension.text')}</p>
+                </IllustrationSection>
+                <IllustrationSection
+                    title={t('home.ad.manifesto.title')}
+                    buttons={
+                        <>
+                            <ButtonLink primary to={MANIFESTO} size="large">
+                                {t('home.ad.manifesto.read')}
+                            </ButtonLink>
+                        </>
+                    }
+                    image={manifestoIllustration}
+                >
+                    <p>{t('home.ad.manifesto.text')}</p>
+                </IllustrationSection>
             </FullWidthColumn>
             <Columns>
                 <Suspense fallback={null}>

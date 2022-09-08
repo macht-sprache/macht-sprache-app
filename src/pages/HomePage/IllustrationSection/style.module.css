@@ -41,14 +41,6 @@
     justify-content: flex-end;
 }
 
-.buttonEn {
-    --buttonBorderColor: var(--colorLangA);
-}
-
-.buttonDe {
-    --buttonBorderColor: var(--colorLangB);
-}
-
 @media (max-width: 600px) {
     .box {
         grid-template-columns: 1fr;
