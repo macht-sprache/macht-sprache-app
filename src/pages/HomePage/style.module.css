@@ -5,3 +5,21 @@
 .button {
     margin-top: 1rem;
 }
+
+.finalCTA {
+    display: flex;
+    justify-content: center;
+    margin: 8rem 0;
+}
+
+.finalCTAHeading {
+    margin: 0 0 1rem;
+    font-size: var(--fontSizeL);
+}
+
+.finalCTABox {
+    border: var(--orange) solid 1px;
+    background: var(--white);
+    padding: 1rem;
+    max-width: 500px;
+}

@@ -1,32 +1,30 @@
 import { Suspense } from 'react';
-// import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { ContentItemList } from '../../components/ContentItemList';
-// import { ButtonContainer, ButtonLink } from '../../components/Form/Button';
 // import { useUser } from '../../hooks/appContext';
 import { collections } from '../../hooks/data';
 import { useCollection } from '../../hooks/fetch';
-// import { useWpPage } from '../../hooks/wp';
+import { useWpPage } from '../../hooks/wp';
 import { ColumnHeading, Columns, FullWidthColumn } from '../../components/Layout/Columns';
-// import { ABOUT, TERMS } from '../../routes';
 // import { Terms } from '../../components/Terms/TermsSmall';
 // import { TermsWeekHighlights } from '../../components/Terms/TermsWeekHighlights';
-// import { WpStyle } from '../../components/WpStyle';
+import { WpStyle } from '../../components/WpStyle';
 import { HomePageHeader } from './Header';
-// import s from './style.module.css';
+import s from './style.module.css';
 import { IllustrationSection } from './IllustrationSection';
-import { ButtonAnchor, ButtonLink } from '../../components/Form/Button';
+import { ButtonContainer, ButtonAnchor, ButtonLink } from '../../components/Form/Button';
 import textCheckerIllustration from './Illustrations/textChecker.svg';
 import termsAndDiscussion from './Illustrations/termsDiscussionHorizontal.svg';
 import googleDeepL from './Illustrations/googleDeepL.svg';
 import manifestoIllustration from './Illustrations/manifesto.svg';
-import { MANIFESTO, TERMS, TEXT_CHECKER } from '../../routes';
+import { ABOUT, MANIFESTO, REGISTER, TERMS, TEXT_CHECKER } from '../../routes';
 import { LogoBar } from './LogoBar';
 
-// const ABOUT_SLUGS = {
-//     en: 'about-macht-sprache-short-version-landing-page',
-//     de: 'ueber-macht-sprache-kurzversion-startseite',
-// };
+const ABOUT_SLUGS = {
+    en: 'about-macht-sprache-short-version-landing-page',
+    de: 'ueber-macht-sprache-kurzversion-startseite',
+};
 
 // const EVENT_SLUGS = {
 //     en: 'macht-sprache-events-short-version-landing-page',
@@ -115,7 +113,21 @@ export default function Home() {
                 <Suspense fallback={null}>
                     <LatestActivity />
                 </Suspense>
+                <About />
             </Columns>
+            <FullWidthColumn>
+                <section className={s.finalCTA}>
+                    <div className={s.finalCTABox}>
+                        <h1 className={s.finalCTAHeading}>Are you signing up yet?!</h1>
+                        <p>Here are some more convincing words to get you to sign up. Please!!</p>
+                        <ButtonContainer align="center">
+                            <ButtonLink to={REGISTER} primary size="large">
+                                Sign up!
+                            </ButtonLink>
+                        </ButtonContainer>
+                    </div>
+                </section>
+            </FullWidthColumn>
             {/* <TermsWeekHighlights /> */}
             {/* <Columns>
                 <div>
@@ -166,22 +178,24 @@ export default function Home() {
 //     );
 // }
 
-// function About() {
-//     const getPage = useWpPage(ABOUT_SLUGS);
-//     const { t } = useTranslation();
+function About() {
+    const getPage = useWpPage(ABOUT_SLUGS);
+    const { t } = useTranslation();
 
-//     return (
-//         <ErrorBoundary fallbackRender={() => null}>
-//             <Suspense fallback={null}>
-//                 <ColumnHeading>{t('home.about')}</ColumnHeading>
-//                 <WpStyle body={getPage().body} />
-//                 <ButtonContainer align="left">
-//                     <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
-//                 </ButtonContainer>
-//             </Suspense>
-//         </ErrorBoundary>
-//     );
-// }
+    return (
+        <section>
+            <ErrorBoundary fallbackRender={() => null}>
+                <Suspense fallback={null}>
+                    <ColumnHeading>{t('home.about')}</ColumnHeading>
+                    <WpStyle body={getPage().body} />
+                    <ButtonContainer align="left">
+                        <ButtonLink to={ABOUT}>{t('home.moreAbout')}</ButtonLink>
+                    </ButtonContainer>
+                </Suspense>
+            </ErrorBoundary>
+        </section>
+    );
+}
 
 // function Events() {
 //     const getPage = useWpPage(EVENT_SLUGS);
@@ -205,7 +219,7 @@ function LatestActivity() {
     const getTranslationExamples = useCollection(collections.translationExamples.orderBy('createdAt', 'desc').limit(5));
 
     return (
-        <div>
+        <section>
             <ColumnHeading>{t('home.activity')}</ColumnHeading>
             <ContentItemList
                 comments={getComments()}
@@ -214,6 +228,6 @@ function LatestActivity() {
                 translationExamples={getTranslationExamples()}
                 limit={5}
             />
-        </div>
+        </section>
     );
 }
