@@ -10,7 +10,6 @@ const getButton = (stableParent: HTMLElement) =>
         attachElement: (el, parent) => {
             const buttonRow = parent.querySelector('[dl-test="translator-target-toolbar"]');
             buttonRow?.append(el);
-            console.log(parent);
         },
         validateInput: ({ status, results }) => (status ? { status, results: results ?? 0 } : null),
         render: ({ status, results }, el) => {

@@ -76,8 +76,6 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
                 },
             };
 
-            console.log('update', newEnv);
-
             if (isEqual(envRef.current, newEnv)) {
                 return;
             }
