@@ -1,0 +1,30 @@
+.container {
+    margin-bottom: 8rem;
+}
+
+.heading {
+    margin: 0 0 1rem;
+    font-size: inherit;
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.logos {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 4rem;
+}
+
+.logoWrapper {
+    display: flex;
+    max-width: 8rem;
+}
+
+.logo {
+    width: 100%;
+}

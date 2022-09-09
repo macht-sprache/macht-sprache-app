@@ -21,6 +21,7 @@ import termsAndDiscussion from './Illustrations/termsDiscussionHorizontal.svg';
 import googleDeepL from './Illustrations/googleDeepL.svg';
 import manifestoIllustration from './Illustrations/manifesto.svg';
 import { MANIFESTO, TERMS, TEXT_CHECKER } from '../../routes';
+import { LogoBar } from './LogoBar';
 
 // const ABOUT_SLUGS = {
 //     en: 'about-macht-sprache-short-version-landing-page',
@@ -53,6 +54,7 @@ export default function Home() {
                 >
                     <p>{t('home.ad.textchecker.text')}</p>
                 </IllustrationSection>
+                <LogoBar />
                 <IllustrationSection
                     title={t('home.ad.terms.title')}
                     buttons={
