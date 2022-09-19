@@ -203,6 +203,21 @@ service cloud.firestore {
       }
     }
 
+    function isValidTermRelation() {
+      let data = request.resource.data;
+      return data.keys().hasOnly(['terms', 'creator', 'createdAt']) &&
+        data.createdAt == request.time &&
+        data.terms is list &&
+        data.terms[0] is path &&
+        data.terms[1] is path;
+    }
+
+    match /termRelations/{termRelation} {
+      allow read: if true;
+      allow create: if isValidatedUser() && isCreator() && isAdmin() && isValidTermRelation();
+      allow delete: if isValidatedUser() && (isAdmin() || isCreator());
+    }
+
     match /termIndex/{termIndex} {
       allow read: if true;
     }
