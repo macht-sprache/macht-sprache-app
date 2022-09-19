@@ -82,7 +82,7 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
         } = snapshot.data(defaultSnapshotOptions);
         return {
             id: snapshot.id,
-            relatedTerms,
+            relatedTerms: (relatedTerms ?? []).map(addConverterToRef),
             creator,
             createdAt,
             value,

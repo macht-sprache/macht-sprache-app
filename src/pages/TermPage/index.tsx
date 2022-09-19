@@ -2,7 +2,7 @@ import firebase from 'firebase/compat/app';
 import xor from 'lodash/xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import DividedList from '../../components/DividedList';
@@ -26,10 +26,10 @@ import { TranslationsList } from '../../components/TranslationsList';
 import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import { useAppContext } from '../../hooks/appContext';
 import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
-import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
+import { Get, GetList, useCollection, useDocument, useDocuments } from '../../hooks/fetch';
 import { langA, langB } from '../../languages';
 import { Guideline, guidelineKeys, useGuidelines } from '../../Manifesto/guidelines/guidelines';
-import { MANIFESTO } from '../../routes';
+import { MANIFESTO, TERM } from '../../routes';
 import { Lang, Source, Term, Translation, User } from '../../types';
 import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
@@ -65,6 +65,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
     const definition = term.definition[lang === langA ? 'langA' : 'langB'];
     const getGuidelines = useGuidelines(term.guidelines);
+    const getRelatedTerms = useDocuments(term.relatedTerms);
 
     return (
         <>
@@ -108,6 +109,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         )}
                         <Suspense fallback={null}>
                             <Guidelines getGuidelines={getGuidelines} />
+                            <RelatedTerms getRelatedTerms={getRelatedTerms} />
                         </Suspense>
                     </>
                 }
@@ -199,6 +201,27 @@ function Guidelines({ getGuidelines }: { getGuidelines: () => Guideline[] }) {
                 {guidelines.map(guideline => (
                     <Link className={s.guideline} key={guideline.id} to={`${MANIFESTO}#${guideline.id}`}>
                         {guideline.title}
+                    </Link>
+                ))}
+            </div>
+        </>
+    );
+}
+
+function RelatedTerms({ getRelatedTerms }: { getRelatedTerms: GetList<Term> }) {
+    const relatedTerms = getRelatedTerms();
+
+    if (!relatedTerms.length) {
+        return null;
+    }
+
+    return (
+        <>
+            <h3 className={s.guidelineHeading}>Related Terms</h3>
+            <div className={s.guidelines}>
+                {relatedTerms.map(term => (
+                    <Link to={generatePath(TERM, { termId: term.id })} key={term.id}>
+                        <TermWithLang term={term} />
                     </Link>
                 ))}
             </div>
