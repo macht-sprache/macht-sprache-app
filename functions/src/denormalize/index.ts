@@ -1,8 +1,63 @@
+import { DocumentReference, QueryDocumentSnapshot } from '@google-cloud/firestore';
 import { firestore } from 'firebase-admin';
-import { clamp, uniqWith } from 'rambdax';
+import { clamp, uniqWith, take } from 'rambdax';
 import { RATING_STEPS } from '../../../src/constants';
 import type { Comment, Rating, Translation } from '../../../src/types';
 import { db, functions, logger, WithoutId } from '../firebase';
+
+type Term = {
+    relatedTerms: DocumentReference<Term>[];
+};
+
+type TermRelation = {
+    terms: [DocumentReference<Term>, DocumentReference<Term>];
+};
+
+const denormalizeTermRelations = async (
+    snapshot: QueryDocumentSnapshot,
+    updateFn: (
+        term: Term,
+        termRef: DocumentReference<Term>,
+        termRefs: DocumentReference<Term>[]
+    ) => DocumentReference<Term>[]
+) => {
+    const termRelation = snapshot.data() as TermRelation;
+    const termRefs = take(2, termRelation.terms);
+
+    await db.runTransaction(async t => {
+        const termSnaps = await t.getAll(...termRefs);
+        termSnaps.forEach(termSnap => {
+            const term = termSnap.data();
+            if (!term) {
+                return;
+            }
+
+            t.update(termSnap.ref, {
+                relatedTerms: uniqueRefs(updateFn(term, termSnap.ref, termRefs)),
+            });
+        });
+    });
+};
+
+export const denormalizeTermRelationsCreate = functions.firestore
+    .document('/termRelations/{termRelationsId}')
+    .onCreate(async (snapshot, { resource }) => {
+        logger.info('Denormalizing related terms on termRelation create', { resource });
+
+        await denormalizeTermRelations(snapshot, (term, termRef, termRefs) =>
+            [...term.relatedTerms, ...termRefs].filter(ref => !ref.isEqual(termRef))
+        );
+    });
+
+export const denormalizeTermRelationsDelete = functions.firestore
+    .document('/termRelations/{termRelationsId}')
+    .onDelete(async (snapshot, { resource }) => {
+        logger.info('Denormalizing related terms on termRelation delete', { resource });
+
+        await denormalizeTermRelations(snapshot, (term, termRef, termRefs) =>
+            term.relatedTerms.filter(ref => !termRefs.some(termRef => termRef.isEqual(ref)))
+        );
+    });
 
 export const denormalizeCommentCount = functions.firestore
     .document('/comments/{commentId}')
