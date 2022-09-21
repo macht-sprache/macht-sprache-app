@@ -1,13 +1,21 @@
 .container {
+    display: flex;
+    justify-content: center;
     margin-bottom: 8rem;
 }
 
+.inner {
+    border: var(--orange) var(--thickBorder) solid;
+    background: var(--white);
+}
+
 .heading {
-    margin: 0 0 1rem;
+    margin: 0;
     font-size: inherit;
-    text-align: center;
     font-weight: normal;
     font-style: italic;
+    padding: 1rem;
+    background: var(--orange);
 }
 
 .logos {
@@ -15,9 +23,9 @@
     justify-content: center;
     gap: 2rem;
     list-style: none;
-    padding: 0;
+    padding: 1rem 2rem;
     margin: 0;
-    height: 4rem;
+    height: 8rem;
 }
 
 .logoWrapper {

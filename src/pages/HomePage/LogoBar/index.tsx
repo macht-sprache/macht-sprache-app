@@ -21,14 +21,16 @@ const logos = [
 export function LogoBar() {
     return (
         <section className={s.container}>
-            <h1 className={s.heading}>Supported by</h1>
-            <ul className={s.logos}>
-                {logos.map(({ img, label }) => (
-                    <li className={s.logoWrapper} key={img}>
-                        <img className={s.logo} src={img} alt={label} />
-                    </li>
-                ))}
-            </ul>
+            <div className={s.inner}>
+                <h1 className={s.heading}>Supported by</h1>
+                <ul className={s.logos}>
+                    {logos.map(({ img, label }) => (
+                        <li className={s.logoWrapper} key={img}>
+                            <img className={s.logo} src={img} alt={label} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </section>
     );
 }
