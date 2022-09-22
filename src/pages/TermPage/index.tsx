@@ -19,6 +19,7 @@ import Linkify from '../../components/Linkify';
 import { ModalDialog } from '../../components/ModalDialog';
 import PageTitle from '../../components/PageTitle';
 import { Redact, useRedacted } from '../../components/RedactSensitiveTerms';
+import RelatedTermsModal from '../../components/RelatedTermsModal';
 import Share from '../../components/Share';
 import SidebarTermRedirectWrapper from '../../components/SidebarTermRedirectWrapper';
 import { TermWithLang } from '../../components/TermWithLang';
@@ -93,6 +94,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                     indexRef={collections.termIndex.doc(term.id)}
                                 />
                             )}
+                            {userProperties?.admin && <EditRelatedTerms term={term} />}
                             {canDelete && <DeleteTerm term={term} />}
                         </DividedList>
 
@@ -204,6 +206,16 @@ function Guidelines({ getGuidelines }: { getGuidelines: () => Guideline[] }) {
                     </Link>
                 ))}
             </div>
+        </>
+    );
+}
+
+function EditRelatedTerms({ term }: { term: Term }) {
+    const [showModel, setShowModal] = useState(false);
+    return (
+        <>
+            <LinkButton onClick={() => setShowModal(true)}>Edit Related</LinkButton>
+            {showModel && <RelatedTermsModal term={term} onClose={() => setShowModal(false)} />}
         </>
     );
 }
