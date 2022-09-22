@@ -16,7 +16,6 @@ import AdminPage from './pages/AdminPage/lazy';
 import ElementTestPage from './pages/ElementTestPage/lazy';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
-import { HomePagePreLaunch } from './pages/HomePage/HomePagePreLaunch';
 import LoginPage from './pages/LoginPage';
 import ManifestoPage from './pages/ManifestoPage/lazy';
 import { NewsPage } from './pages/NewsPage';
@@ -54,8 +53,6 @@ function App() {
 }
 
 function AppRouter() {
-    const launched = useLaunched();
-
     return (
         <Router>
             <PageTitleProvider>
@@ -64,7 +61,7 @@ function AppRouter() {
                         <Suspense fallback={<PageLoadingState />}>
                             <Switch>
                                 <Route path={routes.HOME} exact>
-                                    {launched ? <HomePage /> : <HomePagePreLaunch />}
+                                    <HomePage />
                                 </Route>
                                 <Route path={routes.REGISTER} exact>
                                     <RegisterPage />
