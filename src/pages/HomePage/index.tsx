@@ -40,36 +40,36 @@ export default function Home() {
             <HomePageHeader />
             <FullWidthColumn>
                 <IllustrationSection
-                    title={t('home.ad.textchecker.title')}
+                    title={t('home.sections.textchecker.title')}
                     buttons={
                         <>
                             <ButtonLink to={{ pathname: TEXT_CHECKER }} size="large" primary>
-                                {t('home.ad.textchecker.button')}
+                                {t('home.sections.textchecker.button')}
                             </ButtonLink>
                         </>
                     }
                     image={textCheckerIllustration}
                 >
-                    <p>{t('home.ad.textchecker.text')}</p>
+                    <p>{t('home.sections.textchecker.text')}</p>
                 </IllustrationSection>
                 <IllustrationSection
-                    title={t('home.ad.terms.title')}
+                    title={t('home.sections.terms.title')}
                     buttons={
                         <>
                             <ButtonLink primary to={TERMS} size="large">
-                                {t('home.ad.terms.buttonBrowse')}
+                                {t('home.sections.terms.buttonBrowse')}
                             </ButtonLink>
                             {/* <ButtonLink primary to={REGISTER} size="large">
-                            {t('home.ad.terms.buttonRegister')}
+                            {t('home.sections.terms.buttonRegister')}
                         </ButtonLink> */}
                         </>
                     }
                     image={termsAndDiscussion}
                 >
-                    <p>{t('home.ad.terms.text')}</p>
+                    <p>{t('home.sections.terms.text')}</p>
                 </IllustrationSection>
                 <IllustrationSection
-                    title={t('home.ad.extension.title')}
+                    title={t('home.sections.extension.title')}
                     buttons={
                         <>
                             <ButtonAnchor
@@ -78,7 +78,7 @@ export default function Home() {
                                 href="https://chrome.google.com/webstore/detail/machtsprache-for-sensitiv/dichlnekfmanlagciihdnkgiefppilol/"
                                 size="large"
                             >
-                                {t('home.ad.extension.chrome')}
+                                {t('home.sections.extension.chrome')}
                             </ButtonAnchor>
                             <ButtonAnchor
                                 primary
@@ -86,13 +86,13 @@ export default function Home() {
                                 href="https://addons.mozilla.org/en-GB/firefox/addon/macht-sprache/"
                                 size="large"
                             >
-                                {t('home.ad.extension.firefox')}
+                                {t('home.sections.extension.firefox')}
                             </ButtonAnchor>
                         </>
                     }
                     image={googleDeepL}
                 >
-                    <p>{t('home.ad.extension.text')}</p>
+                    <p>{t('home.sections.extension.text')}</p>
                 </IllustrationSection>
                 <LogoBar />
             </FullWidthColumn>

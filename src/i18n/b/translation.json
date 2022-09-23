@@ -310,7 +310,7 @@
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
         "claim": "Unterstützung für den Umgang mit politisch sensibler Sprache",
-        "ad": {
+        "sections": {
             "textchecker": {
                 "title": "Texte prüfen lassen",
                 "text": "Bist du dir unsicher, ob dein Text verletzende oder beleidigende Begriffe beinhaltet? Unser Text Checker markiert sensible Begriffe auf Basis der macht.sprache.-Datenbank und unterstützt bei der Wortwahl.",
