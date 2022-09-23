@@ -309,12 +309,23 @@
         "termsOfTheWeekDescription": "Jede Woche legen wir einen besonderen Fokus auf bestimmte Begriffe. Diese Woche:",
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
-        "claim": "Hilft bei den Herausforderungen politisch sensibler Sprache",
+        "claim": "Unterstützung für den Umgang mit politisch sensibler Sprache",
         "ad": {
-            "heading": "Was wir anbieten",
-            "textchecker": "Lass deinen Text automatisch überprüfen",
-            "textcheckerCtaEn": "In English",
-            "textcheckerCtaDe": "In Eerman"
+            "textchecker": {
+                "title": "Texte prüfen lassen",
+                "text": "Bist du dir unsicher, ob dein Text verletzende oder beleidigende Begriffe beinhaltet? Unser Text Checker markiert sensible Begriffe auf Basis der macht.sprache.-Datenbank und unterstützt bei der Wortwahl.",
+                "button": "Prüfe deinen Text"
+            },
+            "terms": {
+                "title": "Begriffe kennenlernen & diskutieren",
+                "text": "Werde ein aktives Mitglied der macht.sprache. Community! macht.sprache. basiert auf kollaborativem Wissen. Beteilige dich: Trage neue Begriffe ein, bewerte und diskutiere sie.",
+                "buttonBrowse": "Schaue die Begriffe an",
+                "buttonRegister": "Registriere dich als Mitglied!"
+            },
+            "extension": {
+                "title": "Die Erweiterungen für DeepL und Google Translate benutzen",
+                "text": "Integriere macht.sprache. in bestehende Übersetzungsprogramme und erhalte ohne Mehraufwand Hinweise zu sensiblen Begriffen."
+            }
         }
     },
     "newsFeed": {

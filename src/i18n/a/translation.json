@@ -324,20 +324,15 @@
             },
             "terms": {
                 "title": "Browse and discuss sensitive terms",
-                "text": "Become an active member of our community! macht.sprache. is built on collaborative knowledge and discussion. Get involved: upload a term, ask a question, make a comment.",
+                "text": "Become an active member of the macht.sprache. community! The platform is built on collaborative knowledge and discussion. Get involved: upload a term, ask a question, make a comment.",
                 "buttonBrowse": "Browse terms",
                 "buttonRegister": "Register to participate"
             },
             "extension": {
-                "title": "Get extensions for deepL and Google Translate",
+                "title": "Get extensions for DeepL and Google Translate",
                 "text": "Integrate macht.sprache. into your use of existing translation tools and get help with sensitive language without any added effort!",
                 "chrome": "Chrome",
                 "firefox": "Firefox"
-            },
-            "manifesto": {
-                "title": "Check out our manifesto",
-                "text": "We provide support in handling sensitive language, but the final choice is up to you. Our manifesto provides you with general guidelines to help you make your decision.",
-                "read": "Read the Manifesto"
             }
         }
     },

@@ -95,19 +95,6 @@ export default function Home() {
                     <p>{t('home.ad.extension.text')}</p>
                 </IllustrationSection>
                 <LogoBar />
-                <IllustrationSection
-                    title={t('home.ad.manifesto.title')}
-                    buttons={
-                        <>
-                            <ButtonLink primary to={MANIFESTO} size="large">
-                                {t('home.ad.manifesto.read')}
-                            </ButtonLink>
-                        </>
-                    }
-                    image={manifestoIllustration}
-                >
-                    <p>{t('home.ad.manifesto.text')}</p>
-                </IllustrationSection>
             </FullWidthColumn>
             <Columns>
                 <Suspense fallback={null}>
