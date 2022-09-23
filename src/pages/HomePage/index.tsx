@@ -20,6 +20,7 @@ import googleDeepL from './Illustrations/googleDeepL.svg';
 import manifestoIllustration from './Illustrations/manifesto.svg';
 import { ABOUT, MANIFESTO, REGISTER, TERMS, TEXT_CHECKER } from '../../routes';
 import { LogoBar } from './LogoBar';
+import { RegisterForm } from '../RegisterPage';
 
 const ABOUT_SLUGS = {
     en: 'about-macht-sprache-short-version-landing-page',
@@ -106,12 +107,7 @@ export default function Home() {
                 <section className={s.finalCTA}>
                     <div className={s.finalCTABox}>
                         <h1 className={s.finalCTAHeading}>Are you signing up yet?!</h1>
-                        <p>Here are some more convincing words to get you to sign up. Please!!</p>
-                        <ButtonContainer align="center">
-                            <ButtonLink to={REGISTER} primary size="large">
-                                Sign up!
-                            </ButtonLink>
-                        </ButtonContainer>
+                        <RegisterForm />
                     </div>
                 </section>
             </FullWidthColumn>
