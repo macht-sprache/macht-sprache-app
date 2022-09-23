@@ -17,8 +17,7 @@ import { ButtonContainer, ButtonAnchor, ButtonLink } from '../../components/Form
 import textCheckerIllustration from './Illustrations/textChecker.svg';
 import termsAndDiscussion from './Illustrations/termsDiscussionHorizontal.svg';
 import googleDeepL from './Illustrations/googleDeepL.svg';
-import manifestoIllustration from './Illustrations/manifesto.svg';
-import { ABOUT, MANIFESTO, REGISTER, TERMS, TEXT_CHECKER } from '../../routes';
+import { ABOUT, TERMS, TEXT_CHECKER } from '../../routes';
 import { LogoBar } from './LogoBar';
 import { RegisterForm } from '../RegisterPage';
 
