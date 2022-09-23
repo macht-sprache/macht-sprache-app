@@ -52,7 +52,6 @@ export default function Home() {
                 >
                     <p>{t('home.ad.textchecker.text')}</p>
                 </IllustrationSection>
-                <LogoBar />
                 <IllustrationSection
                     title={t('home.ad.terms.title')}
                     buttons={
@@ -95,6 +94,7 @@ export default function Home() {
                 >
                     <p>{t('home.ad.extension.text')}</p>
                 </IllustrationSection>
+                <LogoBar />
                 <IllustrationSection
                     title={t('home.ad.manifesto.title')}
                     buttons={

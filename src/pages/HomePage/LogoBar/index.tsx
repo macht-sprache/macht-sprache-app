@@ -2,6 +2,7 @@ import s from './style.module.css';
 import PTF from './Logos/PrototypeFund.svg';
 import senat from './Logos/senat_en.svg';
 import wikimedia from './Logos/wikimedia-de-logo.svg';
+import { useTranslation } from 'react-i18next';
 
 const logos = [
     {
@@ -19,10 +20,12 @@ const logos = [
 ];
 
 export function LogoBar() {
+    const { t } = useTranslation();
+
     return (
         <section className={s.container}>
             <div className={s.inner}>
-                <h1 className={s.heading}>Supported by</h1>
+                <h1 className={s.heading}>{t('home.logos')}</h1>
                 <ul className={s.logos}>
                     {logos.map(({ img, label }) => (
                         <li className={s.logoWrapper} key={img}>

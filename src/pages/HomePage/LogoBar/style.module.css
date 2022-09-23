@@ -5,27 +5,26 @@
 }
 
 .inner {
-    border: var(--orange) var(--thickBorder) solid;
+    border: var(--orange) var(--thinBorder) solid;
     background: var(--white);
+    padding: 1rem;
 }
 
 .heading {
-    margin: 0;
+    margin: 0 0 1rem;
     font-size: inherit;
     font-weight: normal;
     font-style: italic;
-    padding: 1rem;
-    background: var(--orange);
 }
 
 .logos {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 2rem;
     list-style: none;
-    padding: 1rem 2rem;
+    padding: 0 1rem;
     margin: 0;
-    height: 8rem;
 }
 
 .logoWrapper {
@@ -35,4 +34,6 @@
 
 .logo {
     width: 100%;
+
+    height: 6rem;
 }
