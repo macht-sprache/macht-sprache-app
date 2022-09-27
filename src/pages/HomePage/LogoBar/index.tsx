@@ -19,7 +19,7 @@ const logosSupporters: Logo[] = [
     },
     {
         img: wikimedia,
-        label: 'Wikimedia Deutschland',
+        label: 'Unlock – a project by Wikimedia Deutschland e.V.',
     },
 ];
 
