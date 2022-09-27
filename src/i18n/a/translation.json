@@ -127,7 +127,7 @@
         },
         "register": {
             "title": "Sign Up",
-            "intro": "The user name will be public. You are free to decide whether you want to appear under a pseudonym or under your real name, and if so, with which identity you will be recognized.",
+            "intro": "Signing up allows you to become an active member of our community and participate in the ongoing discussions. You decide if you want to use your real name or a pseudonym, and we don’t share your email address or data with anyone.",
             "termsAndPrivacy": "By registering you agree to our <TermsLink>terms</TermsLink> and <PrivacyLink>privacy policy</PrivacyLink>.",
             "newsletter": "Send me a newsletter about macht.sprache. and poco.lit. from time to time. Every mail contains a link to unsubscribe."
         },
@@ -307,6 +307,7 @@
         "news": "News",
         "about": "About the project",
         "events": "Events",
+        "signup": "Have you signed up yet?",
         "signUpPreLaunch": "Launch on March 14th – Sign up now!",
         "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified about the launch event. Optionally, you can also sign up for the poco.lit. newsletter.",
         "termsOfTheWeek": "Terms of the week",

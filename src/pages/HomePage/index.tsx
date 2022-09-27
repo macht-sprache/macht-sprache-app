@@ -20,6 +20,7 @@ import googleDeepL from './Illustrations/googleDeepL.svg';
 import { ABOUT, TERMS, TEXT_CHECKER } from '../../routes';
 import { LogoBar } from './LogoBar';
 import { RegisterForm } from '../RegisterPage';
+import { useUser } from '../../hooks/appContext';
 
 const ABOUT_SLUGS = {
     en: 'about-macht-sprache-short-version-landing-page',
@@ -32,7 +33,7 @@ const ABOUT_SLUGS = {
 // };
 
 export default function Home() {
-    // const user = useUser();
+    const user = useUser();
     const { t } = useTranslation();
 
     return (
@@ -102,14 +103,16 @@ export default function Home() {
                 </Suspense>
                 <About />
             </Columns>
-            <FullWidthColumn>
-                <section className={s.finalCTA}>
-                    <div className={s.finalCTABox}>
-                        <h1 className={s.finalCTAHeading}>Are you signing up yet?!</h1>
-                        <RegisterForm />
-                    </div>
-                </section>
-            </FullWidthColumn>
+            {!user && (
+                <FullWidthColumn>
+                    <section className={s.finalCTA}>
+                        <div className={s.finalCTABox}>
+                            <h1 className={s.finalCTAHeading}>{t('home.signup')}</h1>
+                            <RegisterForm />
+                        </div>
+                    </section>
+                </FullWidthColumn>
+            )}
             {/* <TermsWeekHighlights /> */}
             {/* <Columns>
                 <div>
