@@ -5,6 +5,9 @@
 }
 
 .inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 1rem;
     border: var(--orange) var(--thinBorder) solid;
     background: var(--white);
     padding: 1rem;

@@ -310,6 +310,10 @@
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
         "claim": "Unterstützung für den Umgang mit politisch sensibler Sprache",
+        "logos": {
+            "supporters": "Unterstützung",
+            "coorporationPartners": "Partner"
+        },
         "sections": {
             "textchecker": {
                 "title": "Texte prüfen lassen",
