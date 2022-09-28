@@ -2,6 +2,7 @@ import s from './style.module.css';
 import PTF from './Logos/PrototypeFund.svg';
 import senat from './Logos/senat_en.svg';
 import goethe from './Logos/goethe.svg';
+import deeptech from './Logos/deeptech.png';
 import wikimedia from './Logos/wikimedia-de-logo.svg';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
@@ -16,6 +17,10 @@ const logosSupporters: Logo[] = [
     {
         img: senat,
         label: 'Senate Department of Culture and Europe Berlin',
+    },
+    {
+        img: deeptech,
+        label: 'Deep Tech Award 2022',
     },
     {
         img: wikimedia,
@@ -50,7 +55,7 @@ export function LogoSection({ logos, title }: { logos: Logo[]; title: React.Reac
             <ul className={s.logos}>
                 {logos.map(({ img, label }) => (
                     <li className={s.logoWrapper} key={img}>
-                        <img className={s.logo} src={img} alt={label} />
+                        <img className={s.logo} src={img} alt={label} title={label} />
                     </li>
                 ))}
             </ul>
