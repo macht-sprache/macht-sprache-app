@@ -1,5 +1,5 @@
-import s from './style.module.css';
 import React from 'react';
+import s from './style.module.css';
 
 export function IllustrationSection({
     children,

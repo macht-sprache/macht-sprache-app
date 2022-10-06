@@ -1,11 +1,11 @@
-import s from './style.module.css';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import deeptech from './Logos/deeptech.png';
+import goethe from './Logos/goethe.svg';
 import PTF from './Logos/PrototypeFund.svg';
 import senat from './Logos/senat_en.svg';
-import goethe from './Logos/goethe.svg';
-import deeptech from './Logos/deeptech.png';
 import wikimedia from './Logos/wikimedia-de-logo.svg';
-import { useTranslation } from 'react-i18next';
-import React from 'react';
+import s from './style.module.css';
 
 type Logo = { img: string; label: string };
 

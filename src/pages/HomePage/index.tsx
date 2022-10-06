@@ -2,22 +2,22 @@ import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import { ContentItemList } from '../../components/ContentItemList';
+import { ButtonAnchor, ButtonContainer, ButtonLink } from '../../components/Form/Button';
+import { ColumnHeading, Columns, FullWidthColumn } from '../../components/Layout/Columns';
+import { WpStyle } from '../../components/WpStyle';
+import { useUser } from '../../hooks/appContext';
 import { collections } from '../../hooks/data';
 import { useCollection } from '../../hooks/fetch';
 import { useWpPage } from '../../hooks/wp';
-import { ColumnHeading, Columns, FullWidthColumn } from '../../components/Layout/Columns';
-import { WpStyle } from '../../components/WpStyle';
-import { HomePageHeader } from './Header';
-import s from './style.module.css';
-import { IllustrationSection } from './IllustrationSection';
-import { ButtonContainer, ButtonAnchor, ButtonLink } from '../../components/Form/Button';
-import textCheckerIllustration from './Illustrations/textChecker.svg';
-import termsAndDiscussion from './Illustrations/termsDiscussionHorizontal.svg';
-import googleDeepL from './Illustrations/googleDeepL.svg';
 import { ABOUT, TERMS, TEXT_CHECKER } from '../../routes';
-import { LogoBar } from './LogoBar';
 import { RegisterForm } from '../RegisterPage';
-import { useUser } from '../../hooks/appContext';
+import { HomePageHeader } from './Header';
+import googleDeepL from './Illustrations/googleDeepL.svg';
+import termsAndDiscussion from './Illustrations/termsDiscussionHorizontal.svg';
+import textCheckerIllustration from './Illustrations/textChecker.svg';
+import { IllustrationSection } from './IllustrationSection';
+import { LogoBar } from './LogoBar';
+import s from './style.module.css';
 
 const ABOUT_SLUGS = {
     en: 'about-macht-sprache-short-version-landing-page',
