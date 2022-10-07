@@ -14,7 +14,14 @@ type ModalDialogProps = {
     showLogo?: boolean;
 };
 
-export function ModalDialog({ title, children, onClose, isDismissable, width = 'medium', showLogo }: ModalDialogProps) {
+export function ModalDialog({
+    title,
+    children,
+    onClose,
+    isDismissable = true,
+    width = 'medium',
+    showLogo,
+}: ModalDialogProps) {
     usePreventScroll();
     const { t } = useTranslation();
 
@@ -37,12 +44,12 @@ export function ModalDialog({ title, children, onClose, isDismissable, width = '
 function Dialog({
     children,
     onClose,
-    isDismissable = true,
+    isDismissable,
     className,
 }: {
     children: React.ReactNode;
     onClose: () => void;
-    isDismissable?: boolean;
+    isDismissable: boolean;
     className?: string;
 }) {
     const ref = useRef<HTMLDialogElement>(null);
