@@ -19,6 +19,7 @@ import { useRequestState } from '../../../hooks/useRequestState';
 import { langA, langB } from '../../../languages';
 import { GlobalSettings, User, UserProperties, UserSettings } from '../../../types';
 import { useLang } from '../../../useLang';
+import { SensitiveTermsAdminSettings } from './SensitiveTerms';
 import s from './style.module.css';
 
 type AuthUserInfo = { email: string; verified: boolean; creationTime: string };
@@ -90,6 +91,8 @@ export default function AdminPageGeneral() {
             <WeeklyDigest />
 
             <GlobalSetting getGlobalSettings={getGlobalSettings} />
+
+            <SensitiveTermsAdminSettings />
 
             <UserList {...userListProps} />
 
