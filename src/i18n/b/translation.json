@@ -127,7 +127,7 @@
         },
         "register": {
             "title": "Registrieren",
-            "intro": "Der Nutzer:innenname ist öffentlich. Du kannst dir einen ausdenken oder deinen echten Namen verwenden – je nach dem, wie du identifiziert werden möchtest.",
+            "intro": "Durch das Anmelden kannst du aktives Mitglied unserer Community werden und an den Diskussionen teilnehmen. Du entscheidest, ob du deinen echten Namen oder ein Pseudonym benutzen möchtest. Deine Mail-Adresse ist nicht öffentlich und wird nicht mit Dritten geteilt.",
             "termsAndPrivacy": "Mit der Registrierung stimmst du unseren Vereinbarungen im <TermsLink>Impressum</TermsLink> sowie unserer <PrivacyLink>Datenschutzvereinbarung</PrivacyLink> zu.",
             "newsletter": "Schickt mir ab und zu den Newsletter von poco.lit. & macht.sprache. Jede Mail enthält einen Link zum Abbestellen."
         },
@@ -302,17 +302,32 @@
     "home": {
         "news": "Aktuelles",
         "about": "Über das Projekt",
-        "events": "Veranstaltungen",
-        "signUpPreLaunch": "Start am 14. März – Meld dich schon mal an!",
-        "signUpPreLaunchDescription": "Melde dich hier an, um einen Account zu erstellen und eine Benachrichtigungen zu erhalten, wenn es los geht. Optional kannst du dich auch gleich für den poco.lit.-Newsletter anmelden.",
+        "signup": "Bist du schon angemeldet?",
         "termsOfTheWeek": "Begriffe der Woche",
         "termsOfTheWeekDescription": "Jede Woche legen wir einen besonderen Fokus auf bestimmte Begriffe. Diese Woche:",
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
-        "claim": "Text Checker, Übersetzungsmanifest und Diskussionsplattform für sensibles Übersetzen",
-        "ad": {
-            "heading": "Lass deinen Text automatisch überprüfen",
-            "text": "Prüfe den Text, den du übersetzen möchtest, mithilfe des <TextCheckerLink>Text Checkers</TextCheckerLink> auf sensible Begriffe. Lies <ManifestoLink>das Manifest</ManifestoLink>, um einige Grundprinzipien für politisch sensibles Übersetzen kennen zu lernen. Oder integriere Google Translate in deinen Browser mit <ExtensionLink>unserer Erweiterung</ExtensionLink>."
+        "claim": "Unterstützung für den Umgang mit politisch sensibler Sprache",
+        "logos": {
+            "supporters": "Unterstützung",
+            "coorporationPartners": "Partner"
+        },
+        "sections": {
+            "textchecker": {
+                "title": "Texte prüfen lassen",
+                "text": "Bist du dir unsicher, ob dein Text verletzende oder beleidigende Begriffe beinhaltet? Unser Text Checker markiert sensible Begriffe auf Basis der macht.sprache.-Datenbank und unterstützt bei der Wortwahl.",
+                "button": "Prüfe deinen Text"
+            },
+            "terms": {
+                "title": "Begriffe kennenlernen & diskutieren",
+                "text": "Werde ein aktives Mitglied der macht.sprache. Community! macht.sprache. basiert auf kollaborativem Wissen. Beteilige dich: Trage neue Begriffe ein, bewerte und diskutiere sie.",
+                "buttonBrowse": "Schaue die Begriffe an",
+                "buttonRegister": "Registriere dich als Mitglied!"
+            },
+            "extension": {
+                "title": "Die Erweiterungen für DeepL und Google Translate benutzen",
+                "text": "Integriere macht.sprache. in bestehende Übersetzungsprogramme und erhalte ohne Mehraufwand Hinweise zu sensiblen Begriffen."
+            }
         }
     },
     "newsFeed": {

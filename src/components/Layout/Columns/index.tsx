@@ -4,10 +4,20 @@ import s from './style.module.css';
 type ColumnsProps = {
     children: React.ReactNode;
     reverseOnMobile?: boolean;
+    narrower?: boolean;
 };
 
-export function Columns({ children, reverseOnMobile }: ColumnsProps) {
-    return <div className={clsx(s.columnSection, s.columns, { [s.reverseOnMobile]: reverseOnMobile })}>{children}</div>;
+export function Columns({ children, reverseOnMobile, narrower = false }: ColumnsProps) {
+    return (
+        <div
+            className={clsx(s.columnSection, s.columns, {
+                [s.reverseOnMobile]: reverseOnMobile,
+                [s.narrower]: narrower,
+            })}
+        >
+            {children}
+        </div>
+    );
 }
 
 type ColumnHeadingProps = {

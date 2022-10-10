@@ -90,6 +90,19 @@ const useRegistrationErrorLabels = (
 };
 
 export default function RegisterPage() {
+    const { t } = useTranslation();
+
+    return (
+        <>
+            <SimpleHeader>{t('auth.register.title')}</SimpleHeader>
+            <SingleColumn>
+                <RegisterForm />
+            </SingleColumn>
+        </>
+    );
+}
+
+export function RegisterForm() {
     const auth = useFirebaseAuth();
     const user = useUser();
     const [lang] = useLang();
@@ -126,79 +139,76 @@ export default function RegisterPage() {
 
     return (
         <>
-            <SimpleHeader>{t('auth.register.title')}</SimpleHeader>
-            <SingleColumn>
-                <p>{t('auth.register.intro')}</p>
-                <form onSubmit={onSubmit}>
-                    <InputContainer>
-                        <Input
-                            label={t('auth.displayName')}
-                            value={displayName}
-                            autoComplete="nickname"
-                            disabled={registrationState === 'IN_PROGRESS'}
-                            error={
-                                !!displayName && !validDisplayName
-                                    ? t('auth.displayNameRequirements')
-                                    : errorLabels.displayName
-                            }
-                            onChange={event => {
-                                setUserName(event.target.value);
-                                clearError('displayName');
-                            }}
-                        />
-                        <Input
-                            label={t('auth.email')}
-                            value={email}
-                            type="email"
-                            autoComplete="username"
-                            onChange={event => {
-                                setEmail(event.target.value);
-                                clearError('email');
-                            }}
-                            disabled={registrationState === 'IN_PROGRESS'}
-                            error={errorLabels.email}
-                        />
-                        <Input
-                            label={t('auth.password')}
-                            value={password}
-                            autoComplete="new-password"
-                            type="password"
-                            onChange={event => {
-                                setSetPassword(event.target.value);
-                                clearError('password');
-                            }}
-                            disabled={registrationState === 'IN_PROGRESS'}
-                            error={errorLabels.password}
-                        />
-                    </InputContainer>
-                    <div className={s.newsletterCheckBox}>
-                        <Checkbox
-                            label={
-                                <>
-                                    {t('common.newsletter')}
-                                    <br />
-                                    {t('auth.register.newsletter')}
-                                </>
-                            }
-                            checked={newsletter}
-                            onChange={event => setNewsletter(event.target.checked)}
-                        />
-                    </div>
-                    <p>
-                        <Trans
-                            t={t}
-                            i18nKey="auth.register.termsAndPrivacy"
-                            components={{ TermsLink: <Link to={IMPRINT} />, PrivacyLink: <Link to={PRIVACY} /> }}
-                        />
-                    </p>
-                    {errorLabels.generic && <ErrorBox>{errorLabels.generic}</ErrorBox>}
-                    <ButtonContainer>
-                        <Button primary disabled={disabled} type="submit">
-                            {t('auth.register.title')}
-                        </Button>
-                    </ButtonContainer>
-                </form>
-            </SingleColumn>
+            <p>{t('auth.register.intro')}</p>
+            <form onSubmit={onSubmit}>
+                <InputContainer>
+                    <Input
+                        label={t('auth.displayName')}
+                        value={displayName}
+                        autoComplete="nickname"
+                        disabled={registrationState === 'IN_PROGRESS'}
+                        error={
+                            !!displayName && !validDisplayName
+                                ? t('auth.displayNameRequirements')
+                                : errorLabels.displayName
+                        }
+                        onChange={event => {
+                            setUserName(event.target.value);
+                            clearError('displayName');
+                        }}
+                    />
+                    <Input
+                        label={t('auth.email')}
+                        value={email}
+                        type="email"
+                        autoComplete="username"
+                        onChange={event => {
+                            setEmail(event.target.value);
+                            clearError('email');
+                        }}
+                        disabled={registrationState === 'IN_PROGRESS'}
+                        error={errorLabels.email}
+                    />
+                    <Input
+                        label={t('auth.password')}
+                        value={password}
+                        autoComplete="new-password"
+                        type="password"
+                        onChange={event => {
+                            setSetPassword(event.target.value);
+                            clearError('password');
+                        }}
+                        disabled={registrationState === 'IN_PROGRESS'}
+                        error={errorLabels.password}
+                    />
+                </InputContainer>
+                <div className={s.newsletterCheckBox}>
+                    <Checkbox
+                        label={
+                            <>
+                                {t('common.newsletter')}
+                                <br />
+                                {t('auth.register.newsletter')}
+                            </>
+                        }
+                        checked={newsletter}
+                        onChange={event => setNewsletter(event.target.checked)}
+                    />
+                </div>
+                <p>
+                    <Trans
+                        t={t}
+                        i18nKey="auth.register.termsAndPrivacy"
+                        components={{ TermsLink: <Link to={IMPRINT} />, PrivacyLink: <Link to={PRIVACY} /> }}
+                    />
+                </p>
+                {errorLabels.generic && <ErrorBox>{errorLabels.generic}</ErrorBox>}
+                <ButtonContainer>
+                    <Button primary disabled={disabled} type="submit">
+                        {t('auth.register.title')}
+                    </Button>
+                </ButtonContainer>
+            </form>
         </>
     );
 }

@@ -7,14 +7,14 @@ import { useAddContinueParam } from '../../hooks/location';
 import { langA, langB } from '../../languages';
 import { LOGIN, REGISTER, USER } from '../../routes';
 import { useLang } from '../../useLang';
-import { useLaunched } from '../../useLaunched';
+import { ButtonLink } from '../Form/Button';
 import LinkButton from '../LinkButton';
+import s from './style.module.css';
 
 export function TopMenu() {
     const auth = useFirebaseAuth();
     const user = useUser();
     const { t } = useTranslation();
-    const launched = useLaunched();
     const addContinueParam = useAddContinueParam();
     const logout = useCallback(() => {
         auth.signOut();
@@ -30,12 +30,10 @@ export function TopMenu() {
                 </>
             ) : (
                 <>
-                    {launched && (
-                        <>
-                            <Link to={addContinueParam(generatePath(REGISTER))}>{t('auth.register.title')}</Link>{' '}
-                        </>
-                    )}
-                    <Link to={addContinueParam(generatePath(LOGIN))}>{t('auth.login')}</Link>
+                    <Link to={addContinueParam(generatePath(LOGIN))}>{t('auth.login')}</Link>{' '}
+                    <ButtonLink primary to={addContinueParam(generatePath(REGISTER))} className={s.registerButton}>
+                        {t('auth.register.title')}
+                    </ButtonLink>
                 </>
             )}
         </>

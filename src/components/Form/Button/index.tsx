@@ -3,56 +3,49 @@ import { forwardRef } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import s from './style.module.css';
 
-interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+type extraButtonProps = {
     primary?: boolean;
-    size?: 'small' | 'medium';
+    size?: 'small' | 'medium' | 'large';
     busy?: boolean;
-}
+};
+
+type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> &
+    extraButtonProps;
 
 export type Ref = HTMLButtonElement;
 
-const Button = forwardRef<Ref | null, Props>(
-    ({ primary = false, size = 'medium', className, busy = false, ...props }: Props, ref) => {
-        return (
-            <button
-                ref={ref}
-                className={clsx(
-                    s.button,
-                    { [s.buttonPrimary]: primary, [s.small]: size === 'small', [s.busy]: busy },
-                    className
-                )}
-                {...props}
-            />
-        );
-    }
-);
+const Button = forwardRef<Ref | null, ButtonProps>(({ ...props }: ButtonProps, ref) => {
+    return <button ref={ref} {...omitExtraButtonProps(props)} className={getButtonClasses(props)} />;
+});
 
 export default Button;
 
-interface ButtonLinkProps extends LinkProps {
-    primary?: boolean;
-    size?: 'small' | 'medium';
+type ButtonLinkProps = LinkProps & extraButtonProps;
+
+export function ButtonLink({ ...props }: ButtonLinkProps) {
+    return <Link {...omitExtraButtonProps(props)} className={getButtonClasses(props)} />;
 }
 
-export function ButtonLink({ primary = false, size, ...props }: ButtonLinkProps) {
-    return <Link className={clsx(s.button, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })} {...props} />;
-}
+type ButtonAnchorProps = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> &
+    extraButtonProps;
 
-interface ButtonAnchorProps
-    extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
-    primary?: boolean;
-    size?: 'small' | 'medium';
-}
-
-export function ButtonAnchor({ primary = false, size, children, className, ...props }: ButtonAnchorProps) {
+export function ButtonAnchor({ children, ...props }: ButtonAnchorProps) {
     return (
-        <a
-            className={clsx(s.button, className, { [s.buttonPrimary]: primary, [s.small]: size === 'small' })}
-            {...props}
-        >
+        <a {...omitExtraButtonProps(props)} className={getButtonClasses(props)}>
             {children}
         </a>
     );
+}
+
+function getButtonClasses({ primary, size = 'medium', busy, className }: extraButtonProps & { className?: string }) {
+    return clsx(s.button, s[size], { [s.buttonPrimary]: primary, [s.busy]: busy }, className);
+}
+
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonProps): ButtonProps;
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonLinkProps): ButtonLinkProps;
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonAnchorProps): ButtonAnchorProps;
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonProps | ButtonLinkProps | ButtonAnchorProps) {
+    return props;
 }
 
 type ButtonContainerProps = {

@@ -31,11 +31,13 @@ export function ContentItemList({
     translations = [],
     translationExamples = [],
     terms = [],
+    limit,
 }: {
     comments?: Comment[];
     translations?: Translation[];
     translationExamples?: TranslationExample[];
     terms?: Term[];
+    limit?: number;
 }) {
     const items: ItemType[] = [
         ...comments.map(comment => ({ type: 'Comment', item: comment } as ItemType)),
@@ -48,7 +50,7 @@ export function ContentItemList({
 
     const sortedItems = orderBy(items, item => {
         return -item.item.createdAt.toMillis();
-    });
+    }).slice(0, limit ? limit : items.length);
 
     return (
         <div className={s.container}>

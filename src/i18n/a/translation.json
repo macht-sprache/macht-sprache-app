@@ -127,7 +127,7 @@
         },
         "register": {
             "title": "Sign Up",
-            "intro": "The user name will be public. You are free to decide whether you want to appear under a pseudonym or under your real name, and if so, with which identity you will be recognized.",
+            "intro": "Signing up allows you to become an active member of our community and participate in the ongoing discussions. You decide if you want to use your real name or a pseudonym, and we don’t share your email address or data with anyone.",
             "termsAndPrivacy": "By registering you agree to our <TermsLink>terms</TermsLink> and <PrivacyLink>privacy policy</PrivacyLink>.",
             "newsletter": "Send me a newsletter about macht.sprache. and poco.lit. from time to time. Every mail contains a link to unsubscribe."
         },
@@ -306,17 +306,35 @@
     "home": {
         "news": "News",
         "about": "About the project",
-        "events": "Events",
-        "signUpPreLaunch": "Launch on March 14th – Sign up now!",
-        "signUpPreLaunchDescription": "Sign up here to create an account on macht.sprache. and to get notified about the launch event. Optionally, you can also sign up for the poco.lit. newsletter.",
+        "signup": "Have you signed up yet?",
         "termsOfTheWeek": "Terms of the week",
         "termsOfTheWeekDescription": "Every week we pick different terms to focus on. This week:",
         "viewAllTerms": "View all terms",
         "moreAbout": "more about macht.sprache.",
-        "claim": "Text checker, translation manifesto and discussion platform for sensitive translations",
-        "ad": {
-            "heading": "Search for sensitive terms automatically",
-            "text": "Check a text for sensitive translations with the macht.sprache. <TextCheckerLink>Text Checker</TextCheckerLink>. <ManifestoLink>Read the manifesto</ManifestoLink>, if you are interested in some fundamental principles and overarching guidelines for politically sensitive translation. Or integrate sensitivity into your Google Translate with <ExtensionLink>our extension</ExtensionLink>."
+        "claim": "Helping you handle the challenges of politically sensitive language",
+        "activity": "What happens on machts.sprache.",
+        "logos": {
+            "supporters": "Supporters",
+            "coorporationPartners": "Partners"
+        },
+        "sections": {
+            "textchecker": {
+                "title": "Check your text",
+                "text": "Worried about using hurtful or offensive language? Our text checker will flag sensitive terms from the macht.sprache. database and help you with your word choice.",
+                "button": "Check your text"
+            },
+            "terms": {
+                "title": "Browse and discuss sensitive terms",
+                "text": "Become an active member of the macht.sprache. community! The platform is built on collaborative knowledge and discussion. Get involved: upload a term, ask a question, make a comment.",
+                "buttonBrowse": "Browse terms",
+                "buttonRegister": "Register to participate"
+            },
+            "extension": {
+                "title": "Get extensions for DeepL and Google Translate",
+                "text": "Integrate macht.sprache. into your use of existing translation tools and get help with sensitive language without any added effort!",
+                "chrome": "Chrome",
+                "firefox": "Firefox"
+            }
         }
     },
     "newsFeed": {

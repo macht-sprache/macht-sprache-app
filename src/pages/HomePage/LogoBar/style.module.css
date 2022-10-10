@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8rem;
+}
+
+.inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 1rem;
+    border: var(--orange) var(--thinBorder) solid;
+    background: var(--white);
+    padding: 1rem;
+}
+
+.heading {
+    margin: 0 0 1rem;
+    font-size: inherit;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.logos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    list-style: none;
+    padding: 0 1rem;
+    margin: 0;
+}
+
+.logoWrapper {
+    display: flex;
+    max-width: 8rem;
+}
+
+.logo {
+    width: 100%;
+    object-fit: contain;
+    height: 6rem;
+}

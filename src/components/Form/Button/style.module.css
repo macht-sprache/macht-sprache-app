@@ -1,10 +1,11 @@
 .button {
+    --buttonBorderColor: var(--black);
     position: relative;
     display: block;
     font-size: inherit;
     font-family: var(--monospaceFont);
     color: var(--black);
-    border: var(--thinBorder) var(--black) solid;
+    border: var(--thinBorder) var(--buttonBorderColor) solid;
     padding: 0.5rem;
     background-color: var(--backgroundColor);
     text-decoration: none;
@@ -27,7 +28,7 @@
 }
 
 .buttonPrimary {
-    border-color: var(--orange);
+    --buttonBorderColor: var(--orange);
     border-width: var(--thickBorder);
 }
 
@@ -38,7 +39,7 @@
 
 .buttonPrimary:hover:not(:disabled),
 .buttonPrimary:focus {
-    background-color: var(--orange);
+    background-color: var(--buttonBorderColor);
     font-weight: bold;
 }
 
@@ -50,6 +51,12 @@
 .small {
     padding: 0.3rem;
     font-size: var(--fontSizeS);
+}
+
+.large {
+    padding: 0.7rem;
+    font-size: var(--fontSizeL);
+    font-weight: bold;
 }
 
 :global(.inputContainer) + .buttonContainer {

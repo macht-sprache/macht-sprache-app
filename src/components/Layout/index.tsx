@@ -18,7 +18,6 @@ import {
     TEXT_CHECKER,
 } from '../../routes';
 import { useDomId } from '../../useDomId';
-import { useLaunched } from '../../useLaunched';
 import { ContentWarning } from '../ContentWarning';
 import LinkButton from '../LinkButton';
 import Notifications from '../Notifications';
@@ -94,25 +93,20 @@ type LinkItem = {
 
 function Sidebar() {
     const { t } = useTranslation();
-    const launched = useLaunched();
     const userProperties = useUserProperties();
 
     return (
         <div className={s.sidebar}>
             <nav className={s.sidebarInner}>
-                {launched && (
-                    <>
-                        <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
-                        <NavItem to={MANIFESTO} label={'Manifesto'} />
-                        <NavItem to={TERMS} label={t('common.entities.term.value_plural')} />
-                        <Suspense fallback={null}>
-                            <SidebarTerms />
-                        </Suspense>
-                    </>
-                )}
+                <NavItem to={TEXT_CHECKER} label={t('textChecker.title')} />
+                <NavItem to={MANIFESTO} label={'Manifesto'} />
+                <NavItem to={TERMS} label={t('common.entities.term.value_plural')} />
+                <Suspense fallback={null}>
+                    <SidebarTerms />
+                </Suspense>
                 <NavItem to={ABOUT} label={t('nav.about')} />
                 <NavItem to={CODE_OF_CONDUCT} label={t('nav.coc')} />
-                {launched && <NavItem to={NEWS} label={t('nav.news')} />}
+                <NavItem to={NEWS} label={t('nav.news')} />
             </nav>
             <footer className={s.sidebarInner}>
                 {userProperties?.admin && <NavItem to={ADMIN} label="admin" />}
