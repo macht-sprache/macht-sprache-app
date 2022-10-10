@@ -14,24 +14,24 @@ type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButton
 
 export type Ref = HTMLButtonElement;
 
-const Button = forwardRef<Ref | null, ButtonProps>((props: ButtonProps, ref) => {
-    return <button ref={ref} {...props} className={getButtonClasses(props)} />;
+const Button = forwardRef<Ref | null, ButtonProps>(({ primary, ...props }: ButtonProps, ref) => {
+    return <button ref={ref} {...props} className={getButtonClasses({ primary, ...props })} />;
 });
 
 export default Button;
 
 type ButtonLinkProps = LinkProps & extraButtonProps;
 
-export function ButtonLink(props: ButtonLinkProps) {
-    return <Link {...props} className={getButtonClasses(props)} />;
+export function ButtonLink({ primary, ...props }: ButtonLinkProps) {
+    return <Link {...props} className={getButtonClasses({ primary, ...props })} />;
 }
 
 type ButtonAnchorProps = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> &
     extraButtonProps;
 
-export function ButtonAnchor({ children, ...props }: ButtonAnchorProps) {
+export function ButtonAnchor({ children, primary, ...props }: ButtonAnchorProps) {
     return (
-        <a {...props} className={getButtonClasses(props)}>
+        <a {...props} className={getButtonClasses({ primary, ...props })}>
             {children}
         </a>
     );
