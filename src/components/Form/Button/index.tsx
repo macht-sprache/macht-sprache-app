@@ -14,24 +14,24 @@ type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButton
 
 export type Ref = HTMLButtonElement;
 
-const Button = forwardRef<Ref | null, ButtonProps>(({ primary, ...props }: ButtonProps, ref) => {
-    return <button ref={ref} {...props} className={getButtonClasses({ primary, ...props })} />;
+const Button = forwardRef<Ref | null, ButtonProps>(({ ...props }: ButtonProps, ref) => {
+    return <button ref={ref} {...omitExtraButtonProps(props)} className={getButtonClasses(props)} />;
 });
 
 export default Button;
 
 type ButtonLinkProps = LinkProps & extraButtonProps;
 
-export function ButtonLink({ primary, ...props }: ButtonLinkProps) {
-    return <Link {...props} className={getButtonClasses({ primary, ...props })} />;
+export function ButtonLink({ ...props }: ButtonLinkProps) {
+    return <Link {...omitExtraButtonProps(props)} className={getButtonClasses(props)} />;
 }
 
 type ButtonAnchorProps = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> &
     extraButtonProps;
 
-export function ButtonAnchor({ children, primary, ...props }: ButtonAnchorProps) {
+export function ButtonAnchor({ children, ...props }: ButtonAnchorProps) {
     return (
-        <a {...props} className={getButtonClasses({ primary, ...props })}>
+        <a {...omitExtraButtonProps(props)} className={getButtonClasses(props)}>
             {children}
         </a>
     );
@@ -39,6 +39,13 @@ export function ButtonAnchor({ children, primary, ...props }: ButtonAnchorProps)
 
 function getButtonClasses({ primary, size = 'medium', busy, className }: extraButtonProps & { className?: string }) {
     return clsx(s.button, s[size], { [s.buttonPrimary]: primary, [s.busy]: busy }, className);
+}
+
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonProps): ButtonProps;
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonLinkProps): ButtonLinkProps;
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonAnchorProps): ButtonAnchorProps;
+function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonProps | ButtonLinkProps | ButtonAnchorProps) {
+    return props;
 }
 
 type ButtonContainerProps = {
