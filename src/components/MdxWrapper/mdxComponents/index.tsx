@@ -10,7 +10,7 @@ import s from './style.module.css';
 
 const mdxLinkBaseContext = createContext(() => window.location.href);
 
-export const MdxLinkBaseProvider: React.FC<{ base: string }> = ({ base, children }) => {
+export const MdxLinkBaseProvider = ({ base, children }: { base: string; children?: React.ReactNode }) => {
     const getBase = useCallback(() => new URL(base, process.env.REACT_APP_MAIN_ORIGIN ?? window.location.origin).href, [
         base,
     ]);

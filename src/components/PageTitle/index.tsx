@@ -13,7 +13,7 @@ const pageTitleContext = createContext<{
 
 export const useSetNotificationCountForPageTitle = () => useContext(pageTitleContext).setNotificationCount;
 
-export const PageTitleProvider: React.FC = ({ children }) => {
+export const PageTitleProvider = ({ children }: { children: React.ReactNode }) => {
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
     const [{ title, notifications, pathname, lang }, setState] = useState<{

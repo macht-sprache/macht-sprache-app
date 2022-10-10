@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppContext } from './hooks/appContext';
 import { useOptionalFirebaseAuth } from './hooks/auth';
@@ -55,12 +55,12 @@ const useLangContext = (): LangContextValue => {
     return { lang, setLang };
 };
 
-export const LangProvider: React.FC = ({ children }) => {
+export const LangProvider = ({ children }: { children: React.ReactNode }) => {
     const value = useLangContext();
     return <langContext.Provider value={value}>{children}</langContext.Provider>;
 };
 
-export const PageLangProvider: React.FC = ({ children }) => {
+export const PageLangProvider = ({ children }: { children: React.ReactNode }) => {
     const pageLang = document.documentElement.lang;
     const value = useMemo<LangContextValue>(() => ({ lang: toLanguageOrDefault(pageLang), setLang: () => {} }), [
         pageLang,

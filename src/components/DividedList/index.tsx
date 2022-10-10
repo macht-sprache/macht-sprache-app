@@ -2,10 +2,14 @@ import React from 'react';
 
 const emptyChildren: React.ReactNode[] = [true, false, undefined, null, ''];
 
-const DividedList: React.FC<{ divider?: React.ReactNode; lastDivider?: React.ReactNode }> = ({
+const DividedList = ({
     children,
     divider = ' | ',
     lastDivider = divider,
+}: {
+    children: React.ReactNode;
+    divider?: React.ReactNode;
+    lastDivider?: React.ReactNode;
 }) => {
     const list: React.ReactNode[] = React.Children.toArray(children)
         .filter(child => !emptyChildren.includes(child))

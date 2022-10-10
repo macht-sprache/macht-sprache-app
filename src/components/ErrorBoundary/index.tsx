@@ -4,7 +4,7 @@ import { ERROR_NOT_FOUND } from '../../constants';
 import Header from '../Header';
 import { NotFoundPage } from '../../pages/NotFoundPage';
 
-const ErrorBoundary: React.FC = ({ children }) => {
+const ErrorBoundary = ({ children }: { children: React.ReactNode }) => {
     const location = useLocation();
     return (
         <ErrorBoundaryComponent
