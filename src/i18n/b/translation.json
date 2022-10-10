@@ -127,7 +127,7 @@
         },
         "register": {
             "title": "Registrieren",
-            "intro": "Durch das Anmelden kannst du aktives Mitglied unserer Community werden und an den Diskussionen teilnehmen. Du entscheidest dich, ob du deinen echten Namen oder ein Pseudonym benutzen möchtest. Deine Mail-Adresse ist nicht öffentlich und wird nicht mit Dritten geteilt.",
+            "intro": "Durch das Anmelden kannst du aktives Mitglied unserer Community werden und an den Diskussionen teilnehmen. Du entscheidest, ob du deinen echten Namen oder ein Pseudonym benutzen möchtest. Deine Mail-Adresse ist nicht öffentlich und wird nicht mit Dritten geteilt.",
             "termsAndPrivacy": "Mit der Registrierung stimmst du unseren Vereinbarungen im <TermsLink>Impressum</TermsLink> sowie unserer <PrivacyLink>Datenschutzvereinbarung</PrivacyLink> zu.",
             "newsletter": "Schickt mir ab und zu den Newsletter von poco.lit. & macht.sprache. Jede Mail enthält einen Link zum Abbestellen."
         },
