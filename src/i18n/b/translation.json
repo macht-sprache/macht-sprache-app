@@ -308,6 +308,7 @@
         "viewAllTerms": "Zu allen Begriffen",
         "moreAbout": "mehr über macht.sprache.",
         "claim": "Unterstützung für den Umgang mit politisch sensibler Sprache",
+        "activity": "Aktivitäten",
         "logos": {
             "supporters": "Unterstützung",
             "coorporationPartners": "Partner"
@@ -321,7 +322,7 @@
             "terms": {
                 "title": "Begriffe kennenlernen & diskutieren",
                 "text": "Werde ein aktives Mitglied der macht.sprache. Community! macht.sprache. basiert auf kollaborativem Wissen. Beteilige dich: Trage neue Begriffe ein, bewerte und diskutiere sie.",
-                "buttonBrowse": "Schaue die Begriffe an",
+                "buttonBrowse": "Schau die Begriffe an",
                 "buttonRegister": "Registriere dich als Mitglied!"
             },
             "extension": {
