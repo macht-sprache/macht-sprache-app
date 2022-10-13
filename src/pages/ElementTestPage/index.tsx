@@ -10,7 +10,7 @@ import Header from '../../components/Header';
 import { collections } from '../../hooks/data';
 import { MultiStepIndicator, MultiStepIndicatorStep } from '../../components/MultiStepIndicator';
 import { Rating } from '../../components/Rating';
-import { Book, Comment, Movie, WebPage } from '../../types';
+import { Book, Comment, Movie, Term, Translation, WebPage } from '../../types';
 import MovieSearch from '../../components/MediaSelection/MovieSearch';
 import WebPageSearch from '../../components/MediaSelection/WebPageSearch';
 import { Checkbox } from '../../components/Form/Checkbox';
@@ -18,6 +18,7 @@ import { InlineInput } from '../../components/Form/InlineInput';
 /* eslint-disable import/no-webpack-loader-syntax */
 import MdxContent from '!babel-loader!@mdx-js/loader!./text.en.mdx';
 import DividedList from '../../components/DividedList';
+import { SearchTerm } from '../../components/EntitySearch';
 
 const ref = collections.terms.doc('1');
 const creator = {
@@ -38,6 +39,7 @@ export default function ElementTestPage() {
     const [deMovie, setDeMovie] = useState<Movie>();
     const [page, setPage] = useState<WebPage>();
     const [rating, setRating] = useState(2);
+    const [selectedSearchTerm, setSelectedSearchTerm] = useState<Term | Translation | undefined>();
 
     const [comments, setComments] = useState<Comment[]>([
         {
@@ -249,6 +251,16 @@ export default function ElementTestPage() {
 
             <Heading>WebPage Search</Heading>
             <WebPageSearch label="Paste URL" lang="en" selectedPage={page} onSelect={setPage} />
+
+            <Heading>Term Search</Heading>
+            <p>Selected: {selectedSearchTerm?.value}</p>
+            <SearchTerm
+                onSelect={entity => {
+                    setSelectedSearchTerm(entity);
+                    console.log(entity);
+                }}
+                label="type to find term"
+            />
 
             <Heading>MDX</Heading>
             <MdxContent />

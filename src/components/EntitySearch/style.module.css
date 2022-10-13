@@ -1,0 +1,20 @@
+.container {
+    position: relative;
+}
+
+.result {
+    padding: 0.5rem;
+}
+
+.resultSelected {
+    background: var(--orange);
+    font-weight: bold;
+}
+
+.resultContainer {
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    border: var(--thickBorder) solid var(--orange);
+    background: var(--white);
+}
