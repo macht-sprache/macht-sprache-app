@@ -6,6 +6,8 @@ import { Input } from '../Form/Input';
 import InputContainer from '../Form/InputContainer';
 import clsx from 'clsx';
 import s from './style.module.css';
+import { useDomId } from '../../useDomId';
+import { useTranslation } from 'react-i18next';
 
 type Entity = Term | Translation;
 
@@ -31,6 +33,8 @@ export function SearchEntity({
     const [searchResult, setSearchResult] = useState<Entity[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [selectedResult, setSelectedResult] = useState(0);
+    const { t } = useTranslation();
+    const domId = useDomId();
 
     return (
         <div className={s.container}>
@@ -67,23 +71,40 @@ export function SearchEntity({
                             setSelectedResult(selectedResult + 1);
                         }
                     }}
+                    role="combobox"
+                    aria-expanded={!!searchResult}
+                    aria-autocomplete="list"
+                    aria-controls={domId('autocomplete')}
                 />
             </InputContainer>
             {!!searchResult.length && (
-                <div className={s.resultContainer}>
+                <ul className={s.resultContainer} id={domId('autocomplete')} role="listbox" aria-label={label}>
                     {searchResult.map((entity, index) => (
-                        <div
+                        <li
                             onClick={() => {
                                 onSelect(entity);
                             }}
                             key={entity.id}
                             className={clsx(s.result, { [s.resultSelected]: selectedResult === index })}
+                            role="option"
+                            aria-posinset={index}
+                            aria-setsize={searchResult.length}
+                            aria-selected={selectedResult === index}
+                            tabIndex={-1}
                         >
                             {entity.value}
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             )}
+            <div role="status" aria-live="polite" aria-atomic="true" className={s.assertive}>
+                {!!searchResult.length &&
+                    t('a11y.autocomplete', {
+                        searchResultCount: searchResult.length,
+                        selected: searchResult[selectedResult]?.value,
+                        selectedIndex: selectedResult + 1,
+                    })}
+            </div>
         </div>
     );
 }

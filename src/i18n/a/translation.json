@@ -442,5 +442,8 @@
         "result": "result",
         "result_plural": "results",
         "noResults": "No results"
+    },
+    "a11y": {
+        "autocomplete": "{{searchResultCount}} available. {{selected}} {{selectedIndex}} of {{searchResultCount}} selected."
     }
 }
