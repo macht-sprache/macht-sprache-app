@@ -25,7 +25,7 @@ export function SearchTerm(props: SearchProps) {
 export function SearchEntity({
     entities,
     label,
-    maxResults = 3,
+    maxResults = 5,
     onSelect = () => {},
 }: SearchProps & { entities: Entity[] }) {
     const [searchResult, setSearchResult] = useState<Entity[]>([]);

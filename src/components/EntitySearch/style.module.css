@@ -2,8 +2,17 @@
     position: relative;
 }
 
+.container:not(:focus-within) .resultContainer {
+    display: none;
+}
+
 .result {
     padding: 0.5rem;
+    cursor: pointer;
+}
+
+.result:hover {
+    background: var(--orange);
 }
 
 .resultSelected {
@@ -14,7 +23,7 @@
 .resultContainer {
     position: absolute;
     width: 100%;
-    top: 100%;
+    top: calc(100% - var(--thickBorder));
     border: var(--thickBorder) solid var(--orange);
     background: var(--white);
 }
