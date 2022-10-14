@@ -1,11 +1,8 @@
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { useUser } from '../../hooks/appContext';
 import { collections } from '../../hooks/data';
 import { GetList, useCollection } from '../../hooks/fetch';
 import { Term, TermRelation } from '../../types';
-import Button from '../Form/Button';
-import { Input } from '../Form/Input';
-import InputContainer from '../Form/InputContainer';
 import { ModalDialog } from '../ModalDialog';
 import { TermWithLang } from '../TermWithLang';
 import firebase from 'firebase/compat/app';
@@ -35,10 +32,10 @@ export default function RelatedTermsModal({ term, onClose }: Props) {
 
 function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
     const { t } = useTranslation();
-
     const user = useUser()!;
     const termRelations = getTermRelations();
-    const [termId, setTermId] = useState('');
+    const excludeFromSearch = [term.id, ...termRelations.flatMap(({ terms }) => terms).map(term => term.id)];
+
     const addRelatedTerm = (termId: string) => {
         const termIds = [term.id, termId].sort();
         const termRefs = termIds.map(id => collections.terms.doc(id));
@@ -75,6 +72,7 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
                     onSelect={term => {
                         addRelatedTerm(term.id);
                     }}
+                    excludedTerms={excludeFromSearch}
                     label={t('term.search')}
                 />
             </div>

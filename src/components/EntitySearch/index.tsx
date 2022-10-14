@@ -17,11 +17,12 @@ type SearchProps = {
     onSelect?: (entity: Entity) => void;
 };
 
-export function SearchTerm(props: SearchProps) {
+export function SearchTerm({ excludedTerms, ...props }: SearchProps & { excludedTerms?: string[] }) {
     const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
     const terms = getTerms();
+    const termsWithoutExcluded = excludedTerms ? terms.filter(term => !excludedTerms.includes(term.id)) : terms;
 
-    return <SearchEntity entities={terms} {...props} />;
+    return <SearchEntity entities={termsWithoutExcluded} {...props} />;
 }
 
 export function SearchEntity({
