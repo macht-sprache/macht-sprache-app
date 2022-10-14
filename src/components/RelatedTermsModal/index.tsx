@@ -9,6 +9,8 @@ import InputContainer from '../Form/InputContainer';
 import { ModalDialog } from '../ModalDialog';
 import { TermWithLang } from '../TermWithLang';
 import firebase from 'firebase/compat/app';
+import { useTranslation } from 'react-i18next';
+import { SearchTerm } from '../EntitySearch';
 
 type Props = {
     term: Term;
@@ -32,10 +34,12 @@ export default function RelatedTermsModal({ term, onClose }: Props) {
 }
 
 function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
+    const { t } = useTranslation();
+
     const user = useUser()!;
     const termRelations = getTermRelations();
     const [termId, setTermId] = useState('');
-    const addRelatedTerm = () => {
+    const addRelatedTerm = (termId: string) => {
         const termIds = [term.id, termId].sort();
         const termRefs = termIds.map(id => collections.terms.doc(id));
         const id = termIds.join('-');
@@ -65,16 +69,15 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
                     <li key={termRelation.id}>{termRelation.id}</li>
                 ))}
             </ul>
-            <InputContainer>
-                <Input
-                    type="text"
-                    value={termId}
-                    label="Term ID"
-                    onChange={event => setTermId(event.currentTarget.value)}
-                    span={3}
+
+            <div>
+                <SearchTerm
+                    onSelect={term => {
+                        addRelatedTerm(term.id);
+                    }}
+                    label={t('term.search')}
                 />
-                <Button onClick={addRelatedTerm}>Save</Button>
-            </InputContainer>
+            </div>
         </ModalDialog>
     );
 }

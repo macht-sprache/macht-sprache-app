@@ -66,7 +66,6 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
     const adminComment = term.adminComment[lang === langA ? 'langA' : 'langB'];
     const definition = term.definition[lang === langA ? 'langA' : 'langB'];
     const getGuidelines = useGuidelines(term.guidelines);
-    const getRelatedTerms = useDocuments(term.relatedTerms);
 
     return (
         <>
@@ -94,7 +93,6 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                                     indexRef={collections.termIndex.doc(term.id)}
                                 />
                             )}
-                            {userProperties?.admin && <EditRelatedTerms term={term} />}
                             {canDelete && <DeleteTerm term={term} />}
                         </DividedList>
 
@@ -111,7 +109,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         )}
                         <Suspense fallback={null}>
                             <Guidelines getGuidelines={getGuidelines} />
-                            <RelatedTerms getRelatedTerms={getRelatedTerms} />
+                            <RelatedTerms term={term} />
                         </Suspense>
                     </>
                 }
@@ -220,12 +218,10 @@ function EditRelatedTerms({ term }: { term: Term }) {
     );
 }
 
-function RelatedTerms({ getRelatedTerms }: { getRelatedTerms: GetList<Term> }) {
+function RelatedTerms({ term }: { term: Term }) {
+    const { userProperties } = useAppContext();
+    const getRelatedTerms = useDocuments(term.relatedTerms);
     const relatedTerms = getRelatedTerms();
-
-    if (!relatedTerms.length) {
-        return null;
-    }
 
     return (
         <>
@@ -237,6 +233,7 @@ function RelatedTerms({ getRelatedTerms }: { getRelatedTerms: GetList<Term> }) {
                     </Link>
                 ))}
             </div>
+            {userProperties?.admin && <EditRelatedTerms term={term} />}
         </>
     );
 }

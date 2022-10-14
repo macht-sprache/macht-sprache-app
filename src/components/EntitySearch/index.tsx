@@ -60,6 +60,9 @@ export function SearchEntity({
                     onKeyDown={e => {
                         if (e.key === 'Enter') {
                             onSelect(searchResult[selectedResult]);
+                            setInputValue('');
+                            setSearchResult([]);
+                            setSelectedResult(0);
                         }
                         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
                             e.preventDefault();
