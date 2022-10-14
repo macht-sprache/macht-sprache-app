@@ -33,6 +33,8 @@ export default function RelatedTermsModal({ term, onClose }: Props) {
 function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
     const { t } = useTranslation();
     const user = useUser()!;
+    const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
+    const terms = getTerms().reduce<{ [key: string]: Term }>((terms, term) => ({ ...terms, [term.id]: term }), {});
     const termRelations = getTermRelations();
     const excludeFromSearch = [term.id, ...termRelations.flatMap(({ terms }) => terms).map(term => term.id)];
 
@@ -63,7 +65,16 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
         >
             <ul>
                 {termRelations.map(termRelation => (
-                    <li key={termRelation.id}>{termRelation.id}</li>
+                    <li key={termRelation.id}>
+                        {
+                            terms[
+                                getOtherTerm(
+                                    termRelation.terms.map(({ id }) => id),
+                                    term.id
+                                )
+                            ].value
+                        }
+                    </li>
                 ))}
             </ul>
 
@@ -78,4 +89,8 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
             </div>
         </ModalDialog>
     );
+}
+
+function getOtherTerm(termIds: string[], termId: string) {
+    return termIds.filter(id => id !== termId)[0];
 }
