@@ -1,4 +1,4 @@
-import { Dictionary, mergeDeepRight } from 'rambdax';
+import { Dictionary, mergeDeepRight, splitEvery } from 'rambdax';
 import { DISPLAY_NAME_REGEX } from '../../../src/constants';
 import { langA, langB } from '../../../src/languages';
 import { GlobalSettings, Lang, Term, Translation, User, UserProperties, UserSettings } from '../../../src/types';
@@ -287,7 +287,8 @@ export const sendWeeklyDigest = functions.https.onCall(
             {}
         );
         const userIdentifiers = userSettingsSnap.docs.map(doc => ({ uid: doc.id }));
-        const { users: authUsers } = await auth.getUsers(userIdentifiers);
+        const result = await Promise.all(splitEvery(100, userIdentifiers).map(u => auth.getUsers(u)));
+        const authUsers = result.flatMap(r => r.users);
         const recipients = authUsers
             .filter(authUser => authUser.emailVerified)
             .map(
