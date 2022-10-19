@@ -21,6 +21,13 @@
                 "add": "Übersetzung hinzufügen",
                 "edit": "Übersetzung bearbeiten"
             },
+            "termRelation": {
+                "value": "Verwandter Begriff",
+                "value_plural": "Verwandter Begriffe",
+                "add": "Verwandten Begriff hinzufügen",
+                "edit": "Verwandte Begriffe bearbeiten",
+                "editFor": "Verwandte Begriffe von <Term /> bearbeiten"
+            },
             "comment": {
                 "value": "Kommentar",
                 "value_plural": "Kommentare",
@@ -166,7 +173,8 @@
             "addVariantDiscuss": "Füge eine Variante hinzu, die du diskutieren möchtest.",
             "usage": "Wie oft würdest du <Translation>{{translation}}</Translation> in Übersetzungen benutzen?"
         },
-        "share": "Hier ist eine interessante Diskussion über einen politisch sensiblen Begriff auch #machtsprache gesehen"
+        "share": "Hier ist eine interessante Diskussion über einen politisch sensiblen Begriff auch #machtsprache gesehen",
+        "noRelatedTermOveray": "Es gibt noch keine Verwandten Begriffe. Du kannst hier einen hinzufügen:"
     },
     "translation": {
         "registerToAdd": "Um eine Übersetzung hinzuzufügen, bitte <LoginLink>einloggen</LoginLink> oder <SignUpLink>registrieren</SignUpLink>.",
