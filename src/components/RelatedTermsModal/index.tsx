@@ -6,7 +6,7 @@ import { Term, TermRelation } from '../../types';
 import { ModalDialog } from '../ModalDialog';
 import { TermWithLang } from '../TermWithLang';
 import firebase from 'firebase/compat/app';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { SearchTerm } from '../EntitySearch';
 import Button from '../Form/Button';
 import s from './style.module.css';
@@ -63,34 +63,43 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
             onClose={onClose}
             title={
                 <>
-                    Edit Related Terms for <TermWithLang term={term} />
+                    <Trans
+                        t={t}
+                        i18nKey="common.entities.termRelation.editFor"
+                        components={{ Term: <TermWithLang term={term} /> }}
+                    />
                 </>
             }
+            isDismissable
         >
-            <ul className={s.relations}>
-                {termRelations.map(termRelation => (
-                    <li key={termRelation.id} className={s.relation}>
-                        <TermWithLang
-                            term={
-                                terms[
-                                    getOtherTerm(
-                                        termRelation.terms.map(({ id }) => id),
-                                        term.id
-                                    )
-                                ]
-                            }
-                        />
-                        <Button
-                            onClick={() => {
-                                collections.termRelations.doc(termRelation.id).delete();
-                            }}
-                            size="small"
-                        >
-                            {t('common.formNav.delete')}
-                        </Button>
-                    </li>
-                ))}
-            </ul>
+            {!!termRelations.length && (
+                <ul className={s.relations}>
+                    {termRelations.map(termRelation => (
+                        <li key={termRelation.id} className={s.relation}>
+                            <TermWithLang
+                                term={
+                                    terms[
+                                        getOtherTerm(
+                                            termRelation.terms.map(({ id }) => id),
+                                            term.id
+                                        )
+                                    ]
+                                }
+                            />
+                            <Button
+                                onClick={() => {
+                                    collections.termRelations.doc(termRelation.id).delete();
+                                }}
+                                size="small"
+                            >
+                                {t('common.formNav.delete')}
+                            </Button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            {!termRelations.length && <div className={s.noContent}>{t('term.noRelatedTermOveray')}</div>}
 
             <div>
                 <SearchTerm
@@ -98,7 +107,7 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
                         addRelatedTerm(term.id);
                     }}
                     excludedTerms={excludeFromSearch}
-                    label={t('term.search')}
+                    label={t('common.entities.termRelation.add')}
                 />
             </div>
         </ModalDialog>

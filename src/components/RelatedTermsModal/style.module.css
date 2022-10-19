@@ -3,11 +3,15 @@
     flex-direction: column;
     gap: 1rem;
     padding: 0;
-    margin-bottom: 2rem;
+    margin: 2rem 0;
 }
 
 .relation {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.noContent {
+    margin-bottom: 2rem;
 }

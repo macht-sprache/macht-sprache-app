@@ -209,24 +209,30 @@ function Guidelines({ getGuidelines }: { getGuidelines: () => Guideline[] }) {
 }
 
 function EditRelatedTerms({ term }: { term: Term }) {
+    const { t } = useTranslation();
+
     const [showModel, setShowModal] = useState(false);
     return (
         <>
-            <LinkButton onClick={() => setShowModal(true)}>Edit Related</LinkButton>
+            <Button size="small" onClick={() => setShowModal(true)}>
+                {t('common.entities.termRelation.edit')}
+            </Button>
             {showModel && <RelatedTermsModal term={term} onClose={() => setShowModal(false)} />}
         </>
     );
 }
 
 function RelatedTerms({ term }: { term: Term }) {
+    const { t } = useTranslation();
+
     const { userProperties } = useAppContext();
     const getRelatedTerms = useDocuments(term.relatedTerms);
     const relatedTerms = getRelatedTerms();
 
     return (
         <>
-            <h3 className={s.guidelineHeading}>Related Terms</h3>
-            <div className={s.guidelines}>
+            <h3 className={s.relatedTermsHeading}>{t('common.entities.termRelation.value_plural')}</h3>
+            <div className={s.relatedTermsList}>
                 {relatedTerms.map(term => (
                     <Link to={generatePath(TERM, { termId: term.id })} key={term.id}>
                         <TermWithLang term={term} />
