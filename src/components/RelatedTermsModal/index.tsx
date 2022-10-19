@@ -8,6 +8,8 @@ import { TermWithLang } from '../TermWithLang';
 import firebase from 'firebase/compat/app';
 import { useTranslation } from 'react-i18next';
 import { SearchTerm } from '../EntitySearch';
+import Button from '../Form/Button';
+import s from './style.module.css';
 
 type Props = {
     term: Term;
@@ -36,7 +38,9 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
     const getTerms = useCollection(collections.terms.where('adminTags.hideFromList', '==', false));
     const terms = getTerms().reduce<{ [key: string]: Term }>((terms, term) => ({ ...terms, [term.id]: term }), {});
     const termRelations = getTermRelations();
-    const excludeFromSearch = [term.id, ...termRelations.flatMap(({ terms }) => terms).map(term => term.id)];
+    const excludeFromSearch = Array.from(
+        new Set([term.id, ...termRelations.flatMap(({ terms }) => terms).map(term => term.id)])
+    );
 
     const addRelatedTerm = (termId: string) => {
         const termIds = [term.id, termId].sort();
@@ -63,17 +67,27 @@ function ModalWrapper({ term, onClose, getTermRelations }: InnerProps) {
                 </>
             }
         >
-            <ul>
+            <ul className={s.relations}>
                 {termRelations.map(termRelation => (
-                    <li key={termRelation.id}>
-                        {
-                            terms[
-                                getOtherTerm(
-                                    termRelation.terms.map(({ id }) => id),
-                                    term.id
-                                )
-                            ].value
-                        }
+                    <li key={termRelation.id} className={s.relation}>
+                        <TermWithLang
+                            term={
+                                terms[
+                                    getOtherTerm(
+                                        termRelation.terms.map(({ id }) => id),
+                                        term.id
+                                    )
+                                ]
+                            }
+                        />
+                        <Button
+                            onClick={() => {
+                                collections.termRelations.doc(termRelation.id).delete();
+                            }}
+                            size="small"
+                        >
+                            {t('common.formNav.delete')}
+                        </Button>
                     </li>
                 ))}
             </ul>

@@ -1,0 +1,13 @@
+.relations {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.relation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
