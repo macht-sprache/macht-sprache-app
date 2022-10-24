@@ -23,7 +23,7 @@
             },
             "termRelation": {
                 "value": "Verwandter Begriff",
-                "value_plural": "Verwandter Begriffe",
+                "value_plural": "Verwandte Begriffe",
                 "add": "Verwandten Begriff hinzufügen",
                 "edit": "Verwandte Begriffe bearbeiten",
                 "editFor": "Verwandte Begriffe von <Term /> bearbeiten"
