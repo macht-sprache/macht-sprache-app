@@ -42,3 +42,7 @@
     flex-wrap: wrap;
     margin-bottom: 0.5rem;
 }
+
+.relatedTerm:not(:hover) {
+    text-decoration: none;
+}
