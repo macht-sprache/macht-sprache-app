@@ -231,14 +231,24 @@ function RelatedTerms({ term }: { term: Term }) {
 
     return (
         <>
-            <h3 className={s.relatedTermsHeading}>{t('common.entities.termRelation.value_plural')}</h3>
-            <div className={s.relatedTermsList}>
-                {relatedTerms.map(term => (
-                    <Link to={generatePath(TERM, { termId: term.id })} key={term.id}>
-                        <TermWithLang term={term} />
-                    </Link>
-                ))}
-            </div>
+            <>
+                {(!!relatedTerms.length || userProperties?.admin) && (
+                    <>
+                        <h3 className={s.relatedTermsHeading}>{t('common.entities.termRelation.value_plural')}</h3>
+                        <div className={s.relatedTermsList}>
+                            {relatedTerms.map(term => (
+                                <Link
+                                    to={generatePath(TERM, { termId: term.id })}
+                                    className={s.relatedTerm}
+                                    key={term.id}
+                                >
+                                    <TermWithLang term={term} />
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </>
             {userProperties?.admin && <EditRelatedTerms term={term} />}
         </>
     );
