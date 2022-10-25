@@ -3,14 +3,14 @@ import { forwardRef } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import s from './style.module.css';
 
-type extraButtonProps = {
+type ExtraButtonProps = {
     primary?: boolean;
     size?: 'small' | 'medium' | 'large';
     busy?: boolean;
 };
 
 type ButtonProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> &
-    extraButtonProps;
+    ExtraButtonProps;
 
 export type Ref = HTMLButtonElement;
 
@@ -20,14 +20,14 @@ const Button = forwardRef<Ref | null, ButtonProps>(({ ...props }: ButtonProps, r
 
 export default Button;
 
-type ButtonLinkProps = LinkProps & extraButtonProps;
+type ButtonLinkProps = LinkProps & ExtraButtonProps;
 
 export function ButtonLink({ ...props }: ButtonLinkProps) {
     return <Link {...omitExtraButtonProps(props)} className={getButtonClasses(props)} />;
 }
 
 type ButtonAnchorProps = React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> &
-    extraButtonProps;
+    ExtraButtonProps;
 
 export function ButtonAnchor({ children, ...props }: ButtonAnchorProps) {
     return (
@@ -37,14 +37,16 @@ export function ButtonAnchor({ children, ...props }: ButtonAnchorProps) {
     );
 }
 
-function getButtonClasses({ primary, size = 'medium', busy, className }: extraButtonProps & { className?: string }) {
+function getButtonClasses({ primary, size = 'medium', busy, className }: ExtraButtonProps & { className?: string }) {
     return clsx(s.button, s[size], { [s.buttonPrimary]: primary, [s.busy]: busy }, className);
 }
 
-function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonProps): ButtonProps;
-function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonLinkProps): ButtonLinkProps;
-function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonAnchorProps): ButtonAnchorProps;
-function omitExtraButtonProps({ primary, size, busy, ...props }: ButtonProps | ButtonLinkProps | ButtonAnchorProps) {
+function omitExtraButtonProps<A extends ButtonProps | ButtonLinkProps | ButtonAnchorProps>({
+    primary,
+    size,
+    busy,
+    ...props
+}: A): Omit<A, 'primary' | 'size' | 'busy'> {
     return props;
 }
 
