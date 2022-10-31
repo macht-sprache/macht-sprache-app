@@ -16,6 +16,7 @@ import {
     Subscription,
     Term,
     TermIndex,
+    TermRelation,
     Translation,
     TranslationExample,
     TranslationIndex,
@@ -82,7 +83,7 @@ const TermConverter: firebase.firestore.FirestoreDataConverter<Term> = {
         } = snapshot.data(defaultSnapshotOptions);
         return {
             id: snapshot.id,
-            relatedTerms,
+            relatedTerms: (relatedTerms ?? []).map(addConverterToRef),
             creator,
             createdAt,
             value,
@@ -117,6 +118,22 @@ const TranslationConverter: firebase.firestore.FirestoreDataConverter<Translatio
             ratings,
             commentCount,
             definition,
+        };
+    },
+};
+
+const TermRelationConverter: firebase.firestore.FirestoreDataConverter<TermRelation> = {
+    toFirestore: (termRelation: TermRelation) => {
+        const { id, ...data } = termRelation;
+        return { ...data, createdAt: getCreatedAt(termRelation) };
+    },
+    fromFirestore: (snapshot): TermRelation => {
+        const { terms, creator, createdAt } = snapshot.data(defaultSnapshotOptions);
+        return {
+            id: snapshot.id,
+            terms: terms.map(addConverterToRef),
+            creator,
+            createdAt,
         };
     },
 };
@@ -313,6 +330,7 @@ export const collections = {
     userProperties: db.collection('userProperties').withConverter(UserPropertiesConverter),
     terms: db.collection('terms').withConverter(TermConverter),
     translations: db.collection('translations').withConverter(TranslationConverter),
+    termRelations: db.collection('termRelations').withConverter(TermRelationConverter),
     termIndex: db.collection('termIndex').withConverter(TermIndexConverter),
     translationIndex: db.collection('translationIndex').withConverter(TranslationIndexConverter),
     translationExamples: db.collection('translationExamples').withConverter(TranslationExampleConverter),

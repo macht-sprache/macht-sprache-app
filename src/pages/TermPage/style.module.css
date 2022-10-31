@@ -31,3 +31,18 @@
 .guidelineHeading {
     margin-bottom: 0.5rem;
 }
+
+.relatedTermsHeading {
+    margin-bottom: 0.5rem;
+}
+
+.relatedTermsList {
+    display: flex;
+    gap: 0.5rem 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.relatedTerm:not(:hover) {
+    text-decoration: none;
+}

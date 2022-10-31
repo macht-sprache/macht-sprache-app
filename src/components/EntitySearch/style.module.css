@@ -1,0 +1,41 @@
+.container {
+    position: relative;
+}
+
+.container:not(:focus-within) .resultContainer {
+    display: none;
+}
+
+.result {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.result:hover {
+    background: var(--orange);
+}
+
+.resultSelected {
+    background: var(--orange);
+    font-weight: bold;
+}
+
+.resultContainer {
+    position: absolute;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    top: calc(100% - var(--thickBorder));
+    border: var(--thickBorder) solid var(--orange);
+    background: var(--white);
+}
+
+.assertive {
+    width: 1px;
+    height: 1px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    overflow: hidden;
+}

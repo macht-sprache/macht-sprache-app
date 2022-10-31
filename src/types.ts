@@ -42,6 +42,13 @@ export interface Term extends Commentable {
     guidelines: string[];
 }
 
+export interface TermRelation {
+    id: string;
+    terms: [DocReference<Term>, DocReference<Term>];
+    creator: UserMini;
+    createdAt: Timestamp;
+}
+
 export interface Index<T> {
     ref: DocReference<T>;
     lang: Lang;

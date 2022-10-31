@@ -2,7 +2,7 @@ import firebase from 'firebase/compat/app';
 import xor from 'lodash/xor';
 import { Suspense, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Link, useParams } from 'react-router-dom';
+import { generatePath, Link, useParams } from 'react-router-dom';
 import Comments from '../../components/Comments';
 import ConfirmModal from '../../components/ConfirmModal';
 import DividedList from '../../components/DividedList';
@@ -19,6 +19,7 @@ import Linkify from '../../components/Linkify';
 import { ModalDialog } from '../../components/ModalDialog';
 import PageTitle from '../../components/PageTitle';
 import { Redact, useRedacted } from '../../components/RedactSensitiveTerms';
+import RelatedTermsModal from '../../components/RelatedTermsModal';
 import Share from '../../components/Share';
 import SidebarTermRedirectWrapper from '../../components/SidebarTermRedirectWrapper';
 import { TermWithLang } from '../../components/TermWithLang';
@@ -26,10 +27,10 @@ import { TranslationsList } from '../../components/TranslationsList';
 import { UserInlineDisplay } from '../../components/UserInlineDisplay';
 import { useAppContext } from '../../hooks/appContext';
 import { collections, getSourcesRef, getSubscriptionRef, getTranslationsRef } from '../../hooks/data';
-import { Get, GetList, useCollection, useDocument } from '../../hooks/fetch';
+import { Get, GetList, useCollection, useDocument, useDocuments } from '../../hooks/fetch';
 import { langA, langB } from '../../languages';
 import { Guideline, guidelineKeys, useGuidelines } from '../../Manifesto/guidelines/guidelines';
-import { MANIFESTO } from '../../routes';
+import { MANIFESTO, TERM } from '../../routes';
 import { Lang, Source, Term, Translation, User } from '../../types';
 import { useLang } from '../../useLang';
 import { getDominantLanguageClass } from '../../useLangCssVars';
@@ -108,6 +109,7 @@ function TermPage({ getTerm, getTranslations, getSources }: Props) {
                         )}
                         <Suspense fallback={null}>
                             <Guidelines getGuidelines={getGuidelines} />
+                            <RelatedTerms term={term} />
                         </Suspense>
                     </>
                 }
@@ -202,6 +204,52 @@ function Guidelines({ getGuidelines }: { getGuidelines: () => Guideline[] }) {
                     </Link>
                 ))}
             </div>
+        </>
+    );
+}
+
+function EditRelatedTerms({ term }: { term: Term }) {
+    const { t } = useTranslation();
+
+    const [showModel, setShowModal] = useState(false);
+    return (
+        <>
+            <Button size="small" onClick={() => setShowModal(true)}>
+                {t('common.entities.termRelation.edit')}
+            </Button>
+            {showModel && <RelatedTermsModal term={term} onClose={() => setShowModal(false)} />}
+        </>
+    );
+}
+
+function RelatedTerms({ term }: { term: Term }) {
+    const { t } = useTranslation();
+
+    const { userProperties } = useAppContext();
+    const getRelatedTerms = useDocuments(term.relatedTerms);
+    const relatedTerms = getRelatedTerms();
+
+    return (
+        <>
+            <>
+                {((!!relatedTerms.length && userProperties?.betaAccess) || userProperties?.admin) && (
+                    <>
+                        <h3 className={s.relatedTermsHeading}>{t('common.entities.termRelation.value_plural')}</h3>
+                        <div className={s.relatedTermsList}>
+                            {relatedTerms.map(term => (
+                                <Link
+                                    to={generatePath(TERM, { termId: term.id })}
+                                    className={s.relatedTerm}
+                                    key={term.id}
+                                >
+                                    <TermWithLang term={term} />
+                                </Link>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </>
+            {userProperties?.admin && <EditRelatedTerms term={term} />}
         </>
     );
 }
