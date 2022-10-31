@@ -232,7 +232,7 @@ function RelatedTerms({ term }: { term: Term }) {
     return (
         <>
             <>
-                {(!!relatedTerms.length || userProperties?.admin) && (
+                {((!!relatedTerms.length && userProperties?.betaAccess) || userProperties?.admin) && (
                     <>
                         <h3 className={s.relatedTermsHeading}>{t('common.entities.termRelation.value_plural')}</h3>
                         <div className={s.relatedTermsList}>
