@@ -74,6 +74,9 @@ function useSnapshot<T, Ref extends Reference<T>>(currentRef: Ref) {
 
     useEffect(() => {
         const observer = (snapshot: Snapshot<T, Ref>) => {
+            if (snapshot.metadata.fromCache) {
+                return;
+            }
             readerCache.set(ref, () => snapshot);
             setState({ snapshot, ref });
         };
@@ -107,6 +110,9 @@ function useDocSnapshots<T, Ref extends DocumentReference<T>>(currentRefs: Ref[]
     useEffect(() => {
         const unsubscribes = refs.map((ref, index) => {
             const observer = (snapshot: Snapshot<T, Ref>) => {
+                if (snapshot.metadata.fromCache) {
+                    return;
+                }
                 readerCache.set(ref, () => snapshot);
                 setState(prev => {
                     const next = [...prev];
