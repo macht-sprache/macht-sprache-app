@@ -2,15 +2,9 @@ import clsx from 'clsx';
 import s from './style.module.css';
 import Pocolit from './Logos/pocolit.svg';
 import Volligohne from './Logos/volligohne.svg';
-import PrototypeFund from './Logos/PrototypeFund.svg';
-import SenatEn from './Logos/senat_en.svg';
-import SenatDe from './Logos/senat_de.svg';
-import { useLang } from '../../../useLang';
-import { langA } from '../../../languages';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer({ className }: { className?: string }) {
-    const [lang] = useLang();
     const { t } = useTranslation();
 
     return (
@@ -19,10 +13,6 @@ export default function Footer({ className }: { className?: string }) {
                 <LogoContainer heading={t('footer.initiatedBy')}>
                     <Logo alt="poco.lit." img={Pocolit} link="https://pocolit.com" />
                     <Logo alt="völlig ohne" img={Volligohne} link="https://volligohne.de" size="small" />
-                </LogoContainer>
-                <LogoContainer heading={t('footer.fundedBy')}>
-                    <Logo alt={t('footer.senate')} img={lang === langA ? SenatEn : SenatDe} />
-                    <Logo alt="prototype fund" img={PrototypeFund} link="https://prototypefund.de" />
                 </LogoContainer>
             </div>
         </footer>
