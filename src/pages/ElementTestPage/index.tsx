@@ -15,8 +15,7 @@ import MovieSearch from '../../components/MediaSelection/MovieSearch';
 import WebPageSearch from '../../components/MediaSelection/WebPageSearch';
 import { Checkbox } from '../../components/Form/Checkbox';
 import { InlineInput } from '../../components/Form/InlineInput';
-/* eslint-disable import/no-webpack-loader-syntax */
-import MdxContent from '!babel-loader!@mdx-js/loader!./text.en.mdx';
+import MdxContent from './text.en.mdx';
 import DividedList from '../../components/DividedList';
 import { SearchTerm } from '../../components/EntitySearch';
 

@@ -1,12 +1,12 @@
+import { createInstance, MatomoProvider } from '@jonkoops/matomo-tracker-react';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './vars.css';
+import { createRoot } from 'react-dom/client';
+import App from './App';
 import './index.css';
 import './tooltip.css';
-import App from './App';
-import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react';
+import './vars.css';
 
-const instance = createInstance({
+const matomoInstance = createInstance({
     urlBase: 'https://piwik.volligohne.de/',
     siteId: 4,
     disabled: process.env.NODE_ENV === 'development',
@@ -17,11 +17,12 @@ const instance = createInstance({
     },
 });
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root')!);
+
+root.render(
     <React.StrictMode>
-        <MatomoProvider value={instance}>
+        <MatomoProvider value={matomoInstance}>
             <App />
         </MatomoProvider>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 );

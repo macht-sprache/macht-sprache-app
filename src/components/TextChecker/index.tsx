@@ -1,4 +1,4 @@
-import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom';

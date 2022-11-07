@@ -1,6 +1,6 @@
 import { useAppContext } from '../../hooks/appContext';
 
-const BetaWrapper: React.FC = ({ children }) => {
+const BetaWrapper = ({ children }: { children: React.ReactNode }) => {
     const { userProperties } = useAppContext();
 
     if (!userProperties?.betaAccess) {

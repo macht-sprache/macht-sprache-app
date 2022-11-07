@@ -148,7 +148,7 @@ function LinkToTranslationExample({ example, exampleId }: { example: Translation
     );
 }
 
-const LinkHeading: React.FC<{ creator: UserMini }> = ({ creator, children }) => {
+const LinkHeading = ({ creator, children }: { creator: UserMini; children?: React.ReactNode }) => {
     const { t } = useTranslation();
 
     return (

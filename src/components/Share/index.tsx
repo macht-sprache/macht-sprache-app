@@ -8,7 +8,7 @@ import s from './style.module.css';
 import { isTouchDevice } from '../../utils';
 import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
-import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { ModalDialog } from '../ModalDialog';
 
 const FACEBOOK_APP_ID = '256281597718711';

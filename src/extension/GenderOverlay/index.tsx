@@ -1,7 +1,5 @@
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import ContentDe from '!babel-loader!@mdx-js/loader!./content.de.mdx';
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import ContentEn from '!babel-loader!@mdx-js/loader!./content.en.mdx';
+import ContentDe from './content.de.mdx';
+import ContentEn from './content.en.mdx';
 import MdxWrapper from '../../components/MdxWrapper';
 import { ModalDialog } from '../../components/ModalDialog';
 import { useLang } from '../../useLang';
