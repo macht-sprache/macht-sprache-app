@@ -5,6 +5,8 @@
 .overlay {
     position: absolute;
     top: 0;
+    left: 0;
+    padding: var(--parent-padding);
     pointer-events: none;
     color: transparent;
 }
