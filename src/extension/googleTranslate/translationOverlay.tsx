@@ -4,7 +4,6 @@ import { CSS_CONTEXT_CLASS_NAME } from '../../constants';
 import { Lang } from '../../types';
 import { getDominantLanguageClass } from '../../useLangCssVars';
 import { getUseRenderElement, injectedElementFactory } from '../injectedElementFactory';
-import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { renderTokenChildren } from './overlay';
 import s from './style.module.css';
 
@@ -17,16 +16,18 @@ const getTranslationOverlay = (stableParent: HTMLElement) =>
             return overlay;
         },
         attachElement: (el, parent) => {
-            const translatedTextEl = parent.querySelector(TRANSLATED_TEXT_ELEMENT_SELECTOR);
-            const textEl = translatedTextEl?.firstElementChild;
+            const textEl = parent.querySelector('[lang]:not([lang=""])');
 
             if (!textEl) {
                 return;
             }
 
-            translatedTextEl?.classList.add(s.parent);
+            const parentPadding = textEl.parentElement ? getComputedStyle(textEl.parentElement).padding : '';
+
+            textEl.parentElement?.classList.add(s.parent);
             el.classList.add(textEl?.classList?.toString() ?? '');
-            translatedTextEl?.appendChild(el);
+            el.style.setProperty('--parent-padding', parentPadding);
+            textEl.parentElement?.appendChild(el);
         },
         validateInput: ({ text, tokens, lang, openModal }) =>
             text && lang && tokens?.length && openModal ? { text, tokens, lang, openModal } : null,
