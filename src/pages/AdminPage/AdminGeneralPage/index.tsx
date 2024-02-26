@@ -19,6 +19,7 @@ import { useRequestState } from '../../../hooks/useRequestState';
 import { langA, langB } from '../../../languages';
 import { GlobalSettings, User, UserProperties, UserSettings } from '../../../types';
 import { useLang } from '../../../useLang';
+import { Export } from './Export';
 import { SensitiveTermsAdminSettings } from './SensitiveTerms';
 import s from './style.module.css';
 
@@ -93,6 +94,8 @@ export default function AdminPageGeneral() {
             <GlobalSetting getGlobalSettings={getGlobalSettings} />
 
             <SensitiveTermsAdminSettings />
+
+            <Export />
 
             <UserList {...userListProps} />
 
