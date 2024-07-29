@@ -201,6 +201,7 @@ export interface User extends UserMini {
 }
 
 export interface UserSettings {
+    id: string;
     lang: Lang;
     showRedacted: boolean;
     newsletter: boolean;
@@ -209,6 +210,7 @@ export interface UserSettings {
 }
 
 export interface UserProperties {
+    id: string;
     admin: boolean;
     betaAccess: boolean;
     enabled: boolean;

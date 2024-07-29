@@ -5,7 +5,16 @@ import { ColumnHeading, SingleColumn } from '../../../components/Layout/Columns'
 import { ModalDialog } from '../../../components/ModalDialog';
 import { collections } from '../../../hooks/data';
 import { useCollection } from '../../../hooks/fetch';
-import { Term, Translation, TranslationExample, Comment, Source } from '../../../types';
+import {
+    Comment,
+    Source,
+    Term,
+    Translation,
+    TranslationExample,
+    User,
+    UserProperties,
+    UserSettings,
+} from '../../../types';
 
 export function Export() {
     const [showModal, setShowModal] = useState(false);
@@ -28,6 +37,10 @@ function ExportModal({ onClose }: { onClose: () => void }) {
     const getTranslationExamples = useCollection(collections.translationExamples);
     const getComments = useCollection(collections.comments);
     const getSources = useCollection(collections.sources);
+    const getUserProperties = useCollection(collections.userProperties);
+    const getUserSettings = useCollection(collections.userSettings);
+    const getUsers = useCollection(collections.users);
+
     return (
         <ModalDialog onClose={onClose} title="Export Data">
             <ExportButtons
@@ -36,6 +49,9 @@ function ExportModal({ onClose }: { onClose: () => void }) {
                 examples={getTranslationExamples()}
                 comments={getComments()}
                 sources={getSources()}
+                userProperties={getUserProperties()}
+                userSettings={getUserSettings()}
+                users={getUsers()}
             />
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
@@ -50,12 +66,18 @@ function ExportButtons({
     examples,
     comments,
     sources,
+    userProperties,
+    userSettings,
+    users,
 }: {
     terms: Term[];
     translations: Translation[];
     examples: TranslationExample[];
     comments: Comment[];
     sources: Source[];
+    userProperties: UserProperties[];
+    userSettings: UserSettings[];
+    users: User[];
 }) {
     return (
         <ButtonContainer align="left">
@@ -73,6 +95,15 @@ function ExportButtons({
             </ButtonAnchor>
             <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
                 Export Comments
+            </ButtonAnchor>
+            <ButtonAnchor download="userProperties.json" href={useDownloadURL(userProperties)}>
+                Export UserProperties
+            </ButtonAnchor>
+            <ButtonAnchor download="userSettings.json" href={useDownloadURL(userSettings)}>
+                Export UserSettings
+            </ButtonAnchor>
+            <ButtonAnchor download="users.json" href={useDownloadURL(users)}>
+                Export Users
             </ButtonAnchor>
         </ButtonContainer>
     );
