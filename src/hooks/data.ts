@@ -42,18 +42,25 @@ const UserConverter: firebase.firestore.FirestoreDataConverter<User> = {
 };
 
 const UserSettingsConverter: firebase.firestore.FirestoreDataConverter<UserSettings> = {
-    toFirestore: (data: UserSettings) => data,
+    toFirestore: (userSettings: UserSettings) => {
+        const { id, ...data } = userSettings;
+        return data;
+    },
     fromFirestore: (snapshot): UserSettings => {
         const { lang, showRedacted, newsletter, digestMail, notificationMail } = snapshot.data(defaultSnapshotOptions);
-        return { lang, showRedacted, newsletter, digestMail, notificationMail };
+        return { id: snapshot.id, lang, showRedacted, newsletter, digestMail, notificationMail };
     },
 };
 
 const UserPropertiesConverter: firebase.firestore.FirestoreDataConverter<UserProperties> = {
-    toFirestore: (data: UserProperties) => data,
+    toFirestore: (userProperties: UserProperties) => {
+        const { id, ...data } = userProperties;
+        return data;
+    },
     fromFirestore: (snapshot): UserProperties => {
         const { admin, betaAccess, enabled, tokenTime } = snapshot.data(defaultSnapshotOptions);
         return {
+            id: snapshot.id,
             admin,
             betaAccess: betaAccess ?? false,
             enabled: enabled ?? false,

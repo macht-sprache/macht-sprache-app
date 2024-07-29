@@ -5,9 +5,19 @@ import { ColumnHeading, SingleColumn } from '../../../components/Layout/Columns'
 import { ModalDialog } from '../../../components/ModalDialog';
 import { collections } from '../../../hooks/data';
 import { useCollection } from '../../../hooks/fetch';
-import { Term, Translation, TranslationExample, Comment, Source } from '../../../types';
+import {
+    Comment,
+    Source,
+    Term,
+    Translation,
+    TranslationExample,
+    User,
+    UserProperties,
+    UserSettings,
+} from '../../../types';
+import { AuthUserInfos } from './types';
 
-export function Export() {
+export function Export({ authUserInfos }: { authUserInfos: AuthUserInfos }) {
     const [showModal, setShowModal] = useState(false);
     return (
         <>
@@ -15,19 +25,23 @@ export function Export() {
                 <ColumnHeading>Export Data</ColumnHeading>
                 <Suspense fallback={<Button disabled>Loading…</Button>}>
                     <Button onClick={() => setShowModal(true)}>Export Data…</Button>
-                    {showModal && <ExportModal onClose={() => setShowModal(false)} />}
+                    {showModal && <ExportModal authUserInfos={authUserInfos} onClose={() => setShowModal(false)} />}
                 </Suspense>
             </SingleColumn>
         </>
     );
 }
 
-function ExportModal({ onClose }: { onClose: () => void }) {
+function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUserInfos: AuthUserInfos }) {
     const getTerms = useCollection(collections.terms);
     const getTranslations = useCollection(collections.translations);
     const getTranslationExamples = useCollection(collections.translationExamples);
     const getComments = useCollection(collections.comments);
     const getSources = useCollection(collections.sources);
+    const getUserProperties = useCollection(collections.userProperties);
+    const getUserSettings = useCollection(collections.userSettings);
+    const getUsers = useCollection(collections.users);
+
     return (
         <ModalDialog onClose={onClose} title="Export Data">
             <ExportButtons
@@ -36,6 +50,10 @@ function ExportModal({ onClose }: { onClose: () => void }) {
                 examples={getTranslationExamples()}
                 comments={getComments()}
                 sources={getSources()}
+                userProperties={getUserProperties()}
+                userSettings={getUserSettings()}
+                users={getUsers()}
+                authUserInfos={authUserInfos}
             />
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
@@ -50,31 +68,61 @@ function ExportButtons({
     examples,
     comments,
     sources,
+    userProperties,
+    userSettings,
+    users,
+    authUserInfos,
 }: {
     terms: Term[];
     translations: Translation[];
     examples: TranslationExample[];
     comments: Comment[];
     sources: Source[];
+    userProperties: UserProperties[];
+    userSettings: UserSettings[];
+    users: User[];
+    authUserInfos: AuthUserInfos;
 }) {
+    const authUsers = Object.entries(authUserInfos).map(([id, data]) => ({ id, ...data }));
+    const authUsersHref = useDownloadURL(authUsers);
     return (
-        <ButtonContainer align="left">
-            <ButtonAnchor download="terms.json" href={useDownloadURL(terms)}>
-                Export Terms
-            </ButtonAnchor>
-            <ButtonAnchor download="translations.json" href={useDownloadURL(translations)}>
-                Export Translations
-            </ButtonAnchor>
-            <ButtonAnchor download="examples.json" href={useDownloadURL(examples)}>
-                Export Examples
-            </ButtonAnchor>
-            <ButtonAnchor download="sources.json" href={useDownloadURL(sources)}>
-                Export Sources
-            </ButtonAnchor>
-            <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
-                Export Comments
-            </ButtonAnchor>
-        </ButtonContainer>
+        <>
+            <ButtonContainer align="left">
+                <ButtonAnchor download="terms.json" href={useDownloadURL(terms)}>
+                    Export Terms
+                </ButtonAnchor>
+                <ButtonAnchor download="translations.json" href={useDownloadURL(translations)}>
+                    Export Translations
+                </ButtonAnchor>
+                <ButtonAnchor download="examples.json" href={useDownloadURL(examples)}>
+                    Export Examples
+                </ButtonAnchor>
+                <ButtonAnchor download="sources.json" href={useDownloadURL(sources)}>
+                    Export Sources
+                </ButtonAnchor>
+                <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
+                    Export Comments
+                </ButtonAnchor>
+            </ButtonContainer>
+            <ButtonContainer align="left">
+                <ButtonAnchor download="userProperties.json" href={useDownloadURL(userProperties)}>
+                    Export UserProperties
+                </ButtonAnchor>
+                <ButtonAnchor download="userSettings.json" href={useDownloadURL(userSettings)}>
+                    Export UserSettings
+                </ButtonAnchor>
+                <ButtonAnchor download="users.json" href={useDownloadURL(users)}>
+                    Export Users
+                </ButtonAnchor>
+                {authUsers.length ? (
+                    <ButtonAnchor download="authUsers.json" href={authUsersHref}>
+                        Export AuthUsers
+                    </ButtonAnchor>
+                ) : (
+                    <Button disabled>Export AuthUsers</Button>
+                )}
+            </ButtonContainer>
+        </>
     );
 }
 
