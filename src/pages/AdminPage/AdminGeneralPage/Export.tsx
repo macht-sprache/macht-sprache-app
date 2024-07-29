@@ -86,37 +86,43 @@ function ExportButtons({
     const authUsers = Object.entries(authUserInfos).map(([id, data]) => ({ id, ...data }));
     const authUsersHref = useDownloadURL(authUsers);
     return (
-        <ButtonContainer align="left">
-            <ButtonAnchor download="terms.json" href={useDownloadURL(terms)}>
-                Export Terms
-            </ButtonAnchor>
-            <ButtonAnchor download="translations.json" href={useDownloadURL(translations)}>
-                Export Translations
-            </ButtonAnchor>
-            <ButtonAnchor download="examples.json" href={useDownloadURL(examples)}>
-                Export Examples
-            </ButtonAnchor>
-            <ButtonAnchor download="sources.json" href={useDownloadURL(sources)}>
-                Export Sources
-            </ButtonAnchor>
-            <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
-                Export Comments
-            </ButtonAnchor>
-            <ButtonAnchor download="userProperties.json" href={useDownloadURL(userProperties)}>
-                Export UserProperties
-            </ButtonAnchor>
-            <ButtonAnchor download="userSettings.json" href={useDownloadURL(userSettings)}>
-                Export UserSettings
-            </ButtonAnchor>
-            <ButtonAnchor download="users.json" href={useDownloadURL(users)}>
-                Export Users
-            </ButtonAnchor>
-            {!!authUsers.length && (
-                <ButtonAnchor download="authUsers.json" href={authUsersHref}>
-                    Export AuthUsers
+        <>
+            <ButtonContainer align="left">
+                <ButtonAnchor download="terms.json" href={useDownloadURL(terms)}>
+                    Export Terms
                 </ButtonAnchor>
-            )}
-        </ButtonContainer>
+                <ButtonAnchor download="translations.json" href={useDownloadURL(translations)}>
+                    Export Translations
+                </ButtonAnchor>
+                <ButtonAnchor download="examples.json" href={useDownloadURL(examples)}>
+                    Export Examples
+                </ButtonAnchor>
+                <ButtonAnchor download="sources.json" href={useDownloadURL(sources)}>
+                    Export Sources
+                </ButtonAnchor>
+                <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
+                    Export Comments
+                </ButtonAnchor>
+            </ButtonContainer>
+            <ButtonContainer align="left">
+                <ButtonAnchor download="userProperties.json" href={useDownloadURL(userProperties)}>
+                    Export UserProperties
+                </ButtonAnchor>
+                <ButtonAnchor download="userSettings.json" href={useDownloadURL(userSettings)}>
+                    Export UserSettings
+                </ButtonAnchor>
+                <ButtonAnchor download="users.json" href={useDownloadURL(users)}>
+                    Export Users
+                </ButtonAnchor>
+                {authUsers.length ? (
+                    <ButtonAnchor download="authUsers.json" href={authUsersHref}>
+                        Export AuthUsers
+                    </ButtonAnchor>
+                ) : (
+                    <Button disabled>Export AuthUsers</Button>
+                )}
+            </ButtonContainer>
+        </>
     );
 }
 
