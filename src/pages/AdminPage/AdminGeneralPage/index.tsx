@@ -22,9 +22,7 @@ import { useLang } from '../../../useLang';
 import { Export } from './Export';
 import { SensitiveTermsAdminSettings } from './SensitiveTerms';
 import s from './style.module.css';
-
-type AuthUserInfo = { email: string; verified: boolean; creationTime: string };
-type AuthUserInfos = Partial<Record<string, { email: string; verified: boolean; creationTime: string }>>;
+import { AuthUserInfo, AuthUserInfos } from './types';
 
 type UserListProps = {
     getUsers: GetList<User>;
@@ -67,6 +65,7 @@ type WeeklyDigestParams = {
         [langB]: string;
     };
 };
+
 const sendWeeklyDigestTest = (params: WeeklyDigestParams) =>
     httpsCallable(functions, 'userManagement-sendWeeklyDigestTest')(params);
 const sendWeeklyDigest = (params: WeeklyDigestParams) =>
@@ -95,7 +94,7 @@ export default function AdminPageGeneral() {
 
             <SensitiveTermsAdminSettings />
 
-            <Export />
+            <Export authUserInfos={authUserInfos} />
 
             <UserList {...userListProps} />
 

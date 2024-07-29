@@ -15,8 +15,9 @@ import {
     UserProperties,
     UserSettings,
 } from '../../../types';
+import { AuthUserInfos } from './types';
 
-export function Export() {
+export function Export({ authUserInfos }: { authUserInfos: AuthUserInfos }) {
     const [showModal, setShowModal] = useState(false);
     return (
         <>
@@ -24,14 +25,14 @@ export function Export() {
                 <ColumnHeading>Export Data</ColumnHeading>
                 <Suspense fallback={<Button disabled>Loading…</Button>}>
                     <Button onClick={() => setShowModal(true)}>Export Data…</Button>
-                    {showModal && <ExportModal onClose={() => setShowModal(false)} />}
+                    {showModal && <ExportModal authUserInfos={authUserInfos} onClose={() => setShowModal(false)} />}
                 </Suspense>
             </SingleColumn>
         </>
     );
 }
 
-function ExportModal({ onClose }: { onClose: () => void }) {
+function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUserInfos: AuthUserInfos }) {
     const getTerms = useCollection(collections.terms);
     const getTranslations = useCollection(collections.translations);
     const getTranslationExamples = useCollection(collections.translationExamples);
@@ -52,6 +53,7 @@ function ExportModal({ onClose }: { onClose: () => void }) {
                 userProperties={getUserProperties()}
                 userSettings={getUserSettings()}
                 users={getUsers()}
+                authUserInfos={authUserInfos}
             />
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
@@ -69,6 +71,7 @@ function ExportButtons({
     userProperties,
     userSettings,
     users,
+    authUserInfos,
 }: {
     terms: Term[];
     translations: Translation[];
@@ -78,7 +81,10 @@ function ExportButtons({
     userProperties: UserProperties[];
     userSettings: UserSettings[];
     users: User[];
+    authUserInfos: AuthUserInfos;
 }) {
+    const authUsers = Object.entries(authUserInfos).map(([id, data]) => ({ id, ...data }));
+    const authUsersHref = useDownloadURL(authUsers);
     return (
         <ButtonContainer align="left">
             <ButtonAnchor download="terms.json" href={useDownloadURL(terms)}>
@@ -105,6 +111,11 @@ function ExportButtons({
             <ButtonAnchor download="users.json" href={useDownloadURL(users)}>
                 Export Users
             </ButtonAnchor>
+            {!!authUsers.length && (
+                <ButtonAnchor download="authUsers.json" href={authUsersHref}>
+                    Export AuthUsers
+                </ButtonAnchor>
+            )}
         </ButtonContainer>
     );
 }
