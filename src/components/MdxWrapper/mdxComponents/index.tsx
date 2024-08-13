@@ -1,4 +1,4 @@
-import { MDXProviderComponents } from '@mdx-js/react';
+import { MDXComponents } from 'mdx/types';
 import React, { createContext, useCallback, useContext } from 'react';
 import Button, { ButtonAnchor, ButtonContainer } from '../../Form/Button';
 import CollapsableSection, { CollapsableSectionContainer } from '../../Layout/CollapsableSection';
@@ -10,7 +10,7 @@ import s from './style.module.css';
 
 const mdxLinkBaseContext = createContext(() => window.location.href);
 
-export const MdxLinkBaseProvider: React.FC<{ base: string }> = ({ base, children }) => {
+export const MdxLinkBaseProvider = ({ base, children }: { base: string; children?: React.ReactNode }) => {
     const getBase = useCallback(() => new URL(base, process.env.REACT_APP_MAIN_ORIGIN ?? window.location.origin).href, [
         base,
     ]);
@@ -34,7 +34,7 @@ const MdxLink = (props: React.ComponentProps<'a'>) => {
     return <a rel="noopener noreferrer" {...props} />;
 };
 
-const components: MDXProviderComponents = {
+const components: MDXComponents = {
     Button: props => <Button {...props} />,
     ButtonAnchor,
     ButtonContainer,

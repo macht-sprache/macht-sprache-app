@@ -1,6 +1,6 @@
 import { onAuthStateChanged, User as AuthUser } from 'firebase/auth';
 import type firebase from 'firebase/compat';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { DocReference, User, UserProperties, UserSettings } from '../types';
 import { useFirebaseAuth } from './auth';
 import { collections } from './data';
@@ -39,7 +39,7 @@ export const useSensitiveTerms = () => {
     return useContext(appContext).sensitiveTerms;
 };
 
-export const AppContextProvider: React.FC = ({ children }) => {
+export const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [authUser, loadingAuthUser] = useAuthUser();
     const [user, loadingUser] = useLoadUser(authUser?.uid, loadingAuthUser);
     const [userSettings, loadingUserSettings] = useLoadUserSettings(authUser?.uid, loadingAuthUser);
@@ -64,7 +64,7 @@ export const AppContextProvider: React.FC = ({ children }) => {
     );
 };
 
-export const AppContextProviderExtension: React.FC = ({ children }) => {
+export const AppContextProviderExtension = ({ children }: { children: React.ReactNode }) => {
     const [sensitiveTerms] = useLoadSensitiveTerms();
 
     if (!sensitiveTerms) {
