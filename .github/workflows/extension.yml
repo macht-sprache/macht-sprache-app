@@ -4,8 +4,8 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
               with:
                   node-version: '16'
             - name: Install app dependencies
@@ -23,19 +23,19 @@ jobs:
                   REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
                   REACT_APP_FIREBASE_REGION: ${{ secrets.FIREBASE_REGION }}
                   REACT_APP_MAIN_ORIGIN: ${{ secrets.MAIN_ORIGIN }}
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v4
               with:
                   name: extension-build-chrome
                   path: extension/bundle-chrome
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v4
               with:
                   name: extension-build-firefox
                   path: extension/bundle-firefox
     bundle-source:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
               with:
                   node-version: '16'
             - name: Write .env
@@ -49,7 +49,7 @@ jobs:
                   REACT_APP_MAIN_ORIGIN: ${{ secrets.MAIN_ORIGIN }}
             - name: Clear .git
               run: rm -rf .git
-            - uses: actions/upload-artifact@v2
+            - uses: actions/upload-artifact@v4
               with:
                   name: extension-source-bundle
                   path: .

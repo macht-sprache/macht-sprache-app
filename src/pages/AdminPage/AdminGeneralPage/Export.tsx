@@ -4,10 +4,13 @@ import Button, { ButtonAnchor, ButtonContainer } from '../../../components/Form/
 import { ColumnHeading, SingleColumn } from '../../../components/Layout/Columns';
 import { ModalDialog } from '../../../components/ModalDialog';
 import { collections } from '../../../hooks/data';
-import { useCollection } from '../../../hooks/fetch';
+import { Dictionary, useCollection, useCollectionByPath } from '../../../hooks/fetch';
 import {
     Comment,
+    Like,
+    Notification,
     Source,
+    Subscription,
     Term,
     Translation,
     TranslationExample,
@@ -42,6 +45,10 @@ function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUser
     const getUserSettings = useCollection(collections.userSettings);
     const getUsers = useCollection(collections.users);
 
+    const getLikes = useCollectionByPath(collections.likes);
+    const getSubscriptions = useCollectionByPath(collections.subscriptions);
+    const getNotifications = useCollectionByPath(collections.notifications);
+
     return (
         <ModalDialog onClose={onClose} title="Export Data">
             <ExportButtons
@@ -54,6 +61,9 @@ function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUser
                 userSettings={getUserSettings()}
                 users={getUsers()}
                 authUserInfos={authUserInfos}
+                likes={getLikes()}
+                subscriptions={getSubscriptions()}
+                notifications={getNotifications()}
             />
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
@@ -72,6 +82,9 @@ function ExportButtons({
     userSettings,
     users,
     authUserInfos,
+    likes,
+    subscriptions,
+    notifications,
 }: {
     terms: Term[];
     translations: Translation[];
@@ -82,9 +95,17 @@ function ExportButtons({
     userSettings: UserSettings[];
     users: User[];
     authUserInfos: AuthUserInfos;
+    likes: Dictionary<Like>;
+    subscriptions: Dictionary<Subscription>;
+    notifications: Dictionary<Notification>;
 }) {
     const authUsers = Object.entries(authUserInfos).map(([id, data]) => ({ id, ...data }));
     const authUsersHref = useDownloadURL(authUsers);
+
+    const likesList = useWithPath(likes);
+    const subscriptionList = useWithPath(subscriptions);
+    const notificationList = useWithPath(notifications);
+
     return (
         <>
             <ButtonContainer align="left">
@@ -103,8 +124,17 @@ function ExportButtons({
                 <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
                     Export Comments
                 </ButtonAnchor>
-            </ButtonContainer>
-            <ButtonContainer align="left">
+
+                <ButtonAnchor download="likes.json" href={useDownloadURL(likesList)}>
+                    Export Likes
+                </ButtonAnchor>
+                <ButtonAnchor download="subscriptions.json" href={useDownloadURL(subscriptionList)}>
+                    Export Subscriptions
+                </ButtonAnchor>
+                <ButtonAnchor download="notifications.json" href={useDownloadURL(notificationList)}>
+                    Export Notifications
+                </ButtonAnchor>
+
                 <ButtonAnchor download="userProperties.json" href={useDownloadURL(userProperties)}>
                     Export UserProperties
                 </ButtonAnchor>
@@ -124,6 +154,10 @@ function ExportButtons({
             </ButtonContainer>
         </>
     );
+}
+
+function useWithPath<T extends {}>(data: Dictionary<T>) {
+    return useMemo(() => Object.entries(data).map(([path, x]) => ({ path, ...x })), [data]);
 }
 
 function useDownloadURL(data: unknown[]) {

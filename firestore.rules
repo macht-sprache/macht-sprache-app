@@ -64,6 +64,10 @@ service cloud.firestore {
       }
     }
 
+    match /{path=**}/notifications/{notificationId} {
+      allow list: if isAdmin();
+    }
+
     function isValidUserSettings() {
       let data = request.resource.data;
       return data.keys().hasOnly(['lang', 'showRedacted', 'newsletter', 'digestMail', 'notificationMail']) &&
@@ -152,6 +156,10 @@ service cloud.firestore {
             data.active is bool;
         }
       }
+    }
+
+    match /{path=**}/subscriptions/{user} {
+      allow list: if isAdmin();
     }
 
     function isValidTranslation() {
@@ -274,6 +282,10 @@ service cloud.firestore {
         allow create: if isValidatedUser() && isUser(userId) && isCreator() && isValidLike();
         allow delete: if isValidatedUser() && isUser(userId);
       }
+    }
+
+    match /{path=**}/likes/{userId} {
+      allow list: if isAdmin();
     }
 
     match /sensitiveTerms/global {

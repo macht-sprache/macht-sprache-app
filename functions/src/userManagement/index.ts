@@ -65,7 +65,7 @@ export const postRegistrationHandler = functions.https.onCall(
                 displayNameLowerCase: displayName.toLowerCase(),
             };
 
-            const userSettings: UserSettings = {
+            const userSettings: WithoutId<UserSettings> = {
                 lang,
                 newsletter,
                 showRedacted: false,
@@ -73,7 +73,7 @@ export const postRegistrationHandler = functions.https.onCall(
                 notificationMail: true,
             };
 
-            const userProperties: UserProperties = {
+            const userProperties: WithoutId<UserProperties> = {
                 admin: false,
                 betaAccess: false,
                 enabled: globalSettings.enableNewUsers,
@@ -151,14 +151,14 @@ export const ensureValidUserEntities = functions.https.onCall(async (_, context)
     for (const authUser of authUsers) {
         const displayName = authUser.displayName || '';
         const defaultUser: WithoutId<User> = { displayName, displayNameLowerCase: displayName.toLowerCase() };
-        const defaultUserSettings: UserSettings = {
+        const defaultUserSettings: WithoutId<UserSettings> = {
             lang: langA,
             newsletter: false,
             showRedacted: false,
             digestMail: true,
             notificationMail: true,
         };
-        const defaultUserProperties: UserProperties = {
+        const defaultUserProperties: WithoutId<UserProperties> = {
             admin: false,
             betaAccess: false,
             enabled: true,

@@ -7,7 +7,7 @@ type Query<T> = firebase.firestore.Query<T>;
 type DocumentReference<T> = firebase.firestore.DocumentReference<T>;
 type QuerySnapshot<T> = firebase.firestore.QuerySnapshot<T>;
 type DocumentSnapshot<T> = firebase.firestore.DocumentSnapshot<T>;
-type Dictionary<T> = Partial<Record<string, T>>;
+export type Dictionary<T> = Partial<Record<string, T>>;
 
 type Reference<T> = Query<T> | DocumentReference<T>;
 type Snapshot<T, R extends Reference<T>> = R extends Query<T>
@@ -59,6 +59,7 @@ const getInitialReader = <T, Ref extends Reference<T>>(ref: Ref) => {
     return () => {
         if (initialError) {
             readerCache.delete(ref);
+            console.log(initialError);
             throw initialError;
         }
         if (!initialSnapshot) {
@@ -169,6 +170,14 @@ export function useCollectionById<T>(ref: Query<T>): GetListById<T> {
     return useCachedGetter(() => {
         const snapshot = snapshotReader();
         return snapshot.docs.reduce<Dictionary<T>>((acc, cur) => ({ ...acc, [cur.id]: cur.data() }), {});
+    }, [snapshotReader]);
+}
+
+export function useCollectionByPath<T>(ref: Query<T>): GetListById<T> {
+    const snapshotReader = useSnapshot<T, typeof ref>(ref);
+    return useCachedGetter(() => {
+        const snapshot = snapshotReader();
+        return snapshot.docs.reduce<Dictionary<T>>((acc, cur) => ({ ...acc, [cur.ref.path]: cur.data() }), {});
     }, [snapshotReader]);
 }
 
