@@ -8,6 +8,7 @@ import { Dictionary, useCollection, useCollectionByPath } from '../../../hooks/f
 import {
     Comment,
     Like,
+    Notification,
     Source,
     Subscription,
     Term,
@@ -46,6 +47,7 @@ function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUser
 
     const getLikes = useCollectionByPath(collections.likes);
     const getSubscriptions = useCollectionByPath(collections.subscriptions);
+    const getNotifications = useCollectionByPath(collections.notifications);
 
     return (
         <ModalDialog onClose={onClose} title="Export Data">
@@ -61,6 +63,7 @@ function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUser
                 authUserInfos={authUserInfos}
                 likes={getLikes()}
                 subscriptions={getSubscriptions()}
+                notifications={getNotifications()}
             />
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
@@ -81,6 +84,7 @@ function ExportButtons({
     authUserInfos,
     likes,
     subscriptions,
+    notifications,
 }: {
     terms: Term[];
     translations: Translation[];
@@ -93,14 +97,14 @@ function ExportButtons({
     authUserInfos: AuthUserInfos;
     likes: Dictionary<Like>;
     subscriptions: Dictionary<Subscription>;
+    notifications: Dictionary<Notification>;
 }) {
     const authUsers = Object.entries(authUserInfos).map(([id, data]) => ({ id, ...data }));
     const authUsersHref = useDownloadURL(authUsers);
 
-    const likesList = useMemo(() => Object.entries(likes).map(([id, x]) => ({ id, ...x })), [likes]);
-    const subscriptionList = useMemo(() => Object.entries(subscriptions).map(([id, x]) => ({ id, ...x })), [
-        subscriptions,
-    ]);
+    const likesList = useWithPath(likes);
+    const subscriptionList = useWithPath(subscriptions);
+    const notificationList = useWithPath(notifications);
 
     return (
         <>
@@ -127,8 +131,10 @@ function ExportButtons({
                 <ButtonAnchor download="subscriptions.json" href={useDownloadURL(subscriptionList)}>
                     Export Subscriptions
                 </ButtonAnchor>
-            </ButtonContainer>
-            <ButtonContainer align="left">
+                <ButtonAnchor download="notifications.json" href={useDownloadURL(notificationList)}>
+                    Export Notifications
+                </ButtonAnchor>
+
                 <ButtonAnchor download="userProperties.json" href={useDownloadURL(userProperties)}>
                     Export UserProperties
                 </ButtonAnchor>
@@ -148,6 +154,10 @@ function ExportButtons({
             </ButtonContainer>
         </>
     );
+}
+
+function useWithPath<T extends {}>(data: Dictionary<T>) {
+    return useMemo(() => Object.entries(data).map(([path, x]) => ({ path, ...x })), [data]);
 }
 
 function useDownloadURL(data: unknown[]) {

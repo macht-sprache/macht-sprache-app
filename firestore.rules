@@ -64,6 +64,10 @@ service cloud.firestore {
       }
     }
 
+    match /{path=**}/notifications/{notificationId} {
+      allow list: if isAdmin();
+    }
+
     function isValidUserSettings() {
       let data = request.resource.data;
       return data.keys().hasOnly(['lang', 'showRedacted', 'newsletter', 'digestMail', 'notificationMail']) &&

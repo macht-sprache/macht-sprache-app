@@ -347,6 +347,7 @@ export const collections = {
     settings: db.collection('settings').withConverter(GlobalSettingsConverter),
     likes: db.collectionGroup('likes').withConverter(LikeConverter),
     subscriptions: db.collectionGroup('subscriptions').withConverter(SubscriptionConverter),
+    notifications: db.collectionGroup('notifications').withConverter(NotificationConverter),
 };
 
 const addConverterToRef = <T extends Term | Translation | TranslationExample | Source | Comment>(
