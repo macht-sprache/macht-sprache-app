@@ -345,6 +345,7 @@ export const collections = {
     sensitiveTerms: db.collection('sensitiveTerms').withConverter(SensitiveTermsConverter),
     comments: db.collection('comments').withConverter(CommentConverter),
     settings: db.collection('settings').withConverter(GlobalSettingsConverter),
+    likes: db.collectionGroup('likes').withConverter(LikeConverter),
 };
 
 const addConverterToRef = <T extends Term | Translation | TranslationExample | Source | Comment>(

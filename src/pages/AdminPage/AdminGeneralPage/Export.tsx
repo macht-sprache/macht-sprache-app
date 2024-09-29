@@ -4,9 +4,10 @@ import Button, { ButtonAnchor, ButtonContainer } from '../../../components/Form/
 import { ColumnHeading, SingleColumn } from '../../../components/Layout/Columns';
 import { ModalDialog } from '../../../components/ModalDialog';
 import { collections } from '../../../hooks/data';
-import { useCollection } from '../../../hooks/fetch';
+import { Dictionary, useCollection, useCollectionByPath } from '../../../hooks/fetch';
 import {
     Comment,
+    Like,
     Source,
     Term,
     Translation,
@@ -42,6 +43,8 @@ function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUser
     const getUserSettings = useCollection(collections.userSettings);
     const getUsers = useCollection(collections.users);
 
+    const getLikes = useCollectionByPath(collections.likes);
+
     return (
         <ModalDialog onClose={onClose} title="Export Data">
             <ExportButtons
@@ -54,6 +57,7 @@ function ExportModal({ onClose, authUserInfos }: { onClose: () => void; authUser
                 userSettings={getUserSettings()}
                 users={getUsers()}
                 authUserInfos={authUserInfos}
+                likes={getLikes()}
             />
             <ButtonContainer>
                 <Button onClick={onClose}>Cancel</Button>
@@ -72,6 +76,7 @@ function ExportButtons({
     userSettings,
     users,
     authUserInfos,
+    likes,
 }: {
     terms: Term[];
     translations: Translation[];
@@ -82,9 +87,13 @@ function ExportButtons({
     userSettings: UserSettings[];
     users: User[];
     authUserInfos: AuthUserInfos;
+    likes: Dictionary<Like>;
 }) {
     const authUsers = Object.entries(authUserInfos).map(([id, data]) => ({ id, ...data }));
     const authUsersHref = useDownloadURL(authUsers);
+
+    const likesList = useMemo(() => Object.entries(likes).map(([id, like]) => ({ ...like, id })), [likes]);
+
     return (
         <>
             <ButtonContainer align="left">
@@ -102,6 +111,10 @@ function ExportButtons({
                 </ButtonAnchor>
                 <ButtonAnchor download="comments.json" href={useDownloadURL(comments)}>
                     Export Comments
+                </ButtonAnchor>
+
+                <ButtonAnchor download="likes.json" href={useDownloadURL(likesList)}>
+                    Export Likes
                 </ButtonAnchor>
             </ButtonContainer>
             <ButtonContainer align="left">

@@ -276,6 +276,10 @@ service cloud.firestore {
       }
     }
 
+    match /{path=**}/likes/{userId} {
+      allow list: if isAdmin();
+    }
+
     match /sensitiveTerms/global {
       allow read: if true;
       allow update: if isValidatedUser() && isAdmin();
