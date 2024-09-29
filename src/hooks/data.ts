@@ -346,6 +346,7 @@ export const collections = {
     comments: db.collection('comments').withConverter(CommentConverter),
     settings: db.collection('settings').withConverter(GlobalSettingsConverter),
     likes: db.collectionGroup('likes').withConverter(LikeConverter),
+    subscriptions: db.collectionGroup('subscriptions').withConverter(SubscriptionConverter),
 };
 
 const addConverterToRef = <T extends Term | Translation | TranslationExample | Source | Comment>(

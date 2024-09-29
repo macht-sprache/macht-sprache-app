@@ -154,6 +154,10 @@ service cloud.firestore {
       }
     }
 
+    match /{path=**}/subscriptions/{user} {
+      allow list: if isAdmin();
+    }
+
     function isValidTranslation() {
       let data = request.resource.data;
       return data.keys().hasOnly(['term', 'creator', 'createdAt', 'value', 'variants', 'lang', 'relatedTerms', 'commentCount', 'ratings', 'definition']) &&
