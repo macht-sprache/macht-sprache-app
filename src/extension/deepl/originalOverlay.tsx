@@ -28,7 +28,7 @@ const getOriginalOverlay = (stableParent: HTMLElement) => {
         stableParent,
         createElement: () => el,
         attachElement: (el, parent) => {
-            const textarea = parent.querySelector('textarea');
+            const textarea = parent.querySelector('[role="textbox"]');
             const containerToObserve = document.getElementById('dl_translator');
 
             if (textarea && containerToObserve) {

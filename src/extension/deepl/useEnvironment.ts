@@ -60,19 +60,19 @@ export const useDeeplEnvironment = (onOpenGenderModal: () => void) => {
     );
 
     useEffect(() => {
-        const originalTextArea = originalSide?.querySelector<HTMLTextAreaElement>('textarea');
-        const translatedTextArea = translatedSide?.querySelector<HTMLTextAreaElement>('textarea');
+        const originalTextArea = originalSide?.querySelector<HTMLTextAreaElement>('[role="textbox"]');
+        const translatedTextArea = translatedSide?.querySelector<HTMLTextAreaElement>('[role="textbox"]');
         const translatedDummyElement = translatedSide?.querySelector('#target-dummydiv');
 
         const update = () => {
             const newEnv: TranslatorEnvironment = {
                 translation: {
-                    lang: translatedTextArea?.lang.split('-')[0] ?? '',
-                    text: translatedTextArea?.value ?? '',
+                    lang: translatedTextArea?.parentElement?.lang.split('-')[0] ?? '',
+                    text: translatedTextArea?.textContent ?? '',
                 },
                 original: {
-                    lang: originalTextArea?.lang.split('-')[0] ?? '',
-                    text: originalTextArea?.value ?? '',
+                    lang: originalTextArea?.parentElement?.lang.split('-')[0] ?? '',
+                    text: originalTextArea?.textContent ?? '',
                 },
             };
 

@@ -8,7 +8,7 @@ const getButton = (stableParent: HTMLElement) =>
         stableParent,
         createElement: () => document.createElement('div'),
         attachElement: (el, parent) => {
-            const buttonRow = parent.querySelector('[dl-test="translator-target-toolbar"]');
+            const buttonRow = parent.querySelector('[data-testid="translator-target-toolbar"]');
             buttonRow?.append(el);
         },
         validateInput: ({ status, results }) => (status ? { status, results: results ?? 0 } : null),

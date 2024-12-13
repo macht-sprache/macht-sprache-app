@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { getUpdateableResult, INITIAL_ENV } from '../common';
 import { CheckerResult, OnUpdate, TranslatorEnvironment } from '../types';
 import { useRenderButton } from './button';
-import { TRANSLATED_TEXT_ELEMENT_SELECTOR } from './constants';
 import { useRenderGenderHint } from './genderHint';
 import { useRenderOriginalOverlay } from './originalOverlay';
 import { useRenderTranslationOverlay } from './translationOverlay';
@@ -64,16 +63,15 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
         const originalTextArea = originalSide?.querySelector<HTMLTextAreaElement>('textarea');
 
         const update = () => {
-            const translatedTextElement = translatedSide?.querySelector<HTMLElement>(TRANSLATED_TEXT_ELEMENT_SELECTOR);
             const translatedTextArea = translatedSide?.querySelector<HTMLTextAreaElement>('textarea');
 
             const newEnv: TranslatorEnvironment = {
                 translation: {
-                    lang: translatedTextElement?.dataset.language ?? '',
+                    lang: getLanguage(translatedTextArea) ?? '',
                     text: translatedTextArea?.value ?? '',
                 },
                 original: {
-                    lang: translatedTextElement?.dataset.originalLanguage ?? '',
+                    lang: getLanguage(originalTextArea) ?? '',
                     text: originalTextArea?.value ?? '',
                 },
             };
@@ -104,3 +102,15 @@ export const useGoogleTranslateEnvironment = (onOpenGenderModal: () => void) => 
 
     return { env, onUpdate };
 };
+
+function getLanguage(node?: HTMLElement | null): string | undefined {
+    if (!node) {
+        return;
+    }
+    if (node.lang) {
+        return node.lang;
+    }
+    if (node.parentNode) {
+        return getLanguage(node.parentElement);
+    }
+}
