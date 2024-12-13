@@ -1,4 +1,4 @@
-import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -13,7 +13,7 @@ const pageTitleContext = createContext<{
 
 export const useSetNotificationCountForPageTitle = () => useContext(pageTitleContext).setNotificationCount;
 
-export const PageTitleProvider: React.FC = ({ children }) => {
+export const PageTitleProvider = ({ children }: { children: React.ReactNode }) => {
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
     const [{ title, notifications, pathname, lang }, setState] = useState<{

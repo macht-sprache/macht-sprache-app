@@ -1,5 +1,5 @@
 import LinkifyIt from 'linkify-it';
-import { memo, Suspense, useMemo } from 'react';
+import React, { memo, Suspense, useMemo } from 'react';
 import { Link, matchPath } from 'react-router-dom';
 import { collections } from '../../hooks/data';
 import { useDocument } from '../../hooks/fetch';
@@ -65,7 +65,7 @@ function LinkWrapper(props: { url: string }) {
     }
 }
 
-const InternalLink: React.FC<{ url: URL; className?: string }> = ({ url, className, children }) => (
+const InternalLink = ({ url, className, children }: { url: URL; className?: string; children: React.ReactNode }) => (
     <Link to={url.toString().replace(url.origin, '')} className={className}>
         {children}
     </Link>

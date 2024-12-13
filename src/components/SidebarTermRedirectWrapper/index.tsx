@@ -5,13 +5,14 @@ import { TERM, TERM_SIDEBAR } from '../../routes';
 import { Term } from '../../types';
 
 type Props = {
+    children: React.ReactNode;
     getTerm: Get<Term>;
 };
 
 const replacePath = (pathname: string, termId: string, originalPath: string, newPath: string) =>
     pathname.replace(generatePath(originalPath, { termId }), generatePath(newPath, { termId }));
 
-const SidebarTermRedirectWrapper: React.FC<Props> = ({ children, getTerm }) => {
+const SidebarTermRedirectWrapper = ({ children, getTerm }: Props) => {
     const term = getTerm();
     const { pathname } = useLocation();
 

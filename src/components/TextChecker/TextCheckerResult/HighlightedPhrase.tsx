@@ -15,6 +15,7 @@ import PhraseModal from './Modal';
 import s from './style.module.css';
 
 type Props = {
+    children: React.ReactNode;
     termRefs: DocReference<Term>[];
     translationRefs: DocReference<Translation>[];
     lang: Lang;
@@ -33,7 +34,7 @@ type TooltipProps = InnerProps & {
     onClick: () => void;
 };
 
-const HighlightedPhrase: React.FC<Props> = ({
+const HighlightedPhrase = ({
     children,
     termRefs,
     translationRefs,
@@ -42,7 +43,7 @@ const HighlightedPhrase: React.FC<Props> = ({
     openModal,
     closeModal,
     onTooltipVisibleChange,
-}) => {
+}: Props) => {
     const { t } = useTranslation();
     const [tooltipOpen, setTooltipOpen] = useState(false);
 

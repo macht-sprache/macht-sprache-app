@@ -54,6 +54,13 @@ const config: webpack.Configuration = {
                 },
             },
             {
+                test: /\.mdx?$/,
+                loader: '@mdx-js/loader',
+                options: {
+                    providerImportSource: '@mdx-js/react',
+                },
+            },
+            {
                 test: /\.css$/i,
                 use: [
                     {
